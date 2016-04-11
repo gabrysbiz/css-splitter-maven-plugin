@@ -1,7 +1,7 @@
 # CSS Splitter Maven Plugin
 [![License BSD 3-Clause](https://img.shields.io/badge/license-BSD%203--Clause-blue.svg)](https://github.com/gabrysbiz/css-splitter-maven-plugin/blob/master/src/main/resources/license.txt)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/biz.gabrys.maven.plugins/css-splitter-maven-plugin/badge.svg)](https://maven-badges.herokuapp.com/maven-central/biz.gabrys.maven.plugins/css-splitter-maven-plugin/)
-[![Build Status](https://travis-ci.org/gabrysbiz/css-splitter-maven-plugin.svg?branch=master)](https://travis-ci.org/gabrysbiz/css-splitter-maven-plugin)
+[![Build Status](https://travis-ci.org/gabrysbiz/css-splitter-maven-plugin.svg?branch=develop)](https://travis-ci.org/gabrysbiz/css-splitter-maven-plugin)
 [![Dependencies Status](https://www.versioneye.com/java/biz.gabrys.maven.plugins:css-splitter-maven-plugin/badge.svg?style=flat)](https://www.versioneye.com/java/biz.gabrys.maven.plugins:css-splitter-maven-plugin)
 
 This plugin splits [CSS](http://www.w3.org/Style/CSS/) stylesheets to smaller files (parts) which contain maximum [X](http://www.gabrys.biz/projects/css-splitter-maven-plugin/LATEST/split-mojo.html#maxRules) rules.
