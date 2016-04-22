@@ -15,11 +15,12 @@ package biz.gabrys.maven.plugins.css.splitter.token;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 class DateTokenValueFactory implements TokenValueFactory {
 
     public String create(final String value) {
-        final DateFormat dateFormat = new SimpleDateFormat(value);
+        final DateFormat dateFormat = new SimpleDateFormat(value, Locale.ENGLISH);
         return dateFormat.format(getNow());
     }
 
