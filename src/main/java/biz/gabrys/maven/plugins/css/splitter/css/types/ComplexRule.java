@@ -49,7 +49,7 @@ public class ComplexRule extends AbstractTextRule {
         lines.add(type + ' ' + StringUtils.join(selectors.iterator(), ", ") + " {");
         for (final StyleRule rule : rules) {
             for (final String line : rule.getLines()) {
-                lines.add('\t' + line);
+                lines.add(INDENTATION + line);
             }
         }
         lines.add("}");

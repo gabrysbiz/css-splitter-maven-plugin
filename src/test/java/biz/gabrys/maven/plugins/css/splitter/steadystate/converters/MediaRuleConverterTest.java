@@ -17,9 +17,11 @@ import biz.gabrys.maven.plugins.css.splitter.css.types.StyleRule;
 public final class MediaRuleConverterTest {
 
     @Test
-    public void getSupportedType_returnsCSSMediaRuleImplClass() {
+    public void isSupportedType_ruleHasValidType_returnsTrue() {
         final MediaRuleConverter converter = new MediaRuleConverter();
-        Assert.assertEquals("Supported type", CSSMediaRuleImpl.class, converter.getSupportedType());
+        final CSSMediaRuleImpl rule = new CSSMediaRuleImpl();
+        final boolean supported = converter.isSupportedType(rule);
+        Assert.assertTrue("Should return true", supported);
     }
 
     @Test
@@ -36,9 +38,9 @@ public final class MediaRuleConverterTest {
         rule.setCssRules(ruleList);
 
         @SuppressWarnings("unchecked")
-        final RuleConverter<CSSStyleRuleImpl, StyleRule> styleConverter = Mockito.mock(RuleConverter.class);
+        final RuleConverter<StyleRule> styleConverter = Mockito.mock(RuleConverter.class);
         final StyleRule convertedStyleRule = Mockito.mock(StyleRule.class);
-        Mockito.when(styleConverter.getSupportedType()).thenReturn(CSSStyleRuleImpl.class);
+        Mockito.when(styleConverter.isSupportedType(styleRule)).thenReturn(true);
         Mockito.when(styleConverter.convert(styleRule)).thenReturn(convertedStyleRule);
         final MediaRuleConverter converter = new MediaRuleConverter(styleConverter);
 

@@ -12,30 +12,34 @@
  */
 package biz.gabrys.maven.plugins.css.splitter.counter;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.List;
 
 import biz.gabrys.maven.plugins.css.splitter.css.types.NodeRule;
 
-public class AnyRuleCounter {
+public class AnyRuleCounter implements RuleCounter {
 
-    private final Map<Class<? extends NodeRule>, RuleCounter<?>> counters;
+    private final List<RuleCounter> counters;
 
     public AnyRuleCounter() {
-        this(Arrays.<RuleCounter<?>>asList(new ComplexRuleCounter(), new StyleRuleCounter(), new UnknownRuleCounter()));
+        this(Arrays.<RuleCounter>asList(new ComplexRuleCounter(), new StyleRuleCounter(), new UnknownRuleCounter()));
     }
 
-    AnyRuleCounter(final Iterable<RuleCounter<?>> counters) {
-        this.counters = new ConcurrentHashMap<Class<? extends NodeRule>, RuleCounter<?>>();
-        for (final RuleCounter<?> counter : counters) {
-            this.counters.put(counter.getSupportedType(), counter);
-        }
+    // for tests
+    AnyRuleCounter(final List<RuleCounter> counters) {
+        this.counters = new ArrayList<RuleCounter>(counters);
+    }
+
+    public boolean isSupportedType(final NodeRule rule) {
+        return true;
     }
 
     public int count(final NodeRule rule) {
-        if (counters.containsKey(rule.getClass())) {
-            return counters.get(rule.getClass()).count(rule);
+        for (final RuleCounter counter : counters) {
+            if (counter.isSupportedType(rule)) {
+                return counter.count(rule);
+            }
         }
         return 0;
     }

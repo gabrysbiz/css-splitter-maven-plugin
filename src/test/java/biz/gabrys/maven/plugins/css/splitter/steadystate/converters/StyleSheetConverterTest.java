@@ -1,7 +1,5 @@
 package biz.gabrys.maven.plugins.css.splitter.steadystate.converters;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.junit.Assert;
@@ -20,16 +18,14 @@ public final class StyleSheetConverterTest {
 
     @Test
     public void convert_containSupportedRules_returnsStyleSheet() {
-        final List<RuleConverter<?, ?>> converters = new ArrayList<RuleConverter<?, ?>>();
         @SuppressWarnings("unchecked")
-        final RuleConverter<CSSStyleRuleImpl, StyleRule> styleConverter = Mockito.mock(RuleConverter.class);
+        final RuleConverter<StyleRule> internalConverter = Mockito.mock(RuleConverter.class);
         final CSSStyleRuleImpl styleRule = new CSSStyleRuleImpl();
-        Mockito.when(styleConverter.getSupportedType()).thenReturn(CSSStyleRuleImpl.class);
+        Mockito.when(internalConverter.isSupportedType(styleRule)).thenReturn(true);
         final StyleRule convertedStyleRule = Mockito.mock(StyleRule.class);
-        Mockito.when(styleConverter.convert(styleRule)).thenReturn(convertedStyleRule);
-        converters.add(styleConverter);
+        Mockito.when(internalConverter.convert(styleRule)).thenReturn(convertedStyleRule);
 
-        final StyleSheetConverter converter = new StyleSheetConverter(converters);
+        final StyleSheetConverter converter = new StyleSheetConverter(internalConverter);
         final CSSStyleSheetImpl stylesheet = new CSSStyleSheetImpl();
         final CSSRuleListImpl ruleList = new CSSRuleListImpl();
         ruleList.add(styleRule);
@@ -45,10 +41,15 @@ public final class StyleSheetConverterTest {
 
     @Test(expected = UnsupportedRuleException.class)
     public void convert_containUnsupportedRules_throwsException() {
-        final StyleSheetConverter converter = new StyleSheetConverter(Collections.<RuleConverter<?, ?>>emptyList());
+        @SuppressWarnings("unchecked")
+        final RuleConverter<StyleRule> internalConverter = Mockito.mock(RuleConverter.class);
+        final CSSStyleRuleImpl styleRule = new CSSStyleRuleImpl();
+        Mockito.when(internalConverter.isSupportedType(styleRule)).thenReturn(false);
+
+        final StyleSheetConverter converter = new StyleSheetConverter(internalConverter);
         final CSSStyleSheetImpl stylesheet = new CSSStyleSheetImpl();
         final CSSRuleListImpl ruleList = new CSSRuleListImpl();
-        ruleList.add(new CSSStyleRuleImpl());
+        ruleList.add(styleRule);
         stylesheet.setCssRules(ruleList);
         converter.convert(stylesheet);
     }

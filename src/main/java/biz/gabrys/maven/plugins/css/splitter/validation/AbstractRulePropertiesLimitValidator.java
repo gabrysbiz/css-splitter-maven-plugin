@@ -22,23 +22,23 @@ abstract class AbstractRulePropertiesLimitValidator<T extends NodeRule> implemen
         this.clazz = clazz;
     }
 
-    public Class<T> getSupportedType() {
-        return clazz;
+    public final boolean isSupportedType(final NodeRule rule) {
+        return rule != null && rule.getClass() == clazz;
     }
 
     public final void validate(final NodeRule rule, final int limit) throws ValidationException {
-        if (rule.getClass() != clazz) {
-            throw new IllegalArgumentException(
-                    String.format("Cannot cast an instance of the %s to the %s class.", rule.getClass().getName(), clazz.getName()));
+        if (!isSupportedType(rule)) {
+            throw new IllegalArgumentException(String.format("Cannot cast an instance of the %s to the %s class!",
+                    rule == null ? "null" : rule.getClass().getName(), clazz.getName()));
         }
         validate2(clazz.cast(rule), limit);
     }
 
     protected abstract void validate2(T rule, int limit) throws ValidationException;
 
-    protected final void throwException(final int current, final int limit, final String code) throws ValidationException {
-        throw new ValidationException(String.format(
-                "The number of style properties (%d) in non-splittable rule exceeded the allowable limit (%d). CSS code that causes validation error:%n%s",
-                current, limit, code));
+    protected void throwException(final int current, final int limit, final String code) throws ValidationException {
+        throw new ValidationException(
+                String.format("The number of style properties (%d) in non-splittable rule exceeded the allowable limit (%d)!"
+                        + " CSS code that causes validation error:%n%s", current, limit, code));
     }
 }

@@ -10,9 +10,11 @@ import biz.gabrys.maven.plugins.css.splitter.css.types.UnknownRule;
 public final class UnknownRuleConverterTest {
 
     @Test
-    public void getSupportedType_returnsCSSUnknownRuleImplClass() {
+    public void isSupportedType_ruleHasValidType_returnsTrue() {
         final UnknownRuleConverter converter = new UnknownRuleConverter();
-        Assert.assertEquals("Supported type", CSSUnknownRuleImpl.class, converter.getSupportedType());
+        final CSSUnknownRuleImpl rule = new CSSUnknownRuleImpl();
+        final boolean supported = converter.isSupportedType(rule);
+        Assert.assertTrue("Should return true", supported);
     }
 
     @Test

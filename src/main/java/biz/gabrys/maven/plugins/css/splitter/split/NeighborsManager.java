@@ -10,18 +10,16 @@
  *
  *      https://raw.githubusercontent.com/gabrysbiz/css-splitter-maven-plugin/master/src/main/resources/license.txt
  */
-package biz.gabrys.maven.plugins.css.splitter.css.types;
+package biz.gabrys.maven.plugins.css.splitter.split;
 
-public final class TreeSplitUtils {
+import biz.gabrys.maven.plugins.css.splitter.css.types.NodeRule;
 
-    private TreeSplitUtils() {
-        // blocks the possibility of create a new instance
-    }
+class NeighborsManager {
 
-    // TODO add tests
-    public static void fillNeighbors(final NodeRule rule, final NodeRule first, final NodeRule second) {
-        first.setParent(rule.getParent());
-        second.setParent(rule.getParent());
+    void fill(final NodeRule rule, final NodeRule first, final NodeRule second) {
+        final NodeRule parent = rule.getParent();
+        first.setParent(parent);
+        second.setParent(parent);
 
         final NodeRule previous = rule.getPrevious();
         first.setPrevious(previous);

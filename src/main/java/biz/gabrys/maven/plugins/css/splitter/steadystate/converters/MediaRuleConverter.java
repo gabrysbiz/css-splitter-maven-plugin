@@ -18,7 +18,6 @@ import java.util.List;
 import org.w3c.dom.css.CSSRuleList;
 
 import com.steadystate.css.dom.CSSMediaRuleImpl;
-import com.steadystate.css.dom.CSSStyleRuleImpl;
 import com.steadystate.css.dom.MediaListImpl;
 
 import biz.gabrys.maven.plugins.css.splitter.css.types.ComplexRule;
@@ -26,13 +25,14 @@ import biz.gabrys.maven.plugins.css.splitter.css.types.StyleRule;
 
 class MediaRuleConverter extends AbstractRuleConverter<CSSMediaRuleImpl, ComplexRule> {
 
-    private final RuleConverter<CSSStyleRuleImpl, StyleRule> converter;
+    private final RuleConverter<StyleRule> converter;
 
-    public MediaRuleConverter() {
+    MediaRuleConverter() {
         this(new StyleRuleConverter());
     }
 
-    MediaRuleConverter(final RuleConverter<CSSStyleRuleImpl, StyleRule> converter) {
+    // for tests
+    MediaRuleConverter(final RuleConverter<StyleRule> converter) {
         super(CSSMediaRuleImpl.class);
         this.converter = converter;
     }

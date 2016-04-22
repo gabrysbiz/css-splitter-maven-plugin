@@ -12,38 +12,39 @@
  */
 package biz.gabrys.maven.plugins.css.splitter.validation;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import biz.gabrys.maven.plugins.css.splitter.css.types.NodeRule;
 import biz.gabrys.maven.plugins.css.splitter.css.types.StyleSheet;
 
-// TODO add tests
-public class StylePropertiesLimitValidator {
+public final class StylePropertiesLimitValidator {
 
-    private final Map<Class<?>, RulePropertiesLimitValidator> validators = new ConcurrentHashMap<Class<?>, RulePropertiesLimitValidator>();
+    private final List<RulePropertiesLimitValidator> validators;
     private final int limit;
 
     public StylePropertiesLimitValidator(final int limit) {
-        this.limit = limit;
-        addValidator(new StyleRulePropertiesLimitValidator());
-        addValidator(new ComplexRulePropertiesLimitValidator());
-        addValidator(new UnknownRulePropertiesLimitValidator());
+        this(Arrays.<RulePropertiesLimitValidator>asList(new StyleRulePropertiesLimitValidator(), new ComplexRulePropertiesLimitValidator(),
+                new UnknownRulePropertiesLimitValidator()), limit);
     }
 
-    private void addValidator(final RulePropertiesLimitValidator validator) {
-        validators.put(validator.getSupportedType(), validator);
+    StylePropertiesLimitValidator(final List<RulePropertiesLimitValidator> validators, final int limit) {
+        this.limit = limit;
+        this.validators = new ArrayList<RulePropertiesLimitValidator>(validators);
     }
 
     public void validate(final StyleSheet stylesheet) throws ValidationException {
-        validate(stylesheet.getRules());
+        for (final NodeRule rule : stylesheet.getRules()) {
+            validate(rule);
+        }
     }
 
-    private void validate(final List<? extends NodeRule> rules) throws ValidationException {
-        for (final NodeRule rule : rules) {
-            if (validators.containsKey(rule.getClass())) {
-                validators.get(rule.getClass()).validate(rule, limit);
+    private void validate(final NodeRule rule) throws ValidationException {
+        for (final RulePropertiesLimitValidator validator : validators) {
+            if (validator.isSupportedType(rule)) {
+                validator.validate(rule, limit);
+                return;
             }
         }
     }

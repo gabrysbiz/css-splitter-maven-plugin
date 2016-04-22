@@ -18,7 +18,7 @@ import biz.gabrys.maven.plugins.css.splitter.css.types.UnknownRule;
 
 class UnknownRuleConverter extends AbstractRuleConverter<CSSUnknownRuleImpl, UnknownRule> {
 
-    public UnknownRuleConverter() {
+    UnknownRuleConverter() {
         super(CSSUnknownRuleImpl.class);
     }
 

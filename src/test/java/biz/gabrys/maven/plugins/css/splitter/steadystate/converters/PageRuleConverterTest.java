@@ -13,9 +13,11 @@ import biz.gabrys.maven.plugins.css.splitter.css.types.StyleRule;
 public final class PageRuleConverterTest {
 
     @Test
-    public void getSupportedType_returnsCSSPageRuleImplClass() {
+    public void isSupportedType_ruleHasValidType_returnsTrue() {
         final PageRuleConverter converter = new PageRuleConverter();
-        Assert.assertEquals("Supported type", CSSPageRuleImpl.class, converter.getSupportedType());
+        final CSSPageRuleImpl rule = new CSSPageRuleImpl();
+        final boolean supported = converter.isSupportedType(rule);
+        Assert.assertTrue("Should return true", supported);
     }
 
     @Test

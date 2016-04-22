@@ -27,7 +27,7 @@ public class Node<P, S> {
         return parent;
     }
 
-    protected void setParent(final P parent) {
+    public void setParent(final P parent) {
         this.parent = parent;
     }
 
@@ -35,7 +35,7 @@ public class Node<P, S> {
         return previous;
     }
 
-    protected void setPrevious(final S previous) {
+    public void setPrevious(final S previous) {
         this.previous = previous;
     }
 
@@ -43,7 +43,7 @@ public class Node<P, S> {
         return next;
     }
 
-    protected void setNext(final S next) {
+    public void setNext(final S next) {
         this.next = next;
     }
 }

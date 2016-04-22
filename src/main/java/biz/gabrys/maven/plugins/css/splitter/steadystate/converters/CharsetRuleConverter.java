@@ -18,7 +18,7 @@ import biz.gabrys.maven.plugins.css.splitter.css.types.SimpleRule;
 
 class CharsetRuleConverter extends AbstractRuleConverter<CSSCharsetRuleImpl, SimpleRule> {
 
-    public CharsetRuleConverter() {
+    CharsetRuleConverter() {
         super(CSSCharsetRuleImpl.class);
     }
 

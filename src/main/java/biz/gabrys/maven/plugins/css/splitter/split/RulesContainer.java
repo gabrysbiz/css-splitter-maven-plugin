@@ -12,17 +12,23 @@
  */
 package biz.gabrys.maven.plugins.css.splitter.split;
 
-import biz.gabrys.maven.plugins.css.splitter.css.types.UnknownRule;
+import java.util.LinkedList;
+import java.util.List;
 
-//TODO add tests
-class UnknownRuleSplitter extends AbstractRuleSplitter<UnknownRule> {
+import biz.gabrys.maven.plugins.css.splitter.css.types.NodeRule;
 
-    UnknownRuleSplitter() {
-        super(UnknownRule.class);
+class RulesContainer<T extends NodeRule> {
+
+    protected final List<T> before = new LinkedList<T>();
+    protected final List<T> after = new LinkedList<T>();
+
+    RulesContainer() {
+        // do nothing
     }
 
-    @Override
-    protected SplitResult<UnknownRule> split2(final UnknownRule rule, final int splitAfter) {
-        return new SplitResult<UnknownRule>(null, rule);
+    // for tests
+    RulesContainer(final List<T> before, final List<T> after) {
+        this.before.addAll(before);
+        this.after.addAll(after);
     }
 }

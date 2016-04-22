@@ -16,25 +16,32 @@ import java.util.List;
 
 import biz.gabrys.maven.plugins.css.splitter.css.types.StyleProperty;
 import biz.gabrys.maven.plugins.css.splitter.css.types.StyleRule;
-import biz.gabrys.maven.plugins.css.splitter.css.types.TreeSplitUtils;
 
-//TODO add tests
 class StyleRuleSplitter extends AbstractRuleSplitter<StyleRule> {
 
+    private final NeighborsManager neighborsManager;
+
     StyleRuleSplitter() {
+        this(new NeighborsManager());
+    }
+
+    // fot tests
+    StyleRuleSplitter(final NeighborsManager neighborsManager) {
         super(StyleRule.class);
+        this.neighborsManager = neighborsManager;
+    }
+
+    @Override
+    protected boolean isSplittable2(final StyleRule rule) {
+        return rule.isSplittable();
     }
 
     @Override
     protected SplitResult<StyleRule> split2(final StyleRule rule, final int splitAfter) {
-        if (!rule.isSplittable()) {
-            return new SplitResult<StyleRule>(null, rule);
-        }
-
         final List<StyleProperty> properties = rule.getProperties();
         final StyleRule first = new StyleRule(rule.getSelectors(), properties.subList(0, splitAfter));
         final StyleRule second = new StyleRule(rule.getSelectors(), properties.subList(splitAfter, properties.size()));
-        TreeSplitUtils.fillNeighbors(rule, first, second);
+        neighborsManager.fill(rule, first, second);
         return new SplitResult<StyleRule>(first, second);
     }
 }

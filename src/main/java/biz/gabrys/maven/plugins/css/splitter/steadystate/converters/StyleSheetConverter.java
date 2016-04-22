@@ -12,10 +12,10 @@
  */
 package biz.gabrys.maven.plugins.css.splitter.steadystate.converters;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.w3c.dom.css.CSSRule;
 import org.w3c.dom.css.CSSRuleList;
 import org.w3c.dom.css.CSSStyleSheet;
 
@@ -24,28 +24,27 @@ import biz.gabrys.maven.plugins.css.splitter.css.types.StyleSheet;
 
 public class StyleSheetConverter {
 
-    private final List<RuleConverter<?, ?>> converters;
+    private final RuleConverter<?> converter;
 
     public StyleSheetConverter() {
-        converters = new ArrayList<RuleConverter<?, ?>>();
-        converters.add(new StyleRuleConverter());
-        converters.add(new MediaRuleConverter());
-        converters.add(new FontFaceRuleConverter());
-        converters.add(new PageRuleConverter());
-        converters.add(new ImportRuleConverter());
-        converters.add(new CharsetRuleConverter());
-        converters.add(new UnknownRuleConverter());
+        this(new AnyRuleConverter());
     }
 
-    StyleSheetConverter(final List<RuleConverter<?, ?>> converters) {
-        this.converters = new ArrayList<RuleConverter<?, ?>>(converters);
+    // for tests
+    StyleSheetConverter(final RuleConverter<?> converter) {
+        this.converter = converter;
     }
 
     public StyleSheet convert(final CSSStyleSheet stylesheet) {
         final List<NodeRule> rules = new LinkedList<NodeRule>();
         final CSSRuleList ruleList = stylesheet.getCssRules();
         for (int i = 0; i < ruleList.getLength(); ++i) {
-            rules.add(ConverterUtils.convert(ruleList.item(i), converters));
+            final CSSRule rule = ruleList.item(i);
+            if (converter.isSupportedType(rule)) {
+                rules.add(converter.convert(rule));
+            } else {
+                throw new UnsupportedRuleException(rule);
+            }
         }
         return new StyleSheet(rules);
     }

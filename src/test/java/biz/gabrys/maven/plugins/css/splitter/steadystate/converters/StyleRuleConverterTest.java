@@ -18,9 +18,11 @@ import biz.gabrys.maven.plugins.css.splitter.css.types.StyleRule;
 public final class StyleRuleConverterTest {
 
     @Test
-    public void getSupportedType_returnsCSSStyleRuleImplClass() {
+    public void isSupportedType_ruleHasValidType_returnsTrue() {
         final StyleRuleConverter converter = new StyleRuleConverter();
-        Assert.assertEquals("Supported type", CSSStyleRuleImpl.class, converter.getSupportedType());
+        final CSSStyleRuleImpl rule = new CSSStyleRuleImpl();
+        final boolean supported = converter.isSupportedType(rule);
+        Assert.assertTrue("Should return true", supported);
     }
 
     @Test

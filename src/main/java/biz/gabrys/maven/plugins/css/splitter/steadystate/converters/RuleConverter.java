@@ -14,13 +14,11 @@ package biz.gabrys.maven.plugins.css.splitter.steadystate.converters;
 
 import org.w3c.dom.css.CSSRule;
 
-import com.steadystate.css.dom.AbstractCSSRuleImpl;
-
 import biz.gabrys.maven.plugins.css.splitter.css.types.NodeRule;
 
-interface RuleConverter<F extends AbstractCSSRuleImpl, T extends NodeRule> {
+interface RuleConverter<T extends NodeRule> {
 
-    Class<F> getSupportedType();
+    boolean isSupportedType(CSSRule rule);
 
     T convert(CSSRule rule);
 }

@@ -10,9 +10,11 @@ import biz.gabrys.maven.plugins.css.splitter.css.types.SimpleRule;
 public final class ImportRuleConverterTest {
 
     @Test
-    public void getSupportedType_returnsCSSImportRuleImplClass() {
+    public void isSupportedType_ruleHasValidType_returnsTrue() {
         final ImportRuleConverter converter = new ImportRuleConverter();
-        Assert.assertEquals("Supported type", CSSImportRuleImpl.class, converter.getSupportedType());
+        final CSSImportRuleImpl rule = new CSSImportRuleImpl();
+        final boolean supported = converter.isSupportedType(rule);
+        Assert.assertTrue("Should return true", supported);
     }
 
     @Test

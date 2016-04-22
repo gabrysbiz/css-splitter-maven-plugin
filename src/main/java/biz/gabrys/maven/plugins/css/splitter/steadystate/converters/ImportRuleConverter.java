@@ -18,7 +18,7 @@ import biz.gabrys.maven.plugins.css.splitter.css.types.SimpleRule;
 
 class ImportRuleConverter extends AbstractRuleConverter<CSSImportRuleImpl, SimpleRule> {
 
-    public ImportRuleConverter() {
+    ImportRuleConverter() {
         super(CSSImportRuleImpl.class);
     }
 

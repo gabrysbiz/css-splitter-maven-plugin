@@ -16,7 +16,7 @@ import biz.gabrys.maven.plugins.css.splitter.css.types.NodeRule;
 
 interface RulePropertiesLimitValidator {
 
-    Class<?> getSupportedType();
+    boolean isSupportedType(NodeRule rule);
 
     void validate(NodeRule rule, int limit) throws ValidationException;
 }

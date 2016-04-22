@@ -1,8 +1,8 @@
 package biz.gabrys.maven.plugins.css.splitter.counter;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -15,42 +15,39 @@ import biz.gabrys.maven.plugins.css.splitter.css.types.StyleRule;
 public final class AnyRuleCounterTest {
 
     @Test
-    public void count_classSupported_returnsCountedValue() {
-        final StyleRule rule = new StyleRule(Collections.<String>emptyList(), Collections.<StyleProperty>emptyList());
+    public void count_ruleIsSupported_returnsCountedValue() {
+        final NodeRule rule = Mockito.mock(NodeRule.class);
 
-        final Collection<RuleCounter<?>> counters = new ArrayList<RuleCounter<?>>();
-        @SuppressWarnings("unchecked")
-        final RuleCounter<NodeRule> unusedCounter = Mockito.mock(RuleCounter.class);
-        Mockito.when(unusedCounter.getSupportedType()).thenReturn(NodeRule.class);
+        final List<RuleCounter> counters = new ArrayList<RuleCounter>();
+        final RuleCounter unusedCounter = Mockito.mock(RuleCounter.class);
+        Mockito.when(unusedCounter.isSupportedType(rule)).thenReturn(false);
         counters.add(unusedCounter);
-        @SuppressWarnings("unchecked")
-        final RuleCounter<StyleRule> styleCounter = Mockito.mock(RuleCounter.class);
-        Mockito.when(styleCounter.getSupportedType()).thenReturn(StyleRule.class);
+        final RuleCounter styleCounter = Mockito.mock(RuleCounter.class);
+        Mockito.when(styleCounter.isSupportedType(rule)).thenReturn(true);
         final int count = 2;
         Mockito.when(styleCounter.count(rule)).thenReturn(count);
         counters.add(styleCounter);
 
         Assert.assertEquals("Counted value", count, new AnyRuleCounter(counters).count(rule));
 
-        Mockito.verify(unusedCounter).getSupportedType();
-        Mockito.verify(styleCounter).getSupportedType();
+        Mockito.verify(unusedCounter).isSupportedType(rule);
+        Mockito.verify(styleCounter).isSupportedType(rule);
         Mockito.verify(styleCounter).count(rule);
         Mockito.verifyNoMoreInteractions(unusedCounter, styleCounter);
     }
 
     @Test
-    public void count_classNotSupported_returnsZero() {
+    public void count_ruleIsNotSupported_returnsZero() {
         final StyleRule rule = new StyleRule(Collections.<String>emptyList(), Collections.<StyleProperty>emptyList());
 
-        final Collection<RuleCounter<?>> counters = new ArrayList<RuleCounter<?>>();
-        @SuppressWarnings("unchecked")
-        final RuleCounter<NodeRule> unusedCounter = Mockito.mock(RuleCounter.class);
-        Mockito.when(unusedCounter.getSupportedType()).thenReturn(NodeRule.class);
+        final List<RuleCounter> counters = new ArrayList<RuleCounter>();
+        final RuleCounter unusedCounter = Mockito.mock(RuleCounter.class);
+        Mockito.when(unusedCounter.isSupportedType(rule)).thenReturn(false);
         counters.add(unusedCounter);
 
         Assert.assertEquals("Counted value", 0, new AnyRuleCounter(counters).count(rule));
 
-        Mockito.verify(unusedCounter).getSupportedType();
+        Mockito.verify(unusedCounter).isSupportedType(rule);
         Mockito.verifyNoMoreInteractions(unusedCounter);
     }
 }

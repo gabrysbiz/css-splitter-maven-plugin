@@ -16,19 +16,19 @@ import biz.gabrys.maven.plugins.css.splitter.css.types.NodeRule;
 
 class SplitResult<T extends NodeRule> {
 
-    private final T first;
-    private final T second;
+    private final T before;
+    private final T after;
 
-    SplitResult(final T first, final T second) {
-        this.first = first;
-        this.second = second;
+    SplitResult(final T before, final T after) {
+        this.before = before;
+        this.after = after;
     }
 
-    T getFirst() {
-        return first;
+    T getBefore() {
+        return before;
     }
 
-    T getSecond() {
-        return second;
+    T getAfter() {
+        return after;
     }
 }

@@ -10,9 +10,11 @@ import biz.gabrys.maven.plugins.css.splitter.css.types.SimpleRule;
 public final class CharsetRuleConverterTest {
 
     @Test
-    public void getSupportedType_returnsCSSCharsetRuleImplClass() {
+    public void isSupportedType_ruleHasValidType_returnsTrue() {
         final CharsetRuleConverter converter = new CharsetRuleConverter();
-        Assert.assertEquals("Supported type", CSSCharsetRuleImpl.class, converter.getSupportedType());
+        final CSSCharsetRuleImpl rule = new CSSCharsetRuleImpl();
+        final boolean supported = converter.isSupportedType(rule);
+        Assert.assertTrue("Should return true", supported);
     }
 
     @Test

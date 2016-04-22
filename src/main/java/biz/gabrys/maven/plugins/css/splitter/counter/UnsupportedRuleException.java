@@ -19,7 +19,7 @@ public class UnsupportedRuleException extends RuntimeException {
     private static final long serialVersionUID = 2488511304734029055L;
 
     public UnsupportedRuleException(final NodeRule rule) {
-        super(String.format("Rule represented by \"%s\" class is unsupported! CSS code that causes error:%n%s", rule.getClass().getName(),
-                rule));
+        super(String.format("Rule represented by \"%s\" class is unsupported! CSS code that causes error:%n%s",
+                rule == null ? "null" : rule.getClass().getName(), rule));
     }
 }

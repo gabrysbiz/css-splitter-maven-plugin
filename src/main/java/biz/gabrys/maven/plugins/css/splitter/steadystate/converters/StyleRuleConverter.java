@@ -25,7 +25,7 @@ import biz.gabrys.maven.plugins.css.splitter.css.types.StyleRule;
 
 class StyleRuleConverter extends AbstractRuleConverter<CSSStyleRuleImpl, StyleRule> {
 
-    public StyleRuleConverter() {
+    StyleRuleConverter() {
         super(CSSStyleRuleImpl.class);
     }
 

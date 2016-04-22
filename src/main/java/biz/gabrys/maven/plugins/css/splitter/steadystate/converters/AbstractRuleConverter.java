@@ -18,7 +18,7 @@ import com.steadystate.css.dom.AbstractCSSRuleImpl;
 
 import biz.gabrys.maven.plugins.css.splitter.css.types.NodeRule;
 
-abstract class AbstractRuleConverter<F extends AbstractCSSRuleImpl, T extends NodeRule> implements RuleConverter<F, T> {
+abstract class AbstractRuleConverter<F extends AbstractCSSRuleImpl, T extends NodeRule> implements RuleConverter<T> {
 
     private final Class<F> clazz;
 
@@ -26,12 +26,12 @@ abstract class AbstractRuleConverter<F extends AbstractCSSRuleImpl, T extends No
         this.clazz = clazz;
     }
 
-    public final Class<F> getSupportedType() {
-        return clazz;
+    public final boolean isSupportedType(final CSSRule rule) {
+        return rule != null && rule.getClass() == clazz;
     }
 
     public final T convert(final CSSRule rule) {
-        if (rule.getClass() != clazz) {
+        if (!isSupportedType(rule)) {
             throw new UnsupportedRuleException(rule);
         }
         return convert2(clazz.cast(rule));

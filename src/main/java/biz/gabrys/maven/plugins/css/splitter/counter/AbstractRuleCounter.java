@@ -14,7 +14,7 @@ package biz.gabrys.maven.plugins.css.splitter.counter;
 
 import biz.gabrys.maven.plugins.css.splitter.css.types.NodeRule;
 
-abstract class AbstractRuleCounter<T extends NodeRule> implements RuleCounter<T> {
+abstract class AbstractRuleCounter<T extends NodeRule> implements RuleCounter {
 
     private final Class<T> clazz;
 
@@ -22,12 +22,12 @@ abstract class AbstractRuleCounter<T extends NodeRule> implements RuleCounter<T>
         this.clazz = clazz;
     }
 
-    public final Class<T> getSupportedType() {
-        return clazz;
+    public final boolean isSupportedType(final NodeRule rule) {
+        return rule != null && rule.getClass() == clazz;
     }
 
-    public int count(final NodeRule rule) {
-        if (rule.getClass() != clazz) {
+    public final int count(final NodeRule rule) {
+        if (!isSupportedType(rule)) {
             throw new UnsupportedRuleException(rule);
         }
         return count2(clazz.cast(rule));

@@ -17,13 +17,13 @@ import biz.gabrys.maven.plugins.css.splitter.css.types.StyleRule;
 
 public class ComplexRuleCounter extends AbstractRuleCounter<ComplexRule> {
 
-    private final RuleCounter<StyleRule> styleCounter;
+    private final RuleCounter styleCounter;
 
     public ComplexRuleCounter() {
         this(new StyleRuleCounter());
     }
 
-    ComplexRuleCounter(final RuleCounter<StyleRule> styleCounter) {
+    ComplexRuleCounter(final RuleCounter styleCounter) {
         super(ComplexRule.class);
         this.styleCounter = styleCounter;
     }

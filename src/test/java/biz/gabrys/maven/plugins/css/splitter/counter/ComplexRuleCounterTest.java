@@ -14,8 +14,7 @@ public final class ComplexRuleCounterTest {
 
     @Test
     public void count_zeroChildren_returnsZero() {
-        @SuppressWarnings("unchecked")
-        final RuleCounter<StyleRule> styleCounter = Mockito.mock(RuleCounter.class);
+        final RuleCounter styleCounter = Mockito.mock(RuleCounter.class);
         final ComplexRuleCounter counter = new ComplexRuleCounter(styleCounter);
 
         final ComplexRule rule = new ComplexRule("@media", Collections.<String>emptyList(), Collections.<StyleRule>emptyList());
@@ -26,8 +25,7 @@ public final class ComplexRuleCounterTest {
 
     @Test
     public void count_oneChildWithTwoProperties_returnsTwo() {
-        @SuppressWarnings("unchecked")
-        final RuleCounter<StyleRule> styleCounter = Mockito.mock(RuleCounter.class);
+        final RuleCounter styleCounter = Mockito.mock(RuleCounter.class);
         final ComplexRuleCounter counter = new ComplexRuleCounter(styleCounter);
 
         final StyleRule child = Mockito.mock(StyleRule.class);
@@ -42,8 +40,7 @@ public final class ComplexRuleCounterTest {
 
     @Test
     public void count_twoChildrenWithOneAndFourProperties_returnsFive() {
-        @SuppressWarnings("unchecked")
-        final RuleCounter<StyleRule> styleCounter = Mockito.mock(RuleCounter.class);
+        final RuleCounter styleCounter = Mockito.mock(RuleCounter.class);
         final ComplexRuleCounter counter = new ComplexRuleCounter(styleCounter);
 
         final StyleRule child1 = Mockito.mock(StyleRule.class);

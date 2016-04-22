@@ -16,9 +16,11 @@ import biz.gabrys.maven.plugins.css.splitter.css.types.StyleRule;
 public final class FontFaceRuleConverterTest {
 
     @Test
-    public void getSupportedType_returnsCSSFontFaceRuleImplClass() {
+    public void isSupportedType_ruleHasValidType_returnsTrue() {
         final FontFaceRuleConverter converter = new FontFaceRuleConverter();
-        Assert.assertEquals("Supported type", CSSFontFaceRuleImpl.class, converter.getSupportedType());
+        final CSSFontFaceRuleImpl rule = new CSSFontFaceRuleImpl();
+        final boolean supported = converter.isSupportedType(rule);
+        Assert.assertTrue("Should return true", supported);
     }
 
     @Test

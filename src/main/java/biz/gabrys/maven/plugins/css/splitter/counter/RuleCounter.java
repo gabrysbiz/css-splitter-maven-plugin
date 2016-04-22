@@ -14,9 +14,9 @@ package biz.gabrys.maven.plugins.css.splitter.counter;
 
 import biz.gabrys.maven.plugins.css.splitter.css.types.NodeRule;
 
-public interface RuleCounter<T extends NodeRule> {
+public interface RuleCounter {
 
-    Class<T> getSupportedType();
+    boolean isSupportedType(NodeRule rule);
 
-    int count(final NodeRule rule);
+    int count(NodeRule rule);
 }

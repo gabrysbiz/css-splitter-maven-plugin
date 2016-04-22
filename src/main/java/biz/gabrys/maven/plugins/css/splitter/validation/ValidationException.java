@@ -12,7 +12,7 @@
  */
 package biz.gabrys.maven.plugins.css.splitter.validation;
 
-public class ValidationException extends Exception {
+public final class ValidationException extends Exception {
 
     private static final long serialVersionUID = 1525493794820189197L;
 

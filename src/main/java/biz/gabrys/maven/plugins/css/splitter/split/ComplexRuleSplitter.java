@@ -12,64 +12,37 @@
  */
 package biz.gabrys.maven.plugins.css.splitter.split;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import biz.gabrys.maven.plugins.css.splitter.counter.StyleRuleCounter;
 import biz.gabrys.maven.plugins.css.splitter.css.types.ComplexRule;
 import biz.gabrys.maven.plugins.css.splitter.css.types.StyleRule;
-import biz.gabrys.maven.plugins.css.splitter.css.types.TreeSplitUtils;
 
-//TODO add tests
 class ComplexRuleSplitter extends AbstractRuleSplitter<ComplexRule> {
 
-    private final StyleRuleCounter counter;
-    private final StyleRuleSplitter splitter;
+    private final RulesSplitter<StyleRule> splitter;
+    private final NeighborsManager neighborsManager;
 
     ComplexRuleSplitter() {
+        this(new RulesSplitter<StyleRule>(new StyleRuleCounter(), new StyleRuleSplitter()), new NeighborsManager());
+    }
+
+    // for tests
+    ComplexRuleSplitter(final RulesSplitter<StyleRule> splitter, final NeighborsManager neighborsManager) {
         super(ComplexRule.class);
-        counter = new StyleRuleCounter();
-        splitter = new StyleRuleSplitter();
+        this.splitter = splitter;
+        this.neighborsManager = neighborsManager;
+    }
+
+    @Override
+    protected boolean isSplittable2(final ComplexRule rule) {
+        return true;
     }
 
     @Override
     protected SplitResult<ComplexRule> split2(final ComplexRule rule, final int splitAfter) {
-        final RulesContainer container = getRules(rule.getRules(), splitAfter);
-        final ComplexRule first = new ComplexRule(rule.getType(), rule.getSelectors(), container.first);
-        final ComplexRule second = new ComplexRule(rule.getType(), rule.getSelectors(), container.second);
-        TreeSplitUtils.fillNeighbors(rule, first, second);
+        final RulesContainer<StyleRule> container = splitter.split(rule.getRules(), splitAfter);
+        final ComplexRule first = new ComplexRule(rule.getType(), rule.getSelectors(), container.before);
+        final ComplexRule second = new ComplexRule(rule.getType(), rule.getSelectors(), container.after);
+        neighborsManager.fill(rule, first, second);
         return new SplitResult<ComplexRule>(first, second);
-    }
-
-    private RulesContainer getRules(final List<StyleRule> rules, final int splitAfter) {
-        final RulesContainer container = new RulesContainer();
-        int value = splitAfter;
-        for (int i = 0; i < rules.size(); ++i) {
-            final StyleRule styleRule = rules.get(i);
-            final int count = counter.count(styleRule);
-            final int odds = value - count;
-            if (odds > 0) {
-                container.first.add(styleRule);
-                value = odds;
-                continue;
-            }
-
-            if (odds == 0) {
-                container.first.add(styleRule);
-            } else {
-                final SplitResult<StyleRule> result = splitter.split2(styleRule, value);
-                container.first.add(result.getFirst());
-                container.second.add(result.getSecond());
-            }
-            container.second.addAll(rules.subList(i, rules.size()));
-            break;
-        }
-        return container;
-    }
-
-    private static class RulesContainer {
-
-        private final List<StyleRule> first = new LinkedList<StyleRule>();
-        private final List<StyleRule> second = new LinkedList<StyleRule>();
     }
 }

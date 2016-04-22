@@ -241,17 +241,17 @@ public class SplitMojo extends AbstractMojo {
         if (getLog().isDebugEnabled()) {
             getLog().debug("Job parameters:");
             getLog().debug("\tskip = " + skip);
-            getLog().debug("\tverbose = " + verbose + " (calculated: true)");
+            getLog().debug("\tverbose = " + verbose + createCalculatedInfo(Boolean.TRUE));
             getLog().debug("\tforce = " + force);
             getLog().debug("\tsourceDirectory = " + sourceDirectory);
             getLog().debug("\toutputDirectory = " + outputDirectory);
             getLog().debug("\tfilesetPatternFormat = " + filesetPatternFormat);
-            String calculated = includes.length == 0 ? String.format(" (calculated: %s)", Arrays.toString(getDefaultIncludes())) : "";
+            String calculated = includes.length != 0 ? "" : createCalculatedInfo(Arrays.toString(getDefaultIncludes()));
             getLog().debug("\tincludes = " + Arrays.toString(includes) + calculated);
             getLog().debug("\texcludes = " + Arrays.toString(excludes));
-            calculated = maxRules > 0 ? "" : String.format(" (calculated: %s)", Integer.MAX_VALUE);
+            calculated = maxRules > 0 ? "" : createCalculatedInfo(Integer.MAX_VALUE);
             getLog().debug("\tmaxRules = " + maxRules + calculated);
-            calculated = rulesLimit > 0 ? "" : String.format(" (calculated: %s)", Integer.MAX_VALUE);
+            calculated = rulesLimit > 0 ? "" : createCalculatedInfo(Integer.MAX_VALUE);
             getLog().debug("\trulesLimit = " + rulesLimit + calculated);
             getLog().debug("\tstandard = " + standard);
             getLog().debug("\tencoding = " + encoding);
@@ -259,6 +259,10 @@ public class SplitMojo extends AbstractMojo {
             getLog().debug("\toutputPartNamePattern = " + outputPartNamePattern);
             getLog().debug("");
         }
+    }
+
+    private static String createCalculatedInfo(final Object value) {
+        return String.format(" (calculated: %s)", value);
     }
 
     private String[] getDefaultIncludes() {

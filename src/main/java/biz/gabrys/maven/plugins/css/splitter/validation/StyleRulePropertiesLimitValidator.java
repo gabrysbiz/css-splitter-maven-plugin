@@ -12,17 +12,22 @@
  */
 package biz.gabrys.maven.plugins.css.splitter.validation;
 
+import biz.gabrys.maven.plugins.css.splitter.counter.RuleCounter;
 import biz.gabrys.maven.plugins.css.splitter.counter.StyleRuleCounter;
 import biz.gabrys.maven.plugins.css.splitter.css.types.StyleRule;
 
-//TODO add tests
-class StyleRulePropertiesLimitValidator extends AbstractRulePropertiesLimitValidator<StyleRule> {
+final class StyleRulePropertiesLimitValidator extends AbstractRulePropertiesLimitValidator<StyleRule> {
 
-    private final StyleRuleCounter counter;
+    private final RuleCounter counter;
 
     StyleRulePropertiesLimitValidator() {
+        this(new StyleRuleCounter());
+    }
+
+    // for tests
+    StyleRulePropertiesLimitValidator(final RuleCounter counter) {
         super(StyleRule.class);
-        counter = new StyleRuleCounter();
+        this.counter = counter;
     }
 
     @Override

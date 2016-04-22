@@ -51,7 +51,7 @@ public class StyleRule extends AbstractTextRule {
         final List<String> lines = new ArrayList<String>(2 + properties.size());
         lines.add(StringUtils.join(selectors.iterator(), ", ") + " {");
         for (final StyleProperty property : properties) {
-            lines.add("\t" + property);
+            lines.add(INDENTATION + property);
         }
         lines.add("}");
         return lines;

@@ -13,28 +13,33 @@
 package biz.gabrys.maven.plugins.css.splitter.validation;
 
 import biz.gabrys.maven.plugins.css.splitter.counter.AnyRuleCounter;
+import biz.gabrys.maven.plugins.css.splitter.counter.RuleCounter;
 import biz.gabrys.maven.plugins.css.splitter.css.types.NodeRule;
 import biz.gabrys.maven.plugins.css.splitter.css.types.StyleSheet;
 
-//TODO add tests
 public final class RulesLimitValidator {
 
-    private final AnyRuleCounter counter;
+    private final RuleCounter counter;
     private final int limit;
 
     public RulesLimitValidator(final int limit) {
+        this(limit, new AnyRuleCounter());
+    }
+
+    // for tests
+    RulesLimitValidator(final int limit, final RuleCounter counter) {
         this.limit = limit;
-        counter = new AnyRuleCounter();
+        this.counter = counter;
     }
 
     public void validate(final StyleSheet stylesheet) throws ValidationException {
         final int value = count(stylesheet);
         if (value > limit) {
-            throw new ValidationException(String.format("The number of style rules (%d) exceeded the allowable limit (%d).", value, limit));
+            throw new ValidationException(String.format("The number of style rules (%d) exceeded the allowable limit (%d)!", value, limit));
         }
     }
 
-    private int count(final StyleSheet stylesheet) {
+    int count(final StyleSheet stylesheet) {
         int value = 0;
         for (final NodeRule rule : stylesheet.getRules()) {
             value += counter.count(rule);
