@@ -41,7 +41,7 @@
     </prerequisites>
 
     <scm>
-        <connection>scm:git:git@github.com:gabrysbiz/css-splitter-maven-plugin.git</connection>
+        <connection>scm:git:git://github.com/gabrysbiz/css-splitter-maven-plugin.git</connection>
         <developerConnection>scm:git:git@github.com:gabrysbiz/css-splitter-maven-plugin.git</developerConnection>
         <url>https://github.com/gabrysbiz/css-splitter-maven-plugin</url>
     </scm>
