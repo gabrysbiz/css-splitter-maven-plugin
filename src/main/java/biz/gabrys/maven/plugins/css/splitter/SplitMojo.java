@@ -34,8 +34,10 @@ import biz.gabrys.maven.plugin.util.timer.SystemTimer;
 import biz.gabrys.maven.plugin.util.timer.Timer;
 import biz.gabrys.maven.plugins.css.splitter.css.Standard;
 import biz.gabrys.maven.plugins.css.splitter.css.types.StyleSheet;
+import biz.gabrys.maven.plugins.css.splitter.net.UrlEscaper;
 import biz.gabrys.maven.plugins.css.splitter.split.Splliter;
 import biz.gabrys.maven.plugins.css.splitter.steadystate.SteadyStateParser;
+import biz.gabrys.maven.plugins.css.splitter.token.TokenType;
 import biz.gabrys.maven.plugins.css.splitter.validation.RulesLimitValidator;
 import biz.gabrys.maven.plugins.css.splitter.validation.StylePropertiesLimitValidator;
 
@@ -215,6 +217,43 @@ public class SplitMojo extends AbstractMojo {
     protected String standard;
 
     /**
+     * Defines cache token type which will be added to <code>&#64;import</code> urls in destination
+     * <a href="http://www.w3.org/Style/CSS/">CSS</a> stylesheets. Available options:
+     * <ul>
+     * <li><b>custom</b> - text specified by the user</li>
+     * <li><b>date</b> - build date</li>
+     * <li><b>none</b> - token will not be added</li>
+     * </ul>
+     * @since 1.0
+     */
+    @Parameter(property = "css.splitter.cacheTokenType", defaultValue = "none")
+    protected String cacheTokenType;
+
+    /**
+     * Defines cache token parameter name which will be added to <code>&#64;import</code> urls in destination
+     * <a href="http://www.w3.org/Style/CSS/">CSS</a> stylesheets.<br>
+     * <b>Notice</b>: ignored when <a href="#cacheTokenType">cache token type</a> is equal to <tt>none</tt>.
+     * @since 1.0
+     */
+    @Parameter(property = "css.splitter.cacheTokenParameter", defaultValue = "v")
+    protected String cacheTokenParameter;
+
+    /**
+     * Stores different values depending on the <a href="#cacheTokenType">cache token type</a>:
+     * <ul>
+     * <li><b>custom</b> - user specified value (e.g. <code>constantText</code>, <code>${variable}</code>)</li>
+     * <li><b>date</b> - pattern for {@link java.text.SimpleDateFormat} object</li>
+     * <li><b>none</b> - ignored</li>
+     * </ul>
+     * <b>Default value is</b>: <tt>yyyyMMddHHmmss</tt> if <a href="#cacheTokenType">cache token type</a> is equal to
+     * <tt>date</tt>.<br>
+     * <b>Required</b>: <tt>YES</tt> if <a href="#cacheTokenType">cache token type</a> is equal to <tt>custom</tt>.
+     * @since 1.0
+     */
+    @Parameter(property = "css.splitter.cacheTokenValue")
+    protected String cacheTokenValue;
+
+    /**
      * Sources encoding.
      * @since 1.0
      */
@@ -254,6 +293,14 @@ public class SplitMojo extends AbstractMojo {
             calculated = rulesLimit > 0 ? "" : createCalculatedInfo(Integer.MAX_VALUE);
             getLog().debug("\trulesLimit = " + rulesLimit + calculated);
             getLog().debug("\tstandard = " + standard);
+            getLog().debug("\tcacheTokenType = " + cacheTokenType);
+            getLog().debug("\tcacheTokenParameter = " + cacheTokenParameter);
+            calculated = "";
+            if (cacheTokenValue == null) {
+                final String defaultCacheTokenValue = getDefaultCacheTokenValue();
+                calculated = defaultCacheTokenValue != null ? createCalculatedInfo(defaultCacheTokenValue) : "";
+            }
+            getLog().debug("\tcacheTokenValue = " + cacheTokenValue + calculated);
             getLog().debug("\tencoding = " + encoding);
             getLog().debug("\toutputFileNamePattern = " + outputFileNamePattern);
             getLog().debug("\toutputPartNamePattern = " + outputPartNamePattern);
@@ -273,6 +320,14 @@ public class SplitMojo extends AbstractMojo {
         }
     }
 
+    private String getDefaultCacheTokenValue() {
+        if (TokenType.DATE.name().equalsIgnoreCase(cacheTokenType)) {
+            return "yyyyMMddHHmmss";
+        } else {
+            return null;
+        }
+    }
+
     private void calculateParameters() {
         if (getLog().isDebugEnabled()) {
             verbose = true;
@@ -286,6 +341,15 @@ public class SplitMojo extends AbstractMojo {
         if (rulesLimit < 1) {
             rulesLimit = Integer.MAX_VALUE;
         }
+        if (cacheTokenValue == null) {
+            cacheTokenValue = getDefaultCacheTokenValue();
+        }
+    }
+
+    private void validateParameters() throws MojoExecutionException {
+        if (cacheTokenValue == null && TokenType.CUSTOM.name().equalsIgnoreCase(cacheTokenType)) {
+            throw new MojoExecutionException("Parameter cacheTokenValue is required when cacheTokenType is equal to \"custom\"!");
+        }
     }
 
     public void execute() throws MojoExecutionException, MojoFailureException {
@@ -295,6 +359,7 @@ public class SplitMojo extends AbstractMojo {
             return;
         }
         calculateParameters();
+        validateParameters();
         runSplitter();
     }
 
@@ -386,7 +451,7 @@ public class SplitMojo extends AbstractMojo {
 
         // TODO add maxImports per file
         final StringBuilder imports = new StringBuilder();
-        final String cacheToken = "?v=" + System.currentTimeMillis();
+        final String cacheToken = createCacheToken();
         for (int index = 0; index < parts.size(); ++index) {
             final String filePartFormat = outputPartNamePattern.replace(PART_INDEX_PARAMETER, String.valueOf(index + 1));
             fileCreator.setFileNamePattern(filePartFormat);
@@ -398,6 +463,20 @@ public class SplitMojo extends AbstractMojo {
             saveCss(filePart, parts.get(index).toString());
         }
         saveCss(file, imports.toString());
+    }
+
+    private String createCacheToken() {
+        if (TokenType.NONE.name().equalsIgnoreCase(cacheTokenType)) {
+            return "";
+        } else {
+            final String value = TokenType.create(cacheTokenType).createFactory().create(cacheTokenValue);
+            final StringBuilder cacheToken = new StringBuilder();
+            cacheToken.append('?');
+            cacheToken.append(UrlEscaper.escape(cacheTokenParameter));
+            cacheToken.append('=');
+            cacheToken.append(UrlEscaper.escape(value));
+            return cacheToken.toString();
+        }
     }
 
     private void saveCss(final File file, final String css) throws MojoFailureException {
