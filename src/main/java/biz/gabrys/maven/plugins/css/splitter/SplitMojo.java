@@ -453,7 +453,7 @@ public class SplitMojo extends AbstractMojo {
             counter = new LoggingStyleSheetCounter(counter, getLog());
         }
         validators.add(new RulesLimitValidator(rulesLimit, counter));
-        validators.add(new StylePropertiesLimitValidator(maxRules));
+        validators.add(new StylePropertiesLimitValidator(maxRules, getLog()));
         return validators;
     }
 

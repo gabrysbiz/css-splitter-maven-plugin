@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.maven.plugin.logging.Log;
+
 import biz.gabrys.maven.plugins.css.splitter.css.types.NodeRule;
 import biz.gabrys.maven.plugins.css.splitter.css.types.StyleSheet;
 
@@ -24,9 +26,9 @@ public final class StylePropertiesLimitValidator implements StyleSheetValidator 
     private final List<RulePropertiesLimitValidator> validators;
     private final int limit;
 
-    public StylePropertiesLimitValidator(final int limit) {
+    public StylePropertiesLimitValidator(final int limit, final Log logger) {
         this(Arrays.<RulePropertiesLimitValidator>asList(new StyleRulePropertiesLimitValidator(), new ComplexRulePropertiesLimitValidator(),
-                new UnknownRulePropertiesLimitValidator()), limit);
+                new UnknownRulePropertiesLimitValidator(logger)), limit);
     }
 
     StylePropertiesLimitValidator(final List<RulePropertiesLimitValidator> validators, final int limit) {
