@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>ComplexRule.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">CSS Splitter Maven Plugin</a> &gt; <a href="index.source.html" class="el_package">biz.gabrys.maven.plugins.css.splitter.css.types</a> &gt; <span class="el_source">ComplexRule.java</span></div><h1>ComplexRule.java</h1><pre class="source lang-java linenums">/**
+ * CSS Splitter Maven Plugin
+ * http://css-splitter-maven-plugin.projects.gabrys.biz/
+ *
+ * Copyright (c) 2015 Adam Gabryś
+ *
+ * This file is licensed under the BSD 3-Clause (the &quot;License&quot;).
+ * You may not use this file except in compliance with the License.
+ * You may obtain:
+ * - a copy of the License at project page
+ * - a template of the License at https://opensource.org/licenses/BSD-3-Clause
+ */
+package biz.gabrys.maven.plugins.css.splitter.css.types;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
+import org.codehaus.plexus.util.StringUtils;
+
+public class ComplexRule extends AbstractTextRule {
+
+    private final String type;
+    private final List&lt;String&gt; selectors;
+    private final List&lt;StyleRule&gt; rules;
+
+<span class="fc" id="L27">    public ComplexRule(final String type, final List&lt;String&gt; selectors, final List&lt;StyleRule&gt; rules) {</span>
+<span class="fc" id="L28">        TreeUtils.fillNeighbors(this, rules);</span>
+<span class="fc" id="L29">        this.type = type;</span>
+<span class="fc" id="L30">        this.selectors = new ArrayList&lt;String&gt;(selectors);</span>
+<span class="fc" id="L31">        this.rules = new ArrayList&lt;StyleRule&gt;(rules);</span>
+<span class="fc" id="L32">    }</span>
+
+    public String getType() {
+<span class="nc" id="L35">        return type;</span>
+    }
+
+    public List&lt;String&gt; getSelectors() {
+<span class="fc" id="L39">        return new ArrayList&lt;String&gt;(selectors);</span>
+    }
+
+    public List&lt;StyleRule&gt; getRules() {
+<span class="fc" id="L43">        return new ArrayList&lt;StyleRule&gt;(rules);</span>
+    }
+
+    @Override
+    public List&lt;String&gt; getLines() {
+<span class="fc" id="L48">        final List&lt;String&gt; lines = new LinkedList&lt;String&gt;();</span>
+<span class="fc" id="L49">        lines.add(type + ' ' + StringUtils.join(selectors.iterator(), &quot;, &quot;) + &quot; {&quot;);</span>
+<span class="fc bfc" id="L50" title="All 2 branches covered.">        for (final StyleRule rule : rules) {</span>
+<span class="fc bfc" id="L51" title="All 2 branches covered.">            for (final String line : rule.getLines()) {</span>
+<span class="fc" id="L52">                lines.add(INDENTATION + line);</span>
+<span class="fc" id="L53">            }</span>
+<span class="fc" id="L54">        }</span>
+<span class="fc" id="L55">        lines.add(&quot;}&quot;);</span>
+<span class="fc" id="L56">        return lines;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>Splliter.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">CSS Splitter Maven Plugin</a> &gt; <a href="index.source.html" class="el_package">biz.gabrys.maven.plugins.css.splitter.split</a> &gt; <span class="el_source">Splliter.java</span></div><h1>Splliter.java</h1><pre class="source lang-java linenums">/**
+ * CSS Splitter Maven Plugin
+ * http://css-splitter-maven-plugin.projects.gabrys.biz/
+ *
+ * Copyright (c) 2015 Adam Gabryś
+ *
+ * This file is licensed under the BSD 3-Clause (the &quot;License&quot;).
+ * You may not use this file except in compliance with the License.
+ * You may obtain:
+ * - a copy of the License at project page
+ * - a template of the License at https://opensource.org/licenses/BSD-3-Clause
+ */
+package biz.gabrys.maven.plugins.css.splitter.split;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+
+import biz.gabrys.maven.plugins.css.splitter.counter.AnyRuleCounter;
+import biz.gabrys.maven.plugins.css.splitter.css.types.NodeRule;
+import biz.gabrys.maven.plugins.css.splitter.css.types.StyleSheet;
+
+public class Splliter {
+
+    private final int limit;
+    private final RulesSplitter&lt;NodeRule&gt; splitter;
+
+    public Splliter(final int limit) {
+<span class="nc" id="L30">        this(limit, new RulesSplitter&lt;NodeRule&gt;(new AnyRuleCounter(), new AnyRuleSplitter()));</span>
+<span class="nc" id="L31">    }</span>
+
+    // for tests
+<span class="fc" id="L34">    Splliter(final int limit, final RulesSplitter&lt;NodeRule&gt; splitter) {</span>
+<span class="fc" id="L35">        this.limit = limit;</span>
+<span class="fc" id="L36">        this.splitter = splitter;</span>
+<span class="fc" id="L37">    }</span>
+
+    public List&lt;StyleSheet&gt; split(final StyleSheet stylesheet) {
+<span class="fc bfc" id="L40" title="All 2 branches covered.">        if (stylesheet.getRules().isEmpty()) {</span>
+<span class="fc" id="L41">            return Arrays.asList(stylesheet);</span>
+        }
+<span class="fc" id="L43">        final List&lt;List&lt;NodeRule&gt;&gt; rulesMatrix = splitToMatrix(stylesheet);</span>
+<span class="fc" id="L44">        return convertToSheets(rulesMatrix);</span>
+    }
+
+    private List&lt;List&lt;NodeRule&gt;&gt; splitToMatrix(final StyleSheet stylesheet) {
+<span class="fc" id="L48">        final List&lt;List&lt;NodeRule&gt;&gt; rulesMatrix = new LinkedList&lt;List&lt;NodeRule&gt;&gt;();</span>
+<span class="fc" id="L49">        List&lt;NodeRule&gt; currentRules = stylesheet.getRules();</span>
+<span class="fc bfc" id="L50" title="All 2 branches covered.">        while (!currentRules.isEmpty()) {</span>
+<span class="fc" id="L51">            final RulesContainer&lt;NodeRule&gt; container = splitter.split(currentRules, limit);</span>
+<span class="fc" id="L52">            rulesMatrix.add(container.before);</span>
+<span class="fc" id="L53">            currentRules = container.after;</span>
+<span class="fc" id="L54">        }</span>
+<span class="fc" id="L55">        return rulesMatrix;</span>
+    }
+
+    private static List&lt;StyleSheet&gt; convertToSheets(final List&lt;List&lt;NodeRule&gt;&gt; rulesMatrix) {
+<span class="fc" id="L59">        final List&lt;StyleSheet&gt; sheets = new ArrayList&lt;StyleSheet&gt;(rulesMatrix.size());</span>
+<span class="fc bfc" id="L60" title="All 2 branches covered.">        for (final List&lt;NodeRule&gt; sheetRules : rulesMatrix) {</span>
+<span class="fc" id="L61">            sheets.add(new StyleSheet(sheetRules));</span>
+<span class="fc" id="L62">        }</span>
+<span class="fc" id="L63">        return sheets;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

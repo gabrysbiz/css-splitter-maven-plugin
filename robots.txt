@@ -1,0 +1,3 @@
+User-agent: *
+Disallow: 
+Sitemap: http://css-splitter-maven-plugin.project.gabrys.biz/sitemap.xml
