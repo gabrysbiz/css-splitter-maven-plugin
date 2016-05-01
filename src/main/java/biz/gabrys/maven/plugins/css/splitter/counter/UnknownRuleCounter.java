@@ -33,16 +33,18 @@ public class UnknownRuleCounter extends AbstractRuleCounter<UnknownRule> {
         final String[] parts = code.split(";");
         final int value = parts.length;
         final String last = parts[value - 1];
-        if (last.trim().length() == 0) {
-            return value - 1;
+        for (int i = 0; i < last.length(); ++i) {
+            if (!Character.isWhitespace(last.charAt(i))) {
+                return value;
+            }
         }
-        return value;
+        return value - 1;
     }
 
     private static int countNestedRule(final String code) {
         String tmp = code.substring(0, code.length() - 1).trim();
         if (!tmp.endsWith(";") && !tmp.endsWith("}")) {
-            tmp += ";";
+            tmp += String.valueOf(';');
         }
         final String[] parts = tmp.split("}");
         int value = 0;
@@ -55,7 +57,7 @@ public class UnknownRuleCounter extends AbstractRuleCounter<UnknownRule> {
     private static int countNestedPart(final String part) {
         String tmp = part.trim();
         if (!tmp.endsWith(";")) {
-            tmp += ";";
+            tmp += String.valueOf(';');
         }
         return tmp.split(";").length;
     }
