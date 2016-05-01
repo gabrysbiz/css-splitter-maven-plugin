@@ -12,39 +12,24 @@
  */
 package biz.gabrys.maven.plugins.css.splitter.validation;
 
-import biz.gabrys.maven.plugins.css.splitter.counter.AnyRuleCounter;
-import biz.gabrys.maven.plugins.css.splitter.counter.RuleCounter;
-import biz.gabrys.maven.plugins.css.splitter.css.types.NodeRule;
+import biz.gabrys.maven.plugins.css.splitter.counter.StyleSheetCounter;
 import biz.gabrys.maven.plugins.css.splitter.css.types.StyleSheet;
 
-public final class RulesLimitValidator {
+public final class RulesLimitValidator implements StyleSheetValidator {
 
-    private final RuleCounter counter;
+    private final StyleSheetCounter counter;
     private final int limit;
 
-    public RulesLimitValidator(final int limit) {
-<span class="nc" id="L26">        this(limit, new AnyRuleCounter());</span>
-<span class="nc" id="L27">    }</span>
-
-    // for tests
-<span class="fc" id="L30">    RulesLimitValidator(final int limit, final RuleCounter counter) {</span>
-<span class="fc" id="L31">        this.limit = limit;</span>
-<span class="fc" id="L32">        this.counter = counter;</span>
-<span class="fc" id="L33">    }</span>
+<span class="fc" id="L23">    public RulesLimitValidator(final int limit, final StyleSheetCounter counter) {</span>
+<span class="fc" id="L24">        this.limit = limit;</span>
+<span class="fc" id="L25">        this.counter = counter;</span>
+<span class="fc" id="L26">    }</span>
 
     public void validate(final StyleSheet stylesheet) throws ValidationException {
-<span class="fc" id="L36">        final int value = count(stylesheet);</span>
-<span class="fc bfc" id="L37" title="All 2 branches covered.">        if (value &gt; limit) {</span>
-<span class="fc" id="L38">            throw new ValidationException(String.format(&quot;The number of style rules (%d) exceeded the allowable limit (%d)!&quot;, value, limit));</span>
+<span class="fc" id="L29">        final int value = counter.count(stylesheet);</span>
+<span class="fc bfc" id="L30" title="All 2 branches covered.">        if (value &gt; limit) {</span>
+<span class="fc" id="L31">            throw new ValidationException(String.format(&quot;The number of style rules (%d) exceeded the allowable limit (%d)!&quot;, value, limit));</span>
         }
-<span class="fc" id="L40">    }</span>
-
-    int count(final StyleSheet stylesheet) {
-<span class="fc" id="L43">        int value = 0;</span>
-<span class="fc bfc" id="L44" title="All 2 branches covered.">        for (final NodeRule rule : stylesheet.getRules()) {</span>
-<span class="fc" id="L45">            value += counter.count(rule);</span>
-<span class="fc" id="L46">        }</span>
-<span class="fc" id="L47">        return value;</span>
-    }
+<span class="fc" id="L33">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

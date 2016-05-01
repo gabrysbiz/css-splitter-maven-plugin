@@ -23,18 +23,43 @@ public class UnknownRuleCounter extends AbstractRuleCounter&lt;UnknownRule&gt; {
     @Override
     protected int count2(final UnknownRule rule) {
 <span class="fc" id="L25">        final String code = rule.getCode();</span>
-<span class="fc" id="L26">        final int value = code.split(&quot;;&quot;).length;</span>
+<span class="fc bfc" id="L26" title="All 2 branches covered.">        if (code.endsWith(&quot;}&quot;)) {</span>
+<span class="fc" id="L27">            return countNestedRule(code);</span>
+        }
+<span class="fc" id="L29">        return countSimpleRule(code);</span>
+    }
 
-<span class="fc" id="L28">        int correction = 0;</span>
-<span class="pc bpc" id="L29" title="1 of 4 branches missed.">        if (value &gt; 1 &amp;&amp; code.endsWith(&quot;}&quot;)) {</span>
-<span class="fc" id="L30">            String tmp = code.substring(0, code.length() - 1);</span>
-<span class="fc" id="L31">            tmp = tmp.trim();</span>
-<span class="fc bfc" id="L32" title="All 2 branches covered.">            if (tmp.endsWith(&quot;;&quot;)) {</span>
-<span class="fc" id="L33">                correction = -1;</span>
+    private static int countSimpleRule(final String code) {
+<span class="fc" id="L33">        final String[] parts = code.split(&quot;;&quot;);</span>
+<span class="fc" id="L34">        final int value = parts.length;</span>
+<span class="fc" id="L35">        final String last = parts[value - 1];</span>
+<span class="pc bpc" id="L36" title="1 of 2 branches missed.">        for (int i = 0; i &lt; last.length(); ++i) {</span>
+<span class="pc bpc" id="L37" title="1 of 2 branches missed.">            if (!Character.isWhitespace(last.charAt(i))) {</span>
+<span class="fc" id="L38">                return value;</span>
             }
         }
+<span class="nc" id="L41">        return value - 1;</span>
+    }
 
-<span class="fc" id="L37">        return value + correction;</span>
+    private static int countNestedRule(final String code) {
+<span class="fc" id="L45">        String tmp = code.substring(0, code.length() - 1).trim();</span>
+<span class="fc bfc" id="L46" title="All 4 branches covered.">        if (!tmp.endsWith(&quot;;&quot;) &amp;&amp; !tmp.endsWith(&quot;}&quot;)) {</span>
+<span class="fc" id="L47">            tmp += String.valueOf(';');</span>
+        }
+<span class="fc" id="L49">        final String[] parts = tmp.split(&quot;}&quot;);</span>
+<span class="fc" id="L50">        int value = 0;</span>
+<span class="fc bfc" id="L51" title="All 2 branches covered.">        for (final String part : parts) {</span>
+<span class="fc" id="L52">            value += countNestedPart(part);</span>
+        }
+<span class="fc" id="L54">        return value;</span>
+    }
+
+    private static int countNestedPart(final String part) {
+<span class="fc" id="L58">        String tmp = part.trim();</span>
+<span class="fc bfc" id="L59" title="All 2 branches covered.">        if (!tmp.endsWith(&quot;;&quot;)) {</span>
+<span class="fc" id="L60">            tmp += String.valueOf(';');</span>
+        }
+<span class="fc" id="L62">        return tmp.split(&quot;;&quot;).length;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

@@ -12,6 +12,8 @@
  */
 package biz.gabrys.maven.plugins.css.splitter.validation;
 
+import org.apache.maven.plugin.logging.Log;
+
 import biz.gabrys.maven.plugins.css.splitter.counter.RuleCounter;
 import biz.gabrys.maven.plugins.css.splitter.counter.UnknownRuleCounter;
 import biz.gabrys.maven.plugins.css.splitter.css.types.UnknownRule;
@@ -19,23 +21,31 @@ import biz.gabrys.maven.plugins.css.splitter.css.types.UnknownRule;
 final class UnknownRulePropertiesLimitValidator extends AbstractRulePropertiesLimitValidator&lt;UnknownRule&gt; {
 
     private final RuleCounter counter;
+    private final Log logger;
 
-    UnknownRulePropertiesLimitValidator() {
-<span class="nc" id="L24">        this(new UnknownRuleCounter());</span>
-<span class="nc" id="L25">    }</span>
+    UnknownRulePropertiesLimitValidator(final Log logger) {
+<span class="nc" id="L27">        this(new UnknownRuleCounter(), logger);</span>
+<span class="nc" id="L28">    }</span>
 
     // for tests
-    UnknownRulePropertiesLimitValidator(final RuleCounter counter) {
-<span class="fc" id="L29">        super(UnknownRule.class);</span>
-<span class="fc" id="L30">        this.counter = counter;</span>
-<span class="fc" id="L31">    }</span>
+    UnknownRulePropertiesLimitValidator(final RuleCounter counter, final Log logger) {
+<span class="fc" id="L32">        super(UnknownRule.class);</span>
+<span class="fc" id="L33">        this.counter = counter;</span>
+<span class="fc" id="L34">        this.logger = logger;</span>
+<span class="fc" id="L35">    }</span>
 
     @Override
     protected void validate2(final UnknownRule rule, final int limit) throws ValidationException {
-<span class="fc" id="L35">        final int value = counter.count(rule);</span>
-<span class="fc bfc" id="L36" title="All 2 branches covered.">        if (value &gt; limit) {</span>
-<span class="nc" id="L37">            throwException(value, limit, rule.getCode());</span>
+<span class="fc bfc" id="L39" title="All 2 branches covered.">        if (logger.isDebugEnabled()) {</span>
+<span class="fc" id="L40">            logger.debug(&quot;Found non-standard (unknown) rule:\n&quot; + rule.getCode());</span>
         }
-<span class="fc" id="L39">    }</span>
+<span class="fc" id="L42">        final int value = counter.count(rule);</span>
+<span class="fc bfc" id="L43" title="All 2 branches covered.">        if (logger.isDebugEnabled()) {</span>
+<span class="fc bfc" id="L44" title="All 2 branches covered.">            logger.debug(String.format(&quot;I guess it contains %d propert%s.&quot;, value, value != 1 ? &quot;ies&quot; : &quot;y&quot;));</span>
+        }
+<span class="fc bfc" id="L46" title="All 2 branches covered.">        if (value &gt; limit) {</span>
+<span class="nc" id="L47">            throwException(value, limit, rule.getCode());</span>
+        }
+<span class="fc" id="L49">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

@@ -16,37 +16,39 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.maven.plugin.logging.Log;
+
 import biz.gabrys.maven.plugins.css.splitter.css.types.NodeRule;
 import biz.gabrys.maven.plugins.css.splitter.css.types.StyleSheet;
 
-public final class StylePropertiesLimitValidator {
+public final class StylePropertiesLimitValidator implements StyleSheetValidator {
 
     private final List&lt;RulePropertiesLimitValidator&gt; validators;
     private final int limit;
 
-    public StylePropertiesLimitValidator(final int limit) {
-<span class="nc" id="L28">        this(Arrays.&lt;RulePropertiesLimitValidator&gt;asList(new StyleRulePropertiesLimitValidator(), new ComplexRulePropertiesLimitValidator(),</span>
-                new UnknownRulePropertiesLimitValidator()), limit);
-<span class="nc" id="L30">    }</span>
+    public StylePropertiesLimitValidator(final int limit, final Log logger) {
+<span class="nc" id="L30">        this(Arrays.&lt;RulePropertiesLimitValidator&gt;asList(new StyleRulePropertiesLimitValidator(), new ComplexRulePropertiesLimitValidator(),</span>
+                new UnknownRulePropertiesLimitValidator(logger)), limit);
+<span class="nc" id="L32">    }</span>
 
-<span class="fc" id="L32">    StylePropertiesLimitValidator(final List&lt;RulePropertiesLimitValidator&gt; validators, final int limit) {</span>
-<span class="fc" id="L33">        this.limit = limit;</span>
-<span class="fc" id="L34">        this.validators = new ArrayList&lt;RulePropertiesLimitValidator&gt;(validators);</span>
-<span class="fc" id="L35">    }</span>
+<span class="fc" id="L34">    StylePropertiesLimitValidator(final List&lt;RulePropertiesLimitValidator&gt; validators, final int limit) {</span>
+<span class="fc" id="L35">        this.limit = limit;</span>
+<span class="fc" id="L36">        this.validators = new ArrayList&lt;RulePropertiesLimitValidator&gt;(validators);</span>
+<span class="fc" id="L37">    }</span>
 
     public void validate(final StyleSheet stylesheet) throws ValidationException {
-<span class="fc bfc" id="L38" title="All 2 branches covered.">        for (final NodeRule rule : stylesheet.getRules()) {</span>
-<span class="fc" id="L39">            validate(rule);</span>
-<span class="fc" id="L40">        }</span>
-<span class="fc" id="L41">    }</span>
+<span class="fc bfc" id="L40" title="All 2 branches covered.">        for (final NodeRule rule : stylesheet.getRules()) {</span>
+<span class="fc" id="L41">            validate(rule);</span>
+<span class="fc" id="L42">        }</span>
+<span class="fc" id="L43">    }</span>
 
     private void validate(final NodeRule rule) throws ValidationException {
-<span class="fc bfc" id="L44" title="All 2 branches covered.">        for (final RulePropertiesLimitValidator validator : validators) {</span>
-<span class="fc bfc" id="L45" title="All 2 branches covered.">            if (validator.isSupportedType(rule)) {</span>
-<span class="fc" id="L46">                validator.validate(rule, limit);</span>
-<span class="fc" id="L47">                return;</span>
+<span class="fc bfc" id="L46" title="All 2 branches covered.">        for (final RulePropertiesLimitValidator validator : validators) {</span>
+<span class="fc bfc" id="L47" title="All 2 branches covered.">            if (validator.isSupportedType(rule)) {</span>
+<span class="fc" id="L48">                validator.validate(rule, limit);</span>
+<span class="fc" id="L49">                return;</span>
             }
-<span class="fc" id="L49">        }</span>
-<span class="fc" id="L50">    }</span>
+<span class="fc" id="L51">        }</span>
+<span class="fc" id="L52">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>
