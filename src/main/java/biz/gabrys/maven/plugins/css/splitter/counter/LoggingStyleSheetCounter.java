@@ -10,25 +10,25 @@
  * - a copy of the License at project page
  * - a template of the License at https://opensource.org/licenses/BSD-3-Clause
  */
-package biz.gabrys.maven.plugins.css.splitter.validation;
+package biz.gabrys.maven.plugins.css.splitter.counter;
 
-import biz.gabrys.maven.plugins.css.splitter.counter.StyleSheetCounter;
+import org.apache.maven.plugin.logging.Log;
+
 import biz.gabrys.maven.plugins.css.splitter.css.types.StyleSheet;
 
-public final class RulesLimitValidator implements StyleSheetValidator {
+public class LoggingStyleSheetCounter implements StyleSheetCounter {
 
     private final StyleSheetCounter counter;
-    private final int limit;
+    private final Log logger;
 
-    public RulesLimitValidator(final int limit, final StyleSheetCounter counter) {
-        this.limit = limit;
+    public LoggingStyleSheetCounter(final StyleSheetCounter counter, final Log logger) {
         this.counter = counter;
+        this.logger = logger;
     }
 
-    public void validate(final StyleSheet stylesheet) throws ValidationException {
+    public int count(final StyleSheet stylesheet) {
         final int value = counter.count(stylesheet);
-        if (value > limit) {
-            throw new ValidationException(String.format("The number of style rules (%d) exceeded the allowable limit (%d)!", value, limit));
-        }
+        logger.info(String.format("Stylesheet contains %d rule%s.", value, value != 1 ? 's' : ""));
+        return value;
     }
 }

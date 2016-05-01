@@ -19,7 +19,7 @@ import java.util.List;
 import biz.gabrys.maven.plugins.css.splitter.css.types.NodeRule;
 import biz.gabrys.maven.plugins.css.splitter.css.types.StyleSheet;
 
-public final class StylePropertiesLimitValidator {
+public final class StylePropertiesLimitValidator implements StyleSheetValidator {
 
     private final List<RulePropertiesLimitValidator> validators;
     private final int limit;
