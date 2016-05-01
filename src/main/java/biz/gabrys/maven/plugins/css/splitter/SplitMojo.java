@@ -45,6 +45,7 @@ import biz.gabrys.maven.plugins.css.splitter.token.TokenType;
 import biz.gabrys.maven.plugins.css.splitter.validation.RulesLimitValidator;
 import biz.gabrys.maven.plugins.css.splitter.validation.StylePropertiesLimitValidator;
 import biz.gabrys.maven.plugins.css.splitter.validation.StyleSheetValidator;
+import biz.gabrys.maven.plugins.css.splitter.validation.ValidationException;
 
 /**
  * Splits <a href="http://www.w3.org/Style/CSS/">CSS</a> stylesheets to smaller files (parts).
@@ -424,9 +425,13 @@ public class SplitMojo extends AbstractMojo {
         final String css = readCss(source);
         final List<StyleSheet> parts;
         try {
+            if (verbose) {
+                getLog().info("Parsing stylesheet...");
+            }
             final StyleSheet stylesheet = new SteadyStateParser(getLog()).parse(css, Standard.create(standard));
-            for (final StyleSheetValidator validator : createStyleSheetValidators()) {
-                validator.validate(stylesheet);
+            validateStyleSheet(stylesheet);
+            if (verbose) {
+                getLog().info("Splitting stylesheet to parts...");
             }
             parts = new Splliter(maxRules).split(stylesheet);
         } catch (final Exception e) {
@@ -446,7 +451,11 @@ public class SplitMojo extends AbstractMojo {
         }
     }
 
-    private Iterable<StyleSheetValidator> createStyleSheetValidators() {
+    private void validateStyleSheet(final StyleSheet stylesheet) throws ValidationException {
+        if (verbose) {
+            getLog().info("Validating stylesheet...");
+        }
+
         final Collection<StyleSheetValidator> validators = new ArrayList<StyleSheetValidator>();
         StyleSheetCounter counter = new StyleSheetCounterImpl();
         if (verbose) {
@@ -454,10 +463,17 @@ public class SplitMojo extends AbstractMojo {
         }
         validators.add(new RulesLimitValidator(rulesLimit, counter));
         validators.add(new StylePropertiesLimitValidator(maxRules, getLog()));
-        return validators;
+
+        for (final StyleSheetValidator validator : validators) {
+            validator.validate(stylesheet);
+        }
     }
 
     private void saveParts(final File source, final List<StyleSheet> parts) throws MojoFailureException {
+        if (verbose) {
+            getLog().info("Saving parts...");
+        }
+
         final DestinationFileCreator fileCreator = new DestinationFileCreator(sourceDirectory, outputDirectory);
         fileCreator.setFileNamePattern(outputFileNamePattern);
         final File file = fileCreator.create(source);
