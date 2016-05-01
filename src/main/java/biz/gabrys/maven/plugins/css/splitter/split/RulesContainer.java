@@ -1,4 +1,4 @@
-/**
+/*
  * CSS Splitter Maven Plugin
  * http://css-splitter-maven-plugin.projects.gabrys.biz/
  *
