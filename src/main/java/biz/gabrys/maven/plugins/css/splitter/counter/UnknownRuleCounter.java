@@ -23,17 +23,42 @@ public class UnknownRuleCounter extends AbstractRuleCounter<UnknownRule> {
     @Override
     protected int count2(final UnknownRule rule) {
         final String code = rule.getCode();
-        final int value = code.split(";").length;
+        if (code.endsWith("}")) {
+            return countNestedRule(code);
+        }
+        return countSimpleRule(code);
+    }
 
-        int correction = 0;
-        if (value > 1 && code.endsWith("}")) {
-            String tmp = code.substring(0, code.length() - 1);
-            tmp = tmp.trim();
-            if (tmp.endsWith(";")) {
-                correction = -1;
+    private static int countSimpleRule(final String code) {
+        final String[] parts = code.split(";");
+        final int value = parts.length;
+        final String last = parts[value - 1];
+        for (int i = 0; i < last.length(); ++i) {
+            if (!Character.isWhitespace(last.charAt(i))) {
+                return value;
             }
         }
+        return value - 1;
+    }
 
-        return value + correction;
+    private static int countNestedRule(final String code) {
+        String tmp = code.substring(0, code.length() - 1).trim();
+        if (!tmp.endsWith(";") && !tmp.endsWith("}")) {
+            tmp += String.valueOf(';');
+        }
+        final String[] parts = tmp.split("}");
+        int value = 0;
+        for (final String part : parts) {
+            value += countNestedPart(part);
+        }
+        return value;
+    }
+
+    private static int countNestedPart(final String part) {
+        String tmp = part.trim();
+        if (!tmp.endsWith(";")) {
+            tmp += String.valueOf(';');
+        }
+        return tmp.split(";").length;
     }
 }

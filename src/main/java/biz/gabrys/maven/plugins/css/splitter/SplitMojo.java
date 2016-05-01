@@ -14,6 +14,7 @@ package biz.gabrys.maven.plugins.css.splitter;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -32,6 +33,9 @@ import biz.gabrys.maven.plugin.util.io.ScannerFactory;
 import biz.gabrys.maven.plugin.util.io.ScannerPatternFormat;
 import biz.gabrys.maven.plugin.util.timer.SystemTimer;
 import biz.gabrys.maven.plugin.util.timer.Timer;
+import biz.gabrys.maven.plugins.css.splitter.counter.LoggingStyleSheetCounter;
+import biz.gabrys.maven.plugins.css.splitter.counter.StyleSheetCounter;
+import biz.gabrys.maven.plugins.css.splitter.counter.StyleSheetCounterImpl;
 import biz.gabrys.maven.plugins.css.splitter.css.Standard;
 import biz.gabrys.maven.plugins.css.splitter.css.types.StyleSheet;
 import biz.gabrys.maven.plugins.css.splitter.net.UrlEscaper;
@@ -40,6 +44,8 @@ import biz.gabrys.maven.plugins.css.splitter.steadystate.SteadyStateParser;
 import biz.gabrys.maven.plugins.css.splitter.token.TokenType;
 import biz.gabrys.maven.plugins.css.splitter.validation.RulesLimitValidator;
 import biz.gabrys.maven.plugins.css.splitter.validation.StylePropertiesLimitValidator;
+import biz.gabrys.maven.plugins.css.splitter.validation.StyleSheetValidator;
+import biz.gabrys.maven.plugins.css.splitter.validation.ValidationException;
 
 /**
  * Splits <a href="http://www.w3.org/Style/CSS/">CSS</a> stylesheets to smaller files (parts).
@@ -393,7 +399,7 @@ public class SplitMojo extends AbstractMojo {
             if (isCompilationRequired(source)) {
                 splitFile(source);
             } else if (verbose) {
-                getLog().info("Skipping CSS stylesheet split (not modified): " + source.getAbsolutePath());
+                getLog().info("Skipping stylesheet split (not modified): " + source.getAbsolutePath());
             }
         }
         getLog().info("Finished " + sourceFilesText + " split in " + timer.stop());
@@ -413,15 +419,20 @@ public class SplitMojo extends AbstractMojo {
     private void splitFile(final File source) throws MojoFailureException {
         Timer timer = null;
         if (verbose) {
-            getLog().info("Splitting CSS stylesheet: " + source.getAbsolutePath());
+            getLog().info("Splitting stylesheet: " + source.getAbsolutePath());
             timer = SystemTimer.getStartedTimer();
         }
         final String css = readCss(source);
         final List<StyleSheet> parts;
         try {
+            if (verbose) {
+                getLog().info("Parsing stylesheet...");
+            }
             final StyleSheet stylesheet = new SteadyStateParser(getLog()).parse(css, Standard.create(standard));
-            new RulesLimitValidator(rulesLimit).validate(stylesheet);
-            new StylePropertiesLimitValidator(maxRules).validate(stylesheet);
+            validateStyleSheet(stylesheet);
+            if (verbose) {
+                getLog().info("Splitting stylesheet to parts...");
+            }
             parts = new Splliter(maxRules).split(stylesheet);
         } catch (final Exception e) {
             throw new MojoFailureException(e.getMessage(), e);
@@ -440,7 +451,29 @@ public class SplitMojo extends AbstractMojo {
         }
     }
 
+    private void validateStyleSheet(final StyleSheet stylesheet) throws ValidationException {
+        if (verbose) {
+            getLog().info("Validating stylesheet...");
+        }
+
+        final Collection<StyleSheetValidator> validators = new ArrayList<StyleSheetValidator>();
+        StyleSheetCounter counter = new StyleSheetCounterImpl();
+        if (verbose) {
+            counter = new LoggingStyleSheetCounter(counter, getLog());
+        }
+        validators.add(new RulesLimitValidator(rulesLimit, counter));
+        validators.add(new StylePropertiesLimitValidator(maxRules, getLog()));
+
+        for (final StyleSheetValidator validator : validators) {
+            validator.validate(stylesheet);
+        }
+    }
+
     private void saveParts(final File source, final List<StyleSheet> parts) throws MojoFailureException {
+        if (verbose) {
+            getLog().info("Saving parts...");
+        }
+
         final DestinationFileCreator fileCreator = new DestinationFileCreator(sourceDirectory, outputDirectory);
         fileCreator.setFileNamePattern(outputFileNamePattern);
         final File file = fileCreator.create(source);
