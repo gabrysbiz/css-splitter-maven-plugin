@@ -42,6 +42,8 @@ import biz.gabrys.maven.plugins.css.splitter.net.UrlEscaper;
 import biz.gabrys.maven.plugins.css.splitter.split.Splliter;
 import biz.gabrys.maven.plugins.css.splitter.steadystate.SteadyStateParser;
 import biz.gabrys.maven.plugins.css.splitter.token.TokenType;
+import biz.gabrys.maven.plugins.css.splitter.tree.OrderedTree;
+import biz.gabrys.maven.plugins.css.splitter.tree.TreeNode;
 import biz.gabrys.maven.plugins.css.splitter.validation.RulesLimitValidator;
 import biz.gabrys.maven.plugins.css.splitter.validation.StylePropertiesLimitValidator;
 import biz.gabrys.maven.plugins.css.splitter.validation.StyleSheetValidator;
@@ -87,7 +89,7 @@ public class SplitMojo extends AbstractMojo {
     protected File sourceDirectory;
 
     /**
-     * The directory for split <a href="http://www.w3.org/Style/CSS/">CSS</a> stylesheets.
+     * Specifies where to place split <a href="http://www.w3.org/Style/CSS/">CSS</a> stylesheets.
      * @since 1.0
      */
     @Parameter(property = "css.splitter.outputDirectory", defaultValue = "${project.build.directory}")
@@ -149,7 +151,7 @@ public class SplitMojo extends AbstractMojo {
      * /&#42; count as 0 &#42;/
      * &#64;media screen and (min-width: 480px) {
      * }
-     * /&#42; summary: count as 2 &#42;/
+     * /&#42; summary: count as 2 (but can be split) &#42;/
      * &#64;media screen and (min-width: 480px) {
      *     /&#42; count as 1 &#42;/
      *     rule {
@@ -190,7 +192,7 @@ public class SplitMojo extends AbstractMojo {
      * /&#42; count as 0 &#42;/
      * &#64;media screen and (min-width: 480px) {
      * }
-     * /&#42; summary: count as 2 &#42;/
+     * /&#42; summary: count as 2 (but can be split) &#42;/
      * &#64;media screen and (min-width: 480px) {
      *     /&#42; count as 1 &#42;/
      *     rule {
@@ -207,6 +209,24 @@ public class SplitMojo extends AbstractMojo {
      */
     @Parameter(property = "css.splitter.rulesLimit", defaultValue = "2147483647")
     protected int rulesLimit;
+
+    /**
+     * The maximum number of generated <code>&#64;import</code> in a single file. The plugin does not check whether the
+     * code in parts fulfills this condition.<br>
+     * <b>Notice</b>: all values smaller than <tt>2</tt> are treated as <tt>2147483647</tt>.
+     * @since 1.0
+     */
+    @Parameter(property = "css.splitter.maxImports", defaultValue = "31")
+    protected int maxImports;
+
+    /**
+     * The plugin failures build when a number of nesting <code>&#64;import</code> exceed this value. The plugin does
+     * not check the code in parts.<br>
+     * <b>Notice</b>: all values smaller than <tt>1</tt> are treated as <tt>2147483647</tt>.
+     * @since 1.0
+     */
+    @Parameter(property = "css.splitter.importsNestingLimit", defaultValue = "4")
+    protected int importsNestingLimit;
 
     /**
      * The <a href="http://www.w3.org/Style/CSS/">CSS</a> standard used to parse source code. Available values:
@@ -291,22 +311,23 @@ public class SplitMojo extends AbstractMojo {
             getLog().debug("\tsourceDirectory = " + sourceDirectory);
             getLog().debug("\toutputDirectory = " + outputDirectory);
             getLog().debug("\tfilesetPatternFormat = " + filesetPatternFormat);
-            String calculated = includes.length != 0 ? "" : createCalculatedInfo(Arrays.toString(getDefaultIncludes()));
-            getLog().debug("\tincludes = " + Arrays.toString(includes) + calculated);
+            final String calculatedIncludes = includes.length != 0 ? "" : createCalculatedInfo(Arrays.toString(getDefaultIncludes()));
+            getLog().debug("\tincludes = " + Arrays.toString(includes) + calculatedIncludes);
             getLog().debug("\texcludes = " + Arrays.toString(excludes));
-            calculated = maxRules > 0 ? "" : createCalculatedInfo(Integer.MAX_VALUE);
-            getLog().debug("\tmaxRules = " + maxRules + calculated);
-            calculated = rulesLimit > 0 ? "" : createCalculatedInfo(Integer.MAX_VALUE);
-            getLog().debug("\trulesLimit = " + rulesLimit + calculated);
+            final String calculatedIntegerMaxValue = createCalculatedInfo(Integer.MAX_VALUE);
+            getLog().debug("\tmaxRules = " + maxRules + (maxRules > 0 ? "" : calculatedIntegerMaxValue));
+            getLog().debug("\trulesLimit = " + rulesLimit + (rulesLimit > 0 ? "" : calculatedIntegerMaxValue));
+            getLog().debug("\tmaxImports = " + maxImports + (maxImports > 1 ? "" : calculatedIntegerMaxValue));
+            getLog().debug("\timportsNestingLimit = " + importsNestingLimit + (importsNestingLimit > 0 ? "" : calculatedIntegerMaxValue));
             getLog().debug("\tstandard = " + standard);
             getLog().debug("\tcacheTokenType = " + cacheTokenType);
             getLog().debug("\tcacheTokenParameter = " + cacheTokenParameter);
-            calculated = "";
+            String calculatedCacheTokenValue = "";
             if (cacheTokenValue == null) {
                 final String defaultCacheTokenValue = getDefaultCacheTokenValue();
-                calculated = defaultCacheTokenValue != null ? createCalculatedInfo(defaultCacheTokenValue) : "";
+                calculatedCacheTokenValue = defaultCacheTokenValue != null ? createCalculatedInfo(defaultCacheTokenValue) : "";
             }
-            getLog().debug("\tcacheTokenValue = " + cacheTokenValue + calculated);
+            getLog().debug("\tcacheTokenValue = " + cacheTokenValue + calculatedCacheTokenValue);
             getLog().debug("\tencoding = " + encoding);
             getLog().debug("\toutputFileNamePattern = " + outputFileNamePattern);
             getLog().debug("\toutputPartNamePattern = " + outputPartNamePattern);
@@ -346,6 +367,12 @@ public class SplitMojo extends AbstractMojo {
         }
         if (rulesLimit < 1) {
             rulesLimit = Integer.MAX_VALUE;
+        }
+        if (maxImports < 2) {
+            maxImports = Integer.MAX_VALUE;
+        }
+        if (importsNestingLimit < 1) {
+            importsNestingLimit = Integer.MAX_VALUE;
         }
         if (cacheTokenValue == null) {
             cacheTokenValue = getDefaultCacheTokenValue();
@@ -437,6 +464,9 @@ public class SplitMojo extends AbstractMojo {
         } catch (final Exception e) {
             throw new MojoFailureException(e.getMessage(), e);
         }
+        if (verbose) {
+            getLog().info(String.format("Split to %d stylesheet%s.", parts.size(), parts.size() == 1 ? "" : "s"));
+        }
         saveParts(source, parts);
         if (timer != null) {
             getLog().info("Finished in " + timer.stop());
@@ -470,32 +500,14 @@ public class SplitMojo extends AbstractMojo {
     }
 
     private void saveParts(final File source, final List<StyleSheet> parts) throws MojoFailureException {
+        final OrderedTree<StyleSheet> stylesheetsTree = new OrderedTree<StyleSheet>(parts, maxImports);
+
+        // TODO valid deep
+
         if (verbose) {
-            getLog().info("Saving parts...");
+            getLog().info("Saving CSS code...");
         }
-
-        final DestinationFileCreator fileCreator = new DestinationFileCreator(sourceDirectory, outputDirectory);
-        fileCreator.setFileNamePattern(outputFileNamePattern);
-        final File file = fileCreator.create(source);
-        if (parts.size() == 1) {
-            saveCss(file, parts.get(0).toString());
-            return;
-        }
-
-        // TODO add maxImports per file
-        final StringBuilder imports = new StringBuilder();
-        final String cacheToken = createCacheToken();
-        for (int index = 0; index < parts.size(); ++index) {
-            final String filePartFormat = outputPartNamePattern.replace(PART_INDEX_PARAMETER, String.valueOf(index + 1));
-            fileCreator.setFileNamePattern(filePartFormat);
-            final File filePart = fileCreator.create(source);
-            imports.append("@import \"");
-            imports.append(filePart.getName());
-            imports.append(cacheToken);
-            imports.append("\";\n");
-            saveCss(filePart, parts.get(index).toString());
-        }
-        saveCss(file, imports.toString());
+        saveStyleSheetsTree(source, stylesheetsTree, 0, createCacheToken());
     }
 
     private String createCacheToken() {
@@ -512,9 +524,37 @@ public class SplitMojo extends AbstractMojo {
         }
     }
 
+    private int saveStyleSheetsTree(final File source, final TreeNode<StyleSheet> node, final int nodeIndex, final String cacheToken)
+            throws MojoFailureException {
+        final DestinationFileCreator fileCreator = new DestinationFileCreator(sourceDirectory, outputDirectory);
+        if (nodeIndex == 0) {
+            fileCreator.setFileNamePattern(outputFileNamePattern);
+        } else {
+            fileCreator.setFileNamePattern(outputPartNamePattern.replace(PART_INDEX_PARAMETER, String.valueOf(nodeIndex)));
+        }
+        final File target = fileCreator.create(source);
+
+        if (node.hasValue()) {
+            saveCss(target, node.getValue().toString());
+            return nodeIndex;
+        }
+
+        final StringBuilder imports = new StringBuilder();
+        int childNodeIndex = nodeIndex;
+        for (final TreeNode<StyleSheet> child : node.getChildren()) {
+            ++childNodeIndex;
+            fileCreator.setFileNamePattern(outputPartNamePattern.replace(PART_INDEX_PARAMETER, String.valueOf(childNodeIndex)));
+            final File childTarget = fileCreator.create(source);
+            childNodeIndex = saveStyleSheetsTree(source, child, childNodeIndex, cacheToken);
+            imports.append(String.format("@import \"%s%s\";%n", childTarget.getName(), cacheToken));
+        }
+        saveCss(target, imports.toString());
+        return childNodeIndex;
+    }
+
     private void saveCss(final File file, final String css) throws MojoFailureException {
-        if (verbose) {
-            getLog().info("Saving CSS code to " + file.getAbsolutePath());
+        if (getLog().isDebugEnabled()) {
+            getLog().debug("Saving CSS code to " + file.getAbsolutePath());
         }
         try {
             FileUtils.write(file, css, encoding);
