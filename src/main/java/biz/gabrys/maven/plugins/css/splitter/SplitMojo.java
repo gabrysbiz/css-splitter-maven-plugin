@@ -368,7 +368,7 @@ public class SplitMojo extends AbstractMojo {
         if (rulesLimit < 1) {
             rulesLimit = Integer.MAX_VALUE;
         }
-        if (maxImports < 2) {
+        if (maxImports < OrderedTree.MIN_NUMBER_OF_CHILDREN) {
             maxImports = Integer.MAX_VALUE;
         }
         if (importsNestingLimit < 1) {

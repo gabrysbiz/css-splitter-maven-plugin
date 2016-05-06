@@ -106,4 +106,45 @@ public final class OrderedTreeTest {
         Assert.assertEquals("Root second child second child value should be equal to obj5.", obj5, rootChild2Child2.getValue());
         Assert.assertEquals("Root second child second child children size.", 0, rootChild2Child2.getChildren().size());
     }
+
+    @Test
+    public void create_fourObjects_numberOfChildrenEqualToThree() {
+        final Object obj1 = Mockito.mock(Object.class);
+        final Object obj2 = Mockito.mock(Object.class);
+        final Object obj3 = Mockito.mock(Object.class);
+        final Object obj4 = Mockito.mock(Object.class);
+
+        final OrderedTree<Object> tree = new OrderedTree<Object>(Arrays.asList(obj1, obj2, obj3, obj4), 3);
+
+        Assert.assertFalse("Root should not contain value.", tree.hasValue());
+        Assert.assertNull("Root value should be equal to null.", tree.getValue());
+
+        final List<TreeNode<Object>> rootChildren = tree.getChildren();
+        Assert.assertEquals("Root children size.", 3, rootChildren.size());
+
+        final TreeNode<Object> rootChild1 = rootChildren.get(0);
+        Assert.assertFalse("Root first child should not contain value.", rootChild1.hasValue());
+        Assert.assertNull("Root first child value should be equal to null.", rootChild1.getValue());
+        final List<TreeNode<Object>> rootChild1Children = rootChild1.getChildren();
+        Assert.assertEquals("Root first child children size.", 2, rootChild1Children.size());
+
+        final TreeNode<Object> rootChild1Child1 = rootChild1Children.get(0);
+        Assert.assertTrue("Root first child first child should contain value.", rootChild1Child1.hasValue());
+        Assert.assertEquals("Root first child first child value should be equal to obj1.", obj1, rootChild1Child1.getValue());
+        Assert.assertEquals("Root first child first child children size.", 0, rootChild1Child1.getChildren().size());
+        final TreeNode<Object> rootChild1Child2 = rootChild1Children.get(1);
+        Assert.assertTrue("Root first child second child should contain value.", rootChild1Child2.hasValue());
+        Assert.assertEquals("Root first child second child value should be equal to obj2.", obj2, rootChild1Child2.getValue());
+        Assert.assertEquals("Root first child second child children size.", 0, rootChild1Child2.getChildren().size());
+
+        final TreeNode<Object> rootChild2 = rootChildren.get(1);
+        Assert.assertTrue("Root second child should contain value.", rootChild2.hasValue());
+        Assert.assertEquals("Root second child value should be equal to obj3.", obj3, rootChild2.getValue());
+        Assert.assertEquals("Root second child children size.", 0, rootChild2.getChildren().size());
+
+        final TreeNode<Object> rootChild3 = rootChildren.get(2);
+        Assert.assertTrue("Root third child should contain value.", rootChild3.hasValue());
+        Assert.assertEquals("Root third child value should be equal to obj4.", obj4, rootChild3.getValue());
+        Assert.assertEquals("Root third child children size.", 0, rootChild3.getChildren().size());
+    }
 }

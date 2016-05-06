@@ -1,3 +1,15 @@
+/*
+ * CSS Splitter Maven Plugin
+ * http://css-splitter-maven-plugin.projects.gabrys.biz/
+ *
+ * Copyright (c) 2015 Adam Gabryś
+ *
+ * This file is licensed under the BSD 3-Clause (the "License").
+ * You may not use this file except in compliance with the License.
+ * You may obtain:
+ * - a copy of the License at project page
+ * - a template of the License at https://opensource.org/licenses/BSD-3-Clause
+ */
 package biz.gabrys.maven.plugins.css.splitter.tree;
 
 import java.util.ArrayList;
@@ -5,6 +17,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class OrderedTree<T> implements TreeNode<T> {
+
+    public static final int MIN_NUMBER_OF_CHILDREN = 2;
 
     private final int numberOfChildren;
     private final List<OrderedTree<T>> children;
@@ -32,7 +46,7 @@ public class OrderedTree<T> implements TreeNode<T> {
     }
 
     private OrderedTree(final int numberOfChildren) {
-        if (numberOfChildren < 2) {
+        if (numberOfChildren < MIN_NUMBER_OF_CHILDREN) {
             throw new IllegalArgumentException("Number of children cannot be smaller than 2! Current value: " + numberOfChildren);
         }
         this.numberOfChildren = numberOfChildren;
@@ -40,11 +54,7 @@ public class OrderedTree<T> implements TreeNode<T> {
     }
 
     public List<TreeNode<T>> getChildren() {
-        final List<TreeNode<T>> nodes = new ArrayList<TreeNode<T>>(children.size());
-        for (final TreeNode<T> child : children) {
-            nodes.add(child);
-        }
-        return nodes;
+        return new ArrayList<TreeNode<T>>(children);
     }
 
     public boolean hasValue() {
@@ -134,7 +144,7 @@ public class OrderedTree<T> implements TreeNode<T> {
         return leaves;
     }
 
-    private static class LeafWithDistance<T> {
+    private static final class LeafWithDistance<T> {
 
         private final OrderedTree<T> leaf;
         private final int distance;
