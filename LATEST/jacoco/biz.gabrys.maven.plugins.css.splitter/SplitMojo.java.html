@@ -42,6 +42,8 @@ import biz.gabrys.maven.plugins.css.splitter.net.UrlEscaper;
 import biz.gabrys.maven.plugins.css.splitter.split.Splliter;
 import biz.gabrys.maven.plugins.css.splitter.steadystate.SteadyStateParser;
 import biz.gabrys.maven.plugins.css.splitter.token.TokenType;
+import biz.gabrys.maven.plugins.css.splitter.tree.OrderedTree;
+import biz.gabrys.maven.plugins.css.splitter.tree.OrderedTreeNode;
 import biz.gabrys.maven.plugins.css.splitter.validation.RulesLimitValidator;
 import biz.gabrys.maven.plugins.css.splitter.validation.StylePropertiesLimitValidator;
 import biz.gabrys.maven.plugins.css.splitter.validation.StyleSheetValidator;
@@ -52,7 +54,7 @@ import biz.gabrys.maven.plugins.css.splitter.validation.ValidationException;
  * @since 1.0
  */
 @Mojo(name = &quot;split&quot;, defaultPhase = LifecyclePhase.PROCESS_SOURCES, threadSafe = true)
-<span class="nc" id="L55">public class SplitMojo extends AbstractMojo {</span>
+<span class="nc" id="L57">public class SplitMojo extends AbstractMojo {</span>
 
     private static final String PART_INDEX_PARAMETER = &quot;{index}&quot;;
 
@@ -87,7 +89,7 @@ import biz.gabrys.maven.plugins.css.splitter.validation.ValidationException;
     protected File sourceDirectory;
 
     /**
-     * The directory for split &lt;a href=&quot;http://www.w3.org/Style/CSS/&quot;&gt;CSS&lt;/a&gt; stylesheets.
+     * Specifies where to place split &lt;a href=&quot;http://www.w3.org/Style/CSS/&quot;&gt;CSS&lt;/a&gt; stylesheets.
      * @since 1.0
      */
     @Parameter(property = &quot;css.splitter.outputDirectory&quot;, defaultValue = &quot;${project.build.directory}&quot;)
@@ -113,7 +115,7 @@ import biz.gabrys.maven.plugins.css.splitter.validation.ValidationException;
      * &lt;tt&gt;[&quot;^.+\.css$&quot;]&lt;/tt&gt; for &lt;a href=&quot;#filesetPatternFormat&quot;&gt;regex&lt;/a&gt;.
      * @since 1.0
      */
-<span class="nc" id="L116">    @Parameter</span>
+<span class="nc" id="L118">    @Parameter</span>
     protected String[] includes = new String[0];
 
     /**
@@ -123,7 +125,7 @@ import biz.gabrys.maven.plugins.css.splitter.validation.ValidationException;
      * &lt;b&gt;Default value is&lt;/b&gt;: &lt;tt&gt;[]&lt;/tt&gt;.
      * @since 1.0
      */
-<span class="nc" id="L126">    @Parameter</span>
+<span class="nc" id="L128">    @Parameter</span>
     protected String[] excludes = new String[0];
 
     /**
@@ -149,7 +151,7 @@ import biz.gabrys.maven.plugins.css.splitter.validation.ValidationException;
      * /&amp;#42; count as 0 &amp;#42;/
      * &amp;#64;media screen and (min-width: 480px) {
      * }
-     * /&amp;#42; summary: count as 2 &amp;#42;/
+     * /&amp;#42; summary: count as 2 (but can be split) &amp;#42;/
      * &amp;#64;media screen and (min-width: 480px) {
      *     /&amp;#42; count as 1 &amp;#42;/
      *     rule {
@@ -190,7 +192,7 @@ import biz.gabrys.maven.plugins.css.splitter.validation.ValidationException;
      * /&amp;#42; count as 0 &amp;#42;/
      * &amp;#64;media screen and (min-width: 480px) {
      * }
-     * /&amp;#42; summary: count as 2 &amp;#42;/
+     * /&amp;#42; summary: count as 2 (but can be split) &amp;#42;/
      * &amp;#64;media screen and (min-width: 480px) {
      *     /&amp;#42; count as 1 &amp;#42;/
      *     rule {
@@ -207,6 +209,24 @@ import biz.gabrys.maven.plugins.css.splitter.validation.ValidationException;
      */
     @Parameter(property = &quot;css.splitter.rulesLimit&quot;, defaultValue = &quot;2147483647&quot;)
     protected int rulesLimit;
+
+    /**
+     * The maximum number of generated &lt;code&gt;&amp;#64;import&lt;/code&gt; in a single file. The plugin does not check whether the
+     * code in parts fulfills this condition.&lt;br&gt;
+     * &lt;b&gt;Notice&lt;/b&gt;: all values smaller than &lt;tt&gt;2&lt;/tt&gt; are treated as &lt;tt&gt;2147483647&lt;/tt&gt;.
+     * @since 1.0
+     */
+    @Parameter(property = &quot;css.splitter.maxImports&quot;, defaultValue = &quot;31&quot;)
+    protected int maxImports;
+
+    /**
+     * The plugin failures build when a number of &lt;code&gt;&amp;#64;import&lt;/code&gt; depth level exceed this value. The plugin
+     * ignores &lt;code&gt;&amp;#64;import&lt;/code&gt; operations included in source files.&lt;br&gt;
+     * &lt;b&gt;Notice&lt;/b&gt;: all values smaller than &lt;tt&gt;1&lt;/tt&gt; are treated as &lt;tt&gt;2147483647&lt;/tt&gt;.
+     * @since 1.0
+     */
+    @Parameter(property = &quot;css.splitter.importsDepthLimit&quot;, defaultValue = &quot;4&quot;)
+    protected int importsDepthLimit;
 
     /**
      * The &lt;a href=&quot;http://www.w3.org/Style/CSS/&quot;&gt;CSS&lt;/a&gt; standard used to parse source code. Available values:
@@ -275,252 +295,298 @@ import biz.gabrys.maven.plugins.css.splitter.validation.ValidationException;
 
     /**
      * Destination parts naming pattern. {fileName} is equal to source file name without extension, {index} is equal to
-     * part index (first index is equal to 1).
+     * part index (first is equal to 1). Parts are loaded in the browsers according to indexes. For correct listing
+     * files on all operating systems indexes can contain leading zeros.
      * @since 1.0
      */
     @Parameter(property = &quot;css.splitter.outputPartNamePattern&quot;, defaultValue = DestinationFileCreator.FILE_NAME_PARAMETER + '-'
             + PART_INDEX_PARAMETER + &quot;.css&quot;)
     protected String outputPartNamePattern;
 
+<span class="nc" id="L306">    private String resolvedCacheToken = &quot;&quot;;</span>
+
     private void logParameters() {
-<span class="nc bnc" id="L286" title="All 2 branches missed.">        if (getLog().isDebugEnabled()) {</span>
-<span class="nc" id="L287">            getLog().debug(&quot;Job parameters:&quot;);</span>
-<span class="nc" id="L288">            getLog().debug(&quot;\tskip = &quot; + skip);</span>
-<span class="nc" id="L289">            getLog().debug(&quot;\tverbose = &quot; + verbose + createCalculatedInfo(Boolean.TRUE));</span>
-<span class="nc" id="L290">            getLog().debug(&quot;\tforce = &quot; + force);</span>
-<span class="nc" id="L291">            getLog().debug(&quot;\tsourceDirectory = &quot; + sourceDirectory);</span>
-<span class="nc" id="L292">            getLog().debug(&quot;\toutputDirectory = &quot; + outputDirectory);</span>
-<span class="nc" id="L293">            getLog().debug(&quot;\tfilesetPatternFormat = &quot; + filesetPatternFormat);</span>
-<span class="nc bnc" id="L294" title="All 2 branches missed.">            String calculated = includes.length != 0 ? &quot;&quot; : createCalculatedInfo(Arrays.toString(getDefaultIncludes()));</span>
-<span class="nc" id="L295">            getLog().debug(&quot;\tincludes = &quot; + Arrays.toString(includes) + calculated);</span>
-<span class="nc" id="L296">            getLog().debug(&quot;\texcludes = &quot; + Arrays.toString(excludes));</span>
-<span class="nc bnc" id="L297" title="All 2 branches missed.">            calculated = maxRules &gt; 0 ? &quot;&quot; : createCalculatedInfo(Integer.MAX_VALUE);</span>
-<span class="nc" id="L298">            getLog().debug(&quot;\tmaxRules = &quot; + maxRules + calculated);</span>
-<span class="nc bnc" id="L299" title="All 2 branches missed.">            calculated = rulesLimit &gt; 0 ? &quot;&quot; : createCalculatedInfo(Integer.MAX_VALUE);</span>
-<span class="nc" id="L300">            getLog().debug(&quot;\trulesLimit = &quot; + rulesLimit + calculated);</span>
-<span class="nc" id="L301">            getLog().debug(&quot;\tstandard = &quot; + standard);</span>
-<span class="nc" id="L302">            getLog().debug(&quot;\tcacheTokenType = &quot; + cacheTokenType);</span>
-<span class="nc" id="L303">            getLog().debug(&quot;\tcacheTokenParameter = &quot; + cacheTokenParameter);</span>
-<span class="nc" id="L304">            calculated = &quot;&quot;;</span>
-<span class="nc bnc" id="L305" title="All 2 branches missed.">            if (cacheTokenValue == null) {</span>
-<span class="nc" id="L306">                final String defaultCacheTokenValue = getDefaultCacheTokenValue();</span>
-<span class="nc bnc" id="L307" title="All 2 branches missed.">                calculated = defaultCacheTokenValue != null ? createCalculatedInfo(defaultCacheTokenValue) : &quot;&quot;;</span>
+<span class="nc bnc" id="L309" title="All 2 branches missed.">        if (getLog().isDebugEnabled()) {</span>
+<span class="nc" id="L310">            getLog().debug(&quot;Job parameters:&quot;);</span>
+<span class="nc" id="L311">            getLog().debug(&quot;\tskip = &quot; + skip);</span>
+<span class="nc" id="L312">            getLog().debug(&quot;\tverbose = &quot; + verbose + createCalculatedInfo(Boolean.TRUE));</span>
+<span class="nc" id="L313">            getLog().debug(&quot;\tforce = &quot; + force);</span>
+<span class="nc" id="L314">            getLog().debug(&quot;\tsourceDirectory = &quot; + sourceDirectory);</span>
+<span class="nc" id="L315">            getLog().debug(&quot;\toutputDirectory = &quot; + outputDirectory);</span>
+<span class="nc" id="L316">            getLog().debug(&quot;\tfilesetPatternFormat = &quot; + filesetPatternFormat);</span>
+<span class="nc bnc" id="L317" title="All 2 branches missed.">            final String calculatedIncludes = includes.length != 0 ? &quot;&quot; : createCalculatedInfo(Arrays.toString(getDefaultIncludes()));</span>
+<span class="nc" id="L318">            getLog().debug(&quot;\tincludes = &quot; + Arrays.toString(includes) + calculatedIncludes);</span>
+<span class="nc" id="L319">            getLog().debug(&quot;\texcludes = &quot; + Arrays.toString(excludes));</span>
+<span class="nc" id="L320">            final String calculatedIntegerMaxValue = createCalculatedInfo(Integer.MAX_VALUE);</span>
+<span class="nc bnc" id="L321" title="All 2 branches missed.">            getLog().debug(&quot;\tmaxRules = &quot; + maxRules + (maxRules &gt; 0 ? &quot;&quot; : calculatedIntegerMaxValue));</span>
+<span class="nc bnc" id="L322" title="All 2 branches missed.">            getLog().debug(&quot;\trulesLimit = &quot; + rulesLimit + (rulesLimit &gt; 0 ? &quot;&quot; : calculatedIntegerMaxValue));</span>
+<span class="nc bnc" id="L323" title="All 2 branches missed.">            getLog().debug(&quot;\tmaxImports = &quot; + maxImports + (maxImports &gt; 1 ? &quot;&quot; : calculatedIntegerMaxValue));</span>
+<span class="nc bnc" id="L324" title="All 2 branches missed.">            getLog().debug(&quot;\timportsDepthLimit = &quot; + importsDepthLimit + (importsDepthLimit &gt; 0 ? &quot;&quot; : calculatedIntegerMaxValue));</span>
+<span class="nc" id="L325">            getLog().debug(&quot;\tstandard = &quot; + standard);</span>
+<span class="nc" id="L326">            getLog().debug(&quot;\tcacheTokenType = &quot; + cacheTokenType);</span>
+<span class="nc" id="L327">            getLog().debug(&quot;\tcacheTokenParameter = &quot; + cacheTokenParameter);</span>
+<span class="nc" id="L328">            String calculatedCacheTokenValue = &quot;&quot;;</span>
+<span class="nc bnc" id="L329" title="All 2 branches missed.">            if (cacheTokenValue == null) {</span>
+<span class="nc" id="L330">                final String defaultCacheTokenValue = getDefaultCacheTokenValue();</span>
+<span class="nc bnc" id="L331" title="All 2 branches missed.">                calculatedCacheTokenValue = defaultCacheTokenValue != null ? createCalculatedInfo(defaultCacheTokenValue) : &quot;&quot;;</span>
             }
-<span class="nc" id="L309">            getLog().debug(&quot;\tcacheTokenValue = &quot; + cacheTokenValue + calculated);</span>
-<span class="nc" id="L310">            getLog().debug(&quot;\tencoding = &quot; + encoding);</span>
-<span class="nc" id="L311">            getLog().debug(&quot;\toutputFileNamePattern = &quot; + outputFileNamePattern);</span>
-<span class="nc" id="L312">            getLog().debug(&quot;\toutputPartNamePattern = &quot; + outputPartNamePattern);</span>
-<span class="nc" id="L313">            getLog().debug(&quot;&quot;);</span>
+<span class="nc" id="L333">            getLog().debug(&quot;\tcacheTokenValue = &quot; + cacheTokenValue + calculatedCacheTokenValue);</span>
+<span class="nc" id="L334">            getLog().debug(&quot;\tencoding = &quot; + encoding);</span>
+<span class="nc" id="L335">            getLog().debug(&quot;\toutputFileNamePattern = &quot; + outputFileNamePattern);</span>
+<span class="nc" id="L336">            getLog().debug(&quot;\toutputPartNamePattern = &quot; + outputPartNamePattern);</span>
+<span class="nc" id="L337">            getLog().debug(&quot;&quot;);</span>
         }
-<span class="nc" id="L315">    }</span>
+<span class="nc" id="L339">    }</span>
 
     private static String createCalculatedInfo(final Object value) {
-<span class="nc" id="L318">        return String.format(&quot; (calculated: %s)&quot;, value);</span>
+<span class="nc" id="L342">        return String.format(&quot; (calculated: %s)&quot;, value);</span>
     }
 
     private String[] getDefaultIncludes() {
-<span class="nc bnc" id="L322" title="All 2 branches missed.">        if (ScannerPatternFormat.ANT.name().equalsIgnoreCase(filesetPatternFormat)) {</span>
-<span class="nc" id="L323">            return new String[] { &quot;**/*.css&quot; };</span>
+<span class="nc bnc" id="L346" title="All 2 branches missed.">        if (ScannerPatternFormat.ANT.name().equalsIgnoreCase(filesetPatternFormat)) {</span>
+<span class="nc" id="L347">            return new String[] { &quot;**/*.css&quot; };</span>
         } else {
-<span class="nc" id="L325">            return new String[] { &quot;^.+\\.css$&quot; };</span>
+<span class="nc" id="L349">            return new String[] { &quot;^.+\\.css$&quot; };</span>
         }
     }
 
     private String getDefaultCacheTokenValue() {
-<span class="nc bnc" id="L330" title="All 2 branches missed.">        if (TokenType.DATE.name().equalsIgnoreCase(cacheTokenType)) {</span>
-<span class="nc" id="L331">            return &quot;yyyyMMddHHmmss&quot;;</span>
+<span class="nc bnc" id="L354" title="All 2 branches missed.">        if (TokenType.DATE.name().equalsIgnoreCase(cacheTokenType)) {</span>
+<span class="nc" id="L355">            return &quot;yyyyMMddHHmmss&quot;;</span>
         } else {
-<span class="nc" id="L333">            return null;</span>
+<span class="nc" id="L357">            return null;</span>
         }
     }
 
     private void calculateParameters() {
-<span class="nc bnc" id="L338" title="All 2 branches missed.">        if (getLog().isDebugEnabled()) {</span>
-<span class="nc" id="L339">            verbose = true;</span>
+<span class="nc bnc" id="L362" title="All 2 branches missed.">        if (getLog().isDebugEnabled()) {</span>
+<span class="nc" id="L363">            verbose = true;</span>
         }
-<span class="nc bnc" id="L341" title="All 2 branches missed.">        if (includes.length == 0) {</span>
-<span class="nc" id="L342">            includes = getDefaultIncludes();</span>
+<span class="nc bnc" id="L365" title="All 2 branches missed.">        if (includes.length == 0) {</span>
+<span class="nc" id="L366">            includes = getDefaultIncludes();</span>
         }
-<span class="nc bnc" id="L344" title="All 2 branches missed.">        if (maxRules &lt; 1) {</span>
-<span class="nc" id="L345">            maxRules = Integer.MAX_VALUE;</span>
+<span class="nc bnc" id="L368" title="All 2 branches missed.">        if (maxRules &lt; 1) {</span>
+<span class="nc" id="L369">            maxRules = Integer.MAX_VALUE;</span>
         }
-<span class="nc bnc" id="L347" title="All 2 branches missed.">        if (rulesLimit &lt; 1) {</span>
-<span class="nc" id="L348">            rulesLimit = Integer.MAX_VALUE;</span>
+<span class="nc bnc" id="L371" title="All 2 branches missed.">        if (rulesLimit &lt; 1) {</span>
+<span class="nc" id="L372">            rulesLimit = Integer.MAX_VALUE;</span>
         }
-<span class="nc bnc" id="L350" title="All 2 branches missed.">        if (cacheTokenValue == null) {</span>
-<span class="nc" id="L351">            cacheTokenValue = getDefaultCacheTokenValue();</span>
+<span class="nc bnc" id="L374" title="All 2 branches missed.">        if (maxImports &lt; OrderedTree.MIN_NUMBER_OF_CHILDREN) {</span>
+<span class="nc" id="L375">            maxImports = Integer.MAX_VALUE;</span>
         }
-<span class="nc" id="L353">    }</span>
-
-    private void validateParameters() throws MojoExecutionException {
-<span class="nc bnc" id="L356" title="All 4 branches missed.">        if (cacheTokenValue == null &amp;&amp; TokenType.CUSTOM.name().equalsIgnoreCase(cacheTokenType)) {</span>
-<span class="nc" id="L357">            throw new MojoExecutionException(&quot;Parameter cacheTokenValue is required when cacheTokenType is equal to \&quot;custom\&quot;!&quot;);</span>
+<span class="nc bnc" id="L377" title="All 2 branches missed.">        if (importsDepthLimit &lt; 1) {</span>
+<span class="nc" id="L378">            importsDepthLimit = Integer.MAX_VALUE;</span>
         }
-<span class="nc" id="L359">    }</span>
-
-    public void execute() throws MojoExecutionException, MojoFailureException {
-<span class="nc" id="L362">        logParameters();</span>
-<span class="nc bnc" id="L363" title="All 2 branches missed.">        if (skip) {</span>
-<span class="nc" id="L364">            getLog().info(&quot;Skipping job execution&quot;);</span>
-<span class="nc" id="L365">            return;</span>
+<span class="nc bnc" id="L380" title="All 2 branches missed.">        if (cacheTokenValue == null) {</span>
+<span class="nc" id="L381">            cacheTokenValue = getDefaultCacheTokenValue();</span>
         }
-<span class="nc" id="L367">        calculateParameters();</span>
-<span class="nc" id="L368">        validateParameters();</span>
-<span class="nc" id="L369">        runSplitter();</span>
-<span class="nc" id="L370">    }</span>
-
-    private void runSplitter() throws MojoFailureException {
-<span class="nc bnc" id="L373" title="All 2 branches missed.">        if (!sourceDirectory.exists()) {</span>
-<span class="nc" id="L374">            getLog().warn(&quot;Source directory does not exist: &quot; + sourceDirectory.getAbsolutePath());</span>
-<span class="nc" id="L375">            return;</span>
-        }
-<span class="nc" id="L377">        final Collection&lt;File&gt; files = getFiles();</span>
-<span class="nc bnc" id="L378" title="All 2 branches missed.">        if (files.isEmpty()) {</span>
-<span class="nc" id="L379">            getLog().warn(&quot;No sources to compile&quot;);</span>
-<span class="nc" id="L380">            return;</span>
-        }
-<span class="nc" id="L382">        splitFiles(files);</span>
 <span class="nc" id="L383">    }</span>
 
-    private Collection&lt;File&gt; getFiles() {
-<span class="nc" id="L386">        final ScannerPatternFormat patternFormat = ScannerPatternFormat.toPattern(filesetPatternFormat);</span>
-<span class="nc" id="L387">        final FileScanner scanner = new ScannerFactory().create(patternFormat, getLog());</span>
-<span class="nc bnc" id="L388" title="All 2 branches missed.">        if (verbose) {</span>
-<span class="nc" id="L389">            getLog().info(&quot;Scanning directory for sources...&quot;);</span>
+    private void validateParameters() throws MojoExecutionException {
+<span class="nc bnc" id="L386" title="All 4 branches missed.">        if (cacheTokenValue == null &amp;&amp; TokenType.CUSTOM.name().equalsIgnoreCase(cacheTokenType)) {</span>
+<span class="nc" id="L387">            throw new MojoExecutionException(&quot;Parameter cacheTokenValue is required when cacheTokenType is equal to \&quot;custom\&quot;!&quot;);</span>
         }
-<span class="nc" id="L391">        return scanner.getFiles(sourceDirectory, includes, excludes);</span>
+<span class="nc" id="L389">    }</span>
+
+    public void execute() throws MojoExecutionException, MojoFailureException {
+<span class="nc" id="L392">        logParameters();</span>
+<span class="nc bnc" id="L393" title="All 2 branches missed.">        if (skip) {</span>
+<span class="nc" id="L394">            getLog().info(&quot;Skipping job execution&quot;);</span>
+<span class="nc" id="L395">            return;</span>
+        }
+<span class="nc" id="L397">        calculateParameters();</span>
+<span class="nc" id="L398">        validateParameters();</span>
+<span class="nc" id="L399">        runSplitter();</span>
+<span class="nc" id="L400">    }</span>
+
+    private void runSplitter() throws MojoFailureException {
+<span class="nc bnc" id="L403" title="All 2 branches missed.">        if (!sourceDirectory.exists()) {</span>
+<span class="nc" id="L404">            getLog().warn(&quot;Source directory does not exist: &quot; + sourceDirectory.getAbsolutePath());</span>
+<span class="nc" id="L405">            return;</span>
+        }
+<span class="nc" id="L407">        final Collection&lt;File&gt; files = getFiles();</span>
+<span class="nc bnc" id="L408" title="All 2 branches missed.">        if (files.isEmpty()) {</span>
+<span class="nc" id="L409">            getLog().warn(&quot;No sources to split&quot;);</span>
+<span class="nc" id="L410">            return;</span>
+        }
+<span class="nc" id="L412">        resolveCacheToken();</span>
+<span class="nc" id="L413">        splitFiles(files);</span>
+<span class="nc" id="L414">    }</span>
+
+    private Collection&lt;File&gt; getFiles() {
+<span class="nc" id="L417">        final ScannerPatternFormat patternFormat = ScannerPatternFormat.toPattern(filesetPatternFormat);</span>
+<span class="nc" id="L418">        final FileScanner scanner = new ScannerFactory().create(patternFormat, getLog());</span>
+<span class="nc bnc" id="L419" title="All 2 branches missed.">        if (verbose) {</span>
+<span class="nc" id="L420">            getLog().info(&quot;Scanning directory for sources...&quot;);</span>
+        }
+<span class="nc" id="L422">        return scanner.getFiles(sourceDirectory, includes, excludes);</span>
     }
 
+    private void resolveCacheToken() {
+<span class="nc bnc" id="L426" title="All 2 branches missed.">        if (getLog().isDebugEnabled()) {</span>
+<span class="nc" id="L427">            getLog().debug(&quot;Resolving cache token...&quot;);</span>
+        }
+
+<span class="nc bnc" id="L430" title="All 2 branches missed.">        if (!TokenType.NONE.name().equalsIgnoreCase(cacheTokenType)) {</span>
+<span class="nc" id="L431">            final String value = TokenType.create(cacheTokenType).createFactory().create(cacheTokenValue);</span>
+<span class="nc" id="L432">            final StringBuilder cacheToken = new StringBuilder();</span>
+<span class="nc" id="L433">            cacheToken.append(UrlEscaper.escape(cacheTokenParameter));</span>
+<span class="nc" id="L434">            cacheToken.append('=');</span>
+<span class="nc" id="L435">            cacheToken.append(UrlEscaper.escape(value));</span>
+<span class="nc" id="L436">            resolvedCacheToken = cacheToken.toString();</span>
+        }
+
+<span class="nc bnc" id="L439" title="All 2 branches missed.">        if (verbose) {</span>
+<span class="nc" id="L440">            getLog().info(&quot;Cache token: &quot; + resolvedCacheToken);</span>
+        }
+<span class="nc" id="L442">    }</span>
+
     private void splitFiles(final Collection&lt;File&gt; sources) throws MojoFailureException {
-<span class="nc bnc" id="L395" title="All 2 branches missed.">        final String sourceFilesText = &quot;source file&quot; + (sources.size() != 1 ? &quot;s&quot; : &quot;&quot;);</span>
-<span class="nc" id="L396">        getLog().info(&quot;Splitting &quot; + sources.size() + ' ' + sourceFilesText + &quot; to &quot; + outputDirectory.getAbsolutePath());</span>
-<span class="nc" id="L397">        final Timer timer = SystemTimer.getStartedTimer();</span>
-<span class="nc bnc" id="L398" title="All 2 branches missed.">        for (final File source : sources) {</span>
-<span class="nc bnc" id="L399" title="All 2 branches missed.">            if (isCompilationRequired(source)) {</span>
-<span class="nc" id="L400">                splitFile(source);</span>
-<span class="nc bnc" id="L401" title="All 2 branches missed.">            } else if (verbose) {</span>
-<span class="nc" id="L402">                getLog().info(&quot;Skipping stylesheet split (not modified): &quot; + source.getAbsolutePath());</span>
+<span class="nc bnc" id="L445" title="All 2 branches missed.">        final String sourceFilesText = &quot;source file&quot; + (sources.size() != 1 ? &quot;s&quot; : &quot;&quot;);</span>
+<span class="nc" id="L446">        getLog().info(&quot;Splitting &quot; + sources.size() + ' ' + sourceFilesText + &quot; to &quot; + outputDirectory.getAbsolutePath());</span>
+<span class="nc" id="L447">        final Timer timer = SystemTimer.getStartedTimer();</span>
+<span class="nc bnc" id="L448" title="All 2 branches missed.">        for (final File source : sources) {</span>
+<span class="nc bnc" id="L449" title="All 2 branches missed.">            if (isCompilationRequired(source)) {</span>
+<span class="nc" id="L450">                splitFile(source);</span>
+<span class="nc bnc" id="L451" title="All 2 branches missed.">            } else if (verbose) {</span>
+<span class="nc" id="L452">                getLog().info(&quot;Skipping stylesheet split (not modified): &quot; + source.getAbsolutePath());</span>
             }
-<span class="nc" id="L404">        }</span>
-<span class="nc" id="L405">        getLog().info(&quot;Finished &quot; + sourceFilesText + &quot; split in &quot; + timer.stop());</span>
-<span class="nc" id="L406">    }</span>
+<span class="nc" id="L454">        }</span>
+<span class="nc" id="L455">        getLog().info(&quot;Finished &quot; + sourceFilesText + &quot; split in &quot; + timer.stop());</span>
+<span class="nc" id="L456">    }</span>
 
     private boolean isCompilationRequired(final File source) {
-<span class="nc bnc" id="L409" title="All 2 branches missed.">        if (force) {</span>
-<span class="nc" id="L410">            return true;</span>
+<span class="nc bnc" id="L459" title="All 2 branches missed.">        if (force) {</span>
+<span class="nc" id="L460">            return true;</span>
         }
-<span class="nc" id="L412">        final File destination = new DestinationFileCreator(sourceDirectory, outputDirectory, outputFileNamePattern).create(source);</span>
-<span class="nc bnc" id="L413" title="All 2 branches missed.">        if (!destination.exists()) {</span>
-<span class="nc" id="L414">            return true;</span>
+<span class="nc" id="L462">        final File destination = new DestinationFileCreator(sourceDirectory, outputDirectory, outputFileNamePattern).create(source);</span>
+<span class="nc bnc" id="L463" title="All 2 branches missed.">        if (!destination.exists()) {</span>
+<span class="nc" id="L464">            return true;</span>
         }
-<span class="nc bnc" id="L416" title="All 2 branches missed.">        return source.lastModified() &gt; destination.lastModified();</span>
+<span class="nc bnc" id="L466" title="All 2 branches missed.">        return source.lastModified() &gt; destination.lastModified();</span>
     }
 
     private void splitFile(final File source) throws MojoFailureException {
-<span class="nc" id="L420">        Timer timer = null;</span>
-<span class="nc bnc" id="L421" title="All 2 branches missed.">        if (verbose) {</span>
-<span class="nc" id="L422">            getLog().info(&quot;Splitting stylesheet: &quot; + source.getAbsolutePath());</span>
-<span class="nc" id="L423">            timer = SystemTimer.getStartedTimer();</span>
+<span class="nc" id="L470">        Timer timer = null;</span>
+<span class="nc bnc" id="L471" title="All 2 branches missed.">        if (verbose) {</span>
+<span class="nc" id="L472">            getLog().info(&quot;Splitting stylesheet: &quot; + source.getAbsolutePath());</span>
+<span class="nc" id="L473">            timer = SystemTimer.getStartedTimer();</span>
         }
-<span class="nc" id="L425">        final String css = readCss(source);</span>
+<span class="nc" id="L475">        final String css = readCss(source);</span>
         final List&lt;StyleSheet&gt; parts;
         try {
-<span class="nc bnc" id="L428" title="All 2 branches missed.">            if (verbose) {</span>
-<span class="nc" id="L429">                getLog().info(&quot;Parsing stylesheet...&quot;);</span>
+<span class="nc bnc" id="L478" title="All 2 branches missed.">            if (getLog().isDebugEnabled()) {</span>
+<span class="nc" id="L479">                getLog().debug(&quot;Parsing stylesheet...&quot;);</span>
             }
-<span class="nc" id="L431">            final StyleSheet stylesheet = new SteadyStateParser(getLog()).parse(css, Standard.create(standard));</span>
-<span class="nc" id="L432">            validateStyleSheet(stylesheet);</span>
-<span class="nc bnc" id="L433" title="All 2 branches missed.">            if (verbose) {</span>
-<span class="nc" id="L434">                getLog().info(&quot;Splitting stylesheet to parts...&quot;);</span>
+<span class="nc" id="L481">            final StyleSheet stylesheet = new SteadyStateParser(getLog()).parse(css, Standard.create(standard));</span>
+<span class="nc" id="L482">            validateStyleSheet(stylesheet);</span>
+<span class="nc bnc" id="L483" title="All 2 branches missed.">            if (getLog().isDebugEnabled()) {</span>
+<span class="nc" id="L484">                getLog().debug(&quot;Splitting stylesheet to parts...&quot;);</span>
             }
-<span class="nc" id="L436">            parts = new Splliter(maxRules).split(stylesheet);</span>
-<span class="nc" id="L437">        } catch (final Exception e) {</span>
-<span class="nc" id="L438">            throw new MojoFailureException(e.getMessage(), e);</span>
-<span class="nc" id="L439">        }</span>
-<span class="nc" id="L440">        saveParts(source, parts);</span>
-<span class="nc bnc" id="L441" title="All 2 branches missed.">        if (timer != null) {</span>
-<span class="nc" id="L442">            getLog().info(&quot;Finished in &quot; + timer.stop());</span>
+<span class="nc" id="L486">            parts = new Splliter(maxRules).split(stylesheet);</span>
+<span class="nc" id="L487">        } catch (final Exception e) {</span>
+<span class="nc" id="L488">            throw new MojoFailureException(e.getMessage(), e);</span>
+<span class="nc" id="L489">        }</span>
+<span class="nc bnc" id="L490" title="All 2 branches missed.">        if (verbose) {</span>
+<span class="nc bnc" id="L491" title="All 2 branches missed.">            getLog().info(String.format(&quot;Split to %d stylesheet%s.&quot;, parts.size(), parts.size() == 1 ? &quot;&quot; : &quot;s&quot;));</span>
         }
-<span class="nc" id="L444">    }</span>
+<span class="nc" id="L493">        saveParts(source, parts);</span>
+<span class="nc bnc" id="L494" title="All 2 branches missed.">        if (timer != null) {</span>
+<span class="nc" id="L495">            getLog().info(&quot;Finished in &quot; + timer.stop());</span>
+        }
+<span class="nc" id="L497">    }</span>
 
     private String readCss(final File file) throws MojoFailureException {
         try {
-<span class="nc" id="L448">            return FileUtils.readFileToString(file, encoding);</span>
-<span class="nc" id="L449">        } catch (final IOException e) {</span>
-<span class="nc" id="L450">            throw new MojoFailureException(&quot;Cannot read file: &quot; + file.getAbsolutePath(), e);</span>
+<span class="nc" id="L501">            return FileUtils.readFileToString(file, encoding);</span>
+<span class="nc" id="L502">        } catch (final IOException e) {</span>
+<span class="nc" id="L503">            throw new MojoFailureException(&quot;Cannot read file: &quot; + file.getAbsolutePath(), e);</span>
         }
     }
 
     private void validateStyleSheet(final StyleSheet stylesheet) throws ValidationException {
-<span class="nc bnc" id="L455" title="All 2 branches missed.">        if (verbose) {</span>
-<span class="nc" id="L456">            getLog().info(&quot;Validating stylesheet...&quot;);</span>
+<span class="nc bnc" id="L508" title="All 2 branches missed.">        if (getLog().isDebugEnabled()) {</span>
+<span class="nc" id="L509">            getLog().debug(&quot;Validating stylesheet...&quot;);</span>
         }
 
-<span class="nc" id="L459">        final Collection&lt;StyleSheetValidator&gt; validators = new ArrayList&lt;StyleSheetValidator&gt;();</span>
-<span class="nc" id="L460">        StyleSheetCounter counter = new StyleSheetCounterImpl();</span>
-<span class="nc bnc" id="L461" title="All 2 branches missed.">        if (verbose) {</span>
-<span class="nc" id="L462">            counter = new LoggingStyleSheetCounter(counter, getLog());</span>
+<span class="nc" id="L512">        final Collection&lt;StyleSheetValidator&gt; validators = new ArrayList&lt;StyleSheetValidator&gt;();</span>
+<span class="nc" id="L513">        StyleSheetCounter counter = new StyleSheetCounterImpl();</span>
+<span class="nc bnc" id="L514" title="All 2 branches missed.">        if (verbose) {</span>
+<span class="nc" id="L515">            counter = new LoggingStyleSheetCounter(counter, getLog());</span>
         }
-<span class="nc" id="L464">        validators.add(new RulesLimitValidator(rulesLimit, counter));</span>
-<span class="nc" id="L465">        validators.add(new StylePropertiesLimitValidator(maxRules, getLog()));</span>
+<span class="nc" id="L517">        validators.add(new RulesLimitValidator(rulesLimit, counter));</span>
+<span class="nc" id="L518">        validators.add(new StylePropertiesLimitValidator(maxRules, getLog()));</span>
 
-<span class="nc bnc" id="L467" title="All 2 branches missed.">        for (final StyleSheetValidator validator : validators) {</span>
-<span class="nc" id="L468">            validator.validate(stylesheet);</span>
-<span class="nc" id="L469">        }</span>
-<span class="nc" id="L470">    }</span>
+<span class="nc bnc" id="L520" title="All 2 branches missed.">        for (final StyleSheetValidator validator : validators) {</span>
+<span class="nc" id="L521">            validator.validate(stylesheet);</span>
+<span class="nc" id="L522">        }</span>
+<span class="nc" id="L523">    }</span>
 
     private void saveParts(final File source, final List&lt;StyleSheet&gt; parts) throws MojoFailureException {
-<span class="nc bnc" id="L473" title="All 2 branches missed.">        if (verbose) {</span>
-<span class="nc" id="L474">            getLog().info(&quot;Saving parts...&quot;);</span>
+<span class="nc bnc" id="L526" title="All 2 branches missed.">        if (getLog().isDebugEnabled()) {</span>
+<span class="nc" id="L527">            getLog().debug(&quot;Creating imports tree...&quot;);</span>
         }
+<span class="nc" id="L529">        final OrderedTree&lt;StyleSheet&gt; stylesheetsTree = new OrderedTree&lt;StyleSheet&gt;(parts, maxImports);</span>
+<span class="nc" id="L530">        validateImportsDepth(stylesheetsTree);</span>
 
-<span class="nc" id="L477">        final DestinationFileCreator fileCreator = new DestinationFileCreator(sourceDirectory, outputDirectory);</span>
-<span class="nc" id="L478">        fileCreator.setFileNamePattern(outputFileNamePattern);</span>
-<span class="nc" id="L479">        final File file = fileCreator.create(source);</span>
-<span class="nc bnc" id="L480" title="All 2 branches missed.">        if (parts.size() == 1) {</span>
-<span class="nc" id="L481">            saveCss(file, parts.get(0).toString());</span>
-<span class="nc" id="L482">            return;</span>
+<span class="nc bnc" id="L532" title="All 2 branches missed.">        if (verbose) {</span>
+<span class="nc" id="L533">            getLog().info(&quot;Saving CSS code...&quot;);</span>
         }
+<span class="nc" id="L535">        final int numberOfDigits = String.valueOf(stylesheetsTree.size()).length();</span>
+<span class="nc" id="L536">        final String indexPattern = &quot;%0&quot; + numberOfDigits + 'd';</span>
+<span class="nc" id="L537">        saveStyleSheetsTree(source, stylesheetsTree, indexPattern);</span>
+<span class="nc" id="L538">    }</span>
 
-        // TODO add maxImports per file
-<span class="nc" id="L486">        final StringBuilder imports = new StringBuilder();</span>
-<span class="nc" id="L487">        final String cacheToken = createCacheToken();</span>
-<span class="nc bnc" id="L488" title="All 2 branches missed.">        for (int index = 0; index &lt; parts.size(); ++index) {</span>
-<span class="nc" id="L489">            final String filePartFormat = outputPartNamePattern.replace(PART_INDEX_PARAMETER, String.valueOf(index + 1));</span>
-<span class="nc" id="L490">            fileCreator.setFileNamePattern(filePartFormat);</span>
-<span class="nc" id="L491">            final File filePart = fileCreator.create(source);</span>
-<span class="nc" id="L492">            imports.append(&quot;@import \&quot;&quot;);</span>
-<span class="nc" id="L493">            imports.append(filePart.getName());</span>
-<span class="nc" id="L494">            imports.append(cacheToken);</span>
-<span class="nc" id="L495">            imports.append(&quot;\&quot;;\n&quot;);</span>
-<span class="nc" id="L496">            saveCss(filePart, parts.get(index).toString());</span>
+    private void validateImportsDepth(final OrderedTreeNode&lt;StyleSheet&gt; tree) throws MojoFailureException {
+<span class="nc" id="L541">        final int depth = tree.getDepth();</span>
+<span class="nc bnc" id="L542" title="All 2 branches missed.">        if (verbose) {</span>
+<span class="nc" id="L543">            getLog().info(&quot;Imports depth: &quot; + depth);</span>
         }
-<span class="nc" id="L498">        saveCss(file, imports.toString());</span>
-<span class="nc" id="L499">    }</span>
+<span class="nc bnc" id="L545" title="All 2 branches missed.">        if (getLog().isDebugEnabled()) {</span>
+<span class="nc" id="L546">            getLog().debug(&quot;Validating imports depth...&quot;);</span>
+        }
+<span class="nc bnc" id="L548" title="All 2 branches missed.">        if (depth &gt; importsDepthLimit) {</span>
+<span class="nc" id="L549">            throw new MojoFailureException(</span>
+<span class="nc" id="L550">                    String.format(&quot;The number of @import depth (%d) exceeded the allowable limit (%d)!&quot;, depth, importsDepthLimit));</span>
+        }
+<span class="nc" id="L552">    }</span>
 
-    private String createCacheToken() {
-<span class="nc bnc" id="L502" title="All 2 branches missed.">        if (TokenType.NONE.name().equalsIgnoreCase(cacheTokenType)) {</span>
-<span class="nc" id="L503">            return &quot;&quot;;</span>
+    private void saveStyleSheetsTree(final File source, final OrderedTreeNode&lt;StyleSheet&gt; node, final String indexPattern)
+            throws MojoFailureException {
+<span class="nc" id="L556">        final DestinationFileCreator fileCreator = new DestinationFileCreator(sourceDirectory, outputDirectory);</span>
+<span class="nc bnc" id="L557" title="All 2 branches missed.">        if (node.getOrder() == 0) {</span>
+<span class="nc" id="L558">            fileCreator.setFileNamePattern(outputFileNamePattern);</span>
         } else {
-<span class="nc" id="L505">            final String value = TokenType.create(cacheTokenType).createFactory().create(cacheTokenValue);</span>
-<span class="nc" id="L506">            final StringBuilder cacheToken = new StringBuilder();</span>
-<span class="nc" id="L507">            cacheToken.append('?');</span>
-<span class="nc" id="L508">            cacheToken.append(UrlEscaper.escape(cacheTokenParameter));</span>
-<span class="nc" id="L509">            cacheToken.append('=');</span>
-<span class="nc" id="L510">            cacheToken.append(UrlEscaper.escape(value));</span>
-<span class="nc" id="L511">            return cacheToken.toString();</span>
+<span class="nc" id="L560">            final String index = String.format(indexPattern, node.getOrder());</span>
+<span class="nc" id="L561">            fileCreator.setFileNamePattern(outputPartNamePattern.replace(PART_INDEX_PARAMETER, index));</span>
         }
-    }
+<span class="nc" id="L563">        final File target = fileCreator.create(source);</span>
+
+<span class="nc bnc" id="L565" title="All 2 branches missed.">        if (node.hasValue()) {</span>
+<span class="nc" id="L566">            saveCss(target, node.getValue().toString());</span>
+<span class="nc" id="L567">            return;</span>
+        }
+
+<span class="nc" id="L570">        final StringBuilder imports = new StringBuilder();</span>
+<span class="nc bnc" id="L571" title="All 2 branches missed.">        for (final OrderedTreeNode&lt;StyleSheet&gt; child : node.getChildren()) {</span>
+<span class="nc" id="L572">            final String index = String.format(indexPattern, child.getOrder());</span>
+<span class="nc" id="L573">            fileCreator.setFileNamePattern(outputPartNamePattern.replace(PART_INDEX_PARAMETER, index));</span>
+<span class="nc" id="L574">            final File childTarget = fileCreator.create(source);</span>
+<span class="nc" id="L575">            saveStyleSheetsTree(source, child, indexPattern);</span>
+<span class="nc" id="L576">            imports.append(String.format(&quot;@import \&quot;%s?%s\&quot;;%n&quot;, childTarget.getName(), resolvedCacheToken));</span>
+<span class="nc" id="L577">        }</span>
+<span class="nc" id="L578">        saveCss(target, imports.toString());</span>
+<span class="nc" id="L579">    }</span>
 
     private void saveCss(final File file, final String css) throws MojoFailureException {
-<span class="nc bnc" id="L516" title="All 2 branches missed.">        if (verbose) {</span>
-<span class="nc" id="L517">            getLog().info(&quot;Saving CSS code to &quot; + file.getAbsolutePath());</span>
+<span class="nc bnc" id="L582" title="All 2 branches missed.">        if (getLog().isDebugEnabled()) {</span>
+<span class="nc" id="L583">            getLog().debug(&quot;Saving CSS code to &quot; + file.getAbsolutePath());</span>
         }
         try {
-<span class="nc" id="L520">            FileUtils.write(file, css, encoding);</span>
-<span class="nc" id="L521">        } catch (final IOException e) {</span>
-<span class="nc" id="L522">            throw new MojoFailureException(&quot;Cannot save file: &quot; + file.getAbsolutePath(), e);</span>
-<span class="nc" id="L523">        }</span>
-<span class="nc" id="L524">    }</span>
+<span class="nc" id="L586">            FileUtils.write(file, css, encoding);</span>
+<span class="nc" id="L587">        } catch (final IOException e) {</span>
+<span class="nc" id="L588">            throw new MojoFailureException(&quot;Cannot save file: &quot; + file.getAbsolutePath(), e);</span>
+<span class="nc" id="L589">        }</span>
+<span class="nc" id="L590">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>
