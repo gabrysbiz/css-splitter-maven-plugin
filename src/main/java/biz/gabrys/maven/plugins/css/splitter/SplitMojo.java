@@ -220,13 +220,13 @@ public class SplitMojo extends AbstractMojo {
     protected int maxImports;
 
     /**
-     * The plugin failures build when a number of nesting <code>&#64;import</code> exceed this value. The plugin does
-     * not check the code in parts.<br>
+     * The plugin failures build when a number of <code>&#64;import</code> depth level exceed this value. The plugin
+     * ignores <code>&#64;import</code> operations included in source files.<br>
      * <b>Notice</b>: all values smaller than <tt>1</tt> are treated as <tt>2147483647</tt>.
      * @since 1.0
      */
-    @Parameter(property = "css.splitter.importsNestingLimit", defaultValue = "4")
-    protected int importsNestingLimit;
+    @Parameter(property = "css.splitter.importsDepthLimit", defaultValue = "4")
+    protected int importsDepthLimit;
 
     /**
      * The <a href="http://www.w3.org/Style/CSS/">CSS</a> standard used to parse source code. Available values:
@@ -295,14 +295,15 @@ public class SplitMojo extends AbstractMojo {
 
     /**
      * Destination parts naming pattern. {fileName} is equal to source file name without extension, {index} is equal to
-     * part index (first index is equal to 1).
+     * part index (first is equal to 1). Parts are loaded in the browsers according to indexes. For correct listing
+     * files on all operating systems indexes can contain leading zeros.
      * @since 1.0
      */
     @Parameter(property = "css.splitter.outputPartNamePattern", defaultValue = DestinationFileCreator.FILE_NAME_PARAMETER + '-'
             + PART_INDEX_PARAMETER + ".css")
     protected String outputPartNamePattern;
 
-    private String resolvedCacheToken;
+    private String resolvedCacheToken = "";
 
     private void logParameters() {
         if (getLog().isDebugEnabled()) {
@@ -320,7 +321,7 @@ public class SplitMojo extends AbstractMojo {
             getLog().debug("\tmaxRules = " + maxRules + (maxRules > 0 ? "" : calculatedIntegerMaxValue));
             getLog().debug("\trulesLimit = " + rulesLimit + (rulesLimit > 0 ? "" : calculatedIntegerMaxValue));
             getLog().debug("\tmaxImports = " + maxImports + (maxImports > 1 ? "" : calculatedIntegerMaxValue));
-            getLog().debug("\timportsNestingLimit = " + importsNestingLimit + (importsNestingLimit > 0 ? "" : calculatedIntegerMaxValue));
+            getLog().debug("\timportsDepthLimit = " + importsDepthLimit + (importsDepthLimit > 0 ? "" : calculatedIntegerMaxValue));
             getLog().debug("\tstandard = " + standard);
             getLog().debug("\tcacheTokenType = " + cacheTokenType);
             getLog().debug("\tcacheTokenParameter = " + cacheTokenParameter);
@@ -373,8 +374,8 @@ public class SplitMojo extends AbstractMojo {
         if (maxImports < OrderedTree.MIN_NUMBER_OF_CHILDREN) {
             maxImports = Integer.MAX_VALUE;
         }
-        if (importsNestingLimit < 1) {
-            importsNestingLimit = Integer.MAX_VALUE;
+        if (importsDepthLimit < 1) {
+            importsDepthLimit = Integer.MAX_VALUE;
         }
         if (cacheTokenValue == null) {
             cacheTokenValue = getDefaultCacheTokenValue();
@@ -395,30 +396,7 @@ public class SplitMojo extends AbstractMojo {
         }
         calculateParameters();
         validateParameters();
-        resolveCacheToken();
         runSplitter();
-    }
-
-    private void resolveCacheToken() {
-        if (getLog().isDebugEnabled()) {
-            getLog().debug("Resolving cache token...");
-        }
-
-        if (TokenType.NONE.name().equalsIgnoreCase(cacheTokenType)) {
-            resolvedCacheToken = "";
-        } else {
-            final String value = TokenType.create(cacheTokenType).createFactory().create(cacheTokenValue);
-            final StringBuilder cacheToken = new StringBuilder();
-            cacheToken.append('?');
-            cacheToken.append(UrlEscaper.escape(cacheTokenParameter));
-            cacheToken.append('=');
-            cacheToken.append(UrlEscaper.escape(value));
-            resolvedCacheToken = cacheToken.toString();
-        }
-
-        if (getLog().isDebugEnabled()) {
-            getLog().debug("Resolved value: " + resolvedCacheToken);
-        }
     }
 
     private void runSplitter() throws MojoFailureException {
@@ -428,9 +406,10 @@ public class SplitMojo extends AbstractMojo {
         }
         final Collection<File> files = getFiles();
         if (files.isEmpty()) {
-            getLog().warn("No sources to compile");
+            getLog().warn("No sources to split");
             return;
         }
+        resolveCacheToken();
         splitFiles(files);
     }
 
@@ -441,6 +420,25 @@ public class SplitMojo extends AbstractMojo {
             getLog().info("Scanning directory for sources...");
         }
         return scanner.getFiles(sourceDirectory, includes, excludes);
+    }
+
+    private void resolveCacheToken() {
+        if (getLog().isDebugEnabled()) {
+            getLog().debug("Resolving cache token...");
+        }
+
+        if (!TokenType.NONE.name().equalsIgnoreCase(cacheTokenType)) {
+            final String value = TokenType.create(cacheTokenType).createFactory().create(cacheTokenValue);
+            final StringBuilder cacheToken = new StringBuilder();
+            cacheToken.append(UrlEscaper.escape(cacheTokenParameter));
+            cacheToken.append('=');
+            cacheToken.append(UrlEscaper.escape(value));
+            resolvedCacheToken = cacheToken.toString();
+        }
+
+        if (verbose) {
+            getLog().info("Cache token: " + resolvedCacheToken);
+        }
     }
 
     private void splitFiles(final Collection<File> sources) throws MojoFailureException {
@@ -477,13 +475,13 @@ public class SplitMojo extends AbstractMojo {
         final String css = readCss(source);
         final List<StyleSheet> parts;
         try {
-            if (verbose) {
-                getLog().info("Parsing stylesheet...");
+            if (getLog().isDebugEnabled()) {
+                getLog().debug("Parsing stylesheet...");
             }
             final StyleSheet stylesheet = new SteadyStateParser(getLog()).parse(css, Standard.create(standard));
             validateStyleSheet(stylesheet);
-            if (verbose) {
-                getLog().info("Splitting stylesheet to parts...");
+            if (getLog().isDebugEnabled()) {
+                getLog().debug("Splitting stylesheet to parts...");
             }
             parts = new Splliter(maxRules).split(stylesheet);
         } catch (final Exception e) {
@@ -507,8 +505,8 @@ public class SplitMojo extends AbstractMojo {
     }
 
     private void validateStyleSheet(final StyleSheet stylesheet) throws ValidationException {
-        if (verbose) {
-            getLog().info("Validating stylesheet...");
+        if (getLog().isDebugEnabled()) {
+            getLog().debug("Validating stylesheet...");
         }
 
         final Collection<StyleSheetValidator> validators = new ArrayList<StyleSheetValidator>();
@@ -525,17 +523,32 @@ public class SplitMojo extends AbstractMojo {
     }
 
     private void saveParts(final File source, final List<StyleSheet> parts) throws MojoFailureException {
+        if (getLog().isDebugEnabled()) {
+            getLog().debug("Creating imports tree...");
+        }
         final OrderedTree<StyleSheet> stylesheetsTree = new OrderedTree<StyleSheet>(parts, maxImports);
-
-        // TODO valid deep
+        validateImportsDepth(stylesheetsTree);
 
         if (verbose) {
             getLog().info("Saving CSS code...");
         }
-
         final int numberOfDigits = String.valueOf(stylesheetsTree.size()).length();
-        final String indexPattern = "%0" + numberOfDigits + "d";
+        final String indexPattern = "%0" + numberOfDigits + 'd';
         saveStyleSheetsTree(source, stylesheetsTree, indexPattern);
+    }
+
+    private void validateImportsDepth(final OrderedTreeNode<StyleSheet> tree) throws MojoFailureException {
+        final int depth = tree.getDepth();
+        if (verbose) {
+            getLog().info("Imports depth: " + depth);
+        }
+        if (getLog().isDebugEnabled()) {
+            getLog().debug("Validating imports depth...");
+        }
+        if (depth > importsDepthLimit) {
+            throw new MojoFailureException(
+                    String.format("The number of @import depth (%d) exceeded the allowable limit (%d)!", depth, importsDepthLimit));
+        }
     }
 
     private void saveStyleSheetsTree(final File source, final OrderedTreeNode<StyleSheet> node, final String indexPattern)
@@ -560,7 +573,7 @@ public class SplitMojo extends AbstractMojo {
             fileCreator.setFileNamePattern(outputPartNamePattern.replace(PART_INDEX_PARAMETER, index));
             final File childTarget = fileCreator.create(source);
             saveStyleSheetsTree(source, child, indexPattern);
-            imports.append(String.format("@import \"%s%s\";%n", childTarget.getName(), resolvedCacheToken));
+            imports.append(String.format("@import \"%s?%s\";%n", childTarget.getName(), resolvedCacheToken));
         }
         saveCss(target, imports.toString());
     }

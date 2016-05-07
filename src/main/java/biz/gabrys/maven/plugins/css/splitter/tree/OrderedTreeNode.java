@@ -25,4 +25,6 @@ public interface OrderedTreeNode<T> {
     int getOrder();
 
     int size();
+
+    int getDepth();
 }

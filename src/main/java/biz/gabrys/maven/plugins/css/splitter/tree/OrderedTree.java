@@ -73,6 +73,20 @@ public class OrderedTree<T> implements OrderedTreeNode<T> {
         return size;
     }
 
+    public int getDepth() {
+        if (isLeaf()) {
+            return 0;
+        }
+        int max = 0;
+        for (final OrderedTree<T> child : children) {
+            final int tmp = child.getDepth();
+            if (tmp > max) {
+                max = tmp;
+            }
+        }
+        return 1 + max;
+    }
+
     private void createLeaves(final int count) {
         for (int i = 0; i < count; ++i) {
             createLeaf();
