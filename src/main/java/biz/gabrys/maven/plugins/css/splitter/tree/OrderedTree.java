@@ -16,13 +16,14 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class OrderedTree<T> implements TreeNode<T> {
+public class OrderedTree<T> implements OrderedTreeNode<T> {
 
     public static final int MIN_NUMBER_OF_CHILDREN = 2;
 
     private final int numberOfChildren;
     private final List<OrderedTree<T>> children;
     private T value;
+    private int order;
 
     public OrderedTree(final List<T> objects, final int numberOfChildren) {
         this(numberOfChildren);
@@ -32,17 +33,9 @@ public class OrderedTree<T> implements TreeNode<T> {
         }
 
         // root node is a leaf, so we need to create size - 1 additional leaves
-        for (int i = 0; i < objects.size() - 1; ++i) {
-            createLeaf();
-        }
-        final List<OrderedTree<T>> leaves = getLeaves();
-        if (leaves.size() != objects.size()) {
-            throw new IllegalStateException(
-                    String.format("Leaves quantity (%d) is other that objects quantity (%d)!", leaves.size(), objects.size()));
-        }
-        for (int i = 0; i < objects.size(); ++i) {
-            leaves.get(i).value = objects.get(i);
-        }
+        createLeaves(objects.size() - 1);
+        fillLeaves(objects);
+        fillOrder(0);
     }
 
     private OrderedTree(final int numberOfChildren) {
@@ -53,8 +46,8 @@ public class OrderedTree<T> implements TreeNode<T> {
         children = new ArrayList<OrderedTree<T>>(numberOfChildren);
     }
 
-    public List<TreeNode<T>> getChildren() {
-        return new ArrayList<TreeNode<T>>(children);
+    public List<OrderedTreeNode<T>> getChildren() {
+        return new ArrayList<OrderedTreeNode<T>>(children);
     }
 
     public boolean hasValue() {
@@ -63,6 +56,27 @@ public class OrderedTree<T> implements TreeNode<T> {
 
     public T getValue() {
         return value;
+    }
+
+    public int getOrder() {
+        return order;
+    }
+
+    public int size() {
+        int size = hasValue() ? 1 : 0;
+        for (final OrderedTree<T> child : children) {
+            if (!child.isLeaf()) {
+                ++size;
+            }
+            size += child.size();
+        }
+        return size;
+    }
+
+    private void createLeaves(final int count) {
+        for (int i = 0; i < count; ++i) {
+            createLeaf();
+        }
     }
 
     private void createLeaf() {
@@ -135,6 +149,17 @@ public class OrderedTree<T> implements TreeNode<T> {
         return leaves;
     }
 
+    private void fillLeaves(final List<T> objects) {
+        final List<OrderedTree<T>> leaves = getLeaves();
+        if (leaves.size() != objects.size()) {
+            throw new IllegalStateException(
+                    String.format("Leaves quantity (%d) is other that objects quantity (%d)!", leaves.size(), objects.size()));
+        }
+        for (int i = 0; i < objects.size(); ++i) {
+            leaves.get(i).value = objects.get(i);
+        }
+    }
+
     private List<OrderedTree<T>> getLeaves() {
         final List<LeafWithDistance<T>> leavesWithDistances = getLeavesWithDistances();
         final List<OrderedTree<T>> leaves = new ArrayList<OrderedTree<T>>(leavesWithDistances.size());
@@ -142,6 +167,16 @@ public class OrderedTree<T> implements TreeNode<T> {
             leaves.add(leafWithDistance.leaf);
         }
         return leaves;
+    }
+
+    private int fillOrder(final int index) {
+        order = index;
+        int childOrder = index;
+        for (final OrderedTree<T> child : children) {
+            ++childOrder;
+            childOrder = child.fillOrder(childOrder);
+        }
+        return childOrder;
     }
 
     private static final class LeafWithDistance<T> {

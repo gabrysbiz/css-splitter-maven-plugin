@@ -43,7 +43,7 @@ import biz.gabrys.maven.plugins.css.splitter.split.Splliter;
 import biz.gabrys.maven.plugins.css.splitter.steadystate.SteadyStateParser;
 import biz.gabrys.maven.plugins.css.splitter.token.TokenType;
 import biz.gabrys.maven.plugins.css.splitter.tree.OrderedTree;
-import biz.gabrys.maven.plugins.css.splitter.tree.TreeNode;
+import biz.gabrys.maven.plugins.css.splitter.tree.OrderedTreeNode;
 import biz.gabrys.maven.plugins.css.splitter.validation.RulesLimitValidator;
 import biz.gabrys.maven.plugins.css.splitter.validation.StylePropertiesLimitValidator;
 import biz.gabrys.maven.plugins.css.splitter.validation.StyleSheetValidator;
@@ -302,6 +302,8 @@ public class SplitMojo extends AbstractMojo {
             + PART_INDEX_PARAMETER + ".css")
     protected String outputPartNamePattern;
 
+    private String resolvedCacheToken;
+
     private void logParameters() {
         if (getLog().isDebugEnabled()) {
             getLog().debug("Job parameters:");
@@ -393,7 +395,30 @@ public class SplitMojo extends AbstractMojo {
         }
         calculateParameters();
         validateParameters();
+        resolveCacheToken();
         runSplitter();
+    }
+
+    private void resolveCacheToken() {
+        if (getLog().isDebugEnabled()) {
+            getLog().debug("Resolving cache token...");
+        }
+
+        if (TokenType.NONE.name().equalsIgnoreCase(cacheTokenType)) {
+            resolvedCacheToken = "";
+        } else {
+            final String value = TokenType.create(cacheTokenType).createFactory().create(cacheTokenValue);
+            final StringBuilder cacheToken = new StringBuilder();
+            cacheToken.append('?');
+            cacheToken.append(UrlEscaper.escape(cacheTokenParameter));
+            cacheToken.append('=');
+            cacheToken.append(UrlEscaper.escape(value));
+            resolvedCacheToken = cacheToken.toString();
+        }
+
+        if (getLog().isDebugEnabled()) {
+            getLog().debug("Resolved value: " + resolvedCacheToken);
+        }
     }
 
     private void runSplitter() throws MojoFailureException {
@@ -507,49 +532,37 @@ public class SplitMojo extends AbstractMojo {
         if (verbose) {
             getLog().info("Saving CSS code...");
         }
-        saveStyleSheetsTree(source, stylesheetsTree, 0, createCacheToken());
+
+        final int numberOfDigits = String.valueOf(stylesheetsTree.size()).length();
+        final String indexPattern = "%0" + numberOfDigits + "d";
+        saveStyleSheetsTree(source, stylesheetsTree, indexPattern);
     }
 
-    private String createCacheToken() {
-        if (TokenType.NONE.name().equalsIgnoreCase(cacheTokenType)) {
-            return "";
-        } else {
-            final String value = TokenType.create(cacheTokenType).createFactory().create(cacheTokenValue);
-            final StringBuilder cacheToken = new StringBuilder();
-            cacheToken.append('?');
-            cacheToken.append(UrlEscaper.escape(cacheTokenParameter));
-            cacheToken.append('=');
-            cacheToken.append(UrlEscaper.escape(value));
-            return cacheToken.toString();
-        }
-    }
-
-    private int saveStyleSheetsTree(final File source, final TreeNode<StyleSheet> node, final int nodeIndex, final String cacheToken)
+    private void saveStyleSheetsTree(final File source, final OrderedTreeNode<StyleSheet> node, final String indexPattern)
             throws MojoFailureException {
         final DestinationFileCreator fileCreator = new DestinationFileCreator(sourceDirectory, outputDirectory);
-        if (nodeIndex == 0) {
+        if (node.getOrder() == 0) {
             fileCreator.setFileNamePattern(outputFileNamePattern);
         } else {
-            fileCreator.setFileNamePattern(outputPartNamePattern.replace(PART_INDEX_PARAMETER, String.valueOf(nodeIndex)));
+            final String index = String.format(indexPattern, node.getOrder());
+            fileCreator.setFileNamePattern(outputPartNamePattern.replace(PART_INDEX_PARAMETER, index));
         }
         final File target = fileCreator.create(source);
 
         if (node.hasValue()) {
             saveCss(target, node.getValue().toString());
-            return nodeIndex;
+            return;
         }
 
         final StringBuilder imports = new StringBuilder();
-        int childNodeIndex = nodeIndex;
-        for (final TreeNode<StyleSheet> child : node.getChildren()) {
-            ++childNodeIndex;
-            fileCreator.setFileNamePattern(outputPartNamePattern.replace(PART_INDEX_PARAMETER, String.valueOf(childNodeIndex)));
+        for (final OrderedTreeNode<StyleSheet> child : node.getChildren()) {
+            final String index = String.format(indexPattern, child.getOrder());
+            fileCreator.setFileNamePattern(outputPartNamePattern.replace(PART_INDEX_PARAMETER, index));
             final File childTarget = fileCreator.create(source);
-            childNodeIndex = saveStyleSheetsTree(source, child, childNodeIndex, cacheToken);
-            imports.append(String.format("@import \"%s%s\";%n", childTarget.getName(), cacheToken));
+            saveStyleSheetsTree(source, child, indexPattern);
+            imports.append(String.format("@import \"%s%s\";%n", childTarget.getName(), resolvedCacheToken));
         }
         saveCss(target, imports.toString());
-        return childNodeIndex;
     }
 
     private void saveCss(final File file, final String css) throws MojoFailureException {

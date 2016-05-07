@@ -14,11 +14,15 @@ package biz.gabrys.maven.plugins.css.splitter.tree;
 
 import java.util.List;
 
-public interface TreeNode<T> {
+public interface OrderedTreeNode<T> {
 
-    List<TreeNode<T>> getChildren();
+    List<OrderedTreeNode<T>> getChildren();
 
     boolean hasValue();
 
     T getValue();
+
+    int getOrder();
+
+    int size();
 }
