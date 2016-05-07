@@ -26,6 +26,7 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
+import org.codehaus.plexus.util.StringUtils;
 
 import biz.gabrys.maven.plugin.util.io.DestinationFileCreator;
 import biz.gabrys.maven.plugin.util.io.FileScanner;
@@ -573,7 +574,8 @@ public class SplitMojo extends AbstractMojo {
             fileCreator.setFileNamePattern(outputPartNamePattern.replace(PART_INDEX_PARAMETER, index));
             final File childTarget = fileCreator.create(source);
             saveStyleSheetsTree(source, child, indexPattern);
-            imports.append(String.format("@import \"%s?%s\";%n", childTarget.getName(), resolvedCacheToken));
+            final String parameters = StringUtils.isEmpty(resolvedCacheToken) ? "" : '?' + resolvedCacheToken;
+            imports.append(String.format("@import \"%s%s\";%n", childTarget.getName(), parameters));
         }
         saveCss(target, imports.toString());
     }
