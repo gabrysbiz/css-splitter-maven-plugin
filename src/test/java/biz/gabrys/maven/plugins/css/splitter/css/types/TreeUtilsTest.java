@@ -10,10 +10,10 @@ public final class TreeUtilsTest {
 
     @Test
     public void fillNeighbors_parentIsNull() {
-        final NodeRule firstRule = new NodeRule();
-        final NodeRule secondRule = new NodeRule();
-        final NodeRule thirdRule = new NodeRule();
-        final NodeRule fourthRule = new NodeRule();
+        final NodeRule firstRule = new NodeRuleImpl();
+        final NodeRule secondRule = new NodeRuleImpl();
+        final NodeRule thirdRule = new NodeRuleImpl();
+        final NodeRule fourthRule = new NodeRuleImpl();
 
         TreeUtils.fillNeighbors(null, Arrays.asList(firstRule, secondRule, thirdRule, fourthRule));
 
@@ -38,10 +38,10 @@ public final class TreeUtilsTest {
     public void fillNeighbors_parentIsNotNull() {
         final NodeRule parent = Mockito.mock(NodeRule.class);
 
-        final NodeRule firstRule = new NodeRule();
-        final NodeRule secondRule = new NodeRule();
-        final NodeRule thirdRule = new NodeRule();
-        final NodeRule fourthRule = new NodeRule();
+        final NodeRule firstRule = new NodeRuleImpl();
+        final NodeRule secondRule = new NodeRuleImpl();
+        final NodeRule thirdRule = new NodeRuleImpl();
+        final NodeRule fourthRule = new NodeRuleImpl();
 
         TreeUtils.fillNeighbors(parent, Arrays.asList(firstRule, secondRule, thirdRule, fourthRule));
 

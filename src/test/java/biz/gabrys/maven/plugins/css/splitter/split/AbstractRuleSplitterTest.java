@@ -4,7 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import biz.gabrys.maven.plugins.css.splitter.css.types.NodeRule;
+import biz.gabrys.maven.plugins.css.splitter.css.types.NodeRuleImpl;
 
 public final class AbstractRuleSplitterTest {
 
@@ -57,11 +57,11 @@ public final class AbstractRuleSplitterTest {
         }
     }
 
-    private static class SupportedRule extends NodeRule {
+    private static class SupportedRule extends NodeRuleImpl {
 
     }
 
-    private static class NotSupportedRule extends NodeRule {
+    private static class NotSupportedRule extends NodeRuleImpl {
 
     }
 }

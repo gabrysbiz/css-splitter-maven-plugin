@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import biz.gabrys.maven.plugins.css.splitter.css.types.NodeRule;
+import biz.gabrys.maven.plugins.css.splitter.css.types.NodeRuleImpl;
 import biz.gabrys.maven.plugins.css.splitter.css.types.StyleSheet;
 
 public class SplliterTest {
@@ -35,9 +36,9 @@ public class SplliterTest {
         final Splliter splliter = new Splliter(limit, rulesSplitter);
 
         final StyleSheet stylesheet = Mockito.mock(StyleSheet.class);
-        final TestRule rule1 = new TestRule();
-        final TestRule rule2 = new TestRule();
-        final TestRule rule3 = new TestRule();
+        final NodeRule rule1 = new NodeRuleImpl();
+        final NodeRule rule2 = new NodeRuleImpl();
+        final NodeRule rule3 = new NodeRuleImpl();
         final List<NodeRule> rules = Arrays.<NodeRule>asList(rule1, rule2, rule3);
         Mockito.when(stylesheet.getRules()).thenReturn(rules);
 
@@ -56,9 +57,5 @@ public class SplliterTest {
         Assert.assertEquals("First document rules", rules1, sheets.get(0).getRules());
         Assert.assertEquals("Second document rules", rules2, sheets.get(1).getRules());
         Assert.assertEquals("Third document rules", rules3, sheets.get(2).getRules());
-    }
-
-    private static class TestRule extends NodeRule {
-
     }
 }

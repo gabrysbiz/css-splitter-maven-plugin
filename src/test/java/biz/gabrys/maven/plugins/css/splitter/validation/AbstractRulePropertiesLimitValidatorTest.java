@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import biz.gabrys.maven.plugins.css.splitter.css.types.NodeRule;
+import biz.gabrys.maven.plugins.css.splitter.css.types.NodeRuleImpl;
 import biz.gabrys.maven.plugins.css.splitter.css.types.SimpleRule;
 
 public final class AbstractRulePropertiesLimitValidatorTest {
@@ -54,9 +55,5 @@ public final class AbstractRulePropertiesLimitValidatorTest {
         protected void validate2(final T rule, final int limit) {
             // do nothing
         }
-    }
-
-    private static class NodeRuleImpl extends NodeRule {
-
     }
 }

@@ -12,6 +12,6 @@
  */
 package biz.gabrys.maven.plugins.css.splitter.css.types;
 
-public interface NodeRule extends Node<NodeRule, NodeRule> {
+public class NodeRuleImpl extends NodeImpl<NodeRule, NodeRule> implements NodeRule {
 
 }

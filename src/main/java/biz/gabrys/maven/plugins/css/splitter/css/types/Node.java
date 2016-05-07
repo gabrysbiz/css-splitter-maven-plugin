@@ -12,37 +12,17 @@
  */
 package biz.gabrys.maven.plugins.css.splitter.css.types;
 
-public class Node<P, S> {
+public interface Node<P, S> {
 
-    private P parent;
-    private S previous;
-    private S next;
+    P getParent();
 
-    protected Node() {
-        // do nothing
-    }
+    void setParent(P parent);
 
-    public P getParent() {
-        return parent;
-    }
+    S getPrevious();
 
-    public void setParent(final P parent) {
-        this.parent = parent;
-    }
+    void setPrevious(S previous);
 
-    public S getPrevious() {
-        return previous;
-    }
+    S getNext();
 
-    public void setPrevious(final S previous) {
-        this.previous = previous;
-    }
-
-    public S getNext() {
-        return next;
-    }
-
-    public void setNext(final S next) {
-        this.next = next;
-    }
+    void setNext(S next);
 }
