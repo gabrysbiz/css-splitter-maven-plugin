@@ -10,13 +10,16 @@
  * - a copy of the License at project page
  * - a template of the License at https://opensource.org/licenses/BSD-3-Clause
  */
-package biz.gabrys.maven.plugins.css.splitter.counter;
+package biz.gabrys.maven.plugins.css.splitter.css.counter;
 
 import biz.gabrys.maven.plugins.css.splitter.css.types.NodeRule;
 
-public interface RuleCounter {
+public class UnsupportedRuleException extends RuntimeException {
 
-    boolean isSupportedType(NodeRule rule);
+    private static final long serialVersionUID = 2488511304734029055L;
 
-    int count(NodeRule rule);
+    public UnsupportedRuleException(final NodeRule rule) {
+        super(String.format("Rule represented by \"%s\" class is unsupported! CSS code that causes error:%n%s",
+                rule == null ? "null" : rule.getClass().getName(), rule));
+    }
 }

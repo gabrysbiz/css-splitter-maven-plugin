@@ -17,6 +17,8 @@ import java.util.List;
 
 import org.codehaus.plexus.util.StringUtils;
 
+import biz.gabrys.maven.plugins.css.splitter.css.counter.StyleRuleCounter;
+
 public class StyleRule extends AbstractTextRule {
 
     private final List<String> selectors;
@@ -55,5 +57,10 @@ public class StyleRule extends AbstractTextRule {
         }
         lines.add("}");
         return lines;
+    }
+
+    @Override
+    protected int countSize() {
+        return new StyleRuleCounter().count(this);
     }
 }

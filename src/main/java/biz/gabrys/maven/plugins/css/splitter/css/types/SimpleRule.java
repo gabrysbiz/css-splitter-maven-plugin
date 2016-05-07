@@ -31,4 +31,9 @@ public class SimpleRule extends AbstractTextRule {
     public List<String> getLines() {
         return Arrays.asList(code);
     }
+
+    @Override
+    protected int countSize() {
+        return 1;
+    }
 }

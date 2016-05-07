@@ -15,6 +15,8 @@ package biz.gabrys.maven.plugins.css.splitter.css.types;
 import java.util.Arrays;
 import java.util.List;
 
+import biz.gabrys.maven.plugins.css.splitter.css.counter.UnknownRuleCounter;
+
 public class UnknownRule extends AbstractTextRule {
 
     private final String code;
@@ -30,5 +32,10 @@ public class UnknownRule extends AbstractTextRule {
     @Override
     public List<String> getLines() {
         return Arrays.asList(code);
+    }
+
+    @Override
+    protected int countSize() {
+        return new UnknownRuleCounter().count(this);
     }
 }

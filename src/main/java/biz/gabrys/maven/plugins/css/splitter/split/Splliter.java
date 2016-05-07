@@ -17,7 +17,6 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-import biz.gabrys.maven.plugins.css.splitter.counter.AnyRuleCounter;
 import biz.gabrys.maven.plugins.css.splitter.css.types.NodeRule;
 import biz.gabrys.maven.plugins.css.splitter.css.types.StyleSheet;
 
@@ -27,7 +26,7 @@ public class Splliter {
     private final RulesSplitter<NodeRule> splitter;
 
     public Splliter(final int limit) {
-        this(limit, new RulesSplitter<NodeRule>(new AnyRuleCounter(), new AnyRuleSplitter()));
+        this(limit, new RulesSplitter<NodeRule>(new AnyRuleSplitter()));
     }
 
     // for tests

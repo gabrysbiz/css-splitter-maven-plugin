@@ -15,9 +15,12 @@ package biz.gabrys.maven.plugins.css.splitter.css.types;
 import java.util.ArrayList;
 import java.util.List;
 
+import biz.gabrys.maven.plugins.css.splitter.css.counter.StyleSheetCounter;
+
 public class StyleSheet {
 
     private final List<NodeRule> rules;
+    private Integer size;
 
     public StyleSheet(final List<NodeRule> rules) {
         TreeUtils.fillNeighbors(null, rules);
@@ -35,5 +38,12 @@ public class StyleSheet {
             css.append(rule);
         }
         return css.toString();
+    }
+
+    public int size() {
+        if (size == null) {
+            size = new StyleSheetCounter().count(this);
+        }
+        return size;
     }
 }

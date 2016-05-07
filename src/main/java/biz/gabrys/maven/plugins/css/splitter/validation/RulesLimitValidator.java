@@ -12,23 +12,20 @@
  */
 package biz.gabrys.maven.plugins.css.splitter.validation;
 
-import biz.gabrys.maven.plugins.css.splitter.counter.StyleSheetCounter;
 import biz.gabrys.maven.plugins.css.splitter.css.types.StyleSheet;
 
 public final class RulesLimitValidator implements StyleSheetValidator {
 
-    private final StyleSheetCounter counter;
     private final int limit;
 
-    public RulesLimitValidator(final int limit, final StyleSheetCounter counter) {
+    public RulesLimitValidator(final int limit) {
         this.limit = limit;
-        this.counter = counter;
     }
 
-    public void validate(final StyleSheet stylesheet) throws ValidationException {
-        final int value = counter.count(stylesheet);
-        if (value > limit) {
-            throw new ValidationException(String.format("The number of style rules (%d) exceeded the allowable limit (%d)!", value, limit));
+    public void validate(final StyleSheet stylesheet) {
+        final int size = stylesheet.size();
+        if (size > limit) {
+            throw new ValidationException(String.format("The number of style rules (%d) exceeded the allowable limit (%d)!", size, limit));
         }
     }
 }

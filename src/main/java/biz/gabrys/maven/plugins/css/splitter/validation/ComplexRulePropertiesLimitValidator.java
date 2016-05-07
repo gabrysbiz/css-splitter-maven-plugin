@@ -30,7 +30,7 @@ final class ComplexRulePropertiesLimitValidator extends AbstractRulePropertiesLi
     }
 
     @Override
-    protected void validate2(final ComplexRule rule, final int limit) throws ValidationException {
+    protected void validate2(final ComplexRule rule, final int limit) {
         for (final StyleRule child : rule.getRules()) {
             validator.validate(child, limit);
         }

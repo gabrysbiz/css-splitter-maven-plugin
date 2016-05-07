@@ -25,7 +25,7 @@ class SteadyErrorHandler implements ErrorHandler {
         this.logger = logger;
     }
 
-    void validate() throws ParserException {
+    void validate() {
         if (firstError != null) {
             throw new ParserException(firstError);
         }

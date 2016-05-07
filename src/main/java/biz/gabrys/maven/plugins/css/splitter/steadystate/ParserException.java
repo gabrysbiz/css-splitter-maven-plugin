@@ -12,9 +12,9 @@
  */
 package biz.gabrys.maven.plugins.css.splitter.steadystate;
 
-public class ParserException extends Exception {
+public class ParserException extends RuntimeException {
 
-    private static final long serialVersionUID = 7627029249257678138L;
+    private static final long serialVersionUID = 4994769384597712303L;
 
     public ParserException(final Throwable cause) {
         super(cause);

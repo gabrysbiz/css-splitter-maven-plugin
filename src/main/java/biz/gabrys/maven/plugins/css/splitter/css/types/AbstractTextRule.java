@@ -14,7 +14,7 @@ package biz.gabrys.maven.plugins.css.splitter.css.types;
 
 import java.util.List;
 
-public abstract class AbstractTextRule extends NodeRuleImpl {
+public abstract class AbstractTextRule extends AbstractNodeRule {
 
     protected static final String INDENTATION = "  ";
 

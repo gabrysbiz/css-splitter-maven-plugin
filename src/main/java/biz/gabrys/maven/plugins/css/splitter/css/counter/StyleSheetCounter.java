@@ -10,25 +10,29 @@
  * - a copy of the License at project page
  * - a template of the License at https://opensource.org/licenses/BSD-3-Clause
  */
-package biz.gabrys.maven.plugins.css.splitter.counter;
+package biz.gabrys.maven.plugins.css.splitter.css.counter;
 
-import org.apache.maven.plugin.logging.Log;
-
+import biz.gabrys.maven.plugins.css.splitter.css.types.NodeRule;
 import biz.gabrys.maven.plugins.css.splitter.css.types.StyleSheet;
 
-public class LoggingStyleSheetCounter implements StyleSheetCounter {
+public class StyleSheetCounter {
 
-    private final StyleSheetCounter counter;
-    private final Log logger;
+    private final RuleCounter counter;
 
-    public LoggingStyleSheetCounter(final StyleSheetCounter counter, final Log logger) {
+    public StyleSheetCounter() {
+        this(new AnyRuleCounter());
+    }
+
+    // for tests
+    StyleSheetCounter(final RuleCounter counter) {
         this.counter = counter;
-        this.logger = logger;
     }
 
     public int count(final StyleSheet stylesheet) {
-        final int value = counter.count(stylesheet);
-        logger.info(String.format("Stylesheet contains %d rule%s.", value, value != 1 ? 's' : ""));
+        int value = 0;
+        for (final NodeRule rule : stylesheet.getRules()) {
+            value += counter.count(rule);
+        }
         return value;
     }
 }

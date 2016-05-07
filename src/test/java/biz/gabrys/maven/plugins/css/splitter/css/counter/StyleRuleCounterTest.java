@@ -1,4 +1,4 @@
-package biz.gabrys.maven.plugins.css.splitter.counter;
+package biz.gabrys.maven.plugins.css.splitter.css.counter;
 
 import java.util.ArrayList;
 import java.util.Collections;

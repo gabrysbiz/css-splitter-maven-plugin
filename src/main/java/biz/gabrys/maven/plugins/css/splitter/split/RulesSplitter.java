@@ -14,16 +14,13 @@ package biz.gabrys.maven.plugins.css.splitter.split;
 
 import java.util.List;
 
-import biz.gabrys.maven.plugins.css.splitter.counter.RuleCounter;
 import biz.gabrys.maven.plugins.css.splitter.css.types.NodeRule;
 
 class RulesSplitter<T extends NodeRule> {
 
-    private final RuleCounter counter;
     private final RuleSplitter<T> splitter;
 
-    RulesSplitter(final RuleCounter counter, final RuleSplitter<T> splitter) {
-        this.counter = counter;
+    RulesSplitter(final RuleSplitter<T> splitter) {
         this.splitter = splitter;
     }
 
@@ -41,7 +38,7 @@ class RulesSplitter<T extends NodeRule> {
     private void processBeforeSplitPoint(final List<T> rules, final RulesContainer<T> container, final ValueAndIndex info) {
         while (info.index < rules.size()) {
             final T rule = rules.get(info.index);
-            final int count = counter.count(rule);
+            final int count = rule.size();
             final int odds = info.value - count;
             if (odds < 0) {
                 return;

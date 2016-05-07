@@ -5,8 +5,9 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import biz.gabrys.maven.plugins.css.splitter.css.types.NodeRule;
-import biz.gabrys.maven.plugins.css.splitter.css.types.NodeRuleImpl;
 import biz.gabrys.maven.plugins.css.splitter.css.types.SimpleRule;
+import biz.gabrys.maven.plugins.css.splitter.test.NotSupportedTestNodeRule;
+import biz.gabrys.maven.plugins.css.splitter.test.SupportedTestNodeRule;
 
 public final class AbstractRulePropertiesLimitValidatorTest {
 
@@ -19,26 +20,27 @@ public final class AbstractRulePropertiesLimitValidatorTest {
     @Test
     public void isSupportedType_ruleClassIsNotSupported_returnsFalse() {
         final TestValidator<NodeRule> validator = new TestValidator<NodeRule>(NodeRule.class);
-        Assert.assertFalse("Should return false for not supported rule.", validator.isSupportedType(new NodeRuleImpl()));
+        Assert.assertFalse("Should return false for not supported rule.", validator.isSupportedType(new NotSupportedTestNodeRule()));
     }
 
     @Test
     public void isSupportedType_ruleClassIsSupported_returnsTrue() {
-        final TestValidator<NodeRuleImpl> validator = new TestValidator<NodeRuleImpl>(NodeRuleImpl.class);
-        Assert.assertTrue("Should return true for supported rule.", validator.isSupportedType(new NodeRuleImpl()));
+        final TestValidator<SupportedTestNodeRule> validator = new TestValidator<SupportedTestNodeRule>(SupportedTestNodeRule.class);
+        Assert.assertTrue("Should return true for supported rule.", validator.isSupportedType(new SupportedTestNodeRule()));
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void validate_ruleClassIsNotSupported_throwsException() throws ValidationException {
+    public void validate_ruleClassIsNotSupported_throwsException() {
         final TestValidator<NodeRule> validator = new TestValidator<NodeRule>(NodeRule.class);
         validator.validate(new SimpleRule("code"), 0);
     }
 
     @Test
-    public void validate_ruleClassIsSupported_executesValidate2() throws ValidationException {
-        final TestValidator<NodeRuleImpl> validator = Mockito.spy(new TestValidator<NodeRuleImpl>(NodeRuleImpl.class));
+    public void validate_ruleClassIsSupported_executesValidate2() {
+        final TestValidator<SupportedTestNodeRule> validator = Mockito
+                .spy(new TestValidator<SupportedTestNodeRule>(SupportedTestNodeRule.class));
 
-        final NodeRuleImpl rule = new NodeRuleImpl();
+        final SupportedTestNodeRule rule = new SupportedTestNodeRule();
         final int limit = 10;
         validator.validate(rule, limit);
 

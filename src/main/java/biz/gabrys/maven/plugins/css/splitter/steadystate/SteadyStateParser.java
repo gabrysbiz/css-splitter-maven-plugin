@@ -33,7 +33,7 @@ public class SteadyStateParser {
         this.logger = logger;
     }
 
-    public StyleSheet parse(final String css, final Standard standard) throws ParserException {
+    public StyleSheet parse(final String css, final Standard standard) {
         final NativeParserFactory factory = new NativeParserFactory();
         final CSSOMParser parser = new CSSOMParser(factory.create(standard));
 

@@ -9,8 +9,8 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import biz.gabrys.maven.plugins.css.splitter.css.types.NodeRule;
-import biz.gabrys.maven.plugins.css.splitter.css.types.NodeRuleImpl;
 import biz.gabrys.maven.plugins.css.splitter.css.types.StyleSheet;
+import biz.gabrys.maven.plugins.css.splitter.test.SupportedTestNodeRule;
 
 public class SplliterTest {
 
@@ -36,9 +36,9 @@ public class SplliterTest {
         final Splliter splliter = new Splliter(limit, rulesSplitter);
 
         final StyleSheet stylesheet = Mockito.mock(StyleSheet.class);
-        final NodeRule rule1 = new NodeRuleImpl();
-        final NodeRule rule2 = new NodeRuleImpl();
-        final NodeRule rule3 = new NodeRuleImpl();
+        final NodeRule rule1 = new SupportedTestNodeRule();
+        final NodeRule rule2 = new SupportedTestNodeRule();
+        final NodeRule rule3 = new SupportedTestNodeRule();
         final List<NodeRule> rules = Arrays.<NodeRule>asList(rule1, rule2, rule3);
         Mockito.when(stylesheet.getRules()).thenReturn(rules);
 

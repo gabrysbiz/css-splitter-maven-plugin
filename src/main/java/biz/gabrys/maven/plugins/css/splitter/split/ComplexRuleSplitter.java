@@ -12,7 +12,6 @@
  */
 package biz.gabrys.maven.plugins.css.splitter.split;
 
-import biz.gabrys.maven.plugins.css.splitter.counter.StyleRuleCounter;
 import biz.gabrys.maven.plugins.css.splitter.css.types.ComplexRule;
 import biz.gabrys.maven.plugins.css.splitter.css.types.StyleRule;
 
@@ -22,7 +21,7 @@ class ComplexRuleSplitter extends AbstractRuleSplitter<ComplexRule> {
     private final NeighborsManager neighborsManager;
 
     ComplexRuleSplitter() {
-        this(new RulesSplitter<StyleRule>(new StyleRuleCounter(), new StyleRuleSplitter()), new NeighborsManager());
+        this(new RulesSplitter<StyleRule>(new StyleRuleSplitter()), new NeighborsManager());
     }
 
     // for tests

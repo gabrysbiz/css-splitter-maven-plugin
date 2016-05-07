@@ -16,5 +16,5 @@ import biz.gabrys.maven.plugins.css.splitter.css.types.StyleSheet;
 
 public interface StyleSheetValidator {
 
-    void validate(StyleSheet stylesheet) throws ValidationException;
+    void validate(StyleSheet stylesheet);
 }

@@ -36,13 +36,13 @@ public final class StylePropertiesLimitValidator implements StyleSheetValidator 
         this.validators = new ArrayList<RulePropertiesLimitValidator>(validators);
     }
 
-    public void validate(final StyleSheet stylesheet) throws ValidationException {
+    public void validate(final StyleSheet stylesheet) {
         for (final NodeRule rule : stylesheet.getRules()) {
             validate(rule);
         }
     }
 
-    private void validate(final NodeRule rule) throws ValidationException {
+    private void validate(final NodeRule rule) {
         for (final RulePropertiesLimitValidator validator : validators) {
             if (validator.isSupportedType(rule)) {
                 validator.validate(rule, limit);

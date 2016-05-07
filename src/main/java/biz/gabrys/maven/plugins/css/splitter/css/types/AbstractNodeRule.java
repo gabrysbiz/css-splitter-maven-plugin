@@ -12,6 +12,16 @@
  */
 package biz.gabrys.maven.plugins.css.splitter.css.types;
 
-public class NodeRuleImpl extends NodeImpl<NodeRule, NodeRule> implements NodeRule {
+public abstract class AbstractNodeRule extends NodeImpl<NodeRule, NodeRule> implements NodeRule {
 
+    private Integer size;
+
+    public int size() {
+        if (size == null) {
+            size = countSize();
+        }
+        return size;
+    }
+
+    protected abstract int countSize();
 }

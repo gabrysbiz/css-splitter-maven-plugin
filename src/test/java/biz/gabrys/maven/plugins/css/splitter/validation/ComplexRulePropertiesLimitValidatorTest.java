@@ -12,7 +12,7 @@ import biz.gabrys.maven.plugins.css.splitter.css.types.StyleRule;
 public final class ComplexRulePropertiesLimitValidatorTest {
 
     @Test
-    public void validate2_ruleDoesNotContainChildren_doesNothing() throws ValidationException {
+    public void validate2_ruleDoesNotContainChildren_doesNothing() {
         final RulePropertiesLimitValidator childRulesValidator = Mockito.mock(RulePropertiesLimitValidator.class);
         final ComplexRulePropertiesLimitValidator validator = new ComplexRulePropertiesLimitValidator(childRulesValidator);
 
@@ -28,7 +28,7 @@ public final class ComplexRulePropertiesLimitValidatorTest {
     }
 
     @Test
-    public void validate2_ruleContainsValidChildren_doesNothing() throws ValidationException {
+    public void validate2_ruleContainsValidChildren_doesNothing() {
         final RulePropertiesLimitValidator childRulesValidator = Mockito.mock(RulePropertiesLimitValidator.class);
         final ComplexRulePropertiesLimitValidator validator = new ComplexRulePropertiesLimitValidator(childRulesValidator);
 
@@ -49,7 +49,7 @@ public final class ComplexRulePropertiesLimitValidatorTest {
     }
 
     @Test(expected = ValidationException.class)
-    public void validate2_ruleContainsInvalidChildren_throwsException() throws ValidationException {
+    public void validate2_ruleContainsInvalidChildren_throwsException() {
         final RulePropertiesLimitValidator childRulesValidator = Mockito.mock(RulePropertiesLimitValidator.class);
         final ComplexRulePropertiesLimitValidator validator = new ComplexRulePropertiesLimitValidator(childRulesValidator);
 

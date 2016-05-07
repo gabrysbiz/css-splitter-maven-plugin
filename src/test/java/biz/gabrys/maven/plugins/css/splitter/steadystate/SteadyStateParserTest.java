@@ -20,7 +20,7 @@ import biz.gabrys.maven.plugins.css.splitter.css.types.UnknownRule;
 public final class SteadyStateParserTest {
 
     @Test
-    public void parse_documentWithDifferentRules_returnsStyleSheet() throws ParserException {
+    public void parse_documentWithDifferentRules_returnsStyleSheet() {
         final StringBuilder css = new StringBuilder();
         css.append("@charset 'UTF-8';\n");
         css.append("@import 'file.css';\n");
@@ -50,7 +50,7 @@ public final class SteadyStateParserTest {
 
     // https://github.com/gabrysbiz/css-splitter-maven-plugin/issues/3#issuecomment-194338886
     @Test
-    public void parse_fontFaceRuleFromIssueNo3_returnsStyleSheet() throws ParserException {
+    public void parse_fontFaceRuleFromIssueNo3_returnsStyleSheet() {
         final StringBuilder css = new StringBuilder();
         css.append("@font-face {");
         css.append("\tfont-family: FontAwesome;");

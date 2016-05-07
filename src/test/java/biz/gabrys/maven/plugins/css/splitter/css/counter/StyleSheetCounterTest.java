@@ -1,4 +1,4 @@
-package biz.gabrys.maven.plugins.css.splitter.counter;
+package biz.gabrys.maven.plugins.css.splitter.css.counter;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -10,12 +10,12 @@ import org.mockito.Mockito;
 import biz.gabrys.maven.plugins.css.splitter.css.types.NodeRule;
 import biz.gabrys.maven.plugins.css.splitter.css.types.StyleSheet;
 
-public final class StyleSheetCounterImplTest {
+public final class StyleSheetCounterTest {
 
     @Test
     public void count_styleSheetIsEmpty_returnsZero() {
         final RuleCounter internalCounter = Mockito.mock(RuleCounter.class);
-        final StyleSheetCounterImpl counter = new StyleSheetCounterImpl(internalCounter);
+        final StyleSheetCounter counter = new StyleSheetCounter(internalCounter);
 
         final StyleSheet stylesheet = Mockito.mock(StyleSheet.class);
         Mockito.when(stylesheet.getRules()).thenReturn(Collections.<NodeRule>emptyList());
@@ -30,7 +30,7 @@ public final class StyleSheetCounterImplTest {
     @Test
     public void count_styleSheetIsNotEmpty_returnsCountedValue() {
         final RuleCounter internalCounter = Mockito.mock(RuleCounter.class);
-        final StyleSheetCounterImpl counter = new StyleSheetCounterImpl(internalCounter);
+        final StyleSheetCounter counter = new StyleSheetCounter(internalCounter);
 
         final StyleSheet stylesheet = Mockito.mock(StyleSheet.class);
         final NodeRule rule1 = Mockito.mock(NodeRule.class);

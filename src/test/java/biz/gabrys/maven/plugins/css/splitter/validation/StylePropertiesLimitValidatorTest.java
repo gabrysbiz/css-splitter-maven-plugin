@@ -12,7 +12,7 @@ import biz.gabrys.maven.plugins.css.splitter.css.types.StyleSheet;
 public final class StylePropertiesLimitValidatorTest {
 
     @Test
-    public void validate_styleSheetIsEmpty_doesNothing() throws ValidationException {
+    public void validate_styleSheetIsEmpty_doesNothing() {
         final RulePropertiesLimitValidator ruleValidator = Mockito.mock(RulePropertiesLimitValidator.class);
         final int limit = 10;
         final StylePropertiesLimitValidator validator = new StylePropertiesLimitValidator(Arrays.asList(ruleValidator), limit);
@@ -28,7 +28,7 @@ public final class StylePropertiesLimitValidatorTest {
     }
 
     @Test
-    public void validate_styleSheetContainsNotSupportedRules_doesNothing() throws ValidationException {
+    public void validate_styleSheetContainsNotSupportedRules_doesNothing() {
         final RulePropertiesLimitValidator ruleValidator = Mockito.mock(RulePropertiesLimitValidator.class);
         final int limit = 10;
         final StylePropertiesLimitValidator validator = new StylePropertiesLimitValidator(Arrays.asList(ruleValidator), limit);
@@ -47,7 +47,7 @@ public final class StylePropertiesLimitValidatorTest {
     }
 
     @Test
-    public void validate_styleSheetContainsValidRule_doesNothing() throws ValidationException {
+    public void validate_styleSheetContainsValidRule_doesNothing() {
         final RulePropertiesLimitValidator ruleValidator = Mockito.mock(RulePropertiesLimitValidator.class);
         final int limit = 10;
         final StylePropertiesLimitValidator validator = new StylePropertiesLimitValidator(Arrays.asList(ruleValidator), limit);
@@ -67,7 +67,7 @@ public final class StylePropertiesLimitValidatorTest {
     }
 
     @Test(expected = ValidationException.class)
-    public void validate_styleSheetContainsInvalidRule_throwsException() throws ValidationException {
+    public void validate_styleSheetContainsInvalidRule_throwsException() {
         final RulePropertiesLimitValidator ruleValidator = Mockito.mock(RulePropertiesLimitValidator.class);
         final int limit = 10;
         final StylePropertiesLimitValidator validator = new StylePropertiesLimitValidator(Arrays.asList(ruleValidator), limit);

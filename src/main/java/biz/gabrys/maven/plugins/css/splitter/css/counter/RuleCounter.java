@@ -10,11 +10,13 @@
  * - a copy of the License at project page
  * - a template of the License at https://opensource.org/licenses/BSD-3-Clause
  */
-package biz.gabrys.maven.plugins.css.splitter.counter;
+package biz.gabrys.maven.plugins.css.splitter.css.counter;
 
-import biz.gabrys.maven.plugins.css.splitter.css.types.StyleSheet;
+import biz.gabrys.maven.plugins.css.splitter.css.types.NodeRule;
 
-public interface StyleSheetCounter {
+public interface RuleCounter {
 
-    int count(StyleSheet stylesheet);
+    boolean isSupportedType(NodeRule rule);
+
+    int count(NodeRule rule);
 }

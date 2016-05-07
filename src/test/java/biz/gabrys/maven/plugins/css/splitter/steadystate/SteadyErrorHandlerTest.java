@@ -8,7 +8,7 @@ import org.w3c.css.sac.CSSParseException;
 public final class SteadyErrorHandlerTest {
 
     @Test
-    public void validate_warningOccured_doesNothing() throws ParserException {
+    public void validate_warningOccured_doesNothing() {
         final Log logger = Mockito.mock(Log.class);
         final SteadyErrorHandler handler = new SteadyErrorHandler(logger);
 
@@ -25,7 +25,7 @@ public final class SteadyErrorHandlerTest {
     }
 
     @Test(expected = ParserException.class)
-    public void validate_errorOccured_throwsException() throws ParserException {
+    public void validate_errorOccured_throwsException() {
         final Log logger = Mockito.mock(Log.class);
         final SteadyErrorHandler handler = new SteadyErrorHandler(logger);
 
@@ -42,7 +42,7 @@ public final class SteadyErrorHandlerTest {
     }
 
     @Test(expected = ParserException.class)
-    public void validate_fatalErrorOccured_throwsException() throws ParserException {
+    public void validate_fatalErrorOccured_throwsException() {
         final Log logger = Mockito.mock(Log.class);
         final SteadyErrorHandler handler = new SteadyErrorHandler(logger);
 

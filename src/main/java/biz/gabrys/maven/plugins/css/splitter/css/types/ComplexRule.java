@@ -18,6 +18,8 @@ import java.util.List;
 
 import org.codehaus.plexus.util.StringUtils;
 
+import biz.gabrys.maven.plugins.css.splitter.css.counter.ComplexRuleCounter;
+
 public class ComplexRule extends AbstractTextRule {
 
     private final String type;
@@ -54,5 +56,10 @@ public class ComplexRule extends AbstractTextRule {
         }
         lines.add("}");
         return lines;
+    }
+
+    @Override
+    protected int countSize() {
+        return new ComplexRuleCounter().count(this);
     }
 }

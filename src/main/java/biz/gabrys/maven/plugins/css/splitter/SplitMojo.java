@@ -34,9 +34,6 @@ import biz.gabrys.maven.plugin.util.io.ScannerFactory;
 import biz.gabrys.maven.plugin.util.io.ScannerPatternFormat;
 import biz.gabrys.maven.plugin.util.timer.SystemTimer;
 import biz.gabrys.maven.plugin.util.timer.Timer;
-import biz.gabrys.maven.plugins.css.splitter.counter.LoggingStyleSheetCounter;
-import biz.gabrys.maven.plugins.css.splitter.counter.StyleSheetCounter;
-import biz.gabrys.maven.plugins.css.splitter.counter.StyleSheetCounterImpl;
 import biz.gabrys.maven.plugins.css.splitter.css.Standard;
 import biz.gabrys.maven.plugins.css.splitter.css.types.StyleSheet;
 import biz.gabrys.maven.plugins.css.splitter.net.UrlEscaper;
@@ -48,7 +45,6 @@ import biz.gabrys.maven.plugins.css.splitter.tree.OrderedTreeNode;
 import biz.gabrys.maven.plugins.css.splitter.validation.RulesLimitValidator;
 import biz.gabrys.maven.plugins.css.splitter.validation.StylePropertiesLimitValidator;
 import biz.gabrys.maven.plugins.css.splitter.validation.StyleSheetValidator;
-import biz.gabrys.maven.plugins.css.splitter.validation.ValidationException;
 
 /**
  * Splits <a href="http://www.w3.org/Style/CSS/">CSS</a> stylesheets to smaller files (parts).
@@ -474,23 +470,9 @@ public class SplitMojo extends AbstractMojo {
             timer = SystemTimer.getStartedTimer();
         }
         final String css = readCss(source);
-        final List<StyleSheet> parts;
-        try {
-            if (getLog().isDebugEnabled()) {
-                getLog().debug("Parsing stylesheet...");
-            }
-            final StyleSheet stylesheet = new SteadyStateParser(getLog()).parse(css, Standard.create(standard));
-            validateStyleSheet(stylesheet);
-            if (getLog().isDebugEnabled()) {
-                getLog().debug("Splitting stylesheet to parts...");
-            }
-            parts = new Splliter(maxRules).split(stylesheet);
-        } catch (final Exception e) {
-            throw new MojoFailureException(e.getMessage(), e);
-        }
-        if (verbose) {
-            getLog().info(String.format("Split to %d stylesheet%s.", parts.size(), parts.size() == 1 ? "" : "s"));
-        }
+        final StyleSheet stylesheet = parseStyleSheet(css);
+        validateStyleSheet(stylesheet);
+        final List<StyleSheet> parts = splitToParts(stylesheet);
         saveParts(source, parts);
         if (timer != null) {
             getLog().info("Finished in " + timer.stop());
@@ -505,17 +487,35 @@ public class SplitMojo extends AbstractMojo {
         }
     }
 
-    private void validateStyleSheet(final StyleSheet stylesheet) throws ValidationException {
+    private StyleSheet parseStyleSheet(final String css) {
+        if (getLog().isDebugEnabled()) {
+            getLog().debug("Parsing stylesheet...");
+        }
+        final StyleSheet stylesheet = new SteadyStateParser(getLog()).parse(css, Standard.create(standard));
+        if (verbose) {
+            getLog().info(String.format("Stylesheet contains %d rule%s.", stylesheet.size(), stylesheet.size() != 1 ? 's' : ""));
+        }
+        return stylesheet;
+    }
+
+    private List<StyleSheet> splitToParts(final StyleSheet stylesheet) {
+        if (getLog().isDebugEnabled()) {
+            getLog().debug("Splitting stylesheet to parts...");
+        }
+        final List<StyleSheet> parts = new Splliter(maxRules).split(stylesheet);
+        if (verbose) {
+            getLog().info(String.format("Split to %d stylesheet%s.", parts.size(), parts.size() == 1 ? "" : "s"));
+        }
+        return parts;
+    }
+
+    private void validateStyleSheet(final StyleSheet stylesheet) {
         if (getLog().isDebugEnabled()) {
             getLog().debug("Validating stylesheet...");
         }
 
         final Collection<StyleSheetValidator> validators = new ArrayList<StyleSheetValidator>();
-        StyleSheetCounter counter = new StyleSheetCounterImpl();
-        if (verbose) {
-            counter = new LoggingStyleSheetCounter(counter, getLog());
-        }
-        validators.add(new RulesLimitValidator(rulesLimit, counter));
+        validators.add(new RulesLimitValidator(rulesLimit));
         validators.add(new StylePropertiesLimitValidator(maxRules, getLog()));
 
         for (final StyleSheetValidator validator : validators) {
