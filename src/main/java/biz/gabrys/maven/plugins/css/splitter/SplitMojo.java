@@ -14,7 +14,6 @@ package biz.gabrys.maven.plugins.css.splitter;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -36,6 +35,7 @@ import biz.gabrys.maven.plugin.util.timer.SystemTimer;
 import biz.gabrys.maven.plugin.util.timer.Timer;
 import biz.gabrys.maven.plugins.css.splitter.css.Standard;
 import biz.gabrys.maven.plugins.css.splitter.css.types.StyleSheet;
+import biz.gabrys.maven.plugins.css.splitter.message.StylesheetMessagePrinter;
 import biz.gabrys.maven.plugins.css.splitter.net.UrlEscaper;
 import biz.gabrys.maven.plugins.css.splitter.split.Splliter;
 import biz.gabrys.maven.plugins.css.splitter.steadystate.SteadyStateParser;
@@ -44,7 +44,6 @@ import biz.gabrys.maven.plugins.css.splitter.tree.OrderedTree;
 import biz.gabrys.maven.plugins.css.splitter.tree.OrderedTreeNode;
 import biz.gabrys.maven.plugins.css.splitter.validation.RulesLimitValidator;
 import biz.gabrys.maven.plugins.css.splitter.validation.StylePropertiesLimitValidator;
-import biz.gabrys.maven.plugins.css.splitter.validation.StyleSheetValidator;
 
 /**
  * Splits <a href="http://www.w3.org/Style/CSS/">CSS</a> stylesheets to smaller files (parts).
@@ -492,6 +491,7 @@ public class SplitMojo extends AbstractMojo {
             getLog().debug("Parsing stylesheet...");
         }
         final StyleSheet stylesheet = new SteadyStateParser(getLog()).parse(css, Standard.create(standard));
+        new StylesheetMessagePrinter(getLog()).print(stylesheet);
         if (verbose) {
             getLog().info(String.format("Stylesheet contains %d rule%s.", stylesheet.size(), stylesheet.size() != 1 ? 's' : ""));
         }
@@ -514,13 +514,8 @@ public class SplitMojo extends AbstractMojo {
             getLog().debug("Validating stylesheet...");
         }
 
-        final Collection<StyleSheetValidator> validators = new ArrayList<StyleSheetValidator>();
-        validators.add(new RulesLimitValidator(rulesLimit));
-        validators.add(new StylePropertiesLimitValidator(maxRules, getLog()));
-
-        for (final StyleSheetValidator validator : validators) {
-            validator.validate(stylesheet);
-        }
+        new RulesLimitValidator(rulesLimit).validate(stylesheet);
+        new StylePropertiesLimitValidator(maxRules).validate(stylesheet);
     }
 
     private void saveParts(final File source, final List<StyleSheet> parts) throws MojoFailureException {

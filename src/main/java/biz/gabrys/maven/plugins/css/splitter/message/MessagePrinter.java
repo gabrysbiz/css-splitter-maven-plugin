@@ -10,11 +10,15 @@
  * - a copy of the License at project page
  * - a template of the License at https://opensource.org/licenses/BSD-3-Clause
  */
-package biz.gabrys.maven.plugins.css.splitter.validation;
+package biz.gabrys.maven.plugins.css.splitter.message;
 
-import biz.gabrys.maven.plugins.css.splitter.css.types.StyleSheet;
+import biz.gabrys.maven.plugins.css.splitter.css.types.NodeRule;
 
-public interface StyleSheetValidator {
+interface MessagePrinter {
 
-    void validate(StyleSheet stylesheet);
+    boolean isEnabled();
+
+    boolean isSupportedType(NodeRule rule);
+
+    void print(NodeRule rule);
 }

@@ -12,28 +12,17 @@
  */
 package biz.gabrys.maven.plugins.css.splitter.validation;
 
-import org.apache.maven.plugin.logging.Log;
-
 import biz.gabrys.maven.plugins.css.splitter.css.types.UnknownRule;
 
 final class UnknownRulePropertiesLimitValidator extends AbstractRulePropertiesLimitValidator<UnknownRule> {
 
-    private final Log logger;
-
-    UnknownRulePropertiesLimitValidator(final Log logger) {
+    UnknownRulePropertiesLimitValidator() {
         super(UnknownRule.class);
-        this.logger = logger;
     }
 
     @Override
     protected void validate2(final UnknownRule rule, final int limit) {
-        if (logger.isDebugEnabled()) {
-            logger.debug("Found non-standard (unknown) rule:\n" + rule.getCode());
-        }
         final int size = rule.size();
-        if (logger.isDebugEnabled()) {
-            logger.debug(String.format("I guess it contains %d propert%s.", size, size != 1 ? "ies" : "y"));
-        }
         if (size > limit) {
             throwException(size, limit, rule.getCode());
         }

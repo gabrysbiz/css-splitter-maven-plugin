@@ -14,7 +14,7 @@ package biz.gabrys.maven.plugins.css.splitter.validation;
 
 import biz.gabrys.maven.plugins.css.splitter.css.types.StyleSheet;
 
-public final class RulesLimitValidator implements StyleSheetValidator {
+public final class RulesLimitValidator {
 
     private final int limit;
 

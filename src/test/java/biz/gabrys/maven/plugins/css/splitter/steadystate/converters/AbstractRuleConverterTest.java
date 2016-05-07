@@ -26,7 +26,7 @@ public final class AbstractRuleConverterTest {
     }
 
     @Test
-    public void isSupportedType_ruleHasValidType_returnsFalse() {
+    public void isSupportedType_ruleHasValidType_returnsTrue() {
         final RuleConverterImpl converter = new RuleConverterImpl();
         final boolean supported = converter.isSupportedType(new CSSCharsetRuleImpl());
         Assert.assertTrue("Should return false for valid rule", supported);
@@ -41,8 +41,10 @@ public final class AbstractRuleConverterTest {
     @Test
     public void convert_typeIsValid_executesConvert2() {
         final RuleConverterImpl converter = Mockito.spy(new RuleConverterImpl());
+
         final CSSCharsetRuleImpl rule = new CSSCharsetRuleImpl();
         converter.convert(rule);
+
         Mockito.verify(converter).convert2(rule);
     }
 

@@ -24,7 +24,7 @@ public final class AbstractRuleCounterTest {
     }
 
     @Test
-    public void isSupportedType_ruleHasValidType_returnsFalse() {
+    public void isSupportedType_ruleHasValidType_returnsTrue() {
         final RuleCounterImpl counter = new RuleCounterImpl();
         final boolean supported = counter.isSupportedType(new SupportedTestNodeRule());
         Assert.assertTrue("Should return false for valid rule", supported);
@@ -39,8 +39,10 @@ public final class AbstractRuleCounterTest {
     @Test
     public void convert_typeIsValid_executesCount2() {
         final RuleCounterImpl counter = Mockito.spy(new RuleCounterImpl());
+
         final SupportedTestNodeRule rule = new SupportedTestNodeRule();
         counter.count(rule);
+
         Mockito.verify(counter).count2(rule);
     }
 
