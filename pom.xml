@@ -20,7 +20,7 @@
     <licenses>
         <license>
             <name>The BSD 3-Clause License</name>
-            <url>https://raw.githubusercontent.com/gabrysbiz/css-splitter-maven-plugin/master/src/main/resources/license.txt</url>
+            <url>http://css-splitter-maven-plugin.projects.gabrys.biz/license.txt</url>
             <distribution>repo</distribution>
         </license>
     </licenses>
