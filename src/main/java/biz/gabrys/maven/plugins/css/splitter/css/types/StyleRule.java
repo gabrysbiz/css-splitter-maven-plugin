@@ -17,7 +17,7 @@ import java.util.List;
 
 import org.codehaus.plexus.util.StringUtils;
 
-public class StyleRule extends AbstractTextRule {
+public class StyleRule extends AbstractNodeRule {
 
     private final List<String> selectors;
     private final List<StyleProperty> properties;
@@ -47,13 +47,16 @@ public class StyleRule extends AbstractTextRule {
     }
 
     @Override
-    public List<String> getLines() {
-        final List<String> lines = new ArrayList<String>(2 + properties.size());
+    protected void fillLines(final List<String> lines) {
         lines.add(StringUtils.join(selectors.iterator(), ", ") + " {");
         for (final StyleProperty property : properties) {
-            lines.add(INDENTATION + property);
+            lines.add(INDENTATION + property.getCode());
         }
         lines.add("}");
-        return lines;
+    }
+
+    @Override
+    protected int getSize2() {
+        return properties.isEmpty() ? 1 : properties.size();
     }
 }

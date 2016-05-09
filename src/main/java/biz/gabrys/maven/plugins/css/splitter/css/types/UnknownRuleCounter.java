@@ -10,18 +10,11 @@
  * - a copy of the License at project page
  * - a template of the License at https://opensource.org/licenses/BSD-3-Clause
  */
-package biz.gabrys.maven.plugins.css.splitter.counter;
+package biz.gabrys.maven.plugins.css.splitter.css.types;
 
-import biz.gabrys.maven.plugins.css.splitter.css.types.UnknownRule;
+class UnknownRuleCounter {
 
-public class UnknownRuleCounter extends AbstractRuleCounter<UnknownRule> {
-
-    public UnknownRuleCounter() {
-        super(UnknownRule.class);
-    }
-
-    @Override
-    protected int count2(final UnknownRule rule) {
+    int count(final UnknownRule rule) {
         final String code = rule.getCode();
         if (code.endsWith("}")) {
             return countNestedRule(code);

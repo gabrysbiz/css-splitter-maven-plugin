@@ -17,6 +17,6 @@ public final class DateTokenValueFactoryTest {
         calendar.set(Calendar.DAY_OF_MONTH, 22);
         Mockito.doReturn(calendar.getTime()).when(factory).getNow();
 
-        Assert.assertEquals("Created value", "20150422", factory.create("yyyyMMdd"));
+        Assert.assertEquals("Created value.", "20150422", factory.create("yyyyMMdd"));
     }
 }

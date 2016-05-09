@@ -17,22 +17,16 @@ import java.util.List;
 
 import biz.gabrys.maven.plugins.css.splitter.css.types.NodeRule;
 
-class AnyRuleSplitter implements RuleSplitter<NodeRule> {
+class MultipleRuleSplitter implements RuleSplitter {
 
-    private final List<RuleSplitter<? extends NodeRule>> splitters = new ArrayList<RuleSplitter<? extends NodeRule>>();
+    private final List<RuleSplitter> splitters;
 
-    AnyRuleSplitter() {
-        splitters.add(new ComplexRuleSplitter());
-        splitters.add(new StyleRuleSplitter());
-    }
-
-    // for tests
-    AnyRuleSplitter(final List<RuleSplitter<? extends NodeRule>> splitters) {
-        this.splitters.addAll(splitters);
+    MultipleRuleSplitter(final List<RuleSplitter> splitters) {
+        this.splitters = new ArrayList<RuleSplitter>(splitters);
     }
 
     public boolean isSplittable(final NodeRule rule) {
-        for (final RuleSplitter<? extends NodeRule> splitter : splitters) {
+        for (final RuleSplitter splitter : splitters) {
             if (splitter.isSplittable(rule)) {
                 return true;
             }
@@ -40,11 +34,10 @@ class AnyRuleSplitter implements RuleSplitter<NodeRule> {
         return false;
     }
 
-    @SuppressWarnings("unchecked")
-    public SplitResult<NodeRule> split(final NodeRule rule, final int splitAfter) {
-        for (final RuleSplitter<? extends NodeRule> splitter : splitters) {
+    public SplitResult split(final NodeRule rule, final int splitAfter) {
+        for (final RuleSplitter splitter : splitters) {
             if (splitter.isSplittable(rule)) {
-                return (SplitResult<NodeRule>) splitter.split(rule, splitAfter);
+                return splitter.split(rule, splitAfter);
             }
         }
         throw new IllegalArgumentException(String.format("The rule is unsplittable! Code:%n%s", rule));

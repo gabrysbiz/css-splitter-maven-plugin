@@ -10,13 +10,15 @@
  * - a copy of the License at project page
  * - a template of the License at https://opensource.org/licenses/BSD-3-Clause
  */
-package biz.gabrys.maven.plugins.css.splitter.counter;
+package biz.gabrys.maven.plugins.css.splitter.message;
 
 import biz.gabrys.maven.plugins.css.splitter.css.types.NodeRule;
 
-public interface RuleCounter {
+interface MessagePrinter {
+
+    boolean isEnabled();
 
     boolean isSupportedType(NodeRule rule);
 
-    int count(NodeRule rule);
+    void print(NodeRule rule);
 }

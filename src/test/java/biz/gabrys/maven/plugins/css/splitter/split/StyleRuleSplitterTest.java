@@ -55,9 +55,9 @@ public final class StyleRuleSplitterTest {
         final List<StyleProperty> properties = Arrays.asList(property1, property2, property3);
         Mockito.when(rule.getProperties()).thenReturn(properties);
 
-        final SplitResult<StyleRule> result = splitter.split2(rule, 1);
+        final SplitResult result = splitter.split2(rule, 1);
 
-        final StyleRule firstRule = result.getBefore();
+        final StyleRule firstRule = (StyleRule) result.getBefore();
         Assert.assertNotNull("First rule should not be equal to null", firstRule);
         final List<String> firstRuleSelectors = firstRule.getSelectors();
         Assert.assertEquals("First rule selectors quantity", selectors.size(), firstRuleSelectors.size());
@@ -66,7 +66,7 @@ public final class StyleRuleSplitterTest {
         Assert.assertEquals("First rule properties quantity", 1, firstRuleProperties.size());
         Assert.assertTrue("First rule contains first property", firstRuleProperties.contains(property1));
 
-        final StyleRule secondRule = result.getAfter();
+        final StyleRule secondRule = (StyleRule) result.getAfter();
         Assert.assertNotNull("Second rule should not be equal to null", secondRule);
         final List<String> secondRuleSelectors = secondRule.getSelectors();
         Assert.assertEquals("Second rule selectors quantity", selectors.size(), secondRuleSelectors.size());

@@ -32,11 +32,11 @@ public final class StyleSheetConverterTest {
         stylesheet.setCssRules(ruleList);
 
         final StyleSheet convertedStyleSheet = converter.convert(stylesheet);
-        Assert.assertNotNull("Converted stylesheet instance", convertedStyleSheet);
+        Assert.assertNotNull("Converted stylesheet instance.", convertedStyleSheet);
         final List<NodeRule> childRules = convertedStyleSheet.getRules();
-        Assert.assertNotNull("Converted stylesheet rules instance", childRules);
-        Assert.assertEquals("Converted stylesheet rules size", 1, childRules.size());
-        Assert.assertEquals("Converted stylesheet rule", convertedStyleRule, childRules.get(0));
+        Assert.assertNotNull("Converted stylesheet rules instance.", childRules);
+        Assert.assertEquals("Converted stylesheet rules size.", 1, childRules.size());
+        Assert.assertEquals("Converted stylesheet rule.", convertedStyleRule, childRules.get(0));
     }
 
     @Test(expected = UnsupportedRuleException.class)

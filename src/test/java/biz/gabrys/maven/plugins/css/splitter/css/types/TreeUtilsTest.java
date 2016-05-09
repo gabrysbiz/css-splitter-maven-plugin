@@ -6,14 +6,16 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import biz.gabrys.maven.plugins.css.splitter.test.SupportedTestNodeRule;
+
 public final class TreeUtilsTest {
 
     @Test
     public void fillNeighbors_parentIsNull() {
-        final NodeRule firstRule = new NodeRule();
-        final NodeRule secondRule = new NodeRule();
-        final NodeRule thirdRule = new NodeRule();
-        final NodeRule fourthRule = new NodeRule();
+        final NodeRule firstRule = new SupportedTestNodeRule();
+        final NodeRule secondRule = new SupportedTestNodeRule();
+        final NodeRule thirdRule = new SupportedTestNodeRule();
+        final NodeRule fourthRule = new SupportedTestNodeRule();
 
         TreeUtils.fillNeighbors(null, Arrays.asList(firstRule, secondRule, thirdRule, fourthRule));
 
@@ -38,10 +40,10 @@ public final class TreeUtilsTest {
     public void fillNeighbors_parentIsNotNull() {
         final NodeRule parent = Mockito.mock(NodeRule.class);
 
-        final NodeRule firstRule = new NodeRule();
-        final NodeRule secondRule = new NodeRule();
-        final NodeRule thirdRule = new NodeRule();
-        final NodeRule fourthRule = new NodeRule();
+        final NodeRule firstRule = new SupportedTestNodeRule();
+        final NodeRule secondRule = new SupportedTestNodeRule();
+        final NodeRule thirdRule = new SupportedTestNodeRule();
+        final NodeRule fourthRule = new SupportedTestNodeRule();
 
         TreeUtils.fillNeighbors(parent, Arrays.asList(firstRule, secondRule, thirdRule, fourthRule));
 

@@ -14,7 +14,6 @@ package biz.gabrys.maven.plugins.css.splitter;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -34,21 +33,17 @@ import biz.gabrys.maven.plugin.util.io.ScannerFactory;
 import biz.gabrys.maven.plugin.util.io.ScannerPatternFormat;
 import biz.gabrys.maven.plugin.util.timer.SystemTimer;
 import biz.gabrys.maven.plugin.util.timer.Timer;
-import biz.gabrys.maven.plugins.css.splitter.counter.LoggingStyleSheetCounter;
-import biz.gabrys.maven.plugins.css.splitter.counter.StyleSheetCounter;
-import biz.gabrys.maven.plugins.css.splitter.counter.StyleSheetCounterImpl;
 import biz.gabrys.maven.plugins.css.splitter.css.Standard;
 import biz.gabrys.maven.plugins.css.splitter.css.types.StyleSheet;
+import biz.gabrys.maven.plugins.css.splitter.message.StylesheetMessagePrinter;
 import biz.gabrys.maven.plugins.css.splitter.net.UrlEscaper;
-import biz.gabrys.maven.plugins.css.splitter.split.Splliter;
+import biz.gabrys.maven.plugins.css.splitter.split.StyleSheetSplliter;
 import biz.gabrys.maven.plugins.css.splitter.steadystate.SteadyStateParser;
 import biz.gabrys.maven.plugins.css.splitter.token.TokenType;
 import biz.gabrys.maven.plugins.css.splitter.tree.OrderedTree;
 import biz.gabrys.maven.plugins.css.splitter.tree.OrderedTreeNode;
 import biz.gabrys.maven.plugins.css.splitter.validation.RulesLimitValidator;
 import biz.gabrys.maven.plugins.css.splitter.validation.StylePropertiesLimitValidator;
-import biz.gabrys.maven.plugins.css.splitter.validation.StyleSheetValidator;
-import biz.gabrys.maven.plugins.css.splitter.validation.ValidationException;
 
 /**
  * Splits <a href="http://www.w3.org/Style/CSS/">CSS</a> stylesheets to smaller files (parts).
@@ -244,6 +239,17 @@ public class SplitMojo extends AbstractMojo {
     protected String standard;
 
     /**
+     * Defines whether the plugin runs in non-strict mode. In non-strict mode a
+     * <a href="http://www.w3.org/Style/CSS/">CSS</a> parser adds support for non-standard structures (e.g.
+     * <code>@page</code> rule inside <code>@media</code>).<br>
+     * <b>Notice</b>: this functionality may stop working or be removed at any time. You should fix your code instead of
+     * relying on this functionality.
+     * @since 1.0
+     */
+    @Parameter(property = "css.splitter.nonstrict", defaultValue = "false")
+    protected boolean nonstrict;
+
+    /**
      * Defines cache token type which will be added to <code>&#64;import</code> urls in destination
      * <a href="http://www.w3.org/Style/CSS/">CSS</a> stylesheets. Available options:
      * <ul>
@@ -324,6 +330,7 @@ public class SplitMojo extends AbstractMojo {
             getLog().debug("\tmaxImports = " + maxImports + (maxImports > 1 ? "" : calculatedIntegerMaxValue));
             getLog().debug("\timportsDepthLimit = " + importsDepthLimit + (importsDepthLimit > 0 ? "" : calculatedIntegerMaxValue));
             getLog().debug("\tstandard = " + standard);
+            getLog().debug("\tnonstrict = " + nonstrict);
             getLog().debug("\tcacheTokenType = " + cacheTokenType);
             getLog().debug("\tcacheTokenParameter = " + cacheTokenParameter);
             String calculatedCacheTokenValue = "";
@@ -359,6 +366,13 @@ public class SplitMojo extends AbstractMojo {
         }
     }
 
+    private void logNonstricWarning() {
+        getLog().warn("#################### NON-STRICT MODE ENABLED ####################");
+        getLog().warn("This functionality may stop working or be removed at any time!");
+        getLog().warn("You should fix your code instead of relying on this functionality.");
+        getLog().warn("#################### NON-STRICT MODE ENABLED ####################");
+    }
+
     private void calculateParameters() {
         if (getLog().isDebugEnabled()) {
             verbose = true;
@@ -391,6 +405,9 @@ public class SplitMojo extends AbstractMojo {
 
     public void execute() throws MojoExecutionException, MojoFailureException {
         logParameters();
+        if (nonstrict) {
+            logNonstricWarning();
+        }
         if (skip) {
             getLog().info("Skipping job execution");
             return;
@@ -398,6 +415,9 @@ public class SplitMojo extends AbstractMojo {
         calculateParameters();
         validateParameters();
         runSplitter();
+        if (nonstrict) {
+            logNonstricWarning();
+        }
     }
 
     private void runSplitter() throws MojoFailureException {
@@ -474,23 +494,9 @@ public class SplitMojo extends AbstractMojo {
             timer = SystemTimer.getStartedTimer();
         }
         final String css = readCss(source);
-        final List<StyleSheet> parts;
-        try {
-            if (getLog().isDebugEnabled()) {
-                getLog().debug("Parsing stylesheet...");
-            }
-            final StyleSheet stylesheet = new SteadyStateParser(getLog()).parse(css, Standard.create(standard));
-            validateStyleSheet(stylesheet);
-            if (getLog().isDebugEnabled()) {
-                getLog().debug("Splitting stylesheet to parts...");
-            }
-            parts = new Splliter(maxRules).split(stylesheet);
-        } catch (final Exception e) {
-            throw new MojoFailureException(e.getMessage(), e);
-        }
-        if (verbose) {
-            getLog().info(String.format("Split to %d stylesheet%s.", parts.size(), parts.size() == 1 ? "" : "s"));
-        }
+        final StyleSheet stylesheet = parseStyleSheet(css);
+        validateStyleSheet(stylesheet);
+        final List<StyleSheet> parts = splitToParts(stylesheet);
         saveParts(source, parts);
         if (timer != null) {
             getLog().info("Finished in " + timer.stop());
@@ -505,22 +511,36 @@ public class SplitMojo extends AbstractMojo {
         }
     }
 
-    private void validateStyleSheet(final StyleSheet stylesheet) throws ValidationException {
+    private StyleSheet parseStyleSheet(final String css) {
+        if (getLog().isDebugEnabled()) {
+            getLog().debug("Parsing stylesheet...");
+        }
+        final StyleSheet stylesheet = new SteadyStateParser(getLog()).parse(css, Standard.create(standard), !nonstrict);
+        new StylesheetMessagePrinter(getLog(), !nonstrict).print(stylesheet);
+        if (verbose) {
+            getLog().info(String.format("Stylesheet contains %d rule%s.", stylesheet.getSize(), stylesheet.getSize() != 1 ? 's' : ""));
+        }
+        return stylesheet;
+    }
+
+    private List<StyleSheet> splitToParts(final StyleSheet stylesheet) {
+        if (getLog().isDebugEnabled()) {
+            getLog().debug("Splitting stylesheet to parts...");
+        }
+        final List<StyleSheet> parts = new StyleSheetSplliter(maxRules).split(stylesheet);
+        if (verbose) {
+            getLog().info(String.format("Split to %d stylesheet%s.", parts.size(), parts.size() == 1 ? "" : "s"));
+        }
+        return parts;
+    }
+
+    private void validateStyleSheet(final StyleSheet stylesheet) {
         if (getLog().isDebugEnabled()) {
             getLog().debug("Validating stylesheet...");
         }
 
-        final Collection<StyleSheetValidator> validators = new ArrayList<StyleSheetValidator>();
-        StyleSheetCounter counter = new StyleSheetCounterImpl();
-        if (verbose) {
-            counter = new LoggingStyleSheetCounter(counter, getLog());
-        }
-        validators.add(new RulesLimitValidator(rulesLimit, counter));
-        validators.add(new StylePropertiesLimitValidator(maxRules, getLog()));
-
-        for (final StyleSheetValidator validator : validators) {
-            validator.validate(stylesheet);
-        }
+        new RulesLimitValidator(rulesLimit).validate(stylesheet);
+        new StylePropertiesLimitValidator(maxRules).validate(stylesheet);
     }
 
     private void saveParts(final File source, final List<StyleSheet> parts) throws MojoFailureException {

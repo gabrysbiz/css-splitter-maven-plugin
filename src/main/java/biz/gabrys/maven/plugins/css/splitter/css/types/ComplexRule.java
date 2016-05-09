@@ -13,22 +13,21 @@
 package biz.gabrys.maven.plugins.css.splitter.css.types;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.codehaus.plexus.util.StringUtils;
 
-public class ComplexRule extends AbstractTextRule {
+public class ComplexRule extends AbstractNodeRule {
 
     private final String type;
     private final List<String> selectors;
-    private final List<StyleRule> rules;
+    private final List<NodeRule> rules;
 
-    public ComplexRule(final String type, final List<String> selectors, final List<StyleRule> rules) {
+    public ComplexRule(final String type, final List<String> selectors, final List<? extends NodeRule> rules) {
         TreeUtils.fillNeighbors(this, rules);
         this.type = type;
         this.selectors = new ArrayList<String>(selectors);
-        this.rules = new ArrayList<StyleRule>(rules);
+        this.rules = new ArrayList<NodeRule>(rules);
     }
 
     public String getType() {
@@ -39,20 +38,28 @@ public class ComplexRule extends AbstractTextRule {
         return new ArrayList<String>(selectors);
     }
 
-    public List<StyleRule> getRules() {
-        return new ArrayList<StyleRule>(rules);
+    public List<NodeRule> getRules() {
+        return new ArrayList<NodeRule>(rules);
     }
 
     @Override
-    public List<String> getLines() {
-        final List<String> lines = new LinkedList<String>();
+    protected void fillLines(final List<String> lines) {
         lines.add(type + ' ' + StringUtils.join(selectors.iterator(), ", ") + " {");
-        for (final StyleRule rule : rules) {
-            for (final String line : rule.getLines()) {
-                lines.add(INDENTATION + line);
+        for (final NodeRule rule : rules) {
+            final String[] childLines = rule.getLines();
+            for (final String childLine : childLines) {
+                lines.add(INDENTATION + childLine);
             }
         }
         lines.add("}");
-        return lines;
+    }
+
+    @Override
+    protected int getSize2() {
+        int size = 0;
+        for (final NodeRule rule : rules) {
+            size += rule.getSize();
+        }
+        return size;
     }
 }

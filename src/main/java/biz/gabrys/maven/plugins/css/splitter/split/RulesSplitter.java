@@ -14,21 +14,18 @@ package biz.gabrys.maven.plugins.css.splitter.split;
 
 import java.util.List;
 
-import biz.gabrys.maven.plugins.css.splitter.counter.RuleCounter;
 import biz.gabrys.maven.plugins.css.splitter.css.types.NodeRule;
 
-class RulesSplitter<T extends NodeRule> {
+class RulesSplitter {
 
-    private final RuleCounter counter;
-    private final RuleSplitter<T> splitter;
+    private final RuleSplitter splitter;
 
-    RulesSplitter(final RuleCounter counter, final RuleSplitter<T> splitter) {
-        this.counter = counter;
+    RulesSplitter(final RuleSplitter splitter) {
         this.splitter = splitter;
     }
 
-    RulesContainer<T> split(final List<T> rules, final int splitAfter) {
-        final RulesContainer<T> container = new RulesContainer<T>();
+    RulesContainer split(final List<NodeRule> rules, final int splitAfter) {
+        final RulesContainer container = new RulesContainer();
         final ValueAndIndex info = new ValueAndIndex(splitAfter);
         processBeforeSplitPoint(rules, container, info);
         if (info.value != 0) {
@@ -38,10 +35,10 @@ class RulesSplitter<T extends NodeRule> {
         return container;
     }
 
-    private void processBeforeSplitPoint(final List<T> rules, final RulesContainer<T> container, final ValueAndIndex info) {
+    private static void processBeforeSplitPoint(final List<NodeRule> rules, final RulesContainer container, final ValueAndIndex info) {
         while (info.index < rules.size()) {
-            final T rule = rules.get(info.index);
-            final int count = counter.count(rule);
+            final NodeRule rule = rules.get(info.index);
+            final int count = rule.getSize();
             final int odds = info.value - count;
             if (odds < 0) {
                 return;
@@ -53,11 +50,11 @@ class RulesSplitter<T extends NodeRule> {
         info.value = 0;
     }
 
-    private void processSplitPoint(final List<T> rules, final RulesContainer<T> container, final ValueAndIndex info) {
-        final T rule = rules.get(info.index);
+    private void processSplitPoint(final List<NodeRule> rules, final RulesContainer container, final ValueAndIndex info) {
+        final NodeRule rule = rules.get(info.index);
         ++info.index;
         if (splitter.isSplittable(rule)) {
-            final SplitResult<? extends T> result = splitter.split(rule, info.value);
+            final SplitResult result = splitter.split(rule, info.value);
             container.before.add(result.getBefore());
             container.after.add(result.getAfter());
             return;
@@ -65,8 +62,7 @@ class RulesSplitter<T extends NodeRule> {
         container.after.add(rule);
     }
 
-    private static <T extends NodeRule> void processAfterSplitPoint(final List<T> rules, final RulesContainer<T> container,
-            final ValueAndIndex info) {
+    private static void processAfterSplitPoint(final List<NodeRule> rules, final RulesContainer container, final ValueAndIndex info) {
         if (info.index < rules.size()) {
             container.after.addAll(rules.subList(info.index, rules.size()));
         }

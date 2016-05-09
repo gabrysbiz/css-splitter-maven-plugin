@@ -14,7 +14,7 @@ public final class UnknownRuleConverterTest {
         final UnknownRuleConverter converter = new UnknownRuleConverter();
         final CSSUnknownRuleImpl rule = new CSSUnknownRuleImpl();
         final boolean supported = converter.isSupportedType(rule);
-        Assert.assertTrue("Should return true", supported);
+        Assert.assertTrue("Should return true.", supported);
     }
 
     @Test
@@ -25,7 +25,7 @@ public final class UnknownRuleConverterTest {
         rule.setCssText(code);
 
         final UnknownRule converted = converter.convert(rule);
-        Assert.assertNotNull("Converted rule instance", converted);
-        Assert.assertEquals("Converted rule code", code, converted.getCode());
+        Assert.assertNotNull("Converted rule instance.", converted);
+        Assert.assertEquals("Converted rule code.", code, converted.getCode());
     }
 }

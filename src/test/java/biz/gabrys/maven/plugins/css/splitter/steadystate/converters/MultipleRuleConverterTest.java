@@ -10,7 +10,7 @@ import org.w3c.dom.css.CSSRule;
 import biz.gabrys.maven.plugins.css.splitter.css.types.NodeRule;
 import biz.gabrys.maven.plugins.css.splitter.css.types.StyleRule;
 
-public final class AnyRuleConverterTest {
+public final class MultipleRuleConverterTest {
 
     @Test
     public void isSupportedType_convertersNotSupportRule_returnsFalse() {
@@ -22,12 +22,12 @@ public final class AnyRuleConverterTest {
         final RuleConverter<?> internalConverter2 = Mockito.mock(RuleConverter.class);
         Mockito.when(internalConverter2.isSupportedType(rule)).thenReturn(false);
 
-        final RuleConverter<NodeRule> converter = new AnyRuleConverter(
+        final RuleConverter<NodeRule> converter = new MultipleRuleConverter(
                 Arrays.<RuleConverter<?>>asList(internalConverter1, internalConverter2));
 
         final boolean supported = converter.isSupportedType(rule);
 
-        Assert.assertFalse("Should not support rule", supported);
+        Assert.assertFalse("Should not support rule.", supported);
     }
 
     @Test
@@ -41,12 +41,12 @@ public final class AnyRuleConverterTest {
         final RuleConverter<StyleRule> internalConverter2 = Mockito.mock(RuleConverter.class);
         Mockito.when(internalConverter2.isSupportedType(rule)).thenReturn(true);
 
-        final RuleConverter<NodeRule> converter = new AnyRuleConverter(
+        final RuleConverter<NodeRule> converter = new MultipleRuleConverter(
                 Arrays.<RuleConverter<?>>asList(internalConverter1, internalConverter2));
 
         final boolean supported = converter.isSupportedType(rule);
 
-        Assert.assertTrue("Should not support rule", supported);
+        Assert.assertTrue("Should not support rule.", supported);
         Mockito.verify(internalConverter1).isSupportedType(rule);
         Mockito.verify(internalConverter2).isSupportedType(rule);
         Mockito.verifyNoMoreInteractions(internalConverter1, internalConverter2);
@@ -62,7 +62,7 @@ public final class AnyRuleConverterTest {
         final RuleConverter<?> internalConverter2 = Mockito.mock(RuleConverter.class);
         Mockito.when(internalConverter2.isSupportedType(rule)).thenReturn(false);
 
-        final RuleConverter<NodeRule> converter = new AnyRuleConverter(
+        final RuleConverter<NodeRule> converter = new MultipleRuleConverter(
                 Arrays.<RuleConverter<?>>asList(internalConverter1, internalConverter2));
 
         converter.convert(rule);
@@ -81,12 +81,12 @@ public final class AnyRuleConverterTest {
         final StyleRule styleRule = Mockito.mock(StyleRule.class);
         Mockito.when(internalConverter2.convert(rule)).thenReturn(styleRule);
 
-        final RuleConverter<NodeRule> converter = new AnyRuleConverter(
+        final RuleConverter<NodeRule> converter = new MultipleRuleConverter(
                 Arrays.<RuleConverter<?>>asList(internalConverter1, internalConverter2));
 
         final NodeRule converted = converter.convert(rule);
-        Assert.assertNotNull("Converted rule should not be null", converted);
-        Assert.assertEquals("Converted rule", styleRule, converted);
+        Assert.assertNotNull("Converted rule instance.", converted);
+        Assert.assertEquals("Converted rule.", styleRule, converted);
         Mockito.verify(internalConverter1).isSupportedType(rule);
         Mockito.verify(internalConverter2).isSupportedType(rule);
         Mockito.verify(internalConverter2).convert(rule);
@@ -106,12 +106,12 @@ public final class AnyRuleConverterTest {
         @SuppressWarnings("unchecked")
         final RuleConverter<StyleRule> internalConverter2 = Mockito.mock(RuleConverter.class);
 
-        final RuleConverter<NodeRule> converter = new AnyRuleConverter(
+        final RuleConverter<NodeRule> converter = new MultipleRuleConverter(
                 Arrays.<RuleConverter<?>>asList(internalConverter1, internalConverter2));
 
         final NodeRule converted = converter.convert(rule);
-        Assert.assertNotNull("Converted rule should not be null", converted);
-        Assert.assertEquals("Converted rule", styleRule, converted);
+        Assert.assertNotNull("Converted rule instance.", converted);
+        Assert.assertEquals("Converted rule.", styleRule, converted);
         Mockito.verify(internalConverter1).isSupportedType(rule);
         Mockito.verify(internalConverter1).convert(rule);
         Mockito.verifyNoMoreInteractions(internalConverter1);

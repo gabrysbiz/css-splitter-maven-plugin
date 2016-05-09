@@ -16,33 +16,32 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.maven.plugin.logging.Log;
-
 import biz.gabrys.maven.plugins.css.splitter.css.types.NodeRule;
 import biz.gabrys.maven.plugins.css.splitter.css.types.StyleSheet;
 
-public final class StylePropertiesLimitValidator implements StyleSheetValidator {
+public final class StylePropertiesLimitValidator {
 
     private final List<RulePropertiesLimitValidator> validators;
     private final int limit;
 
-    public StylePropertiesLimitValidator(final int limit, final Log logger) {
+    public StylePropertiesLimitValidator(final int limit) {
         this(Arrays.<RulePropertiesLimitValidator>asList(new StyleRulePropertiesLimitValidator(), new ComplexRulePropertiesLimitValidator(),
-                new UnknownRulePropertiesLimitValidator(logger)), limit);
+                new UnknownRulePropertiesLimitValidator()), limit);
     }
 
+    // for tests
     StylePropertiesLimitValidator(final List<RulePropertiesLimitValidator> validators, final int limit) {
-        this.limit = limit;
         this.validators = new ArrayList<RulePropertiesLimitValidator>(validators);
+        this.limit = limit;
     }
 
-    public void validate(final StyleSheet stylesheet) throws ValidationException {
+    public void validate(final StyleSheet stylesheet) {
         for (final NodeRule rule : stylesheet.getRules()) {
             validate(rule);
         }
     }
 
-    private void validate(final NodeRule rule) throws ValidationException {
+    private void validate(final NodeRule rule) {
         for (final RulePropertiesLimitValidator validator : validators) {
             if (validator.isSupportedType(rule)) {
                 validator.validate(rule, limit);

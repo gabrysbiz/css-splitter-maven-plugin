@@ -18,6 +18,7 @@ import java.util.List;
 public class StyleSheet {
 
     private final List<NodeRule> rules;
+    private Integer size;
 
     public StyleSheet(final List<NodeRule> rules) {
         TreeUtils.fillNeighbors(null, rules);
@@ -35,5 +36,15 @@ public class StyleSheet {
             css.append(rule);
         }
         return css.toString();
+    }
+
+    public int getSize() {
+        if (size == null) {
+            size = 0;
+            for (final NodeRule child : rules) {
+                size += child.getSize();
+            }
+        }
+        return size;
     }
 }

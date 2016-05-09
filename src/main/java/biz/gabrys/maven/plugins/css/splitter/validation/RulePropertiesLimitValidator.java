@@ -18,5 +18,5 @@ interface RulePropertiesLimitValidator {
 
     boolean isSupportedType(NodeRule rule);
 
-    void validate(NodeRule rule, int limit) throws ValidationException;
+    void validate(NodeRule rule, int limit);
 }

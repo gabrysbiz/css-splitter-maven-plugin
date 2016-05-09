@@ -12,7 +12,7 @@
  */
 package biz.gabrys.maven.plugins.css.splitter.css.types;
 
-public class StyleProperty extends Node<StyleRule, StyleProperty> {
+public class StyleProperty extends NodeImpl<StyleRule, StyleProperty> {
 
     private final String name;
     private final String value;
@@ -30,8 +30,12 @@ public class StyleProperty extends Node<StyleRule, StyleProperty> {
         return value;
     }
 
+    public String getCode() {
+        return name + ": " + value + ';';
+    }
+
     @Override
     public String toString() {
-        return name + ": " + value + ';';
+        return getCode() + '\n';
     }
 }

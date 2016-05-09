@@ -10,15 +10,15 @@
  * - a copy of the License at project page
  * - a template of the License at https://opensource.org/licenses/BSD-3-Clause
  */
-package biz.gabrys.maven.plugins.css.splitter.counter;
+package biz.gabrys.maven.plugins.css.splitter.message;
 
 import biz.gabrys.maven.plugins.css.splitter.css.types.NodeRule;
 
-abstract class AbstractRuleCounter<T extends NodeRule> implements RuleCounter {
+abstract class AbstractMessagePrinter<T extends NodeRule> implements MessagePrinter {
 
     private final Class<T> clazz;
 
-    protected AbstractRuleCounter(final Class<T> clazz) {
+    protected AbstractMessagePrinter(final Class<T> clazz) {
         this.clazz = clazz;
     }
 
@@ -26,12 +26,11 @@ abstract class AbstractRuleCounter<T extends NodeRule> implements RuleCounter {
         return rule != null && rule.getClass() == clazz;
     }
 
-    public final int count(final NodeRule rule) {
-        if (!isSupportedType(rule)) {
-            throw new UnsupportedRuleException(rule);
+    public final void print(final NodeRule rule) {
+        if (isSupportedType(rule)) {
+            print2(clazz.cast(rule));
         }
-        return count2(clazz.cast(rule));
     }
 
-    protected abstract int count2(final T rule);
+    protected abstract void print2(T rule);
 }

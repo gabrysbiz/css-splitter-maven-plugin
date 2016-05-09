@@ -12,9 +12,11 @@
  */
 package biz.gabrys.maven.plugins.css.splitter.css.types;
 
-public class NodeRule extends Node<NodeRule, NodeRule> {
+public interface NodeRule extends Node<NodeRule, NodeRule> {
 
-    protected NodeRule() {
-        // do nothing
-    }
+    String getCode();
+
+    String[] getLines();
+
+    int getSize();
 }

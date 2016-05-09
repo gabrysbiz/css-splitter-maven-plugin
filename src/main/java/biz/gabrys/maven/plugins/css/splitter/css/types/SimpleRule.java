@@ -12,10 +12,9 @@
  */
 package biz.gabrys.maven.plugins.css.splitter.css.types;
 
-import java.util.Arrays;
 import java.util.List;
 
-public class SimpleRule extends AbstractTextRule {
+public class SimpleRule extends AbstractNodeRule {
 
     private final String code;
 
@@ -23,12 +22,13 @@ public class SimpleRule extends AbstractTextRule {
         this.code = code;
     }
 
-    public String getCode() {
-        return code;
+    @Override
+    protected void fillLines(final List<String> lines) {
+        lines.add(code);
     }
 
     @Override
-    public List<String> getLines() {
-        return Arrays.asList(code);
+    protected int getSize2() {
+        return 1;
     }
 }

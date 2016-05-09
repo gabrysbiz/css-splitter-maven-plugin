@@ -37,11 +37,11 @@ class StyleRuleSplitter extends AbstractRuleSplitter<StyleRule> {
     }
 
     @Override
-    protected SplitResult<StyleRule> split2(final StyleRule rule, final int splitAfter) {
+    protected SplitResult split2(final StyleRule rule, final int splitAfter) {
         final List<StyleProperty> properties = rule.getProperties();
         final StyleRule first = new StyleRule(rule.getSelectors(), properties.subList(0, splitAfter));
         final StyleRule second = new StyleRule(rule.getSelectors(), properties.subList(splitAfter, properties.size()));
         neighborsManager.fill(rule, first, second);
-        return new SplitResult<StyleRule>(first, second);
+        return new SplitResult(first, second);
     }
 }

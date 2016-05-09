@@ -15,21 +15,21 @@ public final class AbstractRuleConverterTest {
     public void isSupportedType_ruleIsNull_returnsFalse() {
         final RuleConverterImpl converter = new RuleConverterImpl();
         final boolean supported = converter.isSupportedType(null);
-        Assert.assertFalse("Should return false for null", supported);
+        Assert.assertFalse("Should return false for null.", supported);
     }
 
     @Test
     public void isSupportedType_ruleHasInvalidType_returnsFalse() {
         final RuleConverterImpl converter = new RuleConverterImpl();
         final boolean supported = converter.isSupportedType(new CSSFontFaceRuleImpl());
-        Assert.assertFalse("Should return false for invalid rule", supported);
+        Assert.assertFalse("Should return false for invalid rule.", supported);
     }
 
     @Test
-    public void isSupportedType_ruleHasValidType_returnsFalse() {
+    public void isSupportedType_ruleHasValidType_returnsTrue() {
         final RuleConverterImpl converter = new RuleConverterImpl();
         final boolean supported = converter.isSupportedType(new CSSCharsetRuleImpl());
-        Assert.assertTrue("Should return false for valid rule", supported);
+        Assert.assertTrue("Should return false for valid rule.", supported);
     }
 
     @Test(expected = UnsupportedRuleException.class)
@@ -41,8 +41,10 @@ public final class AbstractRuleConverterTest {
     @Test
     public void convert_typeIsValid_executesConvert2() {
         final RuleConverterImpl converter = Mockito.spy(new RuleConverterImpl());
+
         final CSSCharsetRuleImpl rule = new CSSCharsetRuleImpl();
         converter.convert(rule);
+
         Mockito.verify(converter).convert2(rule);
     }
 
