@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>AbstractMessagePrinter.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">CSS Splitter Maven Plugin</a> &gt; <a href="index.source.html" class="el_package">biz.gabrys.maven.plugins.css.splitter.message</a> &gt; <span class="el_source">AbstractMessagePrinter.java</span></div><h1>AbstractMessagePrinter.java</h1><pre class="source lang-java linenums">/*
+ * CSS Splitter Maven Plugin
+ * http://css-splitter-maven-plugin.projects.gabrys.biz/
+ *
+ * Copyright (c) 2015 Adam Gabryś
+ *
+ * This file is licensed under the BSD 3-Clause (the &quot;License&quot;).
+ * You may not use this file except in compliance with the License.
+ * You may obtain:
+ * - a copy of the License at project page
+ * - a template of the License at https://opensource.org/licenses/BSD-3-Clause
+ */
+package biz.gabrys.maven.plugins.css.splitter.message;
+
+import biz.gabrys.maven.plugins.css.splitter.css.types.NodeRule;
+
+abstract class AbstractMessagePrinter&lt;T extends NodeRule&gt; implements MessagePrinter {
+
+    private final Class&lt;T&gt; clazz;
+
+<span class="fc" id="L21">    protected AbstractMessagePrinter(final Class&lt;T&gt; clazz) {</span>
+<span class="fc" id="L22">        this.clazz = clazz;</span>
+<span class="fc" id="L23">    }</span>
+
+    public final boolean isSupportedType(final NodeRule rule) {
+<span class="fc bfc" id="L26" title="All 4 branches covered.">        return rule != null &amp;&amp; rule.getClass() == clazz;</span>
+    }
+
+    public final void print(final NodeRule rule) {
+<span class="fc bfc" id="L30" title="All 2 branches covered.">        if (isSupportedType(rule)) {</span>
+<span class="fc" id="L31">            print2(clazz.cast(rule));</span>
+        }
+<span class="fc" id="L33">    }</span>
+
+    protected abstract void print2(T rule);
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

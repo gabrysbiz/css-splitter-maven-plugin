@@ -25,7 +25,7 @@
 <a class="jxr_linenumber" name="L17" href="#L17">17</a>  
 <a class="jxr_linenumber" name="L18" href="#L18">18</a>  <strong class="jxr_keyword">import</strong> org.codehaus.plexus.util.StringUtils;
 <a class="jxr_linenumber" name="L19" href="#L19">19</a>  
-<a class="jxr_linenumber" name="L20" href="#L20">20</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../../../../../biz/gabrys/maven/plugins/css/splitter/css/types/StyleRule.html">StyleRule</a> <strong class="jxr_keyword">extends</strong> <a href="../../../../../../../../biz/gabrys/maven/plugins/css/splitter/css/types/AbstractTextRule.html">AbstractTextRule</a> {
+<a class="jxr_linenumber" name="L20" href="#L20">20</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../../../../../biz/gabrys/maven/plugins/css/splitter/css/types/StyleRule.html">StyleRule</a> <strong class="jxr_keyword">extends</strong> <a href="../../../../../../../../biz/gabrys/maven/plugins/css/splitter/css/types/AbstractNodeRule.html">AbstractNodeRule</a> {
 <a class="jxr_linenumber" name="L21" href="#L21">21</a>  
 <a class="jxr_linenumber" name="L22" href="#L22">22</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> List&lt;String&gt; selectors;
 <a class="jxr_linenumber" name="L23" href="#L23">23</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> List&lt;StyleProperty&gt; properties;
@@ -55,16 +55,19 @@
 <a class="jxr_linenumber" name="L47" href="#L47">47</a>      }
 <a class="jxr_linenumber" name="L48" href="#L48">48</a>  
 <a class="jxr_linenumber" name="L49" href="#L49">49</a>      @Override
-<a class="jxr_linenumber" name="L50" href="#L50">50</a>      <strong class="jxr_keyword">public</strong> List&lt;String&gt; getLines() {
-<a class="jxr_linenumber" name="L51" href="#L51">51</a>          <strong class="jxr_keyword">final</strong> List&lt;String&gt; lines = <strong class="jxr_keyword">new</strong> ArrayList&lt;String&gt;(2 + properties.size());
-<a class="jxr_linenumber" name="L52" href="#L52">52</a>          lines.add(StringUtils.join(selectors.iterator(), <span class="jxr_string">", "</span>) + <span class="jxr_string">" {"</span>);
-<a class="jxr_linenumber" name="L53" href="#L53">53</a>          <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">final</strong> StyleProperty property : properties) {
-<a class="jxr_linenumber" name="L54" href="#L54">54</a>              lines.add(INDENTATION + property);
-<a class="jxr_linenumber" name="L55" href="#L55">55</a>          }
-<a class="jxr_linenumber" name="L56" href="#L56">56</a>          lines.add(<span class="jxr_string">"}"</span>);
-<a class="jxr_linenumber" name="L57" href="#L57">57</a>          <strong class="jxr_keyword">return</strong> lines;
-<a class="jxr_linenumber" name="L58" href="#L58">58</a>      }
-<a class="jxr_linenumber" name="L59" href="#L59">59</a>  }
+<a class="jxr_linenumber" name="L50" href="#L50">50</a>      <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> fillLines(<strong class="jxr_keyword">final</strong> List&lt;String&gt; lines) {
+<a class="jxr_linenumber" name="L51" href="#L51">51</a>          lines.add(StringUtils.join(selectors.iterator(), <span class="jxr_string">", "</span>) + <span class="jxr_string">" {"</span>);
+<a class="jxr_linenumber" name="L52" href="#L52">52</a>          <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">final</strong> StyleProperty property : properties) {
+<a class="jxr_linenumber" name="L53" href="#L53">53</a>              lines.add(INDENTATION + property.getCode());
+<a class="jxr_linenumber" name="L54" href="#L54">54</a>          }
+<a class="jxr_linenumber" name="L55" href="#L55">55</a>          lines.add(<span class="jxr_string">"}"</span>);
+<a class="jxr_linenumber" name="L56" href="#L56">56</a>      }
+<a class="jxr_linenumber" name="L57" href="#L57">57</a>  
+<a class="jxr_linenumber" name="L58" href="#L58">58</a>      @Override
+<a class="jxr_linenumber" name="L59" href="#L59">59</a>      <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">int</strong> getSize2() {
+<a class="jxr_linenumber" name="L60" href="#L60">60</a>          <strong class="jxr_keyword">return</strong> properties.isEmpty() ? 1 : properties.size();
+<a class="jxr_linenumber" name="L61" href="#L61">61</a>      }
+<a class="jxr_linenumber" name="L62" href="#L62">62</a>  }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2015&#x2013;2016 <a href="http://www.gabrys.biz/">gabrys.biz</a>. All rights reserved.</div>

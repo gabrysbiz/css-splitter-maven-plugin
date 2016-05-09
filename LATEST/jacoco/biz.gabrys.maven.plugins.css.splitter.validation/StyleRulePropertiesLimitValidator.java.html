@@ -12,33 +12,23 @@
  */
 package biz.gabrys.maven.plugins.css.splitter.validation;
 
-import biz.gabrys.maven.plugins.css.splitter.counter.RuleCounter;
-import biz.gabrys.maven.plugins.css.splitter.counter.StyleRuleCounter;
 import biz.gabrys.maven.plugins.css.splitter.css.types.StyleRule;
 
 final class StyleRulePropertiesLimitValidator extends AbstractRulePropertiesLimitValidator&lt;StyleRule&gt; {
 
-    private final RuleCounter counter;
-
     StyleRulePropertiesLimitValidator() {
-<span class="nc" id="L24">        this(new StyleRuleCounter());</span>
-<span class="nc" id="L25">    }</span>
-
-    // for tests
-    StyleRulePropertiesLimitValidator(final RuleCounter counter) {
-<span class="fc" id="L29">        super(StyleRule.class);</span>
-<span class="fc" id="L30">        this.counter = counter;</span>
-<span class="fc" id="L31">    }</span>
+<span class="fc" id="L20">        super(StyleRule.class);</span>
+<span class="fc" id="L21">    }</span>
 
     @Override
-    protected void validate2(final StyleRule rule, final int limit) throws ValidationException {
-<span class="fc bfc" id="L35" title="All 2 branches covered.">        if (rule.isSplittable()) {</span>
-<span class="fc" id="L36">            return;</span>
+    protected void validate2(final StyleRule rule, final int limit) {
+<span class="fc bfc" id="L25" title="All 2 branches covered.">        if (rule.isSplittable()) {</span>
+<span class="fc" id="L26">            return;</span>
         }
-<span class="fc" id="L38">        final int value = counter.count(rule);</span>
-<span class="fc bfc" id="L39" title="All 2 branches covered.">        if (value &gt; limit) {</span>
-<span class="nc" id="L40">            throwException(value, limit, rule.toString());</span>
+<span class="fc" id="L28">        final int size = rule.getSize();</span>
+<span class="fc bfc" id="L29" title="All 2 branches covered.">        if (size &gt; limit) {</span>
+<span class="nc" id="L30">            throwException(size, limit, rule.getCode());</span>
         }
-<span class="fc" id="L42">    }</span>
+<span class="fc" id="L32">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

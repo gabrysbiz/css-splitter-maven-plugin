@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>ComplexRuleInvalidContentMessagePrinter.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">CSS Splitter Maven Plugin</a> &gt; <a href="index.source.html" class="el_package">biz.gabrys.maven.plugins.css.splitter.message</a> &gt; <span class="el_source">ComplexRuleInvalidContentMessagePrinter.java</span></div><h1>ComplexRuleInvalidContentMessagePrinter.java</h1><pre class="source lang-java linenums">/*
+ * CSS Splitter Maven Plugin
+ * http://css-splitter-maven-plugin.projects.gabrys.biz/
+ *
+ * Copyright (c) 2015 Adam Gabryś
+ *
+ * This file is licensed under the BSD 3-Clause (the &quot;License&quot;).
+ * You may not use this file except in compliance with the License.
+ * You may obtain:
+ * - a copy of the License at project page
+ * - a template of the License at https://opensource.org/licenses/BSD-3-Clause
+ */
+package biz.gabrys.maven.plugins.css.splitter.message;
+
+import org.apache.maven.plugin.logging.Log;
+
+import biz.gabrys.maven.plugins.css.splitter.css.types.ComplexRule;
+import biz.gabrys.maven.plugins.css.splitter.css.types.NodeRule;
+import biz.gabrys.maven.plugins.css.splitter.css.types.StyleRule;
+
+public class ComplexRuleInvalidContentMessagePrinter extends AbstractMessagePrinter&lt;ComplexRule&gt; {
+
+    private final Log logger;
+    private final boolean strict;
+
+    public ComplexRuleInvalidContentMessagePrinter(final Log logger, final boolean strict) {
+<span class="fc" id="L27">        super(ComplexRule.class);</span>
+<span class="fc" id="L28">        this.logger = logger;</span>
+<span class="fc" id="L29">        this.strict = strict;</span>
+<span class="fc" id="L30">    }</span>
+
+    public boolean isEnabled() {
+<span class="fc bfc" id="L33" title="All 2 branches covered.">        return !strict;</span>
+    }
+
+    @Override
+    protected void print2(final ComplexRule rule) {
+<span class="fc bfc" id="L38" title="All 2 branches covered.">        for (final NodeRule child : rule.getRules()) {</span>
+<span class="fc bfc" id="L39" title="All 2 branches covered.">            if (!(child instanceof StyleRule)) {</span>
+<span class="fc" id="L40">                logger.warn(String.format(&quot;NON-STRICT: found non-standard content in %s rule!&quot;, rule.getType()));</span>
+<span class="fc" id="L41">                logger.warn(String.format(&quot;NON-STRICT: non-standard content:%n%s&quot;, child.getCode()));</span>
+<span class="fc" id="L42">                logger.warn(String.format(&quot;NON-STRICT: %s rule code:%n%s&quot;, rule.getType(), rule.getCode()));</span>
+            }
+<span class="fc" id="L44">        }</span>
+<span class="fc" id="L45">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

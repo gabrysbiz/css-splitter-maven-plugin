@@ -25,7 +25,7 @@ class SteadyErrorHandler implements ErrorHandler {
 <span class="fc" id="L25">        this.logger = logger;</span>
 <span class="fc" id="L26">    }</span>
 
-    void validate() throws ParserException {
+    void validate() {
 <span class="fc bfc" id="L29" title="All 2 branches covered.">        if (firstError != null) {</span>
 <span class="fc" id="L30">            throw new ParserException(firstError);</span>
         }

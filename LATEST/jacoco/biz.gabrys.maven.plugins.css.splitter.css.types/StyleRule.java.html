@@ -17,7 +17,7 @@ import java.util.List;
 
 import org.codehaus.plexus.util.StringUtils;
 
-public class StyleRule extends AbstractTextRule {
+public class StyleRule extends AbstractNodeRule {
 
     private final List&lt;String&gt; selectors;
     private final List&lt;StyleProperty&gt; properties;
@@ -47,14 +47,17 @@ public class StyleRule extends AbstractTextRule {
     }
 
     @Override
-    public List&lt;String&gt; getLines() {
-<span class="fc" id="L51">        final List&lt;String&gt; lines = new ArrayList&lt;String&gt;(2 + properties.size());</span>
-<span class="fc" id="L52">        lines.add(StringUtils.join(selectors.iterator(), &quot;, &quot;) + &quot; {&quot;);</span>
-<span class="fc bfc" id="L53" title="All 2 branches covered.">        for (final StyleProperty property : properties) {</span>
-<span class="fc" id="L54">            lines.add(INDENTATION + property);</span>
-<span class="fc" id="L55">        }</span>
-<span class="fc" id="L56">        lines.add(&quot;}&quot;);</span>
-<span class="fc" id="L57">        return lines;</span>
+    protected void fillLines(final List&lt;String&gt; lines) {
+<span class="fc" id="L51">        lines.add(StringUtils.join(selectors.iterator(), &quot;, &quot;) + &quot; {&quot;);</span>
+<span class="fc bfc" id="L52" title="All 2 branches covered.">        for (final StyleProperty property : properties) {</span>
+<span class="fc" id="L53">            lines.add(INDENTATION + property.getCode());</span>
+<span class="fc" id="L54">        }</span>
+<span class="fc" id="L55">        lines.add(&quot;}&quot;);</span>
+<span class="fc" id="L56">    }</span>
+
+    @Override
+    protected int getSize2() {
+<span class="fc bfc" id="L60" title="All 2 branches covered.">        return properties.isEmpty() ? 1 : properties.size();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

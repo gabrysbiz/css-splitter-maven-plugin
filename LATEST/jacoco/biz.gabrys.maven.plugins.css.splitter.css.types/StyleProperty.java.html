@@ -12,7 +12,7 @@
  */
 package biz.gabrys.maven.plugins.css.splitter.css.types;
 
-public class StyleProperty extends Node&lt;StyleRule, StyleProperty&gt; {
+public class StyleProperty extends NodeImpl&lt;StyleRule, StyleProperty&gt; {
 
     private final String name;
     private final String value;
@@ -30,9 +30,13 @@ public class StyleProperty extends Node&lt;StyleRule, StyleProperty&gt; {
 <span class="fc" id="L30">        return value;</span>
     }
 
+    public String getCode() {
+<span class="fc" id="L34">        return name + &quot;: &quot; + value + ';';</span>
+    }
+
     @Override
     public String toString() {
-<span class="fc" id="L35">        return name + &quot;: &quot; + value + ';';</span>
+<span class="nc" id="L39">        return getCode() + '\n';</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

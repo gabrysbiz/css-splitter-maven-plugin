@@ -33,7 +33,7 @@ public class SteadyStateParser {
 <span class="fc" id="L33">        this.logger = logger;</span>
 <span class="fc" id="L34">    }</span>
 
-    public StyleSheet parse(final String css, final Standard standard) throws ParserException {
+    public StyleSheet parse(final String css, final Standard standard, final boolean strict) {
 <span class="fc" id="L37">        final NativeParserFactory factory = new NativeParserFactory();</span>
 <span class="fc" id="L38">        final CSSOMParser parser = new CSSOMParser(factory.create(standard));</span>
 
@@ -49,7 +49,7 @@ public class SteadyStateParser {
 <span class="fc" id="L49">        }</span>
 <span class="fc" id="L50">        errorHandler.validate();</span>
 
-<span class="fc" id="L52">        final StyleSheetConverter converter = new StyleSheetConverter();</span>
+<span class="fc" id="L52">        final StyleSheetConverter converter = new StyleSheetConverter(strict);</span>
 <span class="fc" id="L53">        return converter.convert(stylesheet);</span>
     }
 }

@@ -14,21 +14,21 @@ package biz.gabrys.maven.plugins.css.splitter.split;
 
 import biz.gabrys.maven.plugins.css.splitter.css.types.NodeRule;
 
-class SplitResult&lt;T extends NodeRule&gt; {
+class SplitResult {
 
-    private final T before;
-    private final T after;
+    private final NodeRule before;
+    private final NodeRule after;
 
-<span class="fc" id="L22">    SplitResult(final T before, final T after) {</span>
+<span class="fc" id="L22">    SplitResult(final NodeRule before, final NodeRule after) {</span>
 <span class="fc" id="L23">        this.before = before;</span>
 <span class="fc" id="L24">        this.after = after;</span>
 <span class="fc" id="L25">    }</span>
 
-    T getBefore() {
+    NodeRule getBefore() {
 <span class="fc" id="L28">        return before;</span>
     }
 
-    T getAfter() {
+    NodeRule getAfter() {
 <span class="fc" id="L32">        return after;</span>
     }
 }

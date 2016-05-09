@@ -12,6 +12,7 @@
  */
 package biz.gabrys.maven.plugins.css.splitter.steadystate.converters;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -26,27 +27,35 @@ public class StyleSheetConverter {
 
     private final RuleConverter&lt;?&gt; converter;
 
-    public StyleSheetConverter() {
-<span class="fc" id="L30">        this(new AnyRuleConverter());</span>
-<span class="fc" id="L31">    }</span>
+<span class="fc" id="L30">    public StyleSheetConverter(final boolean strict) {</span>
+<span class="fc" id="L31">        final List&lt;RuleConverter&lt;?&gt;&gt; converters = new ArrayList&lt;RuleConverter&lt;?&gt;&gt;();</span>
+<span class="fc" id="L32">        converters.add(new StyleRuleConverter());</span>
+<span class="fc" id="L33">        converters.add(new MediaRuleConverter(strict));</span>
+<span class="fc" id="L34">        converters.add(new FontFaceRuleConverter());</span>
+<span class="fc" id="L35">        converters.add(new PageRuleConverter());</span>
+<span class="fc" id="L36">        converters.add(new ImportRuleConverter());</span>
+<span class="fc" id="L37">        converters.add(new CharsetRuleConverter());</span>
+<span class="fc" id="L38">        converters.add(new UnknownRuleConverter());</span>
+<span class="fc" id="L39">        converter = new MultipleRuleConverter(converters);</span>
+<span class="fc" id="L40">    }</span>
 
     // for tests
-<span class="fc" id="L34">    StyleSheetConverter(final RuleConverter&lt;?&gt; converter) {</span>
-<span class="fc" id="L35">        this.converter = converter;</span>
-<span class="fc" id="L36">    }</span>
+<span class="fc" id="L43">    StyleSheetConverter(final RuleConverter&lt;?&gt; converter) {</span>
+<span class="fc" id="L44">        this.converter = converter;</span>
+<span class="fc" id="L45">    }</span>
 
     public StyleSheet convert(final CSSStyleSheet stylesheet) {
-<span class="fc" id="L39">        final List&lt;NodeRule&gt; rules = new LinkedList&lt;NodeRule&gt;();</span>
-<span class="fc" id="L40">        final CSSRuleList ruleList = stylesheet.getCssRules();</span>
-<span class="fc bfc" id="L41" title="All 2 branches covered.">        for (int i = 0; i &lt; ruleList.getLength(); ++i) {</span>
-<span class="fc" id="L42">            final CSSRule rule = ruleList.item(i);</span>
-<span class="fc bfc" id="L43" title="All 2 branches covered.">            if (converter.isSupportedType(rule)) {</span>
-<span class="fc" id="L44">                rules.add(converter.convert(rule));</span>
+<span class="fc" id="L48">        final List&lt;NodeRule&gt; rules = new LinkedList&lt;NodeRule&gt;();</span>
+<span class="fc" id="L49">        final CSSRuleList ruleList = stylesheet.getCssRules();</span>
+<span class="fc bfc" id="L50" title="All 2 branches covered.">        for (int i = 0; i &lt; ruleList.getLength(); ++i) {</span>
+<span class="fc" id="L51">            final CSSRule rule = ruleList.item(i);</span>
+<span class="fc bfc" id="L52" title="All 2 branches covered.">            if (converter.isSupportedType(rule)) {</span>
+<span class="fc" id="L53">                rules.add(converter.convert(rule));</span>
             } else {
-<span class="fc" id="L46">                throw new UnsupportedRuleException(rule);</span>
+<span class="fc" id="L55">                throw new UnsupportedRuleException(rule);</span>
             }
         }
-<span class="fc" id="L49">        return new StyleSheet(rules);</span>
+<span class="fc" id="L58">        return new StyleSheet(rules);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

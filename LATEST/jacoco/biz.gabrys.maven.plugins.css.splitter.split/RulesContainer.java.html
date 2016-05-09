@@ -17,17 +17,17 @@ import java.util.List;
 
 import biz.gabrys.maven.plugins.css.splitter.css.types.NodeRule;
 
-class RulesContainer&lt;T extends NodeRule&gt; {
+class RulesContainer {
 
-<span class="fc" id="L22">    protected final List&lt;T&gt; before = new LinkedList&lt;T&gt;();</span>
-<span class="fc" id="L23">    protected final List&lt;T&gt; after = new LinkedList&lt;T&gt;();</span>
+<span class="fc" id="L22">    protected final List&lt;NodeRule&gt; before = new LinkedList&lt;NodeRule&gt;();</span>
+<span class="fc" id="L23">    protected final List&lt;NodeRule&gt; after = new LinkedList&lt;NodeRule&gt;();</span>
 
 <span class="fc" id="L25">    RulesContainer() {</span>
         // do nothing
 <span class="fc" id="L27">    }</span>
 
     // for tests
-<span class="fc" id="L30">    RulesContainer(final List&lt;T&gt; before, final List&lt;T&gt; after) {</span>
+<span class="fc" id="L30">    RulesContainer(final List&lt;NodeRule&gt; before, final List&lt;NodeRule&gt; after) {</span>
 <span class="fc" id="L31">        this.before.addAll(before);</span>
 <span class="fc" id="L32">        this.after.addAll(after);</span>
 <span class="fc" id="L33">    }</span>
