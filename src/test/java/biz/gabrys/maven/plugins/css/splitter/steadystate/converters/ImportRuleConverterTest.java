@@ -14,7 +14,7 @@ public final class ImportRuleConverterTest {
         final ImportRuleConverter converter = new ImportRuleConverter();
         final CSSImportRuleImpl rule = new CSSImportRuleImpl();
         final boolean supported = converter.isSupportedType(rule);
-        Assert.assertTrue("Should return true", supported);
+        Assert.assertTrue("Should return true.", supported);
     }
 
     @Test
@@ -25,7 +25,7 @@ public final class ImportRuleConverterTest {
         rule.setCssText(code);
 
         final SimpleRule converted = converter.convert(rule);
-        Assert.assertNotNull("Converted rule instance", converted);
-        Assert.assertEquals("Converted rule code", "@import url(file.css);", converted.getCode());
+        Assert.assertNotNull("Converted rule instance.", converted);
+        Assert.assertEquals("Converted rule code.", "@import url(file.css);", converted.getCode());
     }
 }

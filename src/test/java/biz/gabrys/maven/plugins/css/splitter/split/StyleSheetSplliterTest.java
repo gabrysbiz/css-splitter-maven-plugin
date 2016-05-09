@@ -12,13 +12,12 @@ import biz.gabrys.maven.plugins.css.splitter.css.types.NodeRule;
 import biz.gabrys.maven.plugins.css.splitter.css.types.StyleSheet;
 import biz.gabrys.maven.plugins.css.splitter.test.SupportedTestNodeRule;
 
-public class SplliterTest {
+public class StyleSheetSplliterTest {
 
     @Test
     public void split_styleSheetContainsZeroRules_returnOneEmptyStyleSheet() {
-        @SuppressWarnings("unchecked")
-        final RulesSplitter<NodeRule> rulesSplitter = Mockito.mock(RulesSplitter.class);
-        final Splliter splliter = new Splliter(0, rulesSplitter);
+        final RulesSplitter rulesSplitter = Mockito.mock(RulesSplitter.class);
+        final StyleSheetSplliter splliter = new StyleSheetSplliter(0, rulesSplitter);
 
         final StyleSheet stylesheet = Mockito.mock(StyleSheet.class);
         Mockito.when(stylesheet.getRules()).thenReturn(Collections.<NodeRule>emptyList());
@@ -31,9 +30,8 @@ public class SplliterTest {
     @Test
     public void split_styleSheetWillBeSplitedToThreeDocuments_returnsThreeDocuments() {
         final int limit = 1;
-        @SuppressWarnings("unchecked")
-        final RulesSplitter<NodeRule> rulesSplitter = Mockito.mock(RulesSplitter.class);
-        final Splliter splliter = new Splliter(limit, rulesSplitter);
+        final RulesSplitter rulesSplitter = Mockito.mock(RulesSplitter.class);
+        final StyleSheetSplliter splliter = new StyleSheetSplliter(limit, rulesSplitter);
 
         final StyleSheet stylesheet = Mockito.mock(StyleSheet.class);
         final NodeRule rule1 = new SupportedTestNodeRule();

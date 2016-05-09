@@ -30,8 +30,12 @@ public class StyleProperty extends NodeImpl<StyleRule, StyleProperty> {
         return value;
     }
 
+    public String getCode() {
+        return name + ": " + value + ';';
+    }
+
     @Override
     public String toString() {
-        return name + ": " + value + ';';
+        return getCode() + '\n';
     }
 }

@@ -12,8 +12,7 @@
  */
 package biz.gabrys.maven.plugins.css.splitter.message;
 
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.maven.plugin.logging.Log;
@@ -24,18 +23,21 @@ class AnyMessagePrinter implements MessagePrinter {
 
     private final List<MessagePrinter> printers;
 
-    AnyMessagePrinter(final Log logger) {
-        final MessagePrinter printer = new UnknownRuleSizeMessagePrinter(logger);
-        if (printer.isEnabled()) {
-            printers = Arrays.<MessagePrinter>asList(printer);
-        } else {
-            printers = Collections.emptyList();
-        }
+    AnyMessagePrinter(final Log logger, final boolean strict) {
+        printers = new ArrayList<MessagePrinter>();
+        addPrinter(new UnknownRuleSizeMessagePrinter(logger), printers);
+        addPrinter(new ComplexRuleInvalidContentMessagePrinter(logger, strict), printers);
     }
 
     // for tests
     AnyMessagePrinter(final List<MessagePrinter> printers) {
         this.printers = printers;
+    }
+
+    private static void addPrinter(final MessagePrinter printer, final List<MessagePrinter> printers) {
+        if (printer.isEnabled()) {
+            printers.add(printer);
+        }
     }
 
     public boolean isEnabled() {

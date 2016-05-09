@@ -33,7 +33,7 @@ public class SteadyStateParser {
         this.logger = logger;
     }
 
-    public StyleSheet parse(final String css, final Standard standard) {
+    public StyleSheet parse(final String css, final Standard standard, final boolean strict) {
         final NativeParserFactory factory = new NativeParserFactory();
         final CSSOMParser parser = new CSSOMParser(factory.create(standard));
 
@@ -49,7 +49,7 @@ public class SteadyStateParser {
         }
         errorHandler.validate();
 
-        final StyleSheetConverter converter = new StyleSheetConverter();
+        final StyleSheetConverter converter = new StyleSheetConverter(strict);
         return converter.convert(stylesheet);
     }
 }

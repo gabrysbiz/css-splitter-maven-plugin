@@ -12,27 +12,36 @@
  */
 package biz.gabrys.maven.plugins.css.splitter.validation;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import biz.gabrys.maven.plugins.css.splitter.css.types.ComplexRule;
-import biz.gabrys.maven.plugins.css.splitter.css.types.StyleRule;
+import biz.gabrys.maven.plugins.css.splitter.css.types.NodeRule;
 
 final class ComplexRulePropertiesLimitValidator extends AbstractRulePropertiesLimitValidator<ComplexRule> {
 
-    private final RulePropertiesLimitValidator validator;
+    private final List<RulePropertiesLimitValidator> validators;
 
     ComplexRulePropertiesLimitValidator() {
-        this(new StyleRulePropertiesLimitValidator());
+        this(Arrays.<RulePropertiesLimitValidator>asList(new StyleRulePropertiesLimitValidator(),
+                new UnknownRulePropertiesLimitValidator()));
     }
 
     // for tests
-    ComplexRulePropertiesLimitValidator(final RulePropertiesLimitValidator validator) {
+    ComplexRulePropertiesLimitValidator(final List<RulePropertiesLimitValidator> validators) {
         super(ComplexRule.class);
-        this.validator = validator;
+        this.validators = new ArrayList<RulePropertiesLimitValidator>(validators);
     }
 
     @Override
     protected void validate2(final ComplexRule rule, final int limit) {
-        for (final StyleRule child : rule.getRules()) {
-            validator.validate(child, limit);
+        for (final NodeRule child : rule.getRules()) {
+            for (final RulePropertiesLimitValidator validator : validators) {
+                if (validator.isSupportedType(child)) {
+                    validator.validate(child, limit);
+                }
+            }
         }
     }
 }

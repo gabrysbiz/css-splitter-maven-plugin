@@ -14,7 +14,7 @@ package biz.gabrys.maven.plugins.css.splitter.split;
 
 import biz.gabrys.maven.plugins.css.splitter.css.types.NodeRule;
 
-abstract class AbstractRuleSplitter<T extends NodeRule> implements RuleSplitter<T> {
+abstract class AbstractRuleSplitter<T extends NodeRule> implements RuleSplitter {
 
     private final Class<T> clazz;
 
@@ -31,12 +31,12 @@ abstract class AbstractRuleSplitter<T extends NodeRule> implements RuleSplitter<
 
     protected abstract boolean isSplittable2(T rule);
 
-    public final SplitResult<T> split(final NodeRule rule, final int splitAfter) {
+    public final SplitResult split(final NodeRule rule, final int splitAfter) {
         if (!isSplittable(rule)) {
             throw new IllegalArgumentException(String.format("The rule is unsplittable! Code:%n%s", rule));
         }
         return split2(clazz.cast(rule), splitAfter);
     }
 
-    protected abstract SplitResult<T> split2(T rule, int splitAfter);
+    protected abstract SplitResult split2(T rule, int splitAfter);
 }

@@ -13,19 +13,19 @@
 package biz.gabrys.maven.plugins.css.splitter.split;
 
 import biz.gabrys.maven.plugins.css.splitter.css.types.ComplexRule;
-import biz.gabrys.maven.plugins.css.splitter.css.types.StyleRule;
+import biz.gabrys.maven.plugins.css.splitter.css.types.NodeRule;
 
 class ComplexRuleSplitter extends AbstractRuleSplitter<ComplexRule> {
 
-    private final RulesSplitter<StyleRule> splitter;
+    private final RulesSplitter splitter;
     private final NeighborsManager neighborsManager;
 
     ComplexRuleSplitter() {
-        this(new RulesSplitter<StyleRule>(new StyleRuleSplitter()), new NeighborsManager());
+        this(new RulesSplitter(new StyleRuleSplitter()), new NeighborsManager());
     }
 
     // for tests
-    ComplexRuleSplitter(final RulesSplitter<StyleRule> splitter, final NeighborsManager neighborsManager) {
+    ComplexRuleSplitter(final RulesSplitter splitter, final NeighborsManager neighborsManager) {
         super(ComplexRule.class);
         this.splitter = splitter;
         this.neighborsManager = neighborsManager;
@@ -37,11 +37,11 @@ class ComplexRuleSplitter extends AbstractRuleSplitter<ComplexRule> {
     }
 
     @Override
-    protected SplitResult<ComplexRule> split2(final ComplexRule rule, final int splitAfter) {
-        final RulesContainer<StyleRule> container = splitter.split(rule.getRules(), splitAfter);
+    protected SplitResult split2(final ComplexRule rule, final int splitAfter) {
+        final RulesContainer<NodeRule> container = splitter.split(rule.getRules(), splitAfter);
         final ComplexRule first = new ComplexRule(rule.getType(), rule.getSelectors(), container.before);
         final ComplexRule second = new ComplexRule(rule.getType(), rule.getSelectors(), container.after);
         neighborsManager.fill(rule, first, second);
-        return new SplitResult<ComplexRule>(first, second);
+        return new SplitResult(first, second);
     }
 }

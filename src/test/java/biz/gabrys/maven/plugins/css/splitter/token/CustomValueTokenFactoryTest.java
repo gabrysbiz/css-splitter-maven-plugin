@@ -10,6 +10,6 @@ public final class CustomValueTokenFactoryTest {
         final CustomValueTokenFactory factory = new CustomValueTokenFactory();
         final String value = "value";
 
-        Assert.assertTrue("Instances should be the same", value == factory.create(value));
+        Assert.assertTrue("Instances should be the same.", value == factory.create(value));
     }
 }

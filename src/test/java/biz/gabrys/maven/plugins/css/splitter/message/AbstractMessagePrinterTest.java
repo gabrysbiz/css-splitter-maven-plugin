@@ -15,21 +15,21 @@ public final class AbstractMessagePrinterTest {
     public void isSupportedType_ruleIsNull_returnsFalse() {
         final MessagePrinterImpl printer = new MessagePrinterImpl();
         final boolean supported = printer.isSupportedType(null);
-        Assert.assertFalse("Should return false for null", supported);
+        Assert.assertFalse("Should return false for null.", supported);
     }
 
     @Test
     public void isSupportedType_ruleHasInvalidType_returnsFalse() {
         final MessagePrinterImpl printer = new MessagePrinterImpl();
         final boolean supported = printer.isSupportedType(new NotSupportedTestNodeRule());
-        Assert.assertFalse("Should return false for invalid rule", supported);
+        Assert.assertFalse("Should return false for invalid rule.", supported);
     }
 
     @Test
     public void isSupportedType_ruleHasValidType_returnsTrue() {
         final MessagePrinterImpl printer = new MessagePrinterImpl();
         final boolean supported = printer.isSupportedType(new SupportedTestNodeRule());
-        Assert.assertTrue("Should return false for valid rule", supported);
+        Assert.assertTrue("Should return false for valid rule.", supported);
     }
 
     @Test

@@ -12,16 +12,45 @@
  */
 package biz.gabrys.maven.plugins.css.splitter.css.types;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public abstract class AbstractNodeRule extends NodeImpl<NodeRule, NodeRule> implements NodeRule {
+
+    protected static final String INDENTATION = "  ";
 
     private Integer size;
 
+    public String getCode() {
+        final String[] lines = getLines();
+        final StringBuilder code = new StringBuilder();
+        code.append(lines[0]);
+        for (int i = 1; i < lines.length; ++i) {
+            code.append('\n');
+            code.append(lines[i]);
+        }
+        return code.toString();
+    }
+
+    public String[] getLines() {
+        final List<String> lines = new LinkedList<String>();
+        fillLines(lines);
+        return lines.toArray(new String[0]);
+    }
+
+    protected abstract void fillLines(List<String> lines);
+
     public int size() {
         if (size == null) {
-            size = countSize();
+            size = size2();
         }
         return size;
     }
 
-    protected abstract int countSize();
+    protected abstract int size2();
+
+    @Override
+    public String toString() {
+        return getCode() + '\n';
+    }
 }

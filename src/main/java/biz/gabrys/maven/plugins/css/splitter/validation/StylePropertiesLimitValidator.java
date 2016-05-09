@@ -31,8 +31,8 @@ public final class StylePropertiesLimitValidator {
 
     // for tests
     StylePropertiesLimitValidator(final List<RulePropertiesLimitValidator> validators, final int limit) {
-        this.limit = limit;
         this.validators = new ArrayList<RulePropertiesLimitValidator>(validators);
+        this.limit = limit;
     }
 
     public void validate(final StyleSheet stylesheet) {

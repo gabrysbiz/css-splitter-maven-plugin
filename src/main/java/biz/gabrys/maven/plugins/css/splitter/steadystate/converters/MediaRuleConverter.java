@@ -12,6 +12,7 @@
  */
 package biz.gabrys.maven.plugins.css.splitter.steadystate.converters;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -21,18 +22,27 @@ import com.steadystate.css.dom.CSSMediaRuleImpl;
 import com.steadystate.css.dom.MediaListImpl;
 
 import biz.gabrys.maven.plugins.css.splitter.css.types.ComplexRule;
-import biz.gabrys.maven.plugins.css.splitter.css.types.StyleRule;
+import biz.gabrys.maven.plugins.css.splitter.css.types.NodeRule;
 
 class MediaRuleConverter extends AbstractRuleConverter<CSSMediaRuleImpl, ComplexRule> {
 
-    private final RuleConverter<StyleRule> converter;
+    private final RuleConverter<?> converter;
 
-    MediaRuleConverter() {
-        this(new StyleRuleConverter());
+    MediaRuleConverter(final boolean strict) {
+        super(CSSMediaRuleImpl.class);
+        if (strict) {
+            converter = new StyleRuleConverter();
+        } else {
+            final List<RuleConverter<?>> converters = new ArrayList<RuleConverter<?>>();
+            converters.add(new StyleRuleConverter());
+            converters.add(new PageRuleConverter());
+            converters.add(new UnknownRuleConverter());
+            converter = new MultipleRuleConverter(converters);
+        }
     }
 
     // for tests
-    MediaRuleConverter(final RuleConverter<StyleRule> converter) {
+    MediaRuleConverter(final RuleConverter<?> converter) {
         super(CSSMediaRuleImpl.class);
         this.converter = converter;
     }
@@ -45,7 +55,7 @@ class MediaRuleConverter extends AbstractRuleConverter<CSSMediaRuleImpl, Complex
             selectors.add(mediaList.mediaQuery(i).getCssText(null));
         }
 
-        final List<StyleRule> rules = new LinkedList<StyleRule>();
+        final List<NodeRule> rules = new LinkedList<NodeRule>();
         final CSSRuleList ruleList = rule.getCssRules();
         for (int i = 0; i < ruleList.getLength(); ++i) {
             rules.add(converter.convert(ruleList.item(i)));

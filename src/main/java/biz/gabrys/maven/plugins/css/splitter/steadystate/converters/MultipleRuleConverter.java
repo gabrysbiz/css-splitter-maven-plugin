@@ -13,29 +13,18 @@
 package biz.gabrys.maven.plugins.css.splitter.steadystate.converters;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.w3c.dom.css.CSSRule;
 
 import biz.gabrys.maven.plugins.css.splitter.css.types.NodeRule;
 
-class AnyRuleConverter implements RuleConverter<NodeRule> {
+class MultipleRuleConverter implements RuleConverter<NodeRule> {
 
     private final List<RuleConverter<?>> converters;
 
-    AnyRuleConverter() {
-        converters = new ArrayList<RuleConverter<?>>();
-        converters.add(new StyleRuleConverter());
-        converters.add(new MediaRuleConverter());
-        converters.add(new FontFaceRuleConverter());
-        converters.add(new PageRuleConverter());
-        converters.add(new ImportRuleConverter());
-        converters.add(new CharsetRuleConverter());
-        converters.add(new UnknownRuleConverter());
-    }
-
-    // for tests
-    AnyRuleConverter(final List<RuleConverter<?>> converters) {
+    MultipleRuleConverter(final Collection<RuleConverter<?>> converters) {
         this.converters = new ArrayList<RuleConverter<?>>(converters);
     }
 

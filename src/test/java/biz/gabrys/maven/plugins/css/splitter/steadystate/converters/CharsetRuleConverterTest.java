@@ -14,7 +14,7 @@ public final class CharsetRuleConverterTest {
         final CharsetRuleConverter converter = new CharsetRuleConverter();
         final CSSCharsetRuleImpl rule = new CSSCharsetRuleImpl();
         final boolean supported = converter.isSupportedType(rule);
-        Assert.assertTrue("Should return true", supported);
+        Assert.assertTrue("Should return true.", supported);
     }
 
     @Test
@@ -25,7 +25,7 @@ public final class CharsetRuleConverterTest {
         rule.setCssText(code);
 
         final SimpleRule converted = converter.convert(rule);
-        Assert.assertNotNull("Converted rule instance", converted);
-        Assert.assertEquals("Converted rule code", code, converted.getCode());
+        Assert.assertNotNull("Converted rule instance.", converted);
+        Assert.assertEquals("Converted rule code.", code, converted.getCode());
     }
 }

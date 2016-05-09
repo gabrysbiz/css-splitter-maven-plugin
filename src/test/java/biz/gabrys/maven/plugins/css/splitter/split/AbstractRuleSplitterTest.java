@@ -52,7 +52,7 @@ public final class AbstractRuleSplitterTest {
         }
 
         @Override
-        protected SplitResult<SupportedTestNodeRule> split2(final SupportedTestNodeRule rule, final int splitAfter) {
+        protected SplitResult split2(final SupportedTestNodeRule rule, final int splitAfter) {
             // do nothing
             return null;
         }

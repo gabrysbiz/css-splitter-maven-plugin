@@ -12,6 +12,7 @@
  */
 package biz.gabrys.maven.plugins.css.splitter.steadystate.converters;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -26,8 +27,16 @@ public class StyleSheetConverter {
 
     private final RuleConverter<?> converter;
 
-    public StyleSheetConverter() {
-        this(new AnyRuleConverter());
+    public StyleSheetConverter(final boolean strict) {
+        final List<RuleConverter<?>> converters = new ArrayList<RuleConverter<?>>();
+        converters.add(new StyleRuleConverter());
+        converters.add(new MediaRuleConverter(strict));
+        converters.add(new FontFaceRuleConverter());
+        converters.add(new PageRuleConverter());
+        converters.add(new ImportRuleConverter());
+        converters.add(new CharsetRuleConverter());
+        converters.add(new UnknownRuleConverter());
+        converter = new MultipleRuleConverter(converters);
     }
 
     // for tests

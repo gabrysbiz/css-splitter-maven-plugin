@@ -14,9 +14,9 @@ package biz.gabrys.maven.plugins.css.splitter.split;
 
 import biz.gabrys.maven.plugins.css.splitter.css.types.NodeRule;
 
-interface RuleSplitter<T extends NodeRule> {
+interface RuleSplitter {
 
     boolean isSplittable(NodeRule rule);
 
-    SplitResult<T> split(NodeRule rule, int splitAfter);
+    SplitResult split(NodeRule rule, int splitAfter);
 }

@@ -14,5 +14,9 @@ package biz.gabrys.maven.plugins.css.splitter.css.types;
 
 public interface NodeRule extends Node<NodeRule, NodeRule> {
 
+    String getCode();
+
+    String[] getLines();
+
     int size();
 }

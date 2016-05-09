@@ -13,9 +13,8 @@ public final class RulesSplitterTest {
 
     @Test
     public void split_twoRules_splitPointBetweenRules() {
-        @SuppressWarnings("unchecked")
-        final RuleSplitter<NodeRule> ruleSplitter = Mockito.mock(RuleSplitter.class);
-        final RulesSplitter<NodeRule> splitter = new RulesSplitter<NodeRule>(ruleSplitter);
+        final RuleSplitter ruleSplitter = Mockito.mock(RuleSplitter.class);
+        final RulesSplitter splitter = new RulesSplitter(ruleSplitter);
 
         final NodeRule rule1 = Mockito.mock(NodeRule.class);
         Mockito.doReturn(2).when(rule1).size();
@@ -41,9 +40,8 @@ public final class RulesSplitterTest {
 
     @Test
     public void split_fourRules_splitPointBetweenRules() {
-        @SuppressWarnings("unchecked")
-        final RuleSplitter<NodeRule> ruleSplitter = Mockito.mock(RuleSplitter.class);
-        final RulesSplitter<NodeRule> splitter = new RulesSplitter<NodeRule>(ruleSplitter);
+        final RuleSplitter ruleSplitter = Mockito.mock(RuleSplitter.class);
+        final RulesSplitter splitter = new RulesSplitter(ruleSplitter);
 
         final NodeRule rule1 = Mockito.mock(NodeRule.class);
         Mockito.doReturn(2).when(rule1).size();
@@ -76,9 +74,8 @@ public final class RulesSplitterTest {
 
     @Test
     public void split_twoRules_splitRuleFromEndInTheMiddle() {
-        @SuppressWarnings("unchecked")
-        final RuleSplitter<NodeRule> ruleSplitter = Mockito.mock(RuleSplitter.class);
-        final RulesSplitter<NodeRule> splitter = new RulesSplitter<NodeRule>(ruleSplitter);
+        final RuleSplitter ruleSplitter = Mockito.mock(RuleSplitter.class);
+        final RulesSplitter splitter = new RulesSplitter(ruleSplitter);
 
         final NodeRule rule1 = Mockito.mock(NodeRule.class);
         Mockito.doReturn(2).when(rule1).size();
@@ -89,7 +86,7 @@ public final class RulesSplitterTest {
         Mockito.when(ruleSplitter.isSplittable(rule2)).thenReturn(true);
         final NodeRule ruleBefore = Mockito.mock(NodeRule.class);
         final NodeRule ruleAfter = Mockito.mock(NodeRule.class);
-        Mockito.when(ruleSplitter.split(rule2, 2)).thenReturn(new SplitResult<NodeRule>(ruleBefore, ruleAfter));
+        Mockito.when(ruleSplitter.split(rule2, 2)).thenReturn(new SplitResult(ruleBefore, ruleAfter));
 
         final RulesContainer<NodeRule> container = splitter.split(rules, 4);
 
@@ -111,9 +108,8 @@ public final class RulesSplitterTest {
 
     @Test
     public void split_twoRules_splitRuleFromBeginInTheMiddle() {
-        @SuppressWarnings("unchecked")
-        final RuleSplitter<NodeRule> ruleSplitter = Mockito.mock(RuleSplitter.class);
-        final RulesSplitter<NodeRule> splitter = new RulesSplitter<NodeRule>(ruleSplitter);
+        final RuleSplitter ruleSplitter = Mockito.mock(RuleSplitter.class);
+        final RulesSplitter splitter = new RulesSplitter(ruleSplitter);
 
         final NodeRule rule1 = Mockito.mock(NodeRule.class);
         Mockito.doReturn(6).when(rule1).size();
@@ -124,7 +120,7 @@ public final class RulesSplitterTest {
         Mockito.when(ruleSplitter.isSplittable(rule1)).thenReturn(true);
         final NodeRule ruleBefore = Mockito.mock(NodeRule.class);
         final NodeRule ruleAfter = Mockito.mock(NodeRule.class);
-        Mockito.when(ruleSplitter.split(rule1, 4)).thenReturn(new SplitResult<NodeRule>(ruleBefore, ruleAfter));
+        Mockito.when(ruleSplitter.split(rule1, 4)).thenReturn(new SplitResult(ruleBefore, ruleAfter));
 
         final RulesContainer<NodeRule> container = splitter.split(rules, 4);
 
@@ -146,9 +142,8 @@ public final class RulesSplitterTest {
 
     @Test
     public void split_threeRules_splitRuleFromMiddleInTheMiddle() {
-        @SuppressWarnings("unchecked")
-        final RuleSplitter<NodeRule> ruleSplitter = Mockito.mock(RuleSplitter.class);
-        final RulesSplitter<NodeRule> splitter = new RulesSplitter<NodeRule>(ruleSplitter);
+        final RuleSplitter ruleSplitter = Mockito.mock(RuleSplitter.class);
+        final RulesSplitter splitter = new RulesSplitter(ruleSplitter);
 
         final NodeRule rule1 = Mockito.mock(NodeRule.class);
         Mockito.doReturn(2).when(rule1).size();
@@ -161,7 +156,7 @@ public final class RulesSplitterTest {
         Mockito.when(ruleSplitter.isSplittable(rule2)).thenReturn(true);
         final NodeRule ruleBefore = Mockito.mock(NodeRule.class);
         final NodeRule ruleAfter = Mockito.mock(NodeRule.class);
-        Mockito.when(ruleSplitter.split(rule2, 2)).thenReturn(new SplitResult<NodeRule>(ruleBefore, ruleAfter));
+        Mockito.when(ruleSplitter.split(rule2, 2)).thenReturn(new SplitResult(ruleBefore, ruleAfter));
 
         final RulesContainer<NodeRule> container = splitter.split(rules, 4);
 
@@ -184,9 +179,8 @@ public final class RulesSplitterTest {
 
     @Test
     public void split_threeRules_splitPointIsInUnsplittableRule() {
-        @SuppressWarnings("unchecked")
-        final RuleSplitter<NodeRule> ruleSplitter = Mockito.mock(RuleSplitter.class);
-        final RulesSplitter<NodeRule> splitter = new RulesSplitter<NodeRule>(ruleSplitter);
+        final RuleSplitter ruleSplitter = Mockito.mock(RuleSplitter.class);
+        final RulesSplitter splitter = new RulesSplitter(ruleSplitter);
 
         final NodeRule rule1 = Mockito.mock(NodeRule.class);
         Mockito.doReturn(2).when(rule1).size();
@@ -218,9 +212,8 @@ public final class RulesSplitterTest {
 
     @Test
     public void split_twoRulesWhoseDoNotRequireSplit_afterCollectionIsEmpty() {
-        @SuppressWarnings("unchecked")
-        final RuleSplitter<NodeRule> ruleSplitter = Mockito.mock(RuleSplitter.class);
-        final RulesSplitter<NodeRule> splitter = new RulesSplitter<NodeRule>(ruleSplitter);
+        final RuleSplitter ruleSplitter = Mockito.mock(RuleSplitter.class);
+        final RulesSplitter splitter = new RulesSplitter(ruleSplitter);
 
         final NodeRule rule1 = Mockito.mock(NodeRule.class);
         Mockito.doReturn(1).when(rule1).size();

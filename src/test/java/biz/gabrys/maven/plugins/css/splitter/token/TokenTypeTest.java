@@ -13,25 +13,25 @@ public final class TokenTypeTest {
     @Test
     public void createFactory_custom_returnsFactory() {
         final TokenValueFactory factory = TokenType.CUSTOM.createFactory();
-        Assert.assertNotNull("Factory instance", factory);
-        Assert.assertEquals("factory class", CustomValueTokenFactory.class, factory.getClass());
+        Assert.assertNotNull("Factory instance.", factory);
+        Assert.assertEquals("factory class.", CustomValueTokenFactory.class, factory.getClass());
     }
 
     @Test
     public void create_date() {
-        Assert.assertEquals("Should return \"date\"", TokenType.DATE, TokenType.create("date"));
+        Assert.assertEquals("Should return \"date\".", TokenType.DATE, TokenType.create("date"));
     }
 
     @Test
     public void createFactory_date_returnsFactory() {
         final TokenValueFactory factory = TokenType.DATE.createFactory();
-        Assert.assertNotNull("Factory instance", factory);
-        Assert.assertEquals("factory class", DateTokenValueFactory.class, factory.getClass());
+        Assert.assertNotNull("Factory instance.", factory);
+        Assert.assertEquals("factory class.", DateTokenValueFactory.class, factory.getClass());
     }
 
     @Test
     public void create_none() {
-        Assert.assertEquals("Should return \"none\"", TokenType.NONE, TokenType.create("none"));
+        Assert.assertEquals("Should return \"none\".", TokenType.NONE, TokenType.create("none"));
     }
 
     @Test(expected = UnsupportedOperationException.class)

@@ -22,7 +22,7 @@ public final class StyleRuleConverterTest {
         final StyleRuleConverter converter = new StyleRuleConverter();
         final CSSStyleRuleImpl rule = new CSSStyleRuleImpl();
         final boolean supported = converter.isSupportedType(rule);
-        Assert.assertTrue("Should return true", supported);
+        Assert.assertTrue("Should return true.", supported);
     }
 
     @Test
@@ -55,16 +55,16 @@ public final class StyleRuleConverterTest {
         rule.setStyle(style);
 
         final StyleRule converted = converter.convert(rule);
-        Assert.assertNotNull("Converted rule instance", converted);
+        Assert.assertNotNull("Converted rule instance.", converted);
         final List<String> selectors = converted.getSelectors();
-        Assert.assertNotNull("Converted rule selectors instance", selectors);
-        Assert.assertEquals("Converted rule selectors size", 1, selectors.size());
-        Assert.assertEquals("Converted rule selector", selector, selectors.get(0));
+        Assert.assertNotNull("Converted rule selectors instance.", selectors);
+        Assert.assertEquals("Converted rule selectors size.", 1, selectors.size());
+        Assert.assertEquals("Converted rule selector.", selector, selectors.get(0));
         final List<StyleProperty> properties = converted.getProperties();
-        Assert.assertNotNull("Converted rule properties instance", properties);
-        Assert.assertEquals("Converted rule properties size", 1, properties.size());
+        Assert.assertNotNull("Converted rule properties instance.", properties);
+        Assert.assertEquals("Converted rule properties size.", 1, properties.size());
         final StyleProperty styleProperty = properties.get(0);
-        Assert.assertEquals("Converted rule property name", property.getName(), styleProperty.getName());
-        Assert.assertEquals("Converted rule property value", value.getCssText(), styleProperty.getValue());
+        Assert.assertEquals("Converted rule property name.", property.getName(), styleProperty.getName());
+        Assert.assertEquals("Converted rule property value.", value.getCssText(), styleProperty.getValue());
     }
 }

@@ -20,17 +20,22 @@ import java.util.List;
 import biz.gabrys.maven.plugins.css.splitter.css.types.NodeRule;
 import biz.gabrys.maven.plugins.css.splitter.css.types.StyleSheet;
 
-public class Splliter {
+public class StyleSheetSplliter {
 
     private final int limit;
-    private final RulesSplitter<NodeRule> splitter;
+    private final RulesSplitter splitter;
 
-    public Splliter(final int limit) {
-        this(limit, new RulesSplitter<NodeRule>(new AnyRuleSplitter()));
+    public StyleSheetSplliter(final int limit) {
+        this.limit = limit;
+
+        final List<RuleSplitter> splitters = new ArrayList<RuleSplitter>();
+        splitters.add(new StyleRuleSplitter());
+        splitters.add(new ComplexRuleSplitter());
+        splitter = new RulesSplitter(new MultipleRuleSplitter(splitters));
     }
 
     // for tests
-    Splliter(final int limit, final RulesSplitter<NodeRule> splitter) {
+    StyleSheetSplliter(final int limit, final RulesSplitter splitter) {
         this.limit = limit;
         this.splitter = splitter;
     }

@@ -15,8 +15,6 @@ package biz.gabrys.maven.plugins.css.splitter.css.types;
 import java.util.ArrayList;
 import java.util.List;
 
-import biz.gabrys.maven.plugins.css.splitter.css.counter.StyleSheetCounter;
-
 public class StyleSheet {
 
     private final List<NodeRule> rules;
@@ -42,7 +40,10 @@ public class StyleSheet {
 
     public int size() {
         if (size == null) {
-            size = new StyleSheetCounter().count(this);
+            size = 0;
+            for (final NodeRule child : rules) {
+                size += child.size();
+            }
         }
         return size;
     }
