@@ -55,10 +55,10 @@ public class ComplexRule extends AbstractNodeRule {
     }
 
     @Override
-    protected int size2() {
+    protected int getSize2() {
         int size = 0;
         for (final NodeRule rule : rules) {
-            size += rule.size();
+            size += rule.getSize();
         }
         return size;
     }

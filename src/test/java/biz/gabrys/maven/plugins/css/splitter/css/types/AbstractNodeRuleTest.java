@@ -39,17 +39,17 @@ public final class AbstractNodeRuleTest {
     }
 
     @Test
-    public void size() {
+    public void getSize() {
         final NodeRuleImpl rule = Mockito.spy(new NodeRuleImpl());
 
-        rule.size();
-        Mockito.verify(rule).size();
-        Mockito.verify(rule).size2();
+        rule.getSize();
+        Mockito.verify(rule).getSize();
+        Mockito.verify(rule).getSize2();
         Mockito.verifyNoMoreInteractions(rule);
 
-        rule.size();
-        Mockito.verify(rule, Mockito.times(2)).size();
-        Mockito.verify(rule).size2();
+        rule.getSize();
+        Mockito.verify(rule, Mockito.times(2)).getSize();
+        Mockito.verify(rule).getSize2();
         Mockito.verifyNoMoreInteractions(rule);
     }
 
@@ -61,7 +61,7 @@ public final class AbstractNodeRuleTest {
         }
 
         @Override
-        protected int size2() {
+        protected int getSize2() {
             return 0;
         }
     }

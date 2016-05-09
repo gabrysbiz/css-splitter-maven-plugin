@@ -28,12 +28,12 @@ public final class StyleRulePropertiesLimitValidatorTest {
         final StyleRule rule = Mockito.mock(StyleRule.class);
         Mockito.when(rule.isSplittable()).thenReturn(false);
         final int limit = 10;
-        Mockito.when(rule.size()).thenReturn(limit - 1);
+        Mockito.when(rule.getSize()).thenReturn(limit - 1);
 
         validator.validate2(rule, limit);
 
         Mockito.verify(rule).isSplittable();
-        Mockito.verify(rule).size();
+        Mockito.verify(rule).getSize();
         Mockito.verifyNoMoreInteractions(rule);
     }
 
@@ -44,12 +44,12 @@ public final class StyleRulePropertiesLimitValidatorTest {
         final StyleRule rule = Mockito.mock(StyleRule.class);
         Mockito.when(rule.isSplittable()).thenReturn(false);
         final int limit = 10;
-        Mockito.when(rule.size()).thenReturn(limit);
+        Mockito.when(rule.getSize()).thenReturn(limit);
 
         validator.validate2(rule, limit);
 
         Mockito.verify(rule).isSplittable();
-        Mockito.verify(rule).size();
+        Mockito.verify(rule).getSize();
         Mockito.verifyNoMoreInteractions(rule);
     }
 
@@ -60,7 +60,7 @@ public final class StyleRulePropertiesLimitValidatorTest {
         final StyleRule rule = Mockito.mock(StyleRule.class);
         Mockito.when(rule.isSplittable()).thenReturn(false);
         final int limit = 10;
-        Mockito.when(rule.size()).thenReturn(limit + 1);
+        Mockito.when(rule.getSize()).thenReturn(limit + 1);
 
         validator.validate2(rule, limit);
     }

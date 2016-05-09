@@ -56,7 +56,7 @@ public class StyleRule extends AbstractNodeRule {
     }
 
     @Override
-    protected int size2() {
+    protected int getSize2() {
         return properties.isEmpty() ? 1 : properties.size();
     }
 }

@@ -53,30 +53,30 @@ public final class ComplexRuleTest {
     }
 
     @Test
-    public void size2_zeroRules_returnsZero() {
+    public void getSize2_zeroRules_returnsZero() {
         final List<String> selectors = Collections.emptyList();
         final List<NodeRule> rules = Collections.emptyList();
 
         final ComplexRule rule = new ComplexRule("@media", selectors, rules);
-        final int size = rule.size2();
+        final int size = rule.getSize2();
 
         Assert.assertEquals("Rule size.", 0, size);
     }
 
     @Test
-    public void size2_twoRulesWithOneAndFourSize_returnsFive() {
+    public void getSize2_twoRulesWithOneAndFourSize_returnsFive() {
         final List<String> selectors = Collections.emptyList();
 
         final List<NodeRule> rules = new ArrayList<NodeRule>();
         final NodeRule child1 = Mockito.mock(NodeRule.class);
-        Mockito.when(child1.size()).thenReturn(1);
+        Mockito.when(child1.getSize()).thenReturn(1);
         rules.add(child1);
         final NodeRule child2 = Mockito.mock(NodeRule.class);
-        Mockito.when(child2.size()).thenReturn(4);
+        Mockito.when(child2.getSize()).thenReturn(4);
         rules.add(child2);
 
         final ComplexRule rule = new ComplexRule("@media", selectors, rules);
-        final int size = rule.size2();
+        final int size = rule.getSize2();
 
         Assert.assertEquals("Rule size.", 5, size);
     }

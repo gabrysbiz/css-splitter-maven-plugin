@@ -13,7 +13,6 @@
 package biz.gabrys.maven.plugins.css.splitter.split;
 
 import biz.gabrys.maven.plugins.css.splitter.css.types.ComplexRule;
-import biz.gabrys.maven.plugins.css.splitter.css.types.NodeRule;
 
 class ComplexRuleSplitter extends AbstractRuleSplitter<ComplexRule> {
 
@@ -38,7 +37,7 @@ class ComplexRuleSplitter extends AbstractRuleSplitter<ComplexRule> {
 
     @Override
     protected SplitResult split2(final ComplexRule rule, final int splitAfter) {
-        final RulesContainer<NodeRule> container = splitter.split(rule.getRules(), splitAfter);
+        final RulesContainer container = splitter.split(rule.getRules(), splitAfter);
         final ComplexRule first = new ComplexRule(rule.getType(), rule.getSelectors(), container.before);
         final ComplexRule second = new ComplexRule(rule.getType(), rule.getSelectors(), container.after);
         neighborsManager.fill(rule, first, second);

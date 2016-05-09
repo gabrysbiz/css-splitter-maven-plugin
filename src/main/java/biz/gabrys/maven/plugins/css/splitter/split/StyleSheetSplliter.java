@@ -52,7 +52,7 @@ public class StyleSheetSplliter {
         final List<List<NodeRule>> rulesMatrix = new LinkedList<List<NodeRule>>();
         List<NodeRule> currentRules = stylesheet.getRules();
         while (!currentRules.isEmpty()) {
-            final RulesContainer<NodeRule> container = splitter.split(currentRules, limit);
+            final RulesContainer container = splitter.split(currentRules, limit);
             rulesMatrix.add(container.before);
             currentRules = container.after;
         }

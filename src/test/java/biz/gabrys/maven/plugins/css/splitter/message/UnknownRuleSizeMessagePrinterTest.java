@@ -40,12 +40,12 @@ public final class UnknownRuleSizeMessagePrinterTest {
 
         final UnknownRule rule = Mockito.mock(UnknownRule.class);
         Mockito.when(rule.getCode()).thenReturn("_code_");
-        Mockito.when(rule.size()).thenReturn(1);
+        Mockito.when(rule.getSize()).thenReturn(1);
 
         printer.print2(rule);
         Mockito.verify(rule).getCode();
         Mockito.verify(logger).debug("Found non-standard (unknown) rule:\n_code_");
-        Mockito.verify(rule).size();
+        Mockito.verify(rule).getSize();
         Mockito.verify(logger).debug("I guess it contains 1 property.");
         Mockito.verifyNoMoreInteractions(logger, rule);
     }
@@ -57,12 +57,12 @@ public final class UnknownRuleSizeMessagePrinterTest {
 
         final UnknownRule rule = Mockito.mock(UnknownRule.class);
         Mockito.when(rule.getCode()).thenReturn("@f {}");
-        Mockito.when(rule.size()).thenReturn(0);
+        Mockito.when(rule.getSize()).thenReturn(0);
 
         printer.print2(rule);
         Mockito.verify(rule).getCode();
         Mockito.verify(logger).debug("Found non-standard (unknown) rule:\n@f {}");
-        Mockito.verify(rule).size();
+        Mockito.verify(rule).getSize();
         Mockito.verify(logger).debug("I guess it contains 0 properties.");
         Mockito.verifyNoMoreInteractions(logger, rule);
     }
@@ -74,12 +74,12 @@ public final class UnknownRuleSizeMessagePrinterTest {
 
         final UnknownRule rule = Mockito.mock(UnknownRule.class);
         Mockito.when(rule.getCode()).thenReturn("_three_");
-        Mockito.when(rule.size()).thenReturn(3);
+        Mockito.when(rule.getSize()).thenReturn(3);
 
         printer.print2(rule);
         Mockito.verify(rule).getCode();
         Mockito.verify(logger).debug("Found non-standard (unknown) rule:\n_three_");
-        Mockito.verify(rule).size();
+        Mockito.verify(rule).getSize();
         Mockito.verify(logger).debug("I guess it contains 3 properties.");
         Mockito.verifyNoMoreInteractions(logger, rule);
     }

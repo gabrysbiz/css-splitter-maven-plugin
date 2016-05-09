@@ -518,7 +518,7 @@ public class SplitMojo extends AbstractMojo {
         final StyleSheet stylesheet = new SteadyStateParser(getLog()).parse(css, Standard.create(standard), !nonstrict);
         new StylesheetMessagePrinter(getLog(), !nonstrict).print(stylesheet);
         if (verbose) {
-            getLog().info(String.format("Stylesheet contains %d rule%s.", stylesheet.size(), stylesheet.size() != 1 ? 's' : ""));
+            getLog().info(String.format("Stylesheet contains %d rule%s.", stylesheet.getSize(), stylesheet.getSize() != 1 ? 's' : ""));
         }
         return stylesheet;
     }

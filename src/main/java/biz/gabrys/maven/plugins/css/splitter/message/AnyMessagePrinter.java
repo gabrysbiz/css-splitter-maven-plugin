@@ -31,7 +31,7 @@ class AnyMessagePrinter implements MessagePrinter {
 
     // for tests
     AnyMessagePrinter(final List<MessagePrinter> printers) {
-        this.printers = printers;
+        this.printers = new ArrayList<MessagePrinter>(printers);
     }
 
     private static void addPrinter(final MessagePrinter printer, final List<MessagePrinter> printers) {

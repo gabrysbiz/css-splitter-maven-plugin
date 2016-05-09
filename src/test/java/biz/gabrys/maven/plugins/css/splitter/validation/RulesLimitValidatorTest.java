@@ -13,11 +13,11 @@ public final class RulesLimitValidatorTest {
         final RulesLimitValidator validator = new RulesLimitValidator(limit);
 
         final StyleSheet stylesheet = Mockito.mock(StyleSheet.class);
-        Mockito.when(stylesheet.size()).thenReturn(limit - 1);
+        Mockito.when(stylesheet.getSize()).thenReturn(limit - 1);
 
         validator.validate(stylesheet);
 
-        Mockito.verify(stylesheet).size();
+        Mockito.verify(stylesheet).getSize();
         Mockito.verifyNoMoreInteractions(stylesheet);
         Mockito.verifyZeroInteractions(stylesheet);
     }
@@ -28,11 +28,11 @@ public final class RulesLimitValidatorTest {
         final RulesLimitValidator validator = new RulesLimitValidator(limit);
 
         final StyleSheet stylesheet = Mockito.mock(StyleSheet.class);
-        Mockito.when(stylesheet.size()).thenReturn(limit);
+        Mockito.when(stylesheet.getSize()).thenReturn(limit);
 
         validator.validate(stylesheet);
 
-        Mockito.verify(stylesheet).size();
+        Mockito.verify(stylesheet).getSize();
         Mockito.verifyNoMoreInteractions(stylesheet);
         Mockito.verifyZeroInteractions(stylesheet);
     }
@@ -43,7 +43,7 @@ public final class RulesLimitValidatorTest {
         final RulesLimitValidator validator = new RulesLimitValidator(limit);
 
         final StyleSheet stylesheet = Mockito.mock(StyleSheet.class);
-        Mockito.when(stylesheet.size()).thenReturn(limit + 1);
+        Mockito.when(stylesheet.getSize()).thenReturn(limit + 1);
 
         validator.validate(stylesheet);
     }

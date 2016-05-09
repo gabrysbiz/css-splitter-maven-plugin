@@ -31,7 +31,7 @@ public final class ComplexRuleSplitterTest {
         final List<NodeRule> rules = Arrays.asList(rule1, rule2);
         Mockito.when(rule.getRules()).thenReturn(new ArrayList<NodeRule>(rules));
 
-        final RulesContainer<NodeRule> container = new RulesContainer<NodeRule>();
+        final RulesContainer container = new RulesContainer();
         container.before.add(rule1);
         container.after.add(rule2);
         Mockito.when(rulesSplitter.split(rules, 2)).thenReturn(container);

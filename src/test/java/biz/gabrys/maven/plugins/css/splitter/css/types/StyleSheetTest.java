@@ -14,7 +14,7 @@ public final class StyleSheetTest {
     public void toString_sheetHasZeroRules() {
         final StyleSheet stylesheet = new StyleSheet(Collections.<NodeRule>emptyList());
         final String code = stylesheet.toString();
-        Assert.assertEquals("CSS code", "", code);
+        Assert.assertEquals("Stylesheet code.", "", code);
     }
 
     @Test
@@ -29,42 +29,32 @@ public final class StyleSheetTest {
 
         final StyleSheet stylesheet = new StyleSheet(rules);
         final String code = stylesheet.toString();
-        Assert.assertEquals("CSS code", "abc\ndef\n", code);
+        Assert.assertEquals("Stylesheet code.", "abc\ndef\n", code);
     }
 
-    // @Test
-    // public void count_styleSheetIsEmpty_returnsZero() {
-    // final StyleSheetCounter counter = new StyleSheetCounter();
-    //
-    // final StyleSheet stylesheet = Mockito.mock(StyleSheet.class);
-    // Mockito.when(stylesheet.getRules()).thenReturn(Collections.<NodeRule>emptyList());
-    //
-    // Assert.assertEquals("Should return 0 for empty StyleSheet.", 0, counter.count(stylesheet));
-    //
-    // Mockito.verify(stylesheet).getRules();
-    // Mockito.verifyNoMoreInteractions(stylesheet);
-    // }
-    //
-    // @Test
-    // public void count_styleSheetIsNotEmpty_returnsCountedValue() {
-    // final StyleSheetCounter counter = new StyleSheetCounter();
-    //
-    // final StyleSheet stylesheet = Mockito.mock(StyleSheet.class);
-    // final NodeRule rule1 = Mockito.mock(NodeRule.class);
-    // final NodeRule rule2 = Mockito.mock(NodeRule.class);
-    // Mockito.when(stylesheet.getRules()).thenReturn(Arrays.asList(rule1, rule2));
-    //
-    // final int value1 = 3;
-    // Mockito.when(rule1.size()).thenReturn(value1);
-    // final int value2 = 5;
-    // Mockito.when(rule2.size()).thenReturn(value2);
-    // final int sum = value1 + value2;
-    //
-    // Assert.assertEquals("Should return sum for two rules.", sum, counter.count(stylesheet));
-    //
-    // Mockito.verify(stylesheet).getRules();
-    // Mockito.verify(rule1).size();
-    // Mockito.verify(rule2).size();
-    // Mockito.verifyNoMoreInteractions(stylesheet, rule1, rule2);
-    // }
+    @Test
+    public void getSize_zeroRules_returnsZero() {
+        final List<NodeRule> rules = Collections.emptyList();
+
+        final StyleSheet stylesheet = new StyleSheet(rules);
+        final int size = stylesheet.getSize();
+
+        Assert.assertEquals("Stylesheet size.", 0, size);
+    }
+
+    @Test
+    public void getSize_twoRulesWithThreeAndTwoSize_returnsFive() {
+        final List<NodeRule> rules = new ArrayList<NodeRule>();
+        final NodeRule child1 = Mockito.mock(NodeRule.class);
+        Mockito.when(child1.getSize()).thenReturn(3);
+        rules.add(child1);
+        final NodeRule child2 = Mockito.mock(NodeRule.class);
+        Mockito.when(child2.getSize()).thenReturn(2);
+        rules.add(child2);
+
+        final StyleSheet stylesheet = new StyleSheet(rules);
+        final int size = stylesheet.getSize();
+
+        Assert.assertEquals("Stylesheet size.", 5, size);
+    }
 }

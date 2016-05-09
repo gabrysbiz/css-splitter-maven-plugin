@@ -44,18 +44,18 @@ public final class StyleRuleTest {
     }
 
     @Test
-    public void size2_emptyRule_returnsOne() {
+    public void getSize2_emptyRule_returnsOne() {
         final List<String> selectors = Collections.emptyList();
         final List<StyleProperty> properties = Collections.emptyList();
 
         final StyleRule rule = new StyleRule(selectors, properties);
-        final int size = rule.size2();
+        final int size = rule.getSize2();
 
         Assert.assertEquals("Rule size.", 1, size);
     }
 
     @Test
-    public void size2_ruleWithThreeProperties_returnsThree() {
+    public void getSize2_ruleWithThreeProperties_returnsThree() {
         final List<String> selectors = Collections.emptyList();
 
         final List<StyleProperty> properties = new ArrayList<StyleProperty>();
@@ -64,7 +64,7 @@ public final class StyleRuleTest {
         properties.add(Mockito.mock(StyleProperty.class));
 
         final StyleRule rule = new StyleRule(selectors, properties);
-        final int size = rule.size2();
+        final int size = rule.getSize2();
 
         Assert.assertEquals("Rule size.", 3, size);
     }

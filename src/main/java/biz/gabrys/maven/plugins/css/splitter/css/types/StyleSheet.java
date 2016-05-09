@@ -38,11 +38,11 @@ public class StyleSheet {
         return css.toString();
     }
 
-    public int size() {
+    public int getSize() {
         if (size == null) {
             size = 0;
             for (final NodeRule child : rules) {
-                size += child.size();
+                size += child.getSize();
             }
         }
         return size;

@@ -12,7 +12,7 @@ public class NotSupportedTestNodeRule extends AbstractNodeRule {
     }
 
     @Override
-    protected int size2() {
+    protected int getSize2() {
         throw new UnsupportedOperationException();
     }
 }

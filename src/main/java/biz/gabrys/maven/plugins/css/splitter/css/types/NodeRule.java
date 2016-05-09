@@ -18,5 +18,5 @@ public interface NodeRule extends Node<NodeRule, NodeRule> {
 
     String[] getLines();
 
-    int size();
+    int getSize();
 }

@@ -32,7 +32,7 @@ class UnknownRuleSizeMessagePrinter extends AbstractMessagePrinter<UnknownRule> 
     @Override
     protected void print2(final UnknownRule rule) {
         logger.debug("Found non-standard (unknown) rule:\n" + rule.getCode());
-        final int size = rule.size();
+        final int size = rule.getSize();
         logger.debug(String.format("I guess it contains %d propert%s.", size, size != 1 ? "ies" : "y"));
     }
 }

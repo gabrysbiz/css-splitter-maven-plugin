@@ -30,7 +30,7 @@ public class UnknownRule extends AbstractNodeRule {
     }
 
     @Override
-    protected int size2() {
+    protected int getSize2() {
         return new UnknownRuleCounter().count(this);
     }
 }

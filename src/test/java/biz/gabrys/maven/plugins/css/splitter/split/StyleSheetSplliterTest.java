@@ -45,10 +45,9 @@ public class StyleSheetSplliterTest {
         final List<NodeRule> rules2 = Arrays.<NodeRule>asList(rule2);
         final List<NodeRule> rules3 = Arrays.<NodeRule>asList(rule3);
 
-        Mockito.when(rulesSplitter.split(rules, limit)).thenReturn(new RulesContainer<NodeRule>(rules1, rules23));
-        Mockito.when(rulesSplitter.split(rules23, limit)).thenReturn(new RulesContainer<NodeRule>(rules2, rules3));
-        Mockito.when(rulesSplitter.split(rules3, limit))
-                .thenReturn(new RulesContainer<NodeRule>(rules3, Collections.<NodeRule>emptyList()));
+        Mockito.when(rulesSplitter.split(rules, limit)).thenReturn(new RulesContainer(rules1, rules23));
+        Mockito.when(rulesSplitter.split(rules23, limit)).thenReturn(new RulesContainer(rules2, rules3));
+        Mockito.when(rulesSplitter.split(rules3, limit)).thenReturn(new RulesContainer(rules3, Collections.<NodeRule>emptyList()));
 
         final List<StyleSheet> sheets = splliter.split(stylesheet);
         Assert.assertEquals("Sheets quantity", 3, sheets.size());

@@ -25,7 +25,7 @@ final class StyleRulePropertiesLimitValidator extends AbstractRulePropertiesLimi
         if (rule.isSplittable()) {
             return;
         }
-        final int size = rule.size();
+        final int size = rule.getSize();
         if (size > limit) {
             throwException(size, limit, rule.getCode());
         }

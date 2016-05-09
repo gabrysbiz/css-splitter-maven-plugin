@@ -24,8 +24,8 @@ class RulesSplitter {
         this.splitter = splitter;
     }
 
-    RulesContainer<NodeRule> split(final List<NodeRule> rules, final int splitAfter) {
-        final RulesContainer<NodeRule> container = new RulesContainer<NodeRule>();
+    RulesContainer split(final List<NodeRule> rules, final int splitAfter) {
+        final RulesContainer container = new RulesContainer();
         final ValueAndIndex info = new ValueAndIndex(splitAfter);
         processBeforeSplitPoint(rules, container, info);
         if (info.value != 0) {
@@ -35,10 +35,10 @@ class RulesSplitter {
         return container;
     }
 
-    private void processBeforeSplitPoint(final List<NodeRule> rules, final RulesContainer<NodeRule> container, final ValueAndIndex info) {
+    private static void processBeforeSplitPoint(final List<NodeRule> rules, final RulesContainer container, final ValueAndIndex info) {
         while (info.index < rules.size()) {
             final NodeRule rule = rules.get(info.index);
-            final int count = rule.size();
+            final int count = rule.getSize();
             final int odds = info.value - count;
             if (odds < 0) {
                 return;
@@ -50,7 +50,7 @@ class RulesSplitter {
         info.value = 0;
     }
 
-    private void processSplitPoint(final List<NodeRule> rules, final RulesContainer<NodeRule> container, final ValueAndIndex info) {
+    private void processSplitPoint(final List<NodeRule> rules, final RulesContainer container, final ValueAndIndex info) {
         final NodeRule rule = rules.get(info.index);
         ++info.index;
         if (splitter.isSplittable(rule)) {
@@ -62,8 +62,7 @@ class RulesSplitter {
         container.after.add(rule);
     }
 
-    private static void processAfterSplitPoint(final List<NodeRule> rules, final RulesContainer<NodeRule> container,
-            final ValueAndIndex info) {
+    private static void processAfterSplitPoint(final List<NodeRule> rules, final RulesContainer container, final ValueAndIndex info) {
         if (info.index < rules.size()) {
             container.after.addAll(rules.subList(info.index, rules.size()));
         }

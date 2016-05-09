@@ -40,14 +40,14 @@ public abstract class AbstractNodeRule extends NodeImpl<NodeRule, NodeRule> impl
 
     protected abstract void fillLines(List<String> lines);
 
-    public int size() {
+    public int getSize() {
         if (size == null) {
-            size = size2();
+            size = getSize2();
         }
         return size;
     }
 
-    protected abstract int size2();
+    protected abstract int getSize2();
 
     @Override
     public String toString() {

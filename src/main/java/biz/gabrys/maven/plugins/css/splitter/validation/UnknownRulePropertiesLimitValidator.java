@@ -22,7 +22,7 @@ final class UnknownRulePropertiesLimitValidator extends AbstractRulePropertiesLi
 
     @Override
     protected void validate2(final UnknownRule rule, final int limit) {
-        final int size = rule.size();
+        final int size = rule.getSize();
         if (size > limit) {
             throwException(size, limit, rule.getCode());
         }

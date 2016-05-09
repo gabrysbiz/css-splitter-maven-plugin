@@ -17,12 +17,12 @@ public final class RulesSplitterTest {
         final RulesSplitter splitter = new RulesSplitter(ruleSplitter);
 
         final NodeRule rule1 = Mockito.mock(NodeRule.class);
-        Mockito.doReturn(2).when(rule1).size();
+        Mockito.doReturn(2).when(rule1).getSize();
         final NodeRule rule2 = Mockito.mock(NodeRule.class);
-        Mockito.doReturn(2).when(rule2).size();
+        Mockito.doReturn(2).when(rule2).getSize();
         final List<NodeRule> rules = Arrays.asList(rule1, rule2);
 
-        final RulesContainer<NodeRule> container = splitter.split(rules, 2);
+        final RulesContainer container = splitter.split(rules, 2);
 
         final List<NodeRule> before = container.before;
         Assert.assertEquals("Before rules quantity", 1, before.size());
@@ -32,8 +32,8 @@ public final class RulesSplitterTest {
         Assert.assertEquals("After rules quantity", 1, after.size());
         Assert.assertEquals("After rules first element", rule2, after.get(0));
 
-        Mockito.verify(rule1).size();
-        Mockito.verify(rule2).size();
+        Mockito.verify(rule1).getSize();
+        Mockito.verify(rule2).getSize();
         Mockito.verifyNoMoreInteractions(rule1, rule2);
         Mockito.verifyZeroInteractions(ruleSplitter);
     }
@@ -44,16 +44,16 @@ public final class RulesSplitterTest {
         final RulesSplitter splitter = new RulesSplitter(ruleSplitter);
 
         final NodeRule rule1 = Mockito.mock(NodeRule.class);
-        Mockito.doReturn(2).when(rule1).size();
+        Mockito.doReturn(2).when(rule1).getSize();
         final NodeRule rule2 = Mockito.mock(NodeRule.class);
-        Mockito.doReturn(2).when(rule2).size();
+        Mockito.doReturn(2).when(rule2).getSize();
         final NodeRule rule3 = Mockito.mock(NodeRule.class);
-        Mockito.doReturn(2).when(rule3).size();
+        Mockito.doReturn(2).when(rule3).getSize();
         final NodeRule rule4 = Mockito.mock(NodeRule.class);
-        Mockito.doReturn(2).when(rule4).size();
+        Mockito.doReturn(2).when(rule4).getSize();
         final List<NodeRule> rules = Arrays.asList(rule1, rule2, rule3, rule4);
 
-        final RulesContainer<NodeRule> container = splitter.split(rules, 4);
+        final RulesContainer container = splitter.split(rules, 4);
 
         final List<NodeRule> before = container.before;
         Assert.assertEquals("Before rules quantity", 2, before.size());
@@ -65,9 +65,9 @@ public final class RulesSplitterTest {
         Assert.assertEquals("After rules first element", rule3, after.get(0));
         Assert.assertEquals("After rules second element", rule4, after.get(1));
 
-        Mockito.verify(rule1).size();
-        Mockito.verify(rule2).size();
-        Mockito.verify(rule3).size();
+        Mockito.verify(rule1).getSize();
+        Mockito.verify(rule2).getSize();
+        Mockito.verify(rule3).getSize();
         Mockito.verifyNoMoreInteractions(rule1, rule2, rule3);
         Mockito.verifyZeroInteractions(ruleSplitter, rule4);
     }
@@ -78,9 +78,9 @@ public final class RulesSplitterTest {
         final RulesSplitter splitter = new RulesSplitter(ruleSplitter);
 
         final NodeRule rule1 = Mockito.mock(NodeRule.class);
-        Mockito.doReturn(2).when(rule1).size();
+        Mockito.doReturn(2).when(rule1).getSize();
         final NodeRule rule2 = Mockito.mock(NodeRule.class);
-        Mockito.doReturn(6).when(rule2).size();
+        Mockito.doReturn(6).when(rule2).getSize();
         final List<NodeRule> rules = Arrays.asList(rule1, rule2);
 
         Mockito.when(ruleSplitter.isSplittable(rule2)).thenReturn(true);
@@ -88,7 +88,7 @@ public final class RulesSplitterTest {
         final NodeRule ruleAfter = Mockito.mock(NodeRule.class);
         Mockito.when(ruleSplitter.split(rule2, 2)).thenReturn(new SplitResult(ruleBefore, ruleAfter));
 
-        final RulesContainer<NodeRule> container = splitter.split(rules, 4);
+        final RulesContainer container = splitter.split(rules, 4);
 
         final List<NodeRule> before = container.before;
         Assert.assertEquals("Before rules quantity", 2, before.size());
@@ -99,8 +99,8 @@ public final class RulesSplitterTest {
         Assert.assertEquals("After rules quantity", 1, after.size());
         Assert.assertEquals("After rules first element", ruleAfter, after.get(0));
 
-        Mockito.verify(rule1).size();
-        Mockito.verify(rule2).size();
+        Mockito.verify(rule1).getSize();
+        Mockito.verify(rule2).getSize();
         Mockito.verify(ruleSplitter).isSplittable(rule2);
         Mockito.verify(ruleSplitter).split(rule2, 2);
         Mockito.verifyNoMoreInteractions(rule1, rule2, ruleSplitter);
@@ -112,9 +112,9 @@ public final class RulesSplitterTest {
         final RulesSplitter splitter = new RulesSplitter(ruleSplitter);
 
         final NodeRule rule1 = Mockito.mock(NodeRule.class);
-        Mockito.doReturn(6).when(rule1).size();
+        Mockito.doReturn(6).when(rule1).getSize();
         final NodeRule rule2 = Mockito.mock(NodeRule.class);
-        Mockito.doReturn(2).when(rule2).size();
+        Mockito.doReturn(2).when(rule2).getSize();
         final List<NodeRule> rules = Arrays.asList(rule1, rule2);
 
         Mockito.when(ruleSplitter.isSplittable(rule1)).thenReturn(true);
@@ -122,7 +122,7 @@ public final class RulesSplitterTest {
         final NodeRule ruleAfter = Mockito.mock(NodeRule.class);
         Mockito.when(ruleSplitter.split(rule1, 4)).thenReturn(new SplitResult(ruleBefore, ruleAfter));
 
-        final RulesContainer<NodeRule> container = splitter.split(rules, 4);
+        final RulesContainer container = splitter.split(rules, 4);
 
         final List<NodeRule> before = container.before;
         Assert.assertEquals("Before rules quantity", 1, before.size());
@@ -133,7 +133,7 @@ public final class RulesSplitterTest {
         Assert.assertEquals("After rules first element", ruleAfter, after.get(0));
         Assert.assertEquals("After rules second element", rule2, after.get(1));
 
-        Mockito.verify(rule1).size();
+        Mockito.verify(rule1).getSize();
         Mockito.verify(ruleSplitter).isSplittable(rule1);
         Mockito.verify(ruleSplitter).split(rule1, 4);
         Mockito.verifyNoMoreInteractions(rule1, ruleSplitter);
@@ -146,11 +146,11 @@ public final class RulesSplitterTest {
         final RulesSplitter splitter = new RulesSplitter(ruleSplitter);
 
         final NodeRule rule1 = Mockito.mock(NodeRule.class);
-        Mockito.doReturn(2).when(rule1).size();
+        Mockito.doReturn(2).when(rule1).getSize();
         final NodeRule rule2 = Mockito.mock(NodeRule.class);
-        Mockito.doReturn(4).when(rule2).size();
+        Mockito.doReturn(4).when(rule2).getSize();
         final NodeRule rule3 = Mockito.mock(NodeRule.class);
-        Mockito.doReturn(2).when(rule3).size();
+        Mockito.doReturn(2).when(rule3).getSize();
         final List<NodeRule> rules = Arrays.asList(rule1, rule2, rule3);
 
         Mockito.when(ruleSplitter.isSplittable(rule2)).thenReturn(true);
@@ -158,7 +158,7 @@ public final class RulesSplitterTest {
         final NodeRule ruleAfter = Mockito.mock(NodeRule.class);
         Mockito.when(ruleSplitter.split(rule2, 2)).thenReturn(new SplitResult(ruleBefore, ruleAfter));
 
-        final RulesContainer<NodeRule> container = splitter.split(rules, 4);
+        final RulesContainer container = splitter.split(rules, 4);
 
         final List<NodeRule> before = container.before;
         Assert.assertEquals("Before rules quantity", 2, before.size());
@@ -170,8 +170,8 @@ public final class RulesSplitterTest {
         Assert.assertEquals("Before rules first element", ruleAfter, after.get(0));
         Assert.assertEquals("Before rules second element", rule3, after.get(1));
 
-        Mockito.verify(rule1).size();
-        Mockito.verify(rule2).size();
+        Mockito.verify(rule1).getSize();
+        Mockito.verify(rule2).getSize();
         Mockito.verify(ruleSplitter).isSplittable(rule2);
         Mockito.verify(ruleSplitter).split(rule2, 2);
         Mockito.verifyNoMoreInteractions(rule1, rule2, ruleSplitter);
@@ -183,16 +183,16 @@ public final class RulesSplitterTest {
         final RulesSplitter splitter = new RulesSplitter(ruleSplitter);
 
         final NodeRule rule1 = Mockito.mock(NodeRule.class);
-        Mockito.doReturn(2).when(rule1).size();
+        Mockito.doReturn(2).when(rule1).getSize();
         final NodeRule rule2 = Mockito.mock(NodeRule.class);
-        Mockito.doReturn(4).when(rule2).size();
+        Mockito.doReturn(4).when(rule2).getSize();
         final NodeRule rule3 = Mockito.mock(NodeRule.class);
-        Mockito.doReturn(2).when(rule3).size();
+        Mockito.doReturn(2).when(rule3).getSize();
         final List<NodeRule> rules = Arrays.asList(rule1, rule2, rule3);
 
         Mockito.when(ruleSplitter.isSplittable(rule2)).thenReturn(false);
 
-        final RulesContainer<NodeRule> container = splitter.split(rules, 4);
+        final RulesContainer container = splitter.split(rules, 4);
 
         final List<NodeRule> before = container.before;
         Assert.assertEquals("Before rules quantity", 1, before.size());
@@ -203,8 +203,8 @@ public final class RulesSplitterTest {
         Assert.assertEquals("Before rules first element", rule2, after.get(0));
         Assert.assertEquals("Before rules second element", rule3, after.get(1));
 
-        Mockito.verify(rule1).size();
-        Mockito.verify(rule2).size();
+        Mockito.verify(rule1).getSize();
+        Mockito.verify(rule2).getSize();
         Mockito.verify(ruleSplitter).isSplittable(rule2);
         Mockito.verifyNoMoreInteractions(rule1, rule2, ruleSplitter);
         Mockito.verifyZeroInteractions(rule3);
@@ -216,12 +216,12 @@ public final class RulesSplitterTest {
         final RulesSplitter splitter = new RulesSplitter(ruleSplitter);
 
         final NodeRule rule1 = Mockito.mock(NodeRule.class);
-        Mockito.doReturn(1).when(rule1).size();
+        Mockito.doReturn(1).when(rule1).getSize();
         final NodeRule rule2 = Mockito.mock(NodeRule.class);
-        Mockito.doReturn(1).when(rule2).size();
+        Mockito.doReturn(1).when(rule2).getSize();
         final List<NodeRule> rules = Arrays.asList(rule1, rule2);
 
-        final RulesContainer<NodeRule> container = splitter.split(rules, 4);
+        final RulesContainer container = splitter.split(rules, 4);
 
         final List<NodeRule> before = container.before;
         Assert.assertEquals("Before rules quantity", 2, before.size());
@@ -231,8 +231,8 @@ public final class RulesSplitterTest {
         final List<NodeRule> after = container.after;
         Assert.assertTrue("After rules should be empty", after.isEmpty());
 
-        Mockito.verify(rule1).size();
-        Mockito.verify(rule2).size();
+        Mockito.verify(rule1).getSize();
+        Mockito.verify(rule2).getSize();
         Mockito.verifyNoMoreInteractions(rule1, rule2);
         Mockito.verifyZeroInteractions(ruleSplitter);
     }

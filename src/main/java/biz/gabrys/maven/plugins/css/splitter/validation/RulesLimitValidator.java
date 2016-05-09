@@ -23,7 +23,7 @@ public final class RulesLimitValidator {
     }
 
     public void validate(final StyleSheet stylesheet) {
-        final int size = stylesheet.size();
+        final int size = stylesheet.getSize();
         if (size > limit) {
             throw new ValidationException(String.format("The number of style rules (%d) exceeded the allowable limit (%d)!", size, limit));
         }
