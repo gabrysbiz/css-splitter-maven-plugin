@@ -46,7 +46,7 @@ public final class UnknownRuleSizeMessagePrinterTest {
         Mockito.verify(rule).getCode();
         Mockito.verify(logger).debug("Found non-standard (unknown) rule:\n_code_");
         Mockito.verify(rule).getSize();
-        Mockito.verify(logger).debug("I guess it contains 1 property.");
+        Mockito.verify(logger).debug("I treat that it contains 1 property.");
         Mockito.verifyNoMoreInteractions(logger, rule);
     }
 
@@ -63,7 +63,7 @@ public final class UnknownRuleSizeMessagePrinterTest {
         Mockito.verify(rule).getCode();
         Mockito.verify(logger).debug("Found non-standard (unknown) rule:\n@f {}");
         Mockito.verify(rule).getSize();
-        Mockito.verify(logger).debug("I guess it contains 0 properties.");
+        Mockito.verify(logger).debug("I treat that it contains 0 properties.");
         Mockito.verifyNoMoreInteractions(logger, rule);
     }
 
@@ -80,7 +80,7 @@ public final class UnknownRuleSizeMessagePrinterTest {
         Mockito.verify(rule).getCode();
         Mockito.verify(logger).debug("Found non-standard (unknown) rule:\n_three_");
         Mockito.verify(rule).getSize();
-        Mockito.verify(logger).debug("I guess it contains 3 properties.");
+        Mockito.verify(logger).debug("I treat that it contains 3 properties.");
         Mockito.verifyNoMoreInteractions(logger, rule);
     }
 }

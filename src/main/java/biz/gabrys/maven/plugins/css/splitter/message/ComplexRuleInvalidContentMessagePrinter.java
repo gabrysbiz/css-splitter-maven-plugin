@@ -18,7 +18,7 @@ import biz.gabrys.maven.plugins.css.splitter.css.types.ComplexRule;
 import biz.gabrys.maven.plugins.css.splitter.css.types.NodeRule;
 import biz.gabrys.maven.plugins.css.splitter.css.types.StyleRule;
 
-public class ComplexRuleInvalidContentMessagePrinter extends AbstractMessagePrinter<ComplexRule> {
+class ComplexRuleInvalidContentMessagePrinter extends AbstractMessagePrinter<ComplexRule> {
 
     private final Log logger;
     private final boolean strict;

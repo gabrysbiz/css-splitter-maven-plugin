@@ -22,7 +22,7 @@ public class StylesheetMessagePrinter {
     private final MessagePrinter printer;
 
     public StylesheetMessagePrinter(final Log logger, final boolean strict) {
-        printer = new AnyMessagePrinter(logger, strict);
+        printer = new TreeMessagePrinter(new AnyMessagePrinter(logger, strict));
     }
 
     // for tests

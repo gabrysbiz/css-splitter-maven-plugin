@@ -31,7 +31,8 @@ public final class SteadyStateParserTest {
         css.append("@unknown 'value';");
 
         final SteadyStateParser parser = new SteadyStateParser(Mockito.mock(Log.class));
-        final StyleSheet stylesheet = parser.parse(css.toString(), Standard.VERSION_3_0, true);
+        final ParserOptions options = new ParserOptionsBuilder().withStandard(Standard.VERSION_3_0).withStrict(true).create();
+        final StyleSheet stylesheet = parser.parse(css.toString(), options);
 
         Assert.assertNotNull("StyleSheet instance.", stylesheet);
         final List<NodeRule> rules = stylesheet.getRules();
@@ -68,7 +69,8 @@ public final class SteadyStateParserTest {
         css.append("}");
 
         final SteadyStateParser parser = new SteadyStateParser(Mockito.mock(Log.class));
-        final StyleSheet stylesheet = parser.parse(css.toString(), Standard.VERSION_3_0, true);
+        final ParserOptions options = new ParserOptionsBuilder().withStandard(Standard.VERSION_3_0).withStrict(true).create();
+        final StyleSheet stylesheet = parser.parse(css.toString(), options);
 
         Assert.assertNotNull("StyleSheet instance.", stylesheet);
         final List<NodeRule> rules = stylesheet.getRules();
@@ -97,30 +99,5 @@ public final class SteadyStateParserTest {
         property = properties.get(4);
         Assert.assertEquals("FontFace first style property name.", "font-style", property.getName());
         Assert.assertEquals("FontFace first style property value.", "normal", property.getValue());
-    }
-
-    // https://github.com/gabrysbiz/css-splitter-maven-plugin/issues/9
-    @Test
-    public void parse_nonStrictModeEnabled_returnsStyleSheet() {
-        final StringBuilder css = new StringBuilder();
-        css.append("@media all {");
-        css.append("\t@unknown { prop: value; }");
-        css.append("\t@page {size: 8.5; }");
-        css.append("}");
-
-        final SteadyStateParser parser = new SteadyStateParser(Mockito.mock(Log.class));
-        final StyleSheet stylesheet = parser.parse(css.toString(), Standard.VERSION_3_0, false);
-
-        Assert.assertNotNull("StyleSheet instance.", stylesheet);
-        final List<NodeRule> rules = stylesheet.getRules();
-        Assert.assertNotNull("StyleSheet rules instnace.", rules);
-        Assert.assertEquals("StyleSheet children rules.", 1, rules.size());
-        final NodeRule rule = rules.get(0);
-        Assert.assertEquals("StyleSheet children rule class.", ComplexRule.class, rule.getClass());
-        final ComplexRule media = (ComplexRule) rule;
-        final List<NodeRule> children = media.getRules();
-        Assert.assertEquals("Media rule children quantity.", 2, children.size());
-        Assert.assertEquals("Media rule first child class.", UnknownRule.class, children.get(0).getClass());
-        Assert.assertEquals("Media rule second child class.", StyleRule.class, children.get(1).getClass());
     }
 }
