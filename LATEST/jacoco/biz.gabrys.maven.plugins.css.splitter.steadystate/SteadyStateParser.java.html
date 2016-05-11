@@ -21,7 +21,6 @@ import org.w3c.dom.css.CSSStyleSheet;
 
 import com.steadystate.css.parser.CSSOMParser;
 
-import biz.gabrys.maven.plugins.css.splitter.css.Standard;
 import biz.gabrys.maven.plugins.css.splitter.css.types.StyleSheet;
 import biz.gabrys.maven.plugins.css.splitter.steadystate.converters.StyleSheetConverter;
 
@@ -29,28 +28,28 @@ public class SteadyStateParser {
 
     private final Log logger;
 
-<span class="fc" id="L32">    public SteadyStateParser(final Log logger) {</span>
-<span class="fc" id="L33">        this.logger = logger;</span>
-<span class="fc" id="L34">    }</span>
+<span class="fc" id="L31">    public SteadyStateParser(final Log logger) {</span>
+<span class="fc" id="L32">        this.logger = logger;</span>
+<span class="fc" id="L33">    }</span>
 
-    public StyleSheet parse(final String css, final Standard standard, final boolean strict) {
-<span class="fc" id="L37">        final NativeParserFactory factory = new NativeParserFactory();</span>
-<span class="fc" id="L38">        final CSSOMParser parser = new CSSOMParser(factory.create(standard));</span>
+    public StyleSheet parse(final String css, final ParserOptions options) {
+<span class="fc" id="L36">        final NativeParserFactory factory = new NativeParserFactory();</span>
+<span class="fc" id="L37">        final CSSOMParser parser = new CSSOMParser(factory.create(options.getStandard()));</span>
 
-<span class="fc" id="L40">        final SteadyErrorHandler errorHandler = new SteadyErrorHandler(logger);</span>
-<span class="fc" id="L41">        parser.setErrorHandler(errorHandler);</span>
+<span class="fc" id="L39">        final SteadyErrorHandler errorHandler = new SteadyErrorHandler(logger);</span>
+<span class="fc" id="L40">        parser.setErrorHandler(errorHandler);</span>
 
-<span class="fc" id="L43">        final InputSource source = new InputSource(new StringReader(css));</span>
+<span class="fc" id="L42">        final InputSource source = new InputSource(new StringReader(css));</span>
         CSSStyleSheet stylesheet;
         try {
-<span class="fc" id="L46">            stylesheet = parser.parseStyleSheet(source, null, null);</span>
-<span class="nc" id="L47">        } catch (final IOException e) {</span>
-<span class="nc" id="L48">            throw new ParserException(e);</span>
-<span class="fc" id="L49">        }</span>
-<span class="fc" id="L50">        errorHandler.validate();</span>
+<span class="fc" id="L45">            stylesheet = parser.parseStyleSheet(source, null, null);</span>
+<span class="nc" id="L46">        } catch (final IOException e) {</span>
+<span class="nc" id="L47">            throw new ParserException(e);</span>
+<span class="fc" id="L48">        }</span>
+<span class="fc" id="L49">        errorHandler.validate();</span>
 
-<span class="fc" id="L52">        final StyleSheetConverter converter = new StyleSheetConverter(strict);</span>
-<span class="fc" id="L53">        return converter.convert(stylesheet);</span>
+<span class="fc" id="L51">        final StyleSheetConverter converter = new StyleSheetConverter(options.isStrict());</span>
+<span class="fc" id="L52">        return converter.convert(stylesheet);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

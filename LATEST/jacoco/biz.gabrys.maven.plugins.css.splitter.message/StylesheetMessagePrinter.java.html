@@ -22,7 +22,7 @@ public class StylesheetMessagePrinter {
     private final MessagePrinter printer;
 
 <span class="nc" id="L24">    public StylesheetMessagePrinter(final Log logger, final boolean strict) {</span>
-<span class="nc" id="L25">        printer = new AnyMessagePrinter(logger, strict);</span>
+<span class="nc" id="L25">        printer = new TreeMessagePrinter(new AnyMessagePrinter(logger, strict));</span>
 <span class="nc" id="L26">    }</span>
 
     // for tests

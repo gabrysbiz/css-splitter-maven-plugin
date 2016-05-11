@@ -35,14 +35,14 @@ package biz.gabrys.maven.plugins.css.splitter.css.types;
     }
 
     private static int countNestedRule(final String code) {
-<span class="fc" id="L38">        String tmp = code.substring(0, code.length() - 1).trim();</span>
-<span class="fc bfc" id="L39" title="All 4 branches covered.">        if (!tmp.endsWith(&quot;;&quot;) &amp;&amp; !tmp.endsWith(&quot;}&quot;)) {</span>
-<span class="fc" id="L40">            tmp += String.valueOf(';');</span>
+<span class="fc" id="L38">        String tmp = code;</span>
+<span class="pc bpc" id="L39" title="2 of 4 branches missed.">        if (!tmp.endsWith(&quot;;&quot;) &amp;&amp; !tmp.endsWith(&quot;}&quot;)) {</span>
+<span class="nc" id="L40">            tmp += String.valueOf(';');</span>
         }
 <span class="fc" id="L42">        final String[] parts = tmp.split(&quot;}&quot;);</span>
 <span class="fc" id="L43">        int value = 0;</span>
 <span class="fc bfc" id="L44" title="All 2 branches covered.">        for (final String part : parts) {</span>
-<span class="fc" id="L45">            value += countNestedPart(part);</span>
+<span class="fc" id="L45">            value += countNestedPart(part.trim());</span>
         }
 <span class="fc" id="L47">        return value;</span>
     }

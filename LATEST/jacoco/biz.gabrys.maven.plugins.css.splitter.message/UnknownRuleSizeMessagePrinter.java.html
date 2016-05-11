@@ -33,7 +33,7 @@ class UnknownRuleSizeMessagePrinter extends AbstractMessagePrinter&lt;UnknownRul
     protected void print2(final UnknownRule rule) {
 <span class="fc" id="L34">        logger.debug(&quot;Found non-standard (unknown) rule:\n&quot; + rule.getCode());</span>
 <span class="fc" id="L35">        final int size = rule.getSize();</span>
-<span class="fc bfc" id="L36" title="All 2 branches covered.">        logger.debug(String.format(&quot;I guess it contains %d propert%s.&quot;, size, size != 1 ? &quot;ies&quot; : &quot;y&quot;));</span>
+<span class="fc bfc" id="L36" title="All 2 branches covered.">        logger.debug(String.format(&quot;I treat that it contains %d propert%s.&quot;, size, size != 1 ? &quot;ies&quot; : &quot;y&quot;));</span>
 <span class="fc" id="L37">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span></div></body></html>

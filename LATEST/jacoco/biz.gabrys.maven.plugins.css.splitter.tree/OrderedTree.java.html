@@ -103,7 +103,7 @@ public class OrderedTree&lt;T&gt; implements OrderedTreeNode&lt;T&gt; {
 
         } else {
 <span class="fc" id="L105">            OrderedTree&lt;T&gt; node = getNotFullyFilledNode();</span>
-<span class="pc bpc" id="L106" title="1 of 2 branches missed.">            if (node == null) {</span>
+<span class="fc bfc" id="L106" title="All 2 branches covered.">            if (node == null) {</span>
 <span class="fc" id="L107">                node = findNearestLeafNode();</span>
             }
 <span class="fc" id="L109">            node.createLeaf();</span>
@@ -119,14 +119,14 @@ public class OrderedTree&lt;T&gt; implements OrderedTreeNode&lt;T&gt; {
 <span class="fc" id="L119">            return null;</span>
         }
 
-<span class="pc bpc" id="L122" title="1 of 2 branches missed.">        if (children.size() &lt; numberOfChildren) {</span>
-<span class="nc" id="L123">            return this;</span>
+<span class="fc bfc" id="L122" title="All 2 branches covered.">        if (children.size() &lt; numberOfChildren) {</span>
+<span class="fc" id="L123">            return this;</span>
         }
 
 <span class="fc bfc" id="L126" title="All 2 branches covered.">        for (final OrderedTree&lt;T&gt; child : children) {</span>
 <span class="fc" id="L127">            final OrderedTree&lt;T&gt; node = child.getNotFullyFilledNode();</span>
-<span class="pc bpc" id="L128" title="1 of 2 branches missed.">            if (node != null) {</span>
-<span class="nc" id="L129">                return node;</span>
+<span class="fc bfc" id="L128" title="All 2 branches covered.">            if (node != null) {</span>
+<span class="fc" id="L129">                return node;</span>
             }
 <span class="fc" id="L131">        }</span>
 <span class="fc" id="L132">        return null;</span>
