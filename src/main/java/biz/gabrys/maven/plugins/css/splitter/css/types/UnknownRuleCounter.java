@@ -35,14 +35,14 @@ class UnknownRuleCounter {
     }
 
     private static int countNestedRule(final String code) {
-        String tmp = code.substring(0, code.length() - 1).trim();
+        String tmp = code;
         if (!tmp.endsWith(";") && !tmp.endsWith("}")) {
             tmp += String.valueOf(';');
         }
         final String[] parts = tmp.split("}");
         int value = 0;
         for (final String part : parts) {
-            value += countNestedPart(part);
+            value += countNestedPart(part.trim());
         }
         return value;
     }

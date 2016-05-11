@@ -22,6 +22,14 @@ public final class UnknownRuleCounterTest {
     }
 
     @Test
+    public void count_complexRuleWhichContainsZeroProperties_returnsOne() {
+        final UnknownRuleCounter counter = new UnknownRuleCounter();
+        final UnknownRule rule = new UnknownRule("@unknown { }");
+
+        Assert.assertEquals("Counted value.", 1, counter.count(rule));
+    }
+
+    @Test
     public void count_complexRuleWhichContainsOnePropertyAndOneSemicolon_returnsOne() {
         final UnknownRuleCounter counter = new UnknownRuleCounter();
         final UnknownRule rule = new UnknownRule("@unknown {val: value;}");

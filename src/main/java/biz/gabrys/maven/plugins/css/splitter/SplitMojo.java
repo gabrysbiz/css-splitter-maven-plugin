@@ -38,6 +38,8 @@ import biz.gabrys.maven.plugins.css.splitter.css.types.StyleSheet;
 import biz.gabrys.maven.plugins.css.splitter.message.StylesheetMessagePrinter;
 import biz.gabrys.maven.plugins.css.splitter.net.UrlEscaper;
 import biz.gabrys.maven.plugins.css.splitter.split.StyleSheetSplliter;
+import biz.gabrys.maven.plugins.css.splitter.steadystate.ParserOptions;
+import biz.gabrys.maven.plugins.css.splitter.steadystate.ParserOptionsBuilder;
 import biz.gabrys.maven.plugins.css.splitter.steadystate.SteadyStateParser;
 import biz.gabrys.maven.plugins.css.splitter.token.TokenType;
 import biz.gabrys.maven.plugins.css.splitter.tree.OrderedTree;
@@ -515,7 +517,8 @@ public class SplitMojo extends AbstractMojo {
         if (getLog().isDebugEnabled()) {
             getLog().debug("Parsing stylesheet...");
         }
-        final StyleSheet stylesheet = new SteadyStateParser(getLog()).parse(css, Standard.create(standard), !nonstrict);
+        final ParserOptions options = new ParserOptionsBuilder().withStandard(Standard.create(standard)).withStrict(!nonstrict).create();
+        final StyleSheet stylesheet = new SteadyStateParser(getLog()).parse(css, options);
         new StylesheetMessagePrinter(getLog(), !nonstrict).print(stylesheet);
         if (verbose) {
             getLog().info(String.format("Stylesheet contains %d rule%s.", stylesheet.getSize(), stylesheet.getSize() != 1 ? 's' : ""));

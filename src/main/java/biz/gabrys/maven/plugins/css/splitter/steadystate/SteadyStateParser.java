@@ -21,7 +21,6 @@ import org.w3c.dom.css.CSSStyleSheet;
 
 import com.steadystate.css.parser.CSSOMParser;
 
-import biz.gabrys.maven.plugins.css.splitter.css.Standard;
 import biz.gabrys.maven.plugins.css.splitter.css.types.StyleSheet;
 import biz.gabrys.maven.plugins.css.splitter.steadystate.converters.StyleSheetConverter;
 
@@ -33,9 +32,9 @@ public class SteadyStateParser {
         this.logger = logger;
     }
 
-    public StyleSheet parse(final String css, final Standard standard, final boolean strict) {
+    public StyleSheet parse(final String css, final ParserOptions options) {
         final NativeParserFactory factory = new NativeParserFactory();
-        final CSSOMParser parser = new CSSOMParser(factory.create(standard));
+        final CSSOMParser parser = new CSSOMParser(factory.create(options.getStandard()));
 
         final SteadyErrorHandler errorHandler = new SteadyErrorHandler(logger);
         parser.setErrorHandler(errorHandler);
@@ -49,7 +48,7 @@ public class SteadyStateParser {
         }
         errorHandler.validate();
 
-        final StyleSheetConverter converter = new StyleSheetConverter(strict);
+        final StyleSheetConverter converter = new StyleSheetConverter(options.isStrict());
         return converter.convert(stylesheet);
     }
 }
