@@ -31,7 +31,7 @@
             <ul>
                 <li>
                     <a href="split-mojo.html">css-splitter:split</a> - splits <a href="http://www.w3.org/Style/CSS/">CSS</a> stylesheets to
-                    smaller files ("parts")
+                    smaller files ("parts") which contain maximum <a href="split-mojo.html#maxRules">X</a> rules
                 </li>
             </ul>
         </section>
