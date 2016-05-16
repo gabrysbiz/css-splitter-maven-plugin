@@ -48,7 +48,76 @@ import biz.gabrys.maven.plugins.css.splitter.validation.RulesLimitValidator;
 import biz.gabrys.maven.plugins.css.splitter.validation.StylePropertiesLimitValidator;
 
 /**
- * Splits <a href="http://www.w3.org/Style/CSS/">CSS</a> stylesheets to smaller files (parts).
+ * <p>
+ * Splits <a href="http://www.w3.org/Style/CSS/">CSS</a> stylesheets to smaller files ("parts") which contain maximum
+ * <a href="split-mojo.html#maxRules">X</a> rules. The plugin performs the following steps:
+ * </p>
+ * <ol>
+ * <li>reads source code</li>
+ * <li>parses it using the <a href="http://cssparser.sourceforge.net/">CSS Parser</a> (parser removes all comments)</li>
+ * <li>splits parsed document to "parts"</li>
+ * <li>builds imports tree</li>
+ * <li>writes to files</li>
+ * </ol>
+ * <p>
+ * During split process the plugin can divide "standard style" and <code>&#64;media</code> rules, which size is bigger
+ * than 1, into smaller.
+ * </p>
+ * <p>
+ * Example:
+ * </p>
+ * 
+ * <pre>
+ * /&#42; size is equal to 1, not splittable (size smaller than 2) &#42;/
+ * &#64;import 'file.css';
+ *
+ * /&#42; size is equal to 2, not splittable (not "standard style" or &#64;media rule) &#42;/
+ * &#64;font-face {
+ *      font-family: FontFamilyName;
+ *      src: url(&quot;font.woff2&quot;) format(&quot;woff2&quot;), url(&quot;font.ttf&quot;) format(&quot;truetype&quot;);
+ * }
+ *
+ * /&#42; size is equal to 4, splittable &#42;/
+ * .element {
+ *      width: 100px;
+ *      height: 200px;
+ *      margin: 0;
+ *      padding: 0;
+ * }
+ *
+ * /&#42; size is equal to 1, not splittable (size smaller than 2) &#42;/
+ * selector1, selector2 > selector3 {
+ *      width: 200px;
+ * }
+ *
+ * /&#42; size is equal to 1 (for safety), not splittable (size smaller than 2) &#42;/
+ * .empty {
+ * }
+ *
+ * /&#42; size is equal to 1, not splittable (size smaller than 2) &#42;/
+ * &#64;media screen and (min-width: 480px) {
+ * }
+ *
+ * /&#42; size is equal to 4 (1 + 2 + 1), splittable &#42;/
+ * &#64;media screen and (min-width: 480px) {
+ *
+ *     /&#42; size is equal to 1, not splittable (size smaller than 2) &#42;/
+ *     rule {
+ *          width: 100px;
+ *     }
+ *
+ *     /&#42; size is equal to 2, splittable &#42;/
+ *     rule2 {
+ *          width: 100px;
+ *          height: 100px;
+ *     }
+ *
+ *     /&#42; size is equal to 1 (for safety), not splittable (size smaller than 2) &#42;/
+ *     .empty {
+ *     }
+ * }
+ * </pre>
+ * 
  * @since 1.0
  */
 @Mojo(name = "split", defaultPhase = LifecyclePhase.PROCESS_SOURCES, threadSafe = true)
@@ -73,7 +142,7 @@ public class SplitMojo extends AbstractMojo {
 
     /**
      * Forces to always split the <a href="http://www.w3.org/Style/CSS/">CSS</a> stylesheets. By default sources are
-     * only split when modified or the main destination files does not exist.
+     * only split when modified or the <a href="#outputFileNamePattern">main destination file</a> does not exist.
      * @since 1.0
      */
     @Parameter(property = "css.splitter.force", defaultValue = "false")
@@ -96,8 +165,7 @@ public class SplitMojo extends AbstractMojo {
     /**
      * Defines inclusion and exclusion fileset patterns format. Available options:
      * <ul>
-     * <li><b>ant</b> - <a href="http://ant.apache.org/">Ant</a>
-     * <a href="http://ant.apache.org/manual/dirtasks.html#patterns">patterns</a></li>
+     * <li><b>ant</b> - <a href="http://ant.apache.org/manual/dirtasks.html#patterns">Ant patterns</a></li>
      * <li><b>regex</b> - regular expressions (use '/' as path separator)</li>
      * </ul>
      * @since 1.0
@@ -127,40 +195,7 @@ public class SplitMojo extends AbstractMojo {
     protected String[] excludes = new String[0];
 
     /**
-     * The maximum number of <a href="http://www.w3.org/Style/CSS/">CSS</a> &quot;style rules&quot; in destination
-     * files. &quot;Style rule&quot; is a rule that contains properties. Examples:
-     * 
-     * <pre>
-     * /&#42; count as 2 &#42;/
-     * &#64;font-face {
-     *      font-family: FontFamilyName;
-     *      src: url(&quot;font.woff2&quot;) format(&quot;woff2&quot;), url(&quot;font.ttf&quot;) format(&quot;truetype&quot;);
-     * }
-     * /&#42; count as 4 &#42;/
-     * .element {
-     *      width: 100px;
-     *      height: 200px;
-     *      margin: 0;
-     *      padding: 0;
-     * }
-     * /&#42; count as 1 (for safety) &#42;/
-     * .empty {
-     * }
-     * /&#42; count as 0 &#42;/
-     * &#64;media screen and (min-width: 480px) {
-     * }
-     * /&#42; summary: count as 2 (but can be split) &#42;/
-     * &#64;media screen and (min-width: 480px) {
-     *     /&#42; count as 1 &#42;/
-     *     rule {
-     *          width: 100px;
-     *     }
-     *     /&#42; count as 1 (for safety) &#42;/
-     *     .empty {
-     *     }
-     * }
-     * </pre>
-     * 
+     * The maximum number of <a href="http://www.w3.org/Style/CSS/">CSS</a> rules in single "part".<br>
      * <b>Notice</b>: all values smaller than <tt>1</tt> are treated as <tt>2147483647</tt>.
      * @since 1.0
      */
@@ -168,40 +203,8 @@ public class SplitMojo extends AbstractMojo {
     protected int maxRules;
 
     /**
-     * The plugin failures build when a number of <a href="http://www.w3.org/Style/CSS/">CSS</a> &quot;style rules&quot;
-     * in source files exceeds this value. &quot;Style rule&quot; is a rule that contains properties. Examples:
-     * 
-     * <pre>
-     * /&#42; count as 2 &#42;/
-     * &#64;font-face {
-     *      font-family: FontFamilyName;
-     *      src: url(&quot;font.woff2&quot;) format(&quot;woff2&quot;), url(&quot;font.ttf&quot;) format(&quot;truetype&quot;);
-     * }
-     * /&#42; count as 4 &#42;/
-     * .element {
-     *      width: 100px;
-     *      height: 200px;
-     *      margin: 0;
-     *      padding: 0;
-     * }
-     * /&#42; count as 1 (for safety) &#42;/
-     * .empty {
-     * }
-     * /&#42; count as 0 &#42;/
-     * &#64;media screen and (min-width: 480px) {
-     * }
-     * /&#42; summary: count as 2 (but can be split) &#42;/
-     * &#64;media screen and (min-width: 480px) {
-     *     /&#42; count as 1 &#42;/
-     *     rule {
-     *          width: 100px;
-     *     }
-     *     /&#42; count as 1 (for safety) &#42;/
-     *     .empty {
-     *     }
-     * }
-     * </pre>
-     * 
+     * The plugin failures build when a number of <a href="http://www.w3.org/Style/CSS/">CSS</a> rules in source file
+     * exceeds this value.<br>
      * <b>Notice</b>: all values smaller than <tt>1</tt> are treated as <tt>2147483647</tt>.
      * @since 1.0
      */
@@ -209,8 +212,8 @@ public class SplitMojo extends AbstractMojo {
     protected int rulesLimit;
 
     /**
-     * The maximum number of generated <code>&#64;import</code> in a single file. The plugin does not check whether the
-     * code in parts fulfills this condition.<br>
+     * The maximum number of generated <code>&#64;import</code> in a single file. The plugin ignores
+     * <code>&#64;import</code> operations that come from the source code.<br>
      * <b>Notice</b>: all values smaller than <tt>2</tt> are treated as <tt>2147483647</tt>.
      * @since 1.0
      */
@@ -219,7 +222,7 @@ public class SplitMojo extends AbstractMojo {
 
     /**
      * The plugin failures build when a number of <code>&#64;import</code> depth level exceed this value. The plugin
-     * ignores <code>&#64;import</code> operations included in source files.<br>
+     * ignores <code>&#64;import</code> operations that come from the source code.<br>
      * <b>Notice</b>: all values smaller than <tt>1</tt> are treated as <tt>2147483647</tt>.
      * @since 1.0
      */
@@ -233,7 +236,7 @@ public class SplitMojo extends AbstractMojo {
      * <li><b>2.1</b> - <a href="https://www.w3.org/TR/CSS2/">Cascading Style Sheets Level 2 Revision 1 (CSS 2.1)
      * Specification</a></li>
      * <li><b>2.0</b> - <a href="https://www.w3.org/TR/2008/REC-CSS2-20080411/">Cascading Style Sheets Level 2</a></li>
-     * <li><b>1.0</b> - <a href="https://www.w3.org/TR/CSS1/">Cascading Style Sheets, level 1</a></li>
+     * <li><b>1.0</b> - <a href="https://www.w3.org/TR/CSS1/">Cascading Style Sheets Level 1</a></li>
      * </ul>
      * @since 1.0
      */
@@ -243,7 +246,7 @@ public class SplitMojo extends AbstractMojo {
     /**
      * Defines whether the plugin runs in non-strict mode. In non-strict mode a
      * <a href="http://www.w3.org/Style/CSS/">CSS</a> parser adds support for non-standard structures (e.g.
-     * <code>@page</code> rule inside <code>@media</code>).<br>
+     * <code>&#64;page</code> rule inside <code>&#64;media</code>).<br>
      * <b>Notice</b>: this functionality may stop working or be removed at any time. You should fix your code instead of
      * relying on this functionality.
      * @since 1.0
@@ -252,7 +255,7 @@ public class SplitMojo extends AbstractMojo {
     protected boolean nonstrict;
 
     /**
-     * Defines cache token type which will be added to <code>&#64;import</code> urls in destination
+     * Defines cache token type which will be added to <code>&#64;import</code> links in destination
      * <a href="http://www.w3.org/Style/CSS/">CSS</a> stylesheets. Available options:
      * <ul>
      * <li><b>custom</b> - text specified by the user</li>
@@ -265,7 +268,7 @@ public class SplitMojo extends AbstractMojo {
     protected String cacheTokenType;
 
     /**
-     * Defines cache token parameter name which will be added to <code>&#64;import</code> urls in destination
+     * Defines cache token parameter name which will be added to <code>&#64;import</code> links in destination
      * <a href="http://www.w3.org/Style/CSS/">CSS</a> stylesheets.<br>
      * <b>Notice</b>: ignored when <a href="#cacheTokenType">cache token type</a> is equal to <tt>none</tt>.
      * @since 1.0
@@ -303,9 +306,9 @@ public class SplitMojo extends AbstractMojo {
     protected String outputFileNamePattern;
 
     /**
-     * Destination parts naming pattern. {fileName} is equal to source file name without extension, {index} is equal to
-     * part index (first is equal to 1). Parts are loaded in the browsers according to indexes. For correct listing
-     * files on all operating systems indexes can contain leading zeros.
+     * Destination "parts" naming pattern. {fileName} is equal to source file name without extension, {index} is equal
+     * to "part" index (first is equal to 1). "Parts" are loaded in the browsers according to indexes. For correct
+     * listing files on all operating systems indexes can contain leading zeros.
      * @since 1.0
      */
     @Parameter(property = "css.splitter.outputPartNamePattern", defaultValue = DestinationFileCreator.FILE_NAME_PARAMETER + '-'

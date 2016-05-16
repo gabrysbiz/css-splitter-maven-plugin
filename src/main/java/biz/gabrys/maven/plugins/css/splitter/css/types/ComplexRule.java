@@ -60,6 +60,9 @@ public class ComplexRule extends AbstractNodeRule {
         for (final NodeRule rule : rules) {
             size += rule.getSize();
         }
+        if (size == 0) {
+            return 1;
+        }
         return size;
     }
 }
