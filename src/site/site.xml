@@ -38,6 +38,7 @@
         <menu name="Examples">
             <item name="Using include/exclude patterns" href="examples/patterns.html" />
             <item name="Multiple source/output directories" href="examples/multiple-directories.html" />
+            <item name="Output file structure (imports tree)" href="examples/output-file-structure.html" />
         </menu>
 
         <menu ref="reports" />
