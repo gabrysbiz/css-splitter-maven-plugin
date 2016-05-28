@@ -133,7 +133,7 @@ rule {
     <panel_attributes>style-8.css
 --
 rule {
-  attr8: value8;
+  attr5: value5;
 }</panel_attributes>
     <additional_attributes/>
   </element>

@@ -33,13 +33,12 @@
             <item name="Goals" href="plugin-info.html" />
             <item name="Usage" href="usage.html" />
             <item name="FAQ" href="faq.html" />
-        </menu>
-
-        <menu name="Examples">
-            <item name="Using include/exclude patterns" href="examples/patterns.html" />
-            <item name="Multiple source/output directories" href="examples/multiple-directories.html" />
-            <item name="Output file structure (imports tree)" href="examples/output-file-structure.html" />
-            <item name="Cache token" href="examples/cache-token.html" />
+            <item name="Examples" collapse="true" href="examples.html">
+                <item name="Using include/exclude patterns" href="examples/patterns.html" />
+                <item name="Multiple source/output directories" href="examples/multiple-directories.html" />
+                <item name="Output file structure (imports tree)" href="examples/output-file-structure.html" />
+                <item name="Using cache token" href="examples/cache-token.html" />
+            </item>
         </menu>
 
         <menu ref="reports" />

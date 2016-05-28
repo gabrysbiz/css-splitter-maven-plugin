@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document xmlns="http://maven.apache.org/XDOC/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
+
+    <properties>
+        <title>Examples</title>
+    </properties>
+
+    <body>
+        <section name="Examples">
+            <p>
+                List of available examples:
+            </p>
+            <ul>
+                <li><a href="examples/patterns.html">Using include/exclude patterns</a></li>
+                <li><a href="examples/multiple-directories.html">Multiple source/output directories</a></li>
+                <li><a href="examples/output-file-structure.html">Output file structure (imports tree)</a></li>
+                <li><a href="examples/cache-token.html">Using cache token</a></li>
+            </ul>
+        </section>
+    </body>
+</document>

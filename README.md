@@ -32,3 +32,6 @@ If you feel like the plugin is missing a feature or has a defect, you can fill a
 To provide you with better understanding of some usages of the CSS Splitter Maven Plugin, you can take a look into the following examples:
 * [Using include/exclude patterns](http://css-splitter-maven-plugin.projects.gabrys.biz/LATEST/examples/patterns.html)
 * [Multiple source/output directories](http://css-splitter-maven-plugin.projects.gabrys.biz/LATEST/examples/multiple-directories.html)
+* [Output file structure (imports tree)](http://css-splitter-maven-plugin.projects.gabrys.biz/LATEST/examples/output-file-structure.html)
+* [Using cache token](http://css-splitter-maven-plugin.projects.gabrys.biz/LATEST/examples/cache-token.html)
+

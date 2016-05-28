@@ -69,6 +69,8 @@
             <ul>
                 <li><a href="examples/patterns.html">Using include/exclude patterns</a></li>
                 <li><a href="examples/multiple-directories.html">Multiple source/output directories</a></li>
+                <li><a href="examples/output-file-structure.html">Output file structure (imports tree)</a></li>
+                <li><a href="examples/cache-token.html">Using cache token</a></li>
             </ul>
         </section>
     </body>
