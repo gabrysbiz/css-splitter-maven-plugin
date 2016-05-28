@@ -11,12 +11,28 @@
             <p>
                 List of available examples:
             </p>
-            <ul>
-                <li><a href="examples/patterns.html">Using include/exclude patterns</a></li>
-                <li><a href="examples/multiple-directories.html">Multiple source/output directories</a></li>
-                <li><a href="examples/output-file-structure.html">Output file structure (imports tree)</a></li>
-                <li><a href="examples/cache-token.html">Using cache token</a></li>
-            </ul>
+            <table border="0" class="table table-striped">
+                <tr class="a">
+                    <th>Document</th>
+                    <th>Description</th>
+                </tr>
+                <tr class="b">
+                    <td><a href="examples/patterns.html">Using include/exclude patterns</a></td>
+                    <td>This example shows how to filter source files.</td>
+                </tr>
+                <tr class="a">
+                    <td><a href="examples/multiple-directories.html">Multiple source/output directories</a></td>
+                    <td>This example describes how to use multiple source/output directories in single module.</td>
+                </tr>
+                <tr class="b">
+                    <td><a href="examples/output-file-structure.html">Output file structure (imports tree)</a></td>
+                    <td>This example shows how output file structure will change depending on the configuration.</td>
+                </tr>
+                <tr class="a">
+                    <td><a href="examples/cache-token.html">Using cache token</a></td>
+                    <td>This example describes how to enable addition of cache token to <code>@import</code> links.</td>
+                </tr>
+            </table>
         </section>
     </body>
 </document>
