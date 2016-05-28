@@ -123,6 +123,10 @@ import biz.gabrys.maven.plugins.css.splitter.validation.StylePropertiesLimitVali
 @Mojo(name = "split", defaultPhase = LifecyclePhase.PROCESS_SOURCES, threadSafe = true)
 public class SplitMojo extends AbstractMojo {
 
+    private static final String MAX_RULES_DEFAULT_VALUE = "4095";
+    private static final String MAX_RULES_LIMIT = "2147483647";
+    private static final String MAX_IMPORTS_DEFAULT_VALUE = "31";
+    private static final String MAX_IMPORTS_DEPTH_LIMIT = "4";
     private static final String PART_INDEX_PARAMETER = "{index}";
 
     /**
@@ -196,10 +200,10 @@ public class SplitMojo extends AbstractMojo {
 
     /**
      * The maximum number of <a href="http://www.w3.org/Style/CSS/">CSS</a> rules in single "part".<br>
-     * <b>Notice</b>: all values smaller than <tt>1</tt> are treated as <tt>2147483647</tt>.
+     * <b>Notice</b>: all values smaller than <tt>1</tt> are treated as <tt>4095</tt>.
      * @since 1.0
      */
-    @Parameter(property = "css.splitter.maxRules", defaultValue = "4095")
+    @Parameter(property = "css.splitter.maxRules", defaultValue = MAX_RULES_DEFAULT_VALUE)
     protected int maxRules;
 
     /**
@@ -208,25 +212,25 @@ public class SplitMojo extends AbstractMojo {
      * <b>Notice</b>: all values smaller than <tt>1</tt> are treated as <tt>2147483647</tt>.
      * @since 1.0
      */
-    @Parameter(property = "css.splitter.rulesLimit", defaultValue = "2147483647")
+    @Parameter(property = "css.splitter.rulesLimit", defaultValue = MAX_RULES_LIMIT)
     protected int rulesLimit;
 
     /**
      * The maximum number of generated <code>&#64;import</code> in a single file. The plugin ignores
      * <code>&#64;import</code> operations that come from the source code.<br>
-     * <b>Notice</b>: all values smaller than <tt>2</tt> are treated as <tt>2147483647</tt>.
+     * <b>Notice</b>: all values smaller than <tt>2</tt> are treated as <tt>31</tt>.
      * @since 1.0
      */
-    @Parameter(property = "css.splitter.maxImports", defaultValue = "31")
+    @Parameter(property = "css.splitter.maxImports", defaultValue = MAX_IMPORTS_DEFAULT_VALUE)
     protected int maxImports;
 
     /**
      * The plugin failures build when a number of <code>&#64;import</code> depth level exceed this value. The plugin
      * ignores <code>&#64;import</code> operations that come from the source code.<br>
-     * <b>Notice</b>: all values smaller than <tt>1</tt> are treated as <tt>2147483647</tt>.
+     * <b>Notice</b>: all values smaller than <tt>1</tt> are treated as <tt>4</tt>.
      * @since 1.0
      */
-    @Parameter(property = "css.splitter.importsDepthLimit", defaultValue = "4")
+    @Parameter(property = "css.splitter.importsDepthLimit", defaultValue = MAX_IMPORTS_DEPTH_LIMIT)
     protected int importsDepthLimit;
 
     /**
@@ -321,7 +325,7 @@ public class SplitMojo extends AbstractMojo {
         if (getLog().isDebugEnabled()) {
             getLog().debug("Job parameters:");
             getLog().debug("\tskip = " + skip);
-            getLog().debug("\tverbose = " + verbose + createCalculatedInfo(Boolean.TRUE));
+            getLog().debug("\tverbose = " + verbose + (verbose ? "" : createCalculatedInfo(Boolean.TRUE)));
             getLog().debug("\tforce = " + force);
             getLog().debug("\tsourceDirectory = " + sourceDirectory);
             getLog().debug("\toutputDirectory = " + outputDirectory);
@@ -329,11 +333,11 @@ public class SplitMojo extends AbstractMojo {
             final String calculatedIncludes = includes.length != 0 ? "" : createCalculatedInfo(Arrays.toString(getDefaultIncludes()));
             getLog().debug("\tincludes = " + Arrays.toString(includes) + calculatedIncludes);
             getLog().debug("\texcludes = " + Arrays.toString(excludes));
-            final String calculatedIntegerMaxValue = createCalculatedInfo(Integer.MAX_VALUE);
-            getLog().debug("\tmaxRules = " + maxRules + (maxRules > 0 ? "" : calculatedIntegerMaxValue));
-            getLog().debug("\trulesLimit = " + rulesLimit + (rulesLimit > 0 ? "" : calculatedIntegerMaxValue));
-            getLog().debug("\tmaxImports = " + maxImports + (maxImports > 1 ? "" : calculatedIntegerMaxValue));
-            getLog().debug("\timportsDepthLimit = " + importsDepthLimit + (importsDepthLimit > 0 ? "" : calculatedIntegerMaxValue));
+            getLog().debug("\tmaxRules = " + maxRules + (maxRules > 0 ? "" : createCalculatedInfo(MAX_RULES_DEFAULT_VALUE)));
+            getLog().debug("\trulesLimit = " + rulesLimit + (rulesLimit > 0 ? "" : createCalculatedInfo(MAX_RULES_LIMIT)));
+            getLog().debug("\tmaxImports = " + maxImports + (maxImports > 1 ? "" : createCalculatedInfo(MAX_IMPORTS_DEFAULT_VALUE)));
+            getLog().debug("\timportsDepthLimit = " + importsDepthLimit
+                    + (importsDepthLimit > 0 ? "" : createCalculatedInfo(MAX_IMPORTS_DEPTH_LIMIT)));
             getLog().debug("\tstandard = " + standard);
             getLog().debug("\tnonstrict = " + nonstrict);
             getLog().debug("\tcacheTokenType = " + cacheTokenType);
@@ -386,16 +390,16 @@ public class SplitMojo extends AbstractMojo {
             includes = getDefaultIncludes();
         }
         if (maxRules < 1) {
-            maxRules = Integer.MAX_VALUE;
+            maxRules = Integer.parseInt(MAX_RULES_DEFAULT_VALUE);
         }
         if (rulesLimit < 1) {
-            rulesLimit = Integer.MAX_VALUE;
+            rulesLimit = Integer.parseInt(MAX_RULES_LIMIT);
         }
         if (maxImports < OrderedTree.MIN_NUMBER_OF_CHILDREN) {
-            maxImports = Integer.MAX_VALUE;
+            maxImports = Integer.parseInt(MAX_IMPORTS_DEFAULT_VALUE);
         }
         if (importsDepthLimit < 1) {
-            importsDepthLimit = Integer.MAX_VALUE;
+            importsDepthLimit = Integer.parseInt(MAX_IMPORTS_DEPTH_LIMIT);
         }
         if (cacheTokenValue == null) {
             cacheTokenValue = getDefaultCacheTokenValue();
