@@ -110,7 +110,7 @@
                   &lt;/goals&gt;
                   &lt;configuration&gt;
                      &lt;maxRules&gt;1&lt;/maxRules&gt;
-                     &lt;maxImports&gt;2&lt;/maxImports&gt;
+                     &lt;maxImports&gt;10&lt;/maxImports&gt;
                   &lt;/configuration&gt;
                &lt;/execution&gt;
             &lt;/executions&gt;
