@@ -13,7 +13,7 @@ CSS Splitter Maven Plugin,biz.gabrys.maven.plugins.css.splitter.steadystate.conv
 CSS Splitter Maven Plugin,biz.gabrys.maven.plugins.css.splitter.steadystate.converters,StyleSheetConverter,0,104,0,4,0,22,0,5,0,3
 CSS Splitter Maven Plugin,biz.gabrys.maven.plugins.css.splitter.steadystate.converters,MediaRuleConverter,0,102,0,6,0,21,0,6,0,3
 CSS Splitter Maven Plugin,biz.gabrys.maven.plugins.css.splitter.steadystate.converters,MultipleRuleConverter,0,52,0,8,0,13,0,8,0,4
-CSS Splitter Maven Plugin,biz.gabrys.maven.plugins.css.splitter,SplitMojo,1209,0,112,0,200,0,79,0,23,0
+CSS Splitter Maven Plugin,biz.gabrys.maven.plugins.css.splitter,SplitMojo,1218,0,114,0,200,0,80,0,23,0
 CSS Splitter Maven Plugin,biz.gabrys.maven.plugins.css.splitter.token,TokenType,5,109,0,7,0,11,1,9,1,5
 CSS Splitter Maven Plugin,biz.gabrys.maven.plugins.css.splitter.token,TokenType.new Object() {...},2,17,0,0,0,1,0,1,0,1
 CSS Splitter Maven Plugin,biz.gabrys.maven.plugins.css.splitter.token,DateTokenValueFactory,4,14,0,0,1,3,1,2,1,2
@@ -48,7 +48,7 @@ CSS Splitter Maven Plugin,biz.gabrys.maven.plugins.css.splitter.css.types,Abstra
 CSS Splitter Maven Plugin,biz.gabrys.maven.plugins.css.splitter.css.types,StyleSheet,0,73,1,5,0,16,1,6,0,4
 CSS Splitter Maven Plugin,biz.gabrys.maven.plugins.css.splitter.css.types,TreeUtils,3,30,0,4,2,10,1,3,1,1
 CSS Splitter Maven Plugin,biz.gabrys.maven.plugins.css.splitter.css.types,StyleProperty,10,30,0,0,1,7,1,4,1,4
-CSS Splitter Maven Plugin,biz.gabrys.maven.plugins.css.splitter.css.types,ComplexRule,3,121,0,6,1,21,1,8,1,5
+CSS Splitter Maven Plugin,biz.gabrys.maven.plugins.css.splitter.css.types,ComplexRule,3,125,0,8,1,23,1,9,1,5
 CSS Splitter Maven Plugin,biz.gabrys.maven.plugins.css.splitter.css.types,UnknownRule,6,30,0,2,1,6,1,3,1,2
 CSS Splitter Maven Plugin,biz.gabrys.maven.plugins.css.splitter.css.types,StyleRule,3,93,0,4,1,17,1,8,1,6
 CSS Splitter Maven Plugin,biz.gabrys.maven.plugins.css.splitter.validation,StylePropertiesLimitValidator,25,51,0,6,2,14,1,6,1,3
