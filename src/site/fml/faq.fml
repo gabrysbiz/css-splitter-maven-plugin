@@ -33,7 +33,7 @@
                         &lt;artifactId&gt;css-splitter-maven-plugin&lt;/artifactId&gt;
                         &lt;versionRange&gt;[0,)&lt;/versionRange&gt;
                         &lt;goals&gt;
-                           &lt;goal&gt;compile&lt;/goal&gt;
+                           &lt;goal&gt;split&lt;/goal&gt;
                         &lt;/goals&gt;
                      &lt;/pluginExecutionFilter&gt;
                      &lt;action&gt;

@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.2">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>20</x>
+      <y>290</y>
+      <w>160</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>style.css
+--
+@import "style-1.css";
+@import "style-2.css";
+@import "style-3.css";
+@import "style-4.css";
+@import "style-5.css";
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>250</x>
+      <y>10</y>
+      <w>160</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>style-1.css
+--
+rule {
+  attr1: value1;
+}
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>250</x>
+      <y>290</y>
+      <w>160</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>style-3.css
+--
+rule {
+  attr3: value3;
+}
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>250</x>
+      <y>150</y>
+      <w>160</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>style-2.css
+--
+rule {
+  attr2: value2;
+}
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>250</x>
+      <y>570</y>
+      <w>160</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>style-5.css
+--
+rule {
+  attr5: value5;
+}
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>250</x>
+      <y>430</y>
+      <w>160</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>style-4.css
+--
+rule {
+  attr4: value4;
+}
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>170</x>
+      <y>70</y>
+      <w>100</w>
+      <h>270</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+
+</panel_attributes>
+    <additional_attributes>80.0;10.0;30.0;10.0;30.0;250.0;10.0;250.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>170</x>
+      <y>210</y>
+      <w>100</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+
+</panel_attributes>
+    <additional_attributes>80.0;10.0;50.0;10.0;50.0;130.0;10.0;130.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>170</x>
+      <y>340</y>
+      <w>100</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+
+</panel_attributes>
+    <additional_attributes>80.0;20.0;10.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>170</x>
+      <y>370</y>
+      <w>100</w>
+      <h>150</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+
+</panel_attributes>
+    <additional_attributes>80.0;130.0;50.0;130.0;50.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>170</x>
+      <y>390</y>
+      <w>100</w>
+      <h>270</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+
+</panel_attributes>
+    <additional_attributes>80.0;250.0;30.0;250.0;30.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+</diagram>

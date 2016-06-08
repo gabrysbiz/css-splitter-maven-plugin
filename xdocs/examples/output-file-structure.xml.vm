@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document xmlns="http://maven.apache.org/XDOC/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
+
+    <properties>
+        <title>Output file structure (imports tree)</title>
+    </properties>
+
+    <body>
+        <section name="Output file structure (imports tree)">
+            <p>
+                You can decide how the output file structure will look after split by two parameters:
+            </p>
+            <ol>
+                <li>
+                    <a href="../split-mojo.html#maxRules">maxRules</a> - maximum number of
+                    <a href="https://www.w3.org/Style/CSS/">CSS</a> rules in single &quot;part&quot;
+                </li>
+                <li>
+                    <a href="../split-mojo.html#maxImports">maxImports</a> - maximum number of generated <code>@import</code>
+                    in a single file
+                </li>
+            </ol>
+            <p>List of examples:</p>
+            <ul>
+                <li>
+                    <a href="#whole-code-in-single-file">code contains fewer rules than the value of the <code>maxRules</code>
+                    parameter</a>
+                </li>
+                <li>
+                    <a href="#flat-imports-tree">code contains fewer rules than the value of the <code>maxRules</code> parameter
+                    and the <code>maxImports</code> parameter value is big enough too store all <code>@import</code>
+                    operations in single file</a>
+                </li>
+                <li>
+                    <a href="#deep-imports-tree">code contains fewer rules than the value of the <code>maxRules</code> parameter
+                    and the <code>maxImports</code> parameter value is not big enough too store all <code>@import</code>
+                    operations in single file</a>
+                </li>
+            </ul>
+            <p>
+                For the purposes of the examples, will be used the following source file (<code>style.css</code>):
+            </p>
+            <pre>rule {
+    attr1: value1;
+    attr2: value2;
+    attr3: value3;
+    attr4: value4;
+    attr5: value5; 
+}</pre>
+            <p>
+                All diagrams have been created in <a href="http://www.umlet.com/">UMLet (Free UML Tool for Fast UML Diagrams)</a>
+                application.
+            </p>
+        </section>
+        <section id="whole-code-in-single-file" name="Whole code in single file">
+            <p>
+                If your code contains fewer rules than the value of the <a href="../split-mojo.html#maxRules">maxRules</a>
+                parameter, then it will be placed in single file.
+            </p>
+            <pre>&lt;project&gt;
+   ...
+   &lt;build&gt;
+      &lt;plugins&gt;
+         ...
+         &lt;plugin&gt;
+            &lt;groupId&gt;${project.groupId}&lt;/groupId&gt;
+            &lt;artifactId&gt;${project.artifactId}&lt;/artifactId&gt;
+            &lt;version&gt;${project.version}&lt;/version&gt;
+            &lt;executions&gt;
+               &lt;execution&gt;
+                  &lt;goals&gt;
+                     &lt;goal&gt;split&lt;/goal&gt;
+                  &lt;/goals&gt;
+                  &lt;configuration&gt;
+                     &lt;maxRules&gt;10&lt;/maxRules&gt;
+                     &lt;maxImports&gt;10&lt;/maxImports&gt;
+                  &lt;/configuration&gt;
+               &lt;/execution&gt;
+            &lt;/executions&gt;
+         &lt;/plugin&gt;
+      &lt;/plugins&gt;
+   &lt;/build&gt;
+&lt;project&gt;</pre>
+            <p>
+                Output file structure:<br />
+                <img src="../images/examples/output-file-structure/whole-code-in-single-file.png" width="200" height="190" alt="file structure" />
+            </p>
+        </section>
+        <section id="flat-imports-tree" name="Flat imports tree">
+            <p>
+                If your code code contains fewer rules than the value of the <a href="../split-mojo.html#maxRules">maxRules</a>
+                parameter and the <a href="../split-mojo.html#maxImports">maxImports</a> parameter value is big enough too store
+                all <code>@import</code> operations in single file, then the plugin will create a single file which
+                imports all &quot;parts&quot;.
+            </p>
+            <pre>&lt;project&gt;
+   ...
+   &lt;build&gt;
+      &lt;plugins&gt;
+         ...
+         &lt;plugin&gt;
+            &lt;groupId&gt;${project.groupId}&lt;/groupId&gt;
+            &lt;artifactId&gt;${project.artifactId}&lt;/artifactId&gt;
+            &lt;version&gt;${project.version}&lt;/version&gt;
+            &lt;executions&gt;
+               &lt;execution&gt;
+                  &lt;goals&gt;
+                     &lt;goal&gt;split&lt;/goal&gt;
+                  &lt;/goals&gt;
+                  &lt;configuration&gt;
+                     &lt;maxRules&gt;1&lt;/maxRules&gt;
+                     &lt;maxImports&gt;10&lt;/maxImports&gt;
+                  &lt;/configuration&gt;
+               &lt;/execution&gt;
+            &lt;/executions&gt;
+         &lt;/plugin&gt;
+      &lt;/plugins&gt;
+   &lt;/build&gt;
+&lt;project&gt;</pre>
+            <p>
+                Output file structure:<br />
+                <img src="../images/examples/output-file-structure/flat-imports-tree.png" width="430" height="720" alt="file structure" />
+            </p>
+        </section>
+        <section id="deep-imports-tree" name="Deep imports tree">
+            <p> 
+                If your code code contains fewer rules than the value of the <a href="../split-mojo.html#maxRules">maxRules</a>
+                parameter and the <a href="../split-mojo.html#maxImports">maxImports</a> parameter value is not big enough too store
+                all <code>@import</code> operations in single file, then the plugin will create a single file which imports files,
+                which imports files... and finally which imports &quot;parts&quot;.
+            </p>
+            <pre>&lt;project&gt;
+   ...
+   &lt;build&gt;
+      &lt;plugins&gt;
+         ...
+         &lt;plugin&gt;
+            &lt;groupId&gt;${project.groupId}&lt;/groupId&gt;
+            &lt;artifactId&gt;${project.artifactId}&lt;/artifactId&gt;
+            &lt;version&gt;${project.version}&lt;/version&gt;
+            &lt;executions&gt;
+               &lt;execution&gt;
+                  &lt;goals&gt;
+                     &lt;goal&gt;split&lt;/goal&gt;
+                  &lt;/goals&gt;
+                  &lt;configuration&gt;
+                     &lt;maxRules&gt;1&lt;/maxRules&gt;
+                     &lt;maxImports&gt;2&lt;/maxImports&gt;
+                  &lt;/configuration&gt;
+               &lt;/execution&gt;
+            &lt;/executions&gt;
+         &lt;/plugin&gt;
+      &lt;/plugins&gt;
+   &lt;/build&gt;
+&lt;project&gt;</pre>
+            <p>
+                Output file structure:<br />
+                <img src="../images/examples/output-file-structure/deep-imports-tree.png" width="830" height="770" alt="file structure" />
+            </p>
+        </section>
+    </body>
+</document>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document xmlns="http://maven.apache.org/XDOC/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
+
+    <properties>
+        <title>Examples</title>
+    </properties>
+
+    <body>
+        <section name="Examples">
+            <p>
+                List of available examples:
+            </p>
+            <table border="0" class="table table-striped">
+                <tr class="a">
+                    <th>Document</th>
+                    <th>Description</th>
+                </tr>
+                <tr class="b">
+                    <td><a href="examples/patterns.html">Using include/exclude patterns</a></td>
+                    <td>This example shows how to filter source files.</td>
+                </tr>
+                <tr class="a">
+                    <td><a href="examples/multiple-directories.html">Multiple source/output directories</a></td>
+                    <td>This example describes how to use multiple source/output directories in single module.</td>
+                </tr>
+                <tr class="b">
+                    <td><a href="examples/output-file-structure.html">Output file structure (imports tree)</a></td>
+                    <td>This example shows how output file structure will change depending on the configuration.</td>
+                </tr>
+                <tr class="a">
+                    <td><a href="examples/cache-token.html">Using cache token</a></td>
+                    <td>This example describes how to enable addition of cache token to <code>@import</code> links.</td>
+                </tr>
+            </table>
+        </section>
+    </body>
+</document>

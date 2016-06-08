@@ -10,7 +10,7 @@
         <section name="Using include/exclude patterns">
             <p>
                 You can decide which files from the <a href="../split-mojo.html#sourceDirectory">source directory</a>
-                will be compiled. Include and exclude patterns can be defined in two formats: <a href="#ant">Ant</a>
+                will be split. Include and exclude patterns can be defined in two formats: <a href="#ant">Ant</a>
                 and <a href="#regex">regular expressions</a>.
             </p>
         </section>

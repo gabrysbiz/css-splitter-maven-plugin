@@ -53,14 +53,14 @@ public final class ComplexRuleTest {
     }
 
     @Test
-    public void getSize2_zeroRules_returnsZero() {
+    public void getSize2_zeroRules_returnsOne() {
         final List<String> selectors = Collections.emptyList();
         final List<NodeRule> rules = Collections.emptyList();
 
         final ComplexRule rule = new ComplexRule("@media", selectors, rules);
         final int size = rule.getSize2();
 
-        Assert.assertEquals("Rule size.", 0, size);
+        Assert.assertEquals("Rule size.", 1, size);
     }
 
     @Test

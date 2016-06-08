@@ -1,11 +1,20 @@
-# CSS Splitter Maven Plugin
+# About
 [![License BSD 3-Clause](https://img.shields.io/badge/license-BSD%203--Clause-blue.svg)](http://css-splitter-maven-plugin.projects.gabrys.biz/license.txt)
 [![Build Status](https://travis-ci.org/gabrysbiz/css-splitter-maven-plugin.svg?branch=develop)](https://travis-ci.org/gabrysbiz/css-splitter-maven-plugin)
 
-This plugin splits [CSS](http://www.w3.org/Style/CSS/) stylesheets to smaller files (parts) which contain maximum [X](http://css-splitter-maven-plugin.projects.gabrys.biz/LATEST/split-mojo.html#maxRules) rules.
+This plugin splits [CSS](http://www.w3.org/Style/CSS/) stylesheets to smaller files ("parts") which contain maximum [X](http://css-splitter-maven-plugin.projects.gabrys.biz/LATEST/split-mojo.html#maxRules) rules. It uses a [CSS Parser](http://cssparser.sourceforge.net/) to parse source code.
+
+The [CSS Parser](http://cssparser.sourceforge.net/) supports following standards:
+* [Cascading Style Sheets Level 3](https://www.w3.org/Style/CSS/)
+* [Cascading Style Sheets Level 2 Revision 1 (CSS 2.1) Specification](https://www.w3.org/TR/CSS2/)
+* [Cascading Style Sheets Level 2](https://www.w3.org/TR/2008/REC-CSS2-20080411/)
+* [Cascading Style Sheets Level 1](https://www.w3.org/TR/CSS1/)
+
+
+For more information read a [split](http://css-splitter-maven-plugin.projects.gabrys.biz/LATEST/split-mojo.html) goal documentation or take a look into [examples](#examples).
 
 # Goals Overview
-* [css-splitter:split](http://css-splitter-maven-plugin.projects.gabrys.biz/LATEST/split-mojo.html) - splits [CSS](http://www.w3.org/Style/CSS/) stylesheets to smaller files (parts)
+* [css-splitter:split](http://css-splitter-maven-plugin.projects.gabrys.biz/LATEST/split-mojo.html) - splits [CSS](http://www.w3.org/Style/CSS/) stylesheets to smaller files ("parts") which contain maximum [X](http://css-splitter-maven-plugin.projects.gabrys.biz/LATEST/split-mojo.html#maxRules) rules
 
 # Requirements
 The plugin to run requires:
@@ -23,3 +32,6 @@ If you feel like the plugin is missing a feature or has a defect, you can fill a
 To provide you with better understanding of some usages of the CSS Splitter Maven Plugin, you can take a look into the following examples:
 * [Using include/exclude patterns](http://css-splitter-maven-plugin.projects.gabrys.biz/LATEST/examples/patterns.html)
 * [Multiple source/output directories](http://css-splitter-maven-plugin.projects.gabrys.biz/LATEST/examples/multiple-directories.html)
+* [Output file structure (imports tree)](http://css-splitter-maven-plugin.projects.gabrys.biz/LATEST/examples/output-file-structure.html)
+* [Using cache token](http://css-splitter-maven-plugin.projects.gabrys.biz/LATEST/examples/cache-token.html)
+

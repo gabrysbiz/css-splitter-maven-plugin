@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document xmlns="http://maven.apache.org/XDOC/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
+
+    <properties>
+        <title>Using cache token</title>
+    </properties>
+
+    <body>
+        <section name="Using cache token">
+            <p>
+                You can control the addition of the cache token to <code>@import</code> links using three parameters:
+            </p>
+            <ol>
+                <li>
+                    <a href="../split-mojo.html#cacheTokenType">cacheTokenType</a> - cache token type, available options:
+                    <code>custom</code>, <code>date</code> and <code>none</code> (default)
+                </li>
+                <li>
+                    <a href="../split-mojo.html#cacheTokenParameter">cacheTokenParameter</a> - name of the cache token parameter
+                </li>
+                <li>
+                    <a href="../split-mojo.html#cacheTokenValue">cacheTokenValue</a> - value of the cache token
+                </li>
+            </ol>
+            <p>List of examples:</p>
+            <ul>
+                <li>
+                    <a href="#custom-type">Cache token with custom text</a>
+                </li>
+                <li>
+                    <a href="#date-type">Cache token with build time</a>
+                </li>
+                <li>
+                    <a href="#none-type">Disable addition of the cache token</a>
+                </li>
+            </ul>
+        </section>
+        <section id="custom-type" name="Cache token with custom text">
+            <p>
+                If you want to use custom text as cache token, then you need to:
+            </p>
+            <ul>
+                <li>set <a href="../split-mojo.html#cacheTokenType">cacheTokenType</a> to <code>custom</code></li>
+                <li>fill <a href="../split-mojo.html#cacheTokenValue">cacheTokenValue</a> with custom text</li>
+            </ul>
+            <pre>&lt;project&gt;
+   ...
+   &lt;properties&gt;
+      &lt;property.with.cache.token.value&gt;value&lt;/property.with.cache.token.value&gt;
+      ...
+   &lt;/properties&gt;
+   ...
+   &lt;build&gt;
+      &lt;plugins&gt;
+         ...
+         &lt;plugin&gt;
+            &lt;groupId&gt;${project.groupId}&lt;/groupId&gt;
+            &lt;artifactId&gt;${project.artifactId}&lt;/artifactId&gt;
+            &lt;version&gt;${project.version}&lt;/version&gt;
+            &lt;executions&gt;
+               &lt;execution&gt;
+                  &lt;goals&gt;
+                     &lt;goal&gt;split&lt;/goal&gt;
+                  &lt;/goals&gt;
+                  &lt;configuration&gt;
+                     &lt;cacheTokenType&gt;custom&lt;/cacheTokenType&gt;
+                     &lt;cacheTokenValue&gt;1${property.with.cache.token.value}2&lt;/cacheTokenValue&gt;
+                  &lt;/configuration&gt;
+               &lt;/execution&gt;
+            &lt;/executions&gt;
+         &lt;/plugin&gt;
+      &lt;/plugins&gt;
+   &lt;/build&gt;
+&lt;project&gt;</pre>
+            <p>
+                This configuration will generate the following code:
+            </p>
+            <pre>@import "imported-file-name.css?v=1value2";</pre>
+            <p>
+                Additionally you can change name of the cache token parameter
+                (<a href="../split-mojo.html#cacheTokenParameter">cacheTokenParameter</a>):
+            </p>
+            <pre>&lt;project&gt;
+   ...
+   &lt;properties&gt;
+      &lt;property.with.cache.token.value&gt;value&lt;/property.with.cache.token.value&gt;
+      ...
+   &lt;/properties&gt;
+   ...
+   &lt;build&gt;
+      &lt;plugins&gt;
+         ...
+         &lt;plugin&gt;
+            &lt;groupId&gt;${project.groupId}&lt;/groupId&gt;
+            &lt;artifactId&gt;${project.artifactId}&lt;/artifactId&gt;
+            &lt;version&gt;${project.version}&lt;/version&gt;
+            &lt;executions&gt;
+               &lt;execution&gt;
+                  &lt;goals&gt;
+                     &lt;goal&gt;split&lt;/goal&gt;
+                  &lt;/goals&gt;
+                  &lt;configuration&gt;
+                     &lt;cacheTokenType&gt;custom&lt;/cacheTokenType&gt;
+                     &lt;cacheTokenValue&gt;1${property.with.cache.token.value}2&lt;/cacheTokenValue&gt;
+                     &lt;cacheTokenParameter&gt;token&lt;/cacheTokenParameter&gt;
+                  &lt;/configuration&gt;
+               &lt;/execution&gt;
+            &lt;/executions&gt;
+         &lt;/plugin&gt;
+      &lt;/plugins&gt;
+   &lt;/build&gt;
+&lt;project&gt;</pre>
+            <p>
+                This configuration will generate the following code:
+            </p>
+            <pre>@import "imported-file-name.css?token=1value2";</pre>
+        </section>
+        <section id="date-type" name="Cache token with build time">
+            <p>
+                If you want to add cache token with build time, then you need to set
+                <a href="../split-mojo.html#cacheTokenType">cacheTokenType</a> to <code>date</code>.
+            </p>
+            <pre>&lt;project&gt;
+   ...
+   &lt;build&gt;
+      &lt;plugins&gt;
+         ...
+         &lt;plugin&gt;
+            &lt;groupId&gt;${project.groupId}&lt;/groupId&gt;
+            &lt;artifactId&gt;${project.artifactId}&lt;/artifactId&gt;
+            &lt;version&gt;${project.version}&lt;/version&gt;
+            &lt;executions&gt;
+               &lt;execution&gt;
+                  &lt;goals&gt;
+                     &lt;goal&gt;split&lt;/goal&gt;
+                  &lt;/goals&gt;
+                  &lt;configuration&gt;
+                     &lt;cacheTokenType&gt;date&lt;/cacheTokenType&gt;
+                  &lt;/configuration&gt;
+               &lt;/execution&gt;
+            &lt;/executions&gt;
+         &lt;/plugin&gt;
+      &lt;/plugins&gt;
+   &lt;/build&gt;
+&lt;project&gt;</pre>
+            <p>
+                This configuration will generate the following code:
+            </p>
+            <pre>@import "imported-file-name.css?v=20160528150159";</pre>
+            <p>
+                Additionally you can:
+            </p>
+            <ul>
+                <li>
+                    fill <a href="../split-mojo.html#cacheTokenValue">cacheTokenValue</a> with
+                    pattern for <code>SimpleDateFormat</code> object
+                </li>
+                <li>
+                    change name of the cache token parameter
+                    (<a href="../split-mojo.html#cacheTokenParameter">cacheTokenParameter</a>)
+                </li>
+            </ul>
+            <pre>&lt;project&gt;
+   ...
+   &lt;build&gt;
+      &lt;plugins&gt;
+         ...
+         &lt;plugin&gt;
+            &lt;groupId&gt;${project.groupId}&lt;/groupId&gt;
+            &lt;artifactId&gt;${project.artifactId}&lt;/artifactId&gt;
+            &lt;version&gt;${project.version}&lt;/version&gt;
+            &lt;executions&gt;
+               &lt;execution&gt;
+                  &lt;goals&gt;
+                     &lt;goal&gt;split&lt;/goal&gt;
+                  &lt;/goals&gt;
+                  &lt;configuration&gt;
+                     &lt;cacheTokenType&gt;date&lt;/cacheTokenType&gt;
+                     &lt;cacheTokenValue&gt;yyyyMMdd&lt;/cacheTokenValue&gt;
+                     &lt;cacheTokenParameter&gt;buildTime&lt;/cacheTokenParameter&gt;
+                  &lt;/configuration&gt;
+               &lt;/execution&gt;
+            &lt;/executions&gt;
+         &lt;/plugin&gt;
+      &lt;/plugins&gt;
+   &lt;/build&gt;
+&lt;project&gt;</pre>
+            <p>
+                This configuration will generate the following code:
+            </p>
+            <pre>@import "imported-file-name.css?buildTime=20160528";</pre>
+        </section>
+        <section id="none-type" name="Disable addition of the cache token">
+            <p>
+                If you want to disable addition of cache token (default action) then you need to set
+                <a href="../split-mojo.html#cacheTokenType">cacheTokenType</a> to <code>none</code>.
+                <a href="../split-mojo.html#cacheTokenParameter">cacheTokenParameter</a> and
+                <a href="../split-mojo.html#cacheTokenValue">cacheTokenValue</a> will be ignored.
+            </p>
+            <pre>&lt;project&gt;
+   ...
+   &lt;build&gt;
+      &lt;plugins&gt;
+         ...
+         &lt;plugin&gt;
+            &lt;groupId&gt;${project.groupId}&lt;/groupId&gt;
+            &lt;artifactId&gt;${project.artifactId}&lt;/artifactId&gt;
+            &lt;version&gt;${project.version}&lt;/version&gt;
+            &lt;executions&gt;
+               &lt;execution&gt;
+                  &lt;goals&gt;
+                     &lt;goal&gt;split&lt;/goal&gt;
+                  &lt;/goals&gt;
+                  &lt;configuration&gt;
+                     &lt;cacheTokenType&gt;none&lt;/cacheTokenType&gt;
+                     &lt;cacheTokenValue&gt;ignored&lt;/cacheTokenValue&gt;
+                     &lt;cacheTokenParameter&gt;ignored&lt;/cacheTokenParameter&gt;
+                  &lt;/configuration&gt;
+               &lt;/execution&gt;
+            &lt;/executions&gt;
+         &lt;/plugin&gt;
+      &lt;/plugins&gt;
+   &lt;/build&gt;
+&lt;project&gt;</pre>
+            <p>
+                This configuration will generate the following code:
+            </p>
+            <pre>@import "imported-file-name.css";</pre>
+        </section>
+    </body>
+</document>

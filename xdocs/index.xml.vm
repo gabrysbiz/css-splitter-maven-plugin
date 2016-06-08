@@ -7,20 +7,35 @@
     </properties>
 
     <body>
-        <section name="${project.name}">
+        <section id="about" name="About">
             <p>
-                This plugin splits <a href="http://www.w3.org/Style/CSS/">CSS</a> stylesheets to smaller files (parts) which contain maximum
-                <a href="split-mojo.html#maxRules">X</a> rules.
+                This plugin splits <a href="http://www.w3.org/Style/CSS/">CSS</a> stylesheets to smaller files ("parts") which contain maximum
+                <a href="split-mojo.html#maxRules">X</a> rules. It uses a <a href="http://cssparser.sourceforge.net/">CSS Parser</a> to parse
+                source code.
+            </p>
+            <p>
+                The <a href="http://cssparser.sourceforge.net/">CSS Parser</a> supports following standards:
+            </p>
+            <ul>
+                <li><a href="https://www.w3.org/Style/CSS/">Cascading Style Sheets Level 3</a></li>
+                <li><a href="https://www.w3.org/TR/CSS2/">Cascading Style Sheets Level 2 Revision 1 (CSS 2.1) Specification</a></li>
+                <li><a href="https://www.w3.org/TR/2008/REC-CSS2-20080411/">Cascading Style Sheets Level 2</a></li>
+                <li><a href="https://www.w3.org/TR/CSS1/">Cascading Style Sheets Level 1</a></li>
+            </ul>
+            <p>
+                For more information read a <a href="split-mojo.html">split</a> goal documentation or take a look into
+                <a href="#examples">examples</a>.
             </p>
         </section>
-        <section name="Goals Overview">
+        <section id="goals-overview" name="Goals Overview">
             <ul>
                 <li>
-                    <a href="split-mojo.html">css-splitter:split</a> - splits <a href="http://www.w3.org/Style/CSS/">CSS</a> stylesheets to smaller files (parts)
+                    <a href="split-mojo.html">css-splitter:split</a> - splits <a href="http://www.w3.org/Style/CSS/">CSS</a> stylesheets to
+                    smaller files ("parts") which contain maximum <a href="split-mojo.html#maxRules">X</a> rules
                 </li>
             </ul>
         </section>
-        <section name="Requirements">
+        <section id="requirements" name="Requirements">
             <p>
                 The plugin to run requires:
             </p>
@@ -29,7 +44,7 @@
                 <li>Maven 2.0.11 or higher</li>
             </ul>
         </section>
-        <section name="Usage">
+        <section id="usage" name="Usage">
             <p>
                 General instructions on how to use the ${project.name} can be found on the <a href="usage.html">usage</a> page. Some more specific
                 use cases are described in the examples given below. Last but not least, users occasionally contribute additional examples, tips
@@ -47,13 +62,15 @@
                 in the <a href="http://maven.apache.org/guides/development/guide-helping.html">guide to helping with Maven</a>.
             </p>
         </section>
-        <section name="Examples">
+        <section id="examples" name="Examples">
             <p>
                 To provide you with better understanding of some usages of the ${project.name}, you can take a look into the following examples:
             </p>
             <ul>
                 <li><a href="examples/patterns.html">Using include/exclude patterns</a></li>
                 <li><a href="examples/multiple-directories.html">Multiple source/output directories</a></li>
+                <li><a href="examples/output-file-structure.html">Output file structure (imports tree)</a></li>
+                <li><a href="examples/cache-token.html">Using cache token</a></li>
             </ul>
         </section>
     </body>
