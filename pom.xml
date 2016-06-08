@@ -197,7 +197,7 @@
                 <plugin>
                     <groupId>org.jacoco</groupId>
                     <artifactId>jacoco-maven-plugin</artifactId>
-                    <version>0.7.6.201602180812</version>
+                    <version>0.7.7.201606060606</version>
                     <configuration>
                         <excludes>
                             <!-- see http://stackoverflow.com/q/14559117/4944847 -->
