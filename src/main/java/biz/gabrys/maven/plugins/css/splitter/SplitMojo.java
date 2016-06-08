@@ -118,7 +118,7 @@ import biz.gabrys.maven.plugins.css.splitter.validation.StylePropertiesLimitVali
  * }
  * </pre>
  * 
- * @since 1.0
+ * @since 1.0.0
  */
 @Mojo(name = "split", defaultPhase = LifecyclePhase.PROCESS_SOURCES, threadSafe = true)
 public class SplitMojo extends AbstractMojo {
@@ -131,7 +131,7 @@ public class SplitMojo extends AbstractMojo {
 
     /**
      * Defines whether to skip the plugin execution.
-     * @since 1.0
+     * @since 1.0.0
      */
     @Parameter(property = "css.splitter.skip", defaultValue = "false")
     protected boolean skip;
@@ -139,7 +139,7 @@ public class SplitMojo extends AbstractMojo {
     /**
      * Defines whether the plugin runs in verbose mode.<br>
      * <b>Notice</b>: always true in debug mode.
-     * @since 1.0
+     * @since 1.0.0
      */
     @Parameter(property = "css.splitter.verbose", defaultValue = "false")
     protected boolean verbose;
@@ -147,21 +147,21 @@ public class SplitMojo extends AbstractMojo {
     /**
      * Forces to always split the <a href="http://www.w3.org/Style/CSS/">CSS</a> stylesheets. By default sources are
      * only split when modified or the <a href="#outputFileNamePattern">main destination file</a> does not exist.
-     * @since 1.0
+     * @since 1.0.0
      */
     @Parameter(property = "css.splitter.force", defaultValue = "false")
     protected boolean force;
 
     /**
      * The directory which contains the <a href="http://www.w3.org/Style/CSS/">CSS</a> stylesheets.
-     * @since 1.0
+     * @since 1.0.0
      */
     @Parameter(property = "css.splitter.sourceDirectory", defaultValue = "${project.basedir}/src/main/css")
     protected File sourceDirectory;
 
     /**
      * Specifies where to place split <a href="http://www.w3.org/Style/CSS/">CSS</a> stylesheets.
-     * @since 1.0
+     * @since 1.0.0
      */
     @Parameter(property = "css.splitter.outputDirectory", defaultValue = "${project.build.directory}")
     protected File outputDirectory;
@@ -172,7 +172,7 @@ public class SplitMojo extends AbstractMojo {
      * <li><b>ant</b> - <a href="http://ant.apache.org/manual/dirtasks.html#patterns">Ant patterns</a></li>
      * <li><b>regex</b> - regular expressions (use '/' as path separator)</li>
      * </ul>
-     * @since 1.0
+     * @since 1.0.0
      */
     @Parameter(property = "css.splitter.filesetPatternFormat", defaultValue = "ant")
     protected String filesetPatternFormat;
@@ -183,7 +183,7 @@ public class SplitMojo extends AbstractMojo {
      * formats</a>.<br>
      * <b>Default value is</b>: <tt>["&#42;&#42;/&#42;.css"]</tt> for <a href="#filesetPatternFormat">ant</a> or
      * <tt>["^.+\.css$"]</tt> for <a href="#filesetPatternFormat">regex</a>.
-     * @since 1.0
+     * @since 1.0.0
      */
     @Parameter
     protected String[] includes = new String[0];
@@ -193,7 +193,7 @@ public class SplitMojo extends AbstractMojo {
      * <a href="#sourceDirectory">source directory</a>. See <a href="#filesetPatternFormat">available fileset patterns
      * formats</a>.<br>
      * <b>Default value is</b>: <tt>[]</tt>.
-     * @since 1.0
+     * @since 1.0.0
      */
     @Parameter
     protected String[] excludes = new String[0];
@@ -201,7 +201,7 @@ public class SplitMojo extends AbstractMojo {
     /**
      * The maximum number of <a href="http://www.w3.org/Style/CSS/">CSS</a> rules in single "part".<br>
      * <b>Notice</b>: all values smaller than <tt>1</tt> are treated as <tt>4095</tt>.
-     * @since 1.0
+     * @since 1.0.0
      */
     @Parameter(property = "css.splitter.maxRules", defaultValue = MAX_RULES_DEFAULT_VALUE)
     protected int maxRules;
@@ -210,7 +210,7 @@ public class SplitMojo extends AbstractMojo {
      * The plugin failures build when a number of <a href="http://www.w3.org/Style/CSS/">CSS</a> rules in source file
      * exceeds this value.<br>
      * <b>Notice</b>: all values smaller than <tt>1</tt> are treated as <tt>2147483647</tt>.
-     * @since 1.0
+     * @since 1.0.0
      */
     @Parameter(property = "css.splitter.rulesLimit", defaultValue = MAX_RULES_LIMIT)
     protected int rulesLimit;
@@ -219,7 +219,7 @@ public class SplitMojo extends AbstractMojo {
      * The maximum number of generated <code>&#64;import</code> in a single file. The plugin ignores
      * <code>&#64;import</code> operations that come from the source code.<br>
      * <b>Notice</b>: all values smaller than <tt>2</tt> are treated as <tt>31</tt>.
-     * @since 1.0
+     * @since 1.0.0
      */
     @Parameter(property = "css.splitter.maxImports", defaultValue = MAX_IMPORTS_DEFAULT_VALUE)
     protected int maxImports;
@@ -228,7 +228,7 @@ public class SplitMojo extends AbstractMojo {
      * The plugin failures build when a number of <code>&#64;import</code> depth level exceed this value. The plugin
      * ignores <code>&#64;import</code> operations that come from the source code.<br>
      * <b>Notice</b>: all values smaller than <tt>1</tt> are treated as <tt>4</tt>.
-     * @since 1.0
+     * @since 1.0.0
      */
     @Parameter(property = "css.splitter.importsDepthLimit", defaultValue = MAX_IMPORTS_DEPTH_LIMIT)
     protected int importsDepthLimit;
@@ -242,7 +242,7 @@ public class SplitMojo extends AbstractMojo {
      * <li><b>2.0</b> - <a href="https://www.w3.org/TR/2008/REC-CSS2-20080411/">Cascading Style Sheets Level 2</a></li>
      * <li><b>1.0</b> - <a href="https://www.w3.org/TR/CSS1/">Cascading Style Sheets Level 1</a></li>
      * </ul>
-     * @since 1.0
+     * @since 1.0.0
      */
     @Parameter(property = "css.splitter.standard", defaultValue = "3.0")
     protected String standard;
@@ -253,7 +253,7 @@ public class SplitMojo extends AbstractMojo {
      * <code>&#64;page</code> rule inside <code>&#64;media</code>).<br>
      * <b>Notice</b>: this functionality may stop working or be removed at any time. You should fix your code instead of
      * relying on this functionality.
-     * @since 1.0
+     * @since 1.0.0
      */
     @Parameter(property = "css.splitter.nonstrict", defaultValue = "false")
     protected boolean nonstrict;
@@ -266,7 +266,7 @@ public class SplitMojo extends AbstractMojo {
      * <li><b>date</b> - build date</li>
      * <li><b>none</b> - token will not be added</li>
      * </ul>
-     * @since 1.0
+     * @since 1.0.0
      */
     @Parameter(property = "css.splitter.cacheTokenType", defaultValue = "none")
     protected String cacheTokenType;
@@ -275,7 +275,7 @@ public class SplitMojo extends AbstractMojo {
      * Defines cache token parameter name which will be added to <code>&#64;import</code> links in destination
      * <a href="http://www.w3.org/Style/CSS/">CSS</a> stylesheets.<br>
      * <b>Notice</b>: ignored when <a href="#cacheTokenType">cache token type</a> is equal to <tt>none</tt>.
-     * @since 1.0
+     * @since 1.0.0
      */
     @Parameter(property = "css.splitter.cacheTokenParameter", defaultValue = "v")
     protected String cacheTokenParameter;
@@ -290,21 +290,21 @@ public class SplitMojo extends AbstractMojo {
      * <b>Default value is</b>: <tt>yyyyMMddHHmmss</tt> if <a href="#cacheTokenType">cache token type</a> is equal to
      * <tt>date</tt>.<br>
      * <b>Required</b>: <tt>YES</tt> if <a href="#cacheTokenType">cache token type</a> is equal to <tt>custom</tt>.
-     * @since 1.0
+     * @since 1.0.0
      */
     @Parameter(property = "css.splitter.cacheTokenValue")
     protected String cacheTokenValue;
 
     /**
      * Sources encoding.
-     * @since 1.0
+     * @since 1.0.0
      */
     @Parameter(property = "css.splitter.encoding", defaultValue = "${project.build.sourceEncoding}")
     protected String encoding;
 
     /**
      * Destination files naming pattern. {fileName} is equal to source file name without extension.
-     * @since 1.0
+     * @since 1.0.0
      */
     @Parameter(property = "css.splitter.outputFileNamePattern", defaultValue = DestinationFileCreator.FILE_NAME_PARAMETER + ".css")
     protected String outputFileNamePattern;
@@ -313,7 +313,7 @@ public class SplitMojo extends AbstractMojo {
      * Destination "parts" naming pattern. {fileName} is equal to source file name without extension, {index} is equal
      * to "part" index (first is equal to 1). "Parts" are loaded in the browsers according to indexes. For correct
      * listing files on all operating systems indexes can contain leading zeros.
-     * @since 1.0
+     * @since 1.0.0
      */
     @Parameter(property = "css.splitter.outputPartNamePattern", defaultValue = DestinationFileCreator.FILE_NAME_PARAMETER + '-'
             + PART_INDEX_PARAMETER + ".css")
