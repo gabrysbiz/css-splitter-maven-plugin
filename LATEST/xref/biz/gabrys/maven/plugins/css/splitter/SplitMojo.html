@@ -126,7 +126,7 @@
 <a class="jxr_linenumber" name="L118" href="#L118">118</a> <em class="jxr_javadoccomment"> * }</em>
 <a class="jxr_linenumber" name="L119" href="#L119">119</a> <em class="jxr_javadoccomment"> * &lt;/pre&gt;</em>
 <a class="jxr_linenumber" name="L120" href="#L120">120</a> <em class="jxr_javadoccomment"> * </em>
-<a class="jxr_linenumber" name="L121" href="#L121">121</a> <em class="jxr_javadoccomment"> * @since 1.0</em>
+<a class="jxr_linenumber" name="L121" href="#L121">121</a> <em class="jxr_javadoccomment"> * @since 1.0.0</em>
 <a class="jxr_linenumber" name="L122" href="#L122">122</a> <em class="jxr_javadoccomment"> */</em>
 <a class="jxr_linenumber" name="L123" href="#L123">123</a> @Mojo(name = <span class="jxr_string">"split"</span>, defaultPhase = LifecyclePhase.PROCESS_SOURCES, threadSafe = <strong class="jxr_keyword">true</strong>)
 <a class="jxr_linenumber" name="L124" href="#L124">124</a> <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../../../biz/gabrys/maven/plugins/css/splitter/SplitMojo.html">SplitMojo</a> <strong class="jxr_keyword">extends</strong> AbstractMojo {
@@ -139,7 +139,7 @@
 <a class="jxr_linenumber" name="L131" href="#L131">131</a> 
 <a class="jxr_linenumber" name="L132" href="#L132">132</a>     <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L133" href="#L133">133</a> <em class="jxr_javadoccomment">     * Defines whether to skip the plugin execution.</em>
-<a class="jxr_linenumber" name="L134" href="#L134">134</a> <em class="jxr_javadoccomment">     * @since 1.0</em>
+<a class="jxr_linenumber" name="L134" href="#L134">134</a> <em class="jxr_javadoccomment">     * @since 1.0.0</em>
 <a class="jxr_linenumber" name="L135" href="#L135">135</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L136" href="#L136">136</a>     @Parameter(property = <span class="jxr_string">"css.splitter.skip"</span>, defaultValue = <span class="jxr_string">"false"</span>)
 <a class="jxr_linenumber" name="L137" href="#L137">137</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">boolean</strong> skip;
@@ -147,7 +147,7 @@
 <a class="jxr_linenumber" name="L139" href="#L139">139</a>     <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L140" href="#L140">140</a> <em class="jxr_javadoccomment">     * Defines whether the plugin runs in verbose mode.&lt;br&gt;</em>
 <a class="jxr_linenumber" name="L141" href="#L141">141</a> <em class="jxr_javadoccomment">     * &lt;b&gt;Notice&lt;/b&gt;: always true in debug mode.</em>
-<a class="jxr_linenumber" name="L142" href="#L142">142</a> <em class="jxr_javadoccomment">     * @since 1.0</em>
+<a class="jxr_linenumber" name="L142" href="#L142">142</a> <em class="jxr_javadoccomment">     * @since 1.0.0</em>
 <a class="jxr_linenumber" name="L143" href="#L143">143</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L144" href="#L144">144</a>     @Parameter(property = <span class="jxr_string">"css.splitter.verbose"</span>, defaultValue = <span class="jxr_string">"false"</span>)
 <a class="jxr_linenumber" name="L145" href="#L145">145</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">boolean</strong> verbose;
@@ -155,21 +155,21 @@
 <a class="jxr_linenumber" name="L147" href="#L147">147</a>     <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L148" href="#L148">148</a> <em class="jxr_javadoccomment">     * Forces to always split the &lt;a href="<a href="http://www.w3.org/Style/CSS/" target="alexandria_uri">http://www.w3.org/Style/CSS/</a>"&gt;CSS&lt;/a&gt; stylesheets. By default sources are</em>
 <a class="jxr_linenumber" name="L149" href="#L149">149</a> <em class="jxr_javadoccomment">     * only split when modified or the &lt;a href="#outputFileNamePattern"&gt;main destination file&lt;/a&gt; does not exist.</em>
-<a class="jxr_linenumber" name="L150" href="#L150">150</a> <em class="jxr_javadoccomment">     * @since 1.0</em>
+<a class="jxr_linenumber" name="L150" href="#L150">150</a> <em class="jxr_javadoccomment">     * @since 1.0.0</em>
 <a class="jxr_linenumber" name="L151" href="#L151">151</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L152" href="#L152">152</a>     @Parameter(property = <span class="jxr_string">"css.splitter.force"</span>, defaultValue = <span class="jxr_string">"false"</span>)
 <a class="jxr_linenumber" name="L153" href="#L153">153</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">boolean</strong> force;
 <a class="jxr_linenumber" name="L154" href="#L154">154</a> 
 <a class="jxr_linenumber" name="L155" href="#L155">155</a>     <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L156" href="#L156">156</a> <em class="jxr_javadoccomment">     * The directory which contains the &lt;a href="<a href="http://www.w3.org/Style/CSS/" target="alexandria_uri">http://www.w3.org/Style/CSS/</a>"&gt;CSS&lt;/a&gt; stylesheets.</em>
-<a class="jxr_linenumber" name="L157" href="#L157">157</a> <em class="jxr_javadoccomment">     * @since 1.0</em>
+<a class="jxr_linenumber" name="L157" href="#L157">157</a> <em class="jxr_javadoccomment">     * @since 1.0.0</em>
 <a class="jxr_linenumber" name="L158" href="#L158">158</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L159" href="#L159">159</a>     @Parameter(property = <span class="jxr_string">"css.splitter.sourceDirectory"</span>, defaultValue = <span class="jxr_string">"${project.basedir}/src/main/css"</span>)
 <a class="jxr_linenumber" name="L160" href="#L160">160</a>     <strong class="jxr_keyword">protected</strong> File sourceDirectory;
 <a class="jxr_linenumber" name="L161" href="#L161">161</a> 
 <a class="jxr_linenumber" name="L162" href="#L162">162</a>     <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L163" href="#L163">163</a> <em class="jxr_javadoccomment">     * Specifies where to place split &lt;a href="<a href="http://www.w3.org/Style/CSS/" target="alexandria_uri">http://www.w3.org/Style/CSS/</a>"&gt;CSS&lt;/a&gt; stylesheets.</em>
-<a class="jxr_linenumber" name="L164" href="#L164">164</a> <em class="jxr_javadoccomment">     * @since 1.0</em>
+<a class="jxr_linenumber" name="L164" href="#L164">164</a> <em class="jxr_javadoccomment">     * @since 1.0.0</em>
 <a class="jxr_linenumber" name="L165" href="#L165">165</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L166" href="#L166">166</a>     @Parameter(property = <span class="jxr_string">"css.splitter.outputDirectory"</span>, defaultValue = <span class="jxr_string">"${project.build.directory}"</span>)
 <a class="jxr_linenumber" name="L167" href="#L167">167</a>     <strong class="jxr_keyword">protected</strong> File outputDirectory;
@@ -180,7 +180,7 @@
 <a class="jxr_linenumber" name="L172" href="#L172">172</a> <em class="jxr_javadoccomment">     * &lt;li&gt;&lt;b&gt;ant&lt;/b&gt; - &lt;a href="<a href="http://ant.apache.org/manual/dirtasks.html" target="alexandria_uri">http://ant.apache.org/manual/dirtasks.html</a>#patterns"&gt;Ant patterns&lt;/a&gt;&lt;/li&gt;</em>
 <a class="jxr_linenumber" name="L173" href="#L173">173</a> <em class="jxr_javadoccomment">     * &lt;li&gt;&lt;b&gt;regex&lt;/b&gt; - regular expressions (use '/' as path separator)&lt;/li&gt;</em>
 <a class="jxr_linenumber" name="L174" href="#L174">174</a> <em class="jxr_javadoccomment">     * &lt;/ul&gt;</em>
-<a class="jxr_linenumber" name="L175" href="#L175">175</a> <em class="jxr_javadoccomment">     * @since 1.0</em>
+<a class="jxr_linenumber" name="L175" href="#L175">175</a> <em class="jxr_javadoccomment">     * @since 1.0.0</em>
 <a class="jxr_linenumber" name="L176" href="#L176">176</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L177" href="#L177">177</a>     @Parameter(property = <span class="jxr_string">"css.splitter.filesetPatternFormat"</span>, defaultValue = <span class="jxr_string">"ant"</span>)
 <a class="jxr_linenumber" name="L178" href="#L178">178</a>     <strong class="jxr_keyword">protected</strong> String filesetPatternFormat;
@@ -191,7 +191,7 @@
 <a class="jxr_linenumber" name="L183" href="#L183">183</a> <em class="jxr_javadoccomment">     * formats&lt;/a&gt;.&lt;br&gt;</em>
 <a class="jxr_linenumber" name="L184" href="#L184">184</a> <em class="jxr_javadoccomment">     * &lt;b&gt;Default value is&lt;/b&gt;: &lt;tt&gt;["&amp;#42;&amp;#42;/&amp;#42;.css"]&lt;/tt&gt; for &lt;a href="#filesetPatternFormat"&gt;ant&lt;/a&gt; or</em>
 <a class="jxr_linenumber" name="L185" href="#L185">185</a> <em class="jxr_javadoccomment">     * &lt;tt&gt;["^.+\.css$"]&lt;/tt&gt; for &lt;a href="#filesetPatternFormat"&gt;regex&lt;/a&gt;.</em>
-<a class="jxr_linenumber" name="L186" href="#L186">186</a> <em class="jxr_javadoccomment">     * @since 1.0</em>
+<a class="jxr_linenumber" name="L186" href="#L186">186</a> <em class="jxr_javadoccomment">     * @since 1.0.0</em>
 <a class="jxr_linenumber" name="L187" href="#L187">187</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L188" href="#L188">188</a>     @Parameter
 <a class="jxr_linenumber" name="L189" href="#L189">189</a>     <strong class="jxr_keyword">protected</strong> String[] includes = <strong class="jxr_keyword">new</strong> String[0];
@@ -201,7 +201,7 @@
 <a class="jxr_linenumber" name="L193" href="#L193">193</a> <em class="jxr_javadoccomment">     * &lt;a href="#sourceDirectory"&gt;source directory&lt;/a&gt;. See &lt;a href="#filesetPatternFormat"&gt;available fileset patterns</em>
 <a class="jxr_linenumber" name="L194" href="#L194">194</a> <em class="jxr_javadoccomment">     * formats&lt;/a&gt;.&lt;br&gt;</em>
 <a class="jxr_linenumber" name="L195" href="#L195">195</a> <em class="jxr_javadoccomment">     * &lt;b&gt;Default value is&lt;/b&gt;: &lt;tt&gt;[]&lt;/tt&gt;.</em>
-<a class="jxr_linenumber" name="L196" href="#L196">196</a> <em class="jxr_javadoccomment">     * @since 1.0</em>
+<a class="jxr_linenumber" name="L196" href="#L196">196</a> <em class="jxr_javadoccomment">     * @since 1.0.0</em>
 <a class="jxr_linenumber" name="L197" href="#L197">197</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L198" href="#L198">198</a>     @Parameter
 <a class="jxr_linenumber" name="L199" href="#L199">199</a>     <strong class="jxr_keyword">protected</strong> String[] excludes = <strong class="jxr_keyword">new</strong> String[0];
@@ -209,7 +209,7 @@
 <a class="jxr_linenumber" name="L201" href="#L201">201</a>     <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L202" href="#L202">202</a> <em class="jxr_javadoccomment">     * The maximum number of &lt;a href="<a href="http://www.w3.org/Style/CSS/" target="alexandria_uri">http://www.w3.org/Style/CSS/</a>"&gt;CSS&lt;/a&gt; rules in single "part".&lt;br&gt;</em>
 <a class="jxr_linenumber" name="L203" href="#L203">203</a> <em class="jxr_javadoccomment">     * &lt;b&gt;Notice&lt;/b&gt;: all values smaller than &lt;tt&gt;1&lt;/tt&gt; are treated as &lt;tt&gt;4095&lt;/tt&gt;.</em>
-<a class="jxr_linenumber" name="L204" href="#L204">204</a> <em class="jxr_javadoccomment">     * @since 1.0</em>
+<a class="jxr_linenumber" name="L204" href="#L204">204</a> <em class="jxr_javadoccomment">     * @since 1.0.0</em>
 <a class="jxr_linenumber" name="L205" href="#L205">205</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L206" href="#L206">206</a>     @Parameter(property = <span class="jxr_string">"css.splitter.maxRules"</span>, defaultValue = MAX_RULES_DEFAULT_VALUE)
 <a class="jxr_linenumber" name="L207" href="#L207">207</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">int</strong> maxRules;
@@ -218,7 +218,7 @@
 <a class="jxr_linenumber" name="L210" href="#L210">210</a> <em class="jxr_javadoccomment">     * The plugin failures build when a number of &lt;a href="<a href="http://www.w3.org/Style/CSS/" target="alexandria_uri">http://www.w3.org/Style/CSS/</a>"&gt;CSS&lt;/a&gt; rules in source file</em>
 <a class="jxr_linenumber" name="L211" href="#L211">211</a> <em class="jxr_javadoccomment">     * exceeds this value.&lt;br&gt;</em>
 <a class="jxr_linenumber" name="L212" href="#L212">212</a> <em class="jxr_javadoccomment">     * &lt;b&gt;Notice&lt;/b&gt;: all values smaller than &lt;tt&gt;1&lt;/tt&gt; are treated as &lt;tt&gt;2147483647&lt;/tt&gt;.</em>
-<a class="jxr_linenumber" name="L213" href="#L213">213</a> <em class="jxr_javadoccomment">     * @since 1.0</em>
+<a class="jxr_linenumber" name="L213" href="#L213">213</a> <em class="jxr_javadoccomment">     * @since 1.0.0</em>
 <a class="jxr_linenumber" name="L214" href="#L214">214</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L215" href="#L215">215</a>     @Parameter(property = <span class="jxr_string">"css.splitter.rulesLimit"</span>, defaultValue = MAX_RULES_LIMIT)
 <a class="jxr_linenumber" name="L216" href="#L216">216</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">int</strong> rulesLimit;
@@ -227,7 +227,7 @@
 <a class="jxr_linenumber" name="L219" href="#L219">219</a> <em class="jxr_javadoccomment">     * The maximum number of generated &lt;code&gt;&amp;#64;import&lt;/code&gt; in a single file. The plugin ignores</em>
 <a class="jxr_linenumber" name="L220" href="#L220">220</a> <em class="jxr_javadoccomment">     * &lt;code&gt;&amp;#64;import&lt;/code&gt; operations that come from the source code.&lt;br&gt;</em>
 <a class="jxr_linenumber" name="L221" href="#L221">221</a> <em class="jxr_javadoccomment">     * &lt;b&gt;Notice&lt;/b&gt;: all values smaller than &lt;tt&gt;2&lt;/tt&gt; are treated as &lt;tt&gt;31&lt;/tt&gt;.</em>
-<a class="jxr_linenumber" name="L222" href="#L222">222</a> <em class="jxr_javadoccomment">     * @since 1.0</em>
+<a class="jxr_linenumber" name="L222" href="#L222">222</a> <em class="jxr_javadoccomment">     * @since 1.0.0</em>
 <a class="jxr_linenumber" name="L223" href="#L223">223</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L224" href="#L224">224</a>     @Parameter(property = <span class="jxr_string">"css.splitter.maxImports"</span>, defaultValue = MAX_IMPORTS_DEFAULT_VALUE)
 <a class="jxr_linenumber" name="L225" href="#L225">225</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">int</strong> maxImports;
@@ -236,7 +236,7 @@
 <a class="jxr_linenumber" name="L228" href="#L228">228</a> <em class="jxr_javadoccomment">     * The plugin failures build when a number of &lt;code&gt;&amp;#64;import&lt;/code&gt; depth level exceed this value. The plugin</em>
 <a class="jxr_linenumber" name="L229" href="#L229">229</a> <em class="jxr_javadoccomment">     * ignores &lt;code&gt;&amp;#64;import&lt;/code&gt; operations that come from the source code.&lt;br&gt;</em>
 <a class="jxr_linenumber" name="L230" href="#L230">230</a> <em class="jxr_javadoccomment">     * &lt;b&gt;Notice&lt;/b&gt;: all values smaller than &lt;tt&gt;1&lt;/tt&gt; are treated as &lt;tt&gt;4&lt;/tt&gt;.</em>
-<a class="jxr_linenumber" name="L231" href="#L231">231</a> <em class="jxr_javadoccomment">     * @since 1.0</em>
+<a class="jxr_linenumber" name="L231" href="#L231">231</a> <em class="jxr_javadoccomment">     * @since 1.0.0</em>
 <a class="jxr_linenumber" name="L232" href="#L232">232</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L233" href="#L233">233</a>     @Parameter(property = <span class="jxr_string">"css.splitter.importsDepthLimit"</span>, defaultValue = MAX_IMPORTS_DEPTH_LIMIT)
 <a class="jxr_linenumber" name="L234" href="#L234">234</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">int</strong> importsDepthLimit;
@@ -250,7 +250,7 @@
 <a class="jxr_linenumber" name="L242" href="#L242">242</a> <em class="jxr_javadoccomment">     * &lt;li&gt;&lt;b&gt;2.0&lt;/b&gt; - &lt;a href="https://www.w3.org/TR/2008/REC-CSS2-20080411/"&gt;Cascading Style Sheets Level 2&lt;/a&gt;&lt;/li&gt;</em>
 <a class="jxr_linenumber" name="L243" href="#L243">243</a> <em class="jxr_javadoccomment">     * &lt;li&gt;&lt;b&gt;1.0&lt;/b&gt; - &lt;a href="https://www.w3.org/TR/CSS1/"&gt;Cascading Style Sheets Level 1&lt;/a&gt;&lt;/li&gt;</em>
 <a class="jxr_linenumber" name="L244" href="#L244">244</a> <em class="jxr_javadoccomment">     * &lt;/ul&gt;</em>
-<a class="jxr_linenumber" name="L245" href="#L245">245</a> <em class="jxr_javadoccomment">     * @since 1.0</em>
+<a class="jxr_linenumber" name="L245" href="#L245">245</a> <em class="jxr_javadoccomment">     * @since 1.0.0</em>
 <a class="jxr_linenumber" name="L246" href="#L246">246</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L247" href="#L247">247</a>     @Parameter(property = <span class="jxr_string">"css.splitter.standard"</span>, defaultValue = <span class="jxr_string">"3.0"</span>)
 <a class="jxr_linenumber" name="L248" href="#L248">248</a>     <strong class="jxr_keyword">protected</strong> String standard;
@@ -261,7 +261,7 @@
 <a class="jxr_linenumber" name="L253" href="#L253">253</a> <em class="jxr_javadoccomment">     * &lt;code&gt;&amp;#64;page&lt;/code&gt; rule inside &lt;code&gt;&amp;#64;media&lt;/code&gt;).&lt;br&gt;</em>
 <a class="jxr_linenumber" name="L254" href="#L254">254</a> <em class="jxr_javadoccomment">     * &lt;b&gt;Notice&lt;/b&gt;: this functionality may stop working or be removed at any time. You should fix your code instead of</em>
 <a class="jxr_linenumber" name="L255" href="#L255">255</a> <em class="jxr_javadoccomment">     * relying on this functionality.</em>
-<a class="jxr_linenumber" name="L256" href="#L256">256</a> <em class="jxr_javadoccomment">     * @since 1.0</em>
+<a class="jxr_linenumber" name="L256" href="#L256">256</a> <em class="jxr_javadoccomment">     * @since 1.0.0</em>
 <a class="jxr_linenumber" name="L257" href="#L257">257</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L258" href="#L258">258</a>     @Parameter(property = <span class="jxr_string">"css.splitter.nonstrict"</span>, defaultValue = <span class="jxr_string">"false"</span>)
 <a class="jxr_linenumber" name="L259" href="#L259">259</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">boolean</strong> nonstrict;
@@ -274,7 +274,7 @@
 <a class="jxr_linenumber" name="L266" href="#L266">266</a> <em class="jxr_javadoccomment">     * &lt;li&gt;&lt;b&gt;date&lt;/b&gt; - build date&lt;/li&gt;</em>
 <a class="jxr_linenumber" name="L267" href="#L267">267</a> <em class="jxr_javadoccomment">     * &lt;li&gt;&lt;b&gt;none&lt;/b&gt; - token will not be added&lt;/li&gt;</em>
 <a class="jxr_linenumber" name="L268" href="#L268">268</a> <em class="jxr_javadoccomment">     * &lt;/ul&gt;</em>
-<a class="jxr_linenumber" name="L269" href="#L269">269</a> <em class="jxr_javadoccomment">     * @since 1.0</em>
+<a class="jxr_linenumber" name="L269" href="#L269">269</a> <em class="jxr_javadoccomment">     * @since 1.0.0</em>
 <a class="jxr_linenumber" name="L270" href="#L270">270</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L271" href="#L271">271</a>     @Parameter(property = <span class="jxr_string">"css.splitter.cacheTokenType"</span>, defaultValue = <span class="jxr_string">"none"</span>)
 <a class="jxr_linenumber" name="L272" href="#L272">272</a>     <strong class="jxr_keyword">protected</strong> String cacheTokenType;
@@ -283,7 +283,7 @@
 <a class="jxr_linenumber" name="L275" href="#L275">275</a> <em class="jxr_javadoccomment">     * Defines cache token parameter name which will be added to &lt;code&gt;&amp;#64;import&lt;/code&gt; links in destination</em>
 <a class="jxr_linenumber" name="L276" href="#L276">276</a> <em class="jxr_javadoccomment">     * &lt;a href="<a href="http://www.w3.org/Style/CSS/" target="alexandria_uri">http://www.w3.org/Style/CSS/</a>"&gt;CSS&lt;/a&gt; stylesheets.&lt;br&gt;</em>
 <a class="jxr_linenumber" name="L277" href="#L277">277</a> <em class="jxr_javadoccomment">     * &lt;b&gt;Notice&lt;/b&gt;: ignored when &lt;a href="#cacheTokenType"&gt;cache token type&lt;/a&gt; is equal to &lt;tt&gt;none&lt;/tt&gt;.</em>
-<a class="jxr_linenumber" name="L278" href="#L278">278</a> <em class="jxr_javadoccomment">     * @since 1.0</em>
+<a class="jxr_linenumber" name="L278" href="#L278">278</a> <em class="jxr_javadoccomment">     * @since 1.0.0</em>
 <a class="jxr_linenumber" name="L279" href="#L279">279</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L280" href="#L280">280</a>     @Parameter(property = <span class="jxr_string">"css.splitter.cacheTokenParameter"</span>, defaultValue = <span class="jxr_string">"v"</span>)
 <a class="jxr_linenumber" name="L281" href="#L281">281</a>     <strong class="jxr_keyword">protected</strong> String cacheTokenParameter;
@@ -298,21 +298,21 @@
 <a class="jxr_linenumber" name="L290" href="#L290">290</a> <em class="jxr_javadoccomment">     * &lt;b&gt;Default value is&lt;/b&gt;: &lt;tt&gt;yyyyMMddHHmmss&lt;/tt&gt; if &lt;a href="#cacheTokenType"&gt;cache token type&lt;/a&gt; is equal to</em>
 <a class="jxr_linenumber" name="L291" href="#L291">291</a> <em class="jxr_javadoccomment">     * &lt;tt&gt;date&lt;/tt&gt;.&lt;br&gt;</em>
 <a class="jxr_linenumber" name="L292" href="#L292">292</a> <em class="jxr_javadoccomment">     * &lt;b&gt;Required&lt;/b&gt;: &lt;tt&gt;YES&lt;/tt&gt; if &lt;a href="#cacheTokenType"&gt;cache token type&lt;/a&gt; is equal to &lt;tt&gt;custom&lt;/tt&gt;.</em>
-<a class="jxr_linenumber" name="L293" href="#L293">293</a> <em class="jxr_javadoccomment">     * @since 1.0</em>
+<a class="jxr_linenumber" name="L293" href="#L293">293</a> <em class="jxr_javadoccomment">     * @since 1.0.0</em>
 <a class="jxr_linenumber" name="L294" href="#L294">294</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L295" href="#L295">295</a>     @Parameter(property = <span class="jxr_string">"css.splitter.cacheTokenValue"</span>)
 <a class="jxr_linenumber" name="L296" href="#L296">296</a>     <strong class="jxr_keyword">protected</strong> String cacheTokenValue;
 <a class="jxr_linenumber" name="L297" href="#L297">297</a> 
 <a class="jxr_linenumber" name="L298" href="#L298">298</a>     <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L299" href="#L299">299</a> <em class="jxr_javadoccomment">     * Sources encoding.</em>
-<a class="jxr_linenumber" name="L300" href="#L300">300</a> <em class="jxr_javadoccomment">     * @since 1.0</em>
+<a class="jxr_linenumber" name="L300" href="#L300">300</a> <em class="jxr_javadoccomment">     * @since 1.0.0</em>
 <a class="jxr_linenumber" name="L301" href="#L301">301</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L302" href="#L302">302</a>     @Parameter(property = <span class="jxr_string">"css.splitter.encoding"</span>, defaultValue = <span class="jxr_string">"${project.build.sourceEncoding}"</span>)
 <a class="jxr_linenumber" name="L303" href="#L303">303</a>     <strong class="jxr_keyword">protected</strong> String encoding;
 <a class="jxr_linenumber" name="L304" href="#L304">304</a> 
 <a class="jxr_linenumber" name="L305" href="#L305">305</a>     <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L306" href="#L306">306</a> <em class="jxr_javadoccomment">     * Destination files naming pattern. {fileName} is equal to source file name without extension.</em>
-<a class="jxr_linenumber" name="L307" href="#L307">307</a> <em class="jxr_javadoccomment">     * @since 1.0</em>
+<a class="jxr_linenumber" name="L307" href="#L307">307</a> <em class="jxr_javadoccomment">     * @since 1.0.0</em>
 <a class="jxr_linenumber" name="L308" href="#L308">308</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L309" href="#L309">309</a>     @Parameter(property = <span class="jxr_string">"css.splitter.outputFileNamePattern"</span>, defaultValue = DestinationFileCreator.FILE_NAME_PARAMETER + <span class="jxr_string">".css"</span>)
 <a class="jxr_linenumber" name="L310" href="#L310">310</a>     <strong class="jxr_keyword">protected</strong> String outputFileNamePattern;
@@ -321,7 +321,7 @@
 <a class="jxr_linenumber" name="L313" href="#L313">313</a> <em class="jxr_javadoccomment">     * Destination "parts" naming pattern. {fileName} is equal to source file name without extension, {index} is equal</em>
 <a class="jxr_linenumber" name="L314" href="#L314">314</a> <em class="jxr_javadoccomment">     * to "part" index (first is equal to 1). "Parts" are loaded in the browsers according to indexes. For correct</em>
 <a class="jxr_linenumber" name="L315" href="#L315">315</a> <em class="jxr_javadoccomment">     * listing files on all operating systems indexes can contain leading zeros.</em>
-<a class="jxr_linenumber" name="L316" href="#L316">316</a> <em class="jxr_javadoccomment">     * @since 1.0</em>
+<a class="jxr_linenumber" name="L316" href="#L316">316</a> <em class="jxr_javadoccomment">     * @since 1.0.0</em>
 <a class="jxr_linenumber" name="L317" href="#L317">317</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L318" href="#L318">318</a>     @Parameter(property = <span class="jxr_string">"css.splitter.outputPartNamePattern"</span>, defaultValue = DestinationFileCreator.FILE_NAME_PARAMETER + '-'
 <a class="jxr_linenumber" name="L319" href="#L319">319</a>             + PART_INDEX_PARAMETER + <span class="jxr_string">".css"</span>)

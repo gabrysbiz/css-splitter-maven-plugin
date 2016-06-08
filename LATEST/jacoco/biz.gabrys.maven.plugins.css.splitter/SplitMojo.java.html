@@ -118,7 +118,7 @@ import biz.gabrys.maven.plugins.css.splitter.validation.StylePropertiesLimitVali
  * }
  * &lt;/pre&gt;
  * 
- * @since 1.0
+ * @since 1.0.0
  */
 @Mojo(name = &quot;split&quot;, defaultPhase = LifecyclePhase.PROCESS_SOURCES, threadSafe = true)
 <span class="nc" id="L124">public class SplitMojo extends AbstractMojo {</span>
@@ -131,7 +131,7 @@ import biz.gabrys.maven.plugins.css.splitter.validation.StylePropertiesLimitVali
 
     /**
      * Defines whether to skip the plugin execution.
-     * @since 1.0
+     * @since 1.0.0
      */
     @Parameter(property = &quot;css.splitter.skip&quot;, defaultValue = &quot;false&quot;)
     protected boolean skip;
@@ -139,7 +139,7 @@ import biz.gabrys.maven.plugins.css.splitter.validation.StylePropertiesLimitVali
     /**
      * Defines whether the plugin runs in verbose mode.&lt;br&gt;
      * &lt;b&gt;Notice&lt;/b&gt;: always true in debug mode.
-     * @since 1.0
+     * @since 1.0.0
      */
     @Parameter(property = &quot;css.splitter.verbose&quot;, defaultValue = &quot;false&quot;)
     protected boolean verbose;
@@ -147,21 +147,21 @@ import biz.gabrys.maven.plugins.css.splitter.validation.StylePropertiesLimitVali
     /**
      * Forces to always split the &lt;a href=&quot;http://www.w3.org/Style/CSS/&quot;&gt;CSS&lt;/a&gt; stylesheets. By default sources are
      * only split when modified or the &lt;a href=&quot;#outputFileNamePattern&quot;&gt;main destination file&lt;/a&gt; does not exist.
-     * @since 1.0
+     * @since 1.0.0
      */
     @Parameter(property = &quot;css.splitter.force&quot;, defaultValue = &quot;false&quot;)
     protected boolean force;
 
     /**
      * The directory which contains the &lt;a href=&quot;http://www.w3.org/Style/CSS/&quot;&gt;CSS&lt;/a&gt; stylesheets.
-     * @since 1.0
+     * @since 1.0.0
      */
     @Parameter(property = &quot;css.splitter.sourceDirectory&quot;, defaultValue = &quot;${project.basedir}/src/main/css&quot;)
     protected File sourceDirectory;
 
     /**
      * Specifies where to place split &lt;a href=&quot;http://www.w3.org/Style/CSS/&quot;&gt;CSS&lt;/a&gt; stylesheets.
-     * @since 1.0
+     * @since 1.0.0
      */
     @Parameter(property = &quot;css.splitter.outputDirectory&quot;, defaultValue = &quot;${project.build.directory}&quot;)
     protected File outputDirectory;
@@ -172,7 +172,7 @@ import biz.gabrys.maven.plugins.css.splitter.validation.StylePropertiesLimitVali
      * &lt;li&gt;&lt;b&gt;ant&lt;/b&gt; - &lt;a href=&quot;http://ant.apache.org/manual/dirtasks.html#patterns&quot;&gt;Ant patterns&lt;/a&gt;&lt;/li&gt;
      * &lt;li&gt;&lt;b&gt;regex&lt;/b&gt; - regular expressions (use '/' as path separator)&lt;/li&gt;
      * &lt;/ul&gt;
-     * @since 1.0
+     * @since 1.0.0
      */
     @Parameter(property = &quot;css.splitter.filesetPatternFormat&quot;, defaultValue = &quot;ant&quot;)
     protected String filesetPatternFormat;
@@ -183,7 +183,7 @@ import biz.gabrys.maven.plugins.css.splitter.validation.StylePropertiesLimitVali
      * formats&lt;/a&gt;.&lt;br&gt;
      * &lt;b&gt;Default value is&lt;/b&gt;: &lt;tt&gt;[&quot;&amp;#42;&amp;#42;/&amp;#42;.css&quot;]&lt;/tt&gt; for &lt;a href=&quot;#filesetPatternFormat&quot;&gt;ant&lt;/a&gt; or
      * &lt;tt&gt;[&quot;^.+\.css$&quot;]&lt;/tt&gt; for &lt;a href=&quot;#filesetPatternFormat&quot;&gt;regex&lt;/a&gt;.
-     * @since 1.0
+     * @since 1.0.0
      */
 <span class="nc" id="L188">    @Parameter</span>
     protected String[] includes = new String[0];
@@ -193,7 +193,7 @@ import biz.gabrys.maven.plugins.css.splitter.validation.StylePropertiesLimitVali
      * &lt;a href=&quot;#sourceDirectory&quot;&gt;source directory&lt;/a&gt;. See &lt;a href=&quot;#filesetPatternFormat&quot;&gt;available fileset patterns
      * formats&lt;/a&gt;.&lt;br&gt;
      * &lt;b&gt;Default value is&lt;/b&gt;: &lt;tt&gt;[]&lt;/tt&gt;.
-     * @since 1.0
+     * @since 1.0.0
      */
 <span class="nc" id="L198">    @Parameter</span>
     protected String[] excludes = new String[0];
@@ -201,7 +201,7 @@ import biz.gabrys.maven.plugins.css.splitter.validation.StylePropertiesLimitVali
     /**
      * The maximum number of &lt;a href=&quot;http://www.w3.org/Style/CSS/&quot;&gt;CSS&lt;/a&gt; rules in single &quot;part&quot;.&lt;br&gt;
      * &lt;b&gt;Notice&lt;/b&gt;: all values smaller than &lt;tt&gt;1&lt;/tt&gt; are treated as &lt;tt&gt;4095&lt;/tt&gt;.
-     * @since 1.0
+     * @since 1.0.0
      */
     @Parameter(property = &quot;css.splitter.maxRules&quot;, defaultValue = MAX_RULES_DEFAULT_VALUE)
     protected int maxRules;
@@ -210,7 +210,7 @@ import biz.gabrys.maven.plugins.css.splitter.validation.StylePropertiesLimitVali
      * The plugin failures build when a number of &lt;a href=&quot;http://www.w3.org/Style/CSS/&quot;&gt;CSS&lt;/a&gt; rules in source file
      * exceeds this value.&lt;br&gt;
      * &lt;b&gt;Notice&lt;/b&gt;: all values smaller than &lt;tt&gt;1&lt;/tt&gt; are treated as &lt;tt&gt;2147483647&lt;/tt&gt;.
-     * @since 1.0
+     * @since 1.0.0
      */
     @Parameter(property = &quot;css.splitter.rulesLimit&quot;, defaultValue = MAX_RULES_LIMIT)
     protected int rulesLimit;
@@ -219,7 +219,7 @@ import biz.gabrys.maven.plugins.css.splitter.validation.StylePropertiesLimitVali
      * The maximum number of generated &lt;code&gt;&amp;#64;import&lt;/code&gt; in a single file. The plugin ignores
      * &lt;code&gt;&amp;#64;import&lt;/code&gt; operations that come from the source code.&lt;br&gt;
      * &lt;b&gt;Notice&lt;/b&gt;: all values smaller than &lt;tt&gt;2&lt;/tt&gt; are treated as &lt;tt&gt;31&lt;/tt&gt;.
-     * @since 1.0
+     * @since 1.0.0
      */
     @Parameter(property = &quot;css.splitter.maxImports&quot;, defaultValue = MAX_IMPORTS_DEFAULT_VALUE)
     protected int maxImports;
@@ -228,7 +228,7 @@ import biz.gabrys.maven.plugins.css.splitter.validation.StylePropertiesLimitVali
      * The plugin failures build when a number of &lt;code&gt;&amp;#64;import&lt;/code&gt; depth level exceed this value. The plugin
      * ignores &lt;code&gt;&amp;#64;import&lt;/code&gt; operations that come from the source code.&lt;br&gt;
      * &lt;b&gt;Notice&lt;/b&gt;: all values smaller than &lt;tt&gt;1&lt;/tt&gt; are treated as &lt;tt&gt;4&lt;/tt&gt;.
-     * @since 1.0
+     * @since 1.0.0
      */
     @Parameter(property = &quot;css.splitter.importsDepthLimit&quot;, defaultValue = MAX_IMPORTS_DEPTH_LIMIT)
     protected int importsDepthLimit;
@@ -242,7 +242,7 @@ import biz.gabrys.maven.plugins.css.splitter.validation.StylePropertiesLimitVali
      * &lt;li&gt;&lt;b&gt;2.0&lt;/b&gt; - &lt;a href=&quot;https://www.w3.org/TR/2008/REC-CSS2-20080411/&quot;&gt;Cascading Style Sheets Level 2&lt;/a&gt;&lt;/li&gt;
      * &lt;li&gt;&lt;b&gt;1.0&lt;/b&gt; - &lt;a href=&quot;https://www.w3.org/TR/CSS1/&quot;&gt;Cascading Style Sheets Level 1&lt;/a&gt;&lt;/li&gt;
      * &lt;/ul&gt;
-     * @since 1.0
+     * @since 1.0.0
      */
     @Parameter(property = &quot;css.splitter.standard&quot;, defaultValue = &quot;3.0&quot;)
     protected String standard;
@@ -253,7 +253,7 @@ import biz.gabrys.maven.plugins.css.splitter.validation.StylePropertiesLimitVali
      * &lt;code&gt;&amp;#64;page&lt;/code&gt; rule inside &lt;code&gt;&amp;#64;media&lt;/code&gt;).&lt;br&gt;
      * &lt;b&gt;Notice&lt;/b&gt;: this functionality may stop working or be removed at any time. You should fix your code instead of
      * relying on this functionality.
-     * @since 1.0
+     * @since 1.0.0
      */
     @Parameter(property = &quot;css.splitter.nonstrict&quot;, defaultValue = &quot;false&quot;)
     protected boolean nonstrict;
@@ -266,7 +266,7 @@ import biz.gabrys.maven.plugins.css.splitter.validation.StylePropertiesLimitVali
      * &lt;li&gt;&lt;b&gt;date&lt;/b&gt; - build date&lt;/li&gt;
      * &lt;li&gt;&lt;b&gt;none&lt;/b&gt; - token will not be added&lt;/li&gt;
      * &lt;/ul&gt;
-     * @since 1.0
+     * @since 1.0.0
      */
     @Parameter(property = &quot;css.splitter.cacheTokenType&quot;, defaultValue = &quot;none&quot;)
     protected String cacheTokenType;
@@ -275,7 +275,7 @@ import biz.gabrys.maven.plugins.css.splitter.validation.StylePropertiesLimitVali
      * Defines cache token parameter name which will be added to &lt;code&gt;&amp;#64;import&lt;/code&gt; links in destination
      * &lt;a href=&quot;http://www.w3.org/Style/CSS/&quot;&gt;CSS&lt;/a&gt; stylesheets.&lt;br&gt;
      * &lt;b&gt;Notice&lt;/b&gt;: ignored when &lt;a href=&quot;#cacheTokenType&quot;&gt;cache token type&lt;/a&gt; is equal to &lt;tt&gt;none&lt;/tt&gt;.
-     * @since 1.0
+     * @since 1.0.0
      */
     @Parameter(property = &quot;css.splitter.cacheTokenParameter&quot;, defaultValue = &quot;v&quot;)
     protected String cacheTokenParameter;
@@ -290,21 +290,21 @@ import biz.gabrys.maven.plugins.css.splitter.validation.StylePropertiesLimitVali
      * &lt;b&gt;Default value is&lt;/b&gt;: &lt;tt&gt;yyyyMMddHHmmss&lt;/tt&gt; if &lt;a href=&quot;#cacheTokenType&quot;&gt;cache token type&lt;/a&gt; is equal to
      * &lt;tt&gt;date&lt;/tt&gt;.&lt;br&gt;
      * &lt;b&gt;Required&lt;/b&gt;: &lt;tt&gt;YES&lt;/tt&gt; if &lt;a href=&quot;#cacheTokenType&quot;&gt;cache token type&lt;/a&gt; is equal to &lt;tt&gt;custom&lt;/tt&gt;.
-     * @since 1.0
+     * @since 1.0.0
      */
     @Parameter(property = &quot;css.splitter.cacheTokenValue&quot;)
     protected String cacheTokenValue;
 
     /**
      * Sources encoding.
-     * @since 1.0
+     * @since 1.0.0
      */
     @Parameter(property = &quot;css.splitter.encoding&quot;, defaultValue = &quot;${project.build.sourceEncoding}&quot;)
     protected String encoding;
 
     /**
      * Destination files naming pattern. {fileName} is equal to source file name without extension.
-     * @since 1.0
+     * @since 1.0.0
      */
     @Parameter(property = &quot;css.splitter.outputFileNamePattern&quot;, defaultValue = DestinationFileCreator.FILE_NAME_PARAMETER + &quot;.css&quot;)
     protected String outputFileNamePattern;
@@ -313,7 +313,7 @@ import biz.gabrys.maven.plugins.css.splitter.validation.StylePropertiesLimitVali
      * Destination &quot;parts&quot; naming pattern. {fileName} is equal to source file name without extension, {index} is equal
      * to &quot;part&quot; index (first is equal to 1). &quot;Parts&quot; are loaded in the browsers according to indexes. For correct
      * listing files on all operating systems indexes can contain leading zeros.
-     * @since 1.0
+     * @since 1.0.0
      */
     @Parameter(property = &quot;css.splitter.outputPartNamePattern&quot;, defaultValue = DestinationFileCreator.FILE_NAME_PARAMETER + '-'
             + PART_INDEX_PARAMETER + &quot;.css&quot;)
