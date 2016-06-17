@@ -345,7 +345,8 @@ public class SplitMojo extends AbstractMojo {
         logger.append("excludes", excludes);
         logger.append("maxRules", maxRules, new SimpleSanitizer(maxRules > 0, MAX_RULES_DEFAULT_VALUE));
         logger.append("rulesLimit", rulesLimit, new SimpleSanitizer(rulesLimit > 0, MAX_RULES_LIMIT));
-        logger.append("maxImports", maxImports, new SimpleSanitizer(maxImports > 1, MAX_IMPORTS_DEFAULT_VALUE));
+        logger.append("maxImports", maxImports,
+                new SimpleSanitizer(maxImports >= OrderedTree.MIN_NUMBER_OF_CHILDREN, MAX_IMPORTS_DEFAULT_VALUE));
         logger.append("importsDepthLimit", importsDepthLimit, new SimpleSanitizer(importsDepthLimit > 0, MAX_IMPORTS_DEPTH_LIMIT));
         logger.append("standard", standard);
         logger.append("nonstrict", nonstrict);
