@@ -14,7 +14,6 @@ package biz.gabrys.maven.plugins.css.splitter;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -31,6 +30,11 @@ import biz.gabrys.maven.plugin.util.io.DestinationFileCreator;
 import biz.gabrys.maven.plugin.util.io.FileScanner;
 import biz.gabrys.maven.plugin.util.io.ScannerFactory;
 import biz.gabrys.maven.plugin.util.io.ScannerPatternFormat;
+import biz.gabrys.maven.plugin.util.parameter.ParametersLogBuilder;
+import biz.gabrys.maven.plugin.util.parameter.sanitizer.LazySimpleSanitizer;
+import biz.gabrys.maven.plugin.util.parameter.sanitizer.LazySimpleSanitizer.ValueContainer;
+import biz.gabrys.maven.plugin.util.parameter.sanitizer.SimpleSanitizer;
+import biz.gabrys.maven.plugin.util.parameter.sanitizer.ValueSanitizer;
 import biz.gabrys.maven.plugin.util.timer.SystemTimer;
 import biz.gabrys.maven.plugin.util.timer.Timer;
 import biz.gabrys.maven.plugins.css.splitter.css.Standard;
@@ -322,41 +326,51 @@ public class SplitMojo extends AbstractMojo {
     private String resolvedCacheToken = "";
 
     private void logParameters() {
-        if (getLog().isDebugEnabled()) {
-            getLog().debug("Job parameters:");
-            getLog().debug("\tskip = " + skip);
-            getLog().debug("\tverbose = " + verbose + (verbose ? "" : createCalculatedInfo(Boolean.TRUE)));
-            getLog().debug("\tforce = " + force);
-            getLog().debug("\tsourceDirectory = " + sourceDirectory);
-            getLog().debug("\toutputDirectory = " + outputDirectory);
-            getLog().debug("\tfilesetPatternFormat = " + filesetPatternFormat);
-            final String calculatedIncludes = includes.length != 0 ? "" : createCalculatedInfo(Arrays.toString(getDefaultIncludes()));
-            getLog().debug("\tincludes = " + Arrays.toString(includes) + calculatedIncludes);
-            getLog().debug("\texcludes = " + Arrays.toString(excludes));
-            getLog().debug("\tmaxRules = " + maxRules + (maxRules > 0 ? "" : createCalculatedInfo(MAX_RULES_DEFAULT_VALUE)));
-            getLog().debug("\trulesLimit = " + rulesLimit + (rulesLimit > 0 ? "" : createCalculatedInfo(MAX_RULES_LIMIT)));
-            getLog().debug("\tmaxImports = " + maxImports + (maxImports > 1 ? "" : createCalculatedInfo(MAX_IMPORTS_DEFAULT_VALUE)));
-            getLog().debug("\timportsDepthLimit = " + importsDepthLimit
-                    + (importsDepthLimit > 0 ? "" : createCalculatedInfo(MAX_IMPORTS_DEPTH_LIMIT)));
-            getLog().debug("\tstandard = " + standard);
-            getLog().debug("\tnonstrict = " + nonstrict);
-            getLog().debug("\tcacheTokenType = " + cacheTokenType);
-            getLog().debug("\tcacheTokenParameter = " + cacheTokenParameter);
-            String calculatedCacheTokenValue = "";
-            if (cacheTokenValue == null) {
-                final String defaultCacheTokenValue = getDefaultCacheTokenValue();
-                calculatedCacheTokenValue = defaultCacheTokenValue != null ? createCalculatedInfo(defaultCacheTokenValue) : "";
-            }
-            getLog().debug("\tcacheTokenValue = " + cacheTokenValue + calculatedCacheTokenValue);
-            getLog().debug("\tencoding = " + encoding);
-            getLog().debug("\toutputFileNamePattern = " + outputFileNamePattern);
-            getLog().debug("\toutputPartNamePattern = " + outputPartNamePattern);
-            getLog().debug("");
+        if (!getLog().isDebugEnabled()) {
+            return;
         }
-    }
+        final ParametersLogBuilder logger = new ParametersLogBuilder(getLog());
+        logger.append("skip", skip);
+        logger.append("verbose", verbose, new SimpleSanitizer(verbose, Boolean.TRUE));
+        logger.append("force", force);
+        logger.append("sourceDirectory", sourceDirectory);
+        logger.append("outputDirectory", outputDirectory);
+        logger.append("filesetPatternFormat", filesetPatternFormat);
+        logger.append("includes", includes, new LazySimpleSanitizer(includes.length != 0, new ValueContainer() {
 
-    private static String createCalculatedInfo(final Object value) {
-        return String.format(" (calculated: %s)", value);
+            public Object getValue() {
+                return getDefaultIncludes();
+            }
+        }));
+        logger.append("excludes", excludes);
+        logger.append("maxRules", maxRules, new SimpleSanitizer(maxRules > 0, MAX_RULES_DEFAULT_VALUE));
+        logger.append("rulesLimit", rulesLimit, new SimpleSanitizer(rulesLimit > 0, MAX_RULES_LIMIT));
+        logger.append("maxImports", maxImports, new SimpleSanitizer(maxImports > 1, MAX_IMPORTS_DEFAULT_VALUE));
+        logger.append("importsDepthLimit", importsDepthLimit, new SimpleSanitizer(importsDepthLimit > 0, MAX_IMPORTS_DEPTH_LIMIT));
+        logger.append("standard", standard);
+        logger.append("nonstrict", nonstrict);
+        logger.append("cacheTokenType", cacheTokenType);
+        logger.append("cacheTokenParameter", cacheTokenParameter);
+        logger.append("cacheTokenValue", cacheTokenValue, new ValueSanitizer() {
+
+            private Object sanitizedValue;
+
+            public boolean isValid(final Object value) {
+                if (cacheTokenValue != null) {
+                    return true;
+                }
+                sanitizedValue = getDefaultCacheTokenValue();
+                return sanitizedValue == null;
+            }
+
+            public Object sanitize(final Object value) {
+                return sanitizedValue;
+            }
+        });
+        logger.append("encoding", encoding);
+        logger.append("outputFileNamePattern", outputFileNamePattern);
+        logger.append("outputPartNamePattern", outputPartNamePattern);
+        logger.debug();
     }
 
     private String[] getDefaultIncludes() {
