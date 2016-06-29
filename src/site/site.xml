@@ -4,6 +4,7 @@
 
     <bannerLeft>
         <name>${projectName}</name>
+        <href>//css-splitter-maven-plugin.projects.gabrys.biz/</href>
     </bannerLeft>
 
     <skin>
