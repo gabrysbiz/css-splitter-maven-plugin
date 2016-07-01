@@ -14,7 +14,7 @@ package biz.gabrys.maven.plugins.css.splitter.message;
 
 import org.apache.maven.plugin.logging.Log;
 
-import biz.gabrys.maven.plugins.css.splitter.css.types.UnknownRule;
+import biz.gabrys.maven.plugins.css.splitter.css.type.UnknownRule;
 
 class UnknownRuleSizeMessagePrinter extends AbstractMessagePrinter<UnknownRule> {
 

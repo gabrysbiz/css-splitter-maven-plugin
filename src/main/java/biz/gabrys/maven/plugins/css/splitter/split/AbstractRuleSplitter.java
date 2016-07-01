@@ -12,7 +12,7 @@
  */
 package biz.gabrys.maven.plugins.css.splitter.split;
 
-import biz.gabrys.maven.plugins.css.splitter.css.types.NodeRule;
+import biz.gabrys.maven.plugins.css.splitter.css.type.NodeRule;
 
 abstract class AbstractRuleSplitter<T extends NodeRule> implements RuleSplitter {
 

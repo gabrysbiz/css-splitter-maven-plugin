@@ -3,7 +3,7 @@ package biz.gabrys.maven.plugins.css.splitter.split;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import biz.gabrys.maven.plugins.css.splitter.css.types.NodeRule;
+import biz.gabrys.maven.plugins.css.splitter.css.type.NodeRule;
 
 public final class NeighborsManagerTest {
 

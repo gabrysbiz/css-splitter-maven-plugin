@@ -7,8 +7,8 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import biz.gabrys.maven.plugins.css.splitter.css.types.ComplexRule;
-import biz.gabrys.maven.plugins.css.splitter.css.types.NodeRule;
+import biz.gabrys.maven.plugins.css.splitter.css.type.ComplexRule;
+import biz.gabrys.maven.plugins.css.splitter.css.type.NodeRule;
 
 public final class TreeMessagePrinterTest {
 

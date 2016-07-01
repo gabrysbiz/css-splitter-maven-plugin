@@ -5,7 +5,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import biz.gabrys.maven.plugins.css.splitter.css.types.UnknownRule;
+import biz.gabrys.maven.plugins.css.splitter.css.type.UnknownRule;
 
 public final class UnknownRuleSizeMessagePrinterTest {
 

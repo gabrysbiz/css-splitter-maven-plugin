@@ -3,7 +3,7 @@ package biz.gabrys.maven.plugins.css.splitter.validation;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import biz.gabrys.maven.plugins.css.splitter.css.types.StyleRule;
+import biz.gabrys.maven.plugins.css.splitter.css.type.StyleRule;
 
 public final class StyleRulePropertiesLimitValidatorTest {
 

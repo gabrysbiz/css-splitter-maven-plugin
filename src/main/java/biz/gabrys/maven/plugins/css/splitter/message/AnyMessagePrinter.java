@@ -17,7 +17,7 @@ import java.util.List;
 
 import org.apache.maven.plugin.logging.Log;
 
-import biz.gabrys.maven.plugins.css.splitter.css.types.NodeRule;
+import biz.gabrys.maven.plugins.css.splitter.css.type.NodeRule;
 
 class AnyMessagePrinter implements MessagePrinter {
 

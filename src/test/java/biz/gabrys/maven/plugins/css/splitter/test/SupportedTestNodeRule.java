@@ -2,7 +2,7 @@ package biz.gabrys.maven.plugins.css.splitter.test;
 
 import java.util.List;
 
-import biz.gabrys.maven.plugins.css.splitter.css.types.AbstractNodeRule;
+import biz.gabrys.maven.plugins.css.splitter.css.type.AbstractNodeRule;
 
 public class SupportedTestNodeRule extends AbstractNodeRule {
 

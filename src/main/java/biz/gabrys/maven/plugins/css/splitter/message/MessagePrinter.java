@@ -12,7 +12,7 @@
  */
 package biz.gabrys.maven.plugins.css.splitter.message;
 
-import biz.gabrys.maven.plugins.css.splitter.css.types.NodeRule;
+import biz.gabrys.maven.plugins.css.splitter.css.type.NodeRule;
 
 interface MessagePrinter {
 

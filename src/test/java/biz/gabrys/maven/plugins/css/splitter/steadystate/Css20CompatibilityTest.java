@@ -6,10 +6,10 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import biz.gabrys.maven.plugins.css.splitter.css.Standard;
-import biz.gabrys.maven.plugins.css.splitter.css.types.ComplexRule;
-import biz.gabrys.maven.plugins.css.splitter.css.types.StyleRule;
-import biz.gabrys.maven.plugins.css.splitter.css.types.StyleSheet;
-import biz.gabrys.maven.plugins.css.splitter.css.types.UnknownRule;
+import biz.gabrys.maven.plugins.css.splitter.css.type.ComplexRule;
+import biz.gabrys.maven.plugins.css.splitter.css.type.StyleRule;
+import biz.gabrys.maven.plugins.css.splitter.css.type.StyleSheet;
+import biz.gabrys.maven.plugins.css.splitter.css.type.UnknownRule;
 
 public final class Css20CompatibilityTest {
 

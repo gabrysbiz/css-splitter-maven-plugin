@@ -7,8 +7,8 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import biz.gabrys.maven.plugins.css.splitter.css.types.StyleProperty;
-import biz.gabrys.maven.plugins.css.splitter.css.types.StyleRule;
+import biz.gabrys.maven.plugins.css.splitter.css.type.StyleProperty;
+import biz.gabrys.maven.plugins.css.splitter.css.type.StyleRule;
 
 public final class StyleRuleSplitterTest {
 

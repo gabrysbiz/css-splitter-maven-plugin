@@ -14,8 +14,8 @@ package biz.gabrys.maven.plugins.css.splitter.message;
 
 import org.apache.maven.plugin.logging.Log;
 
-import biz.gabrys.maven.plugins.css.splitter.css.types.NodeRule;
-import biz.gabrys.maven.plugins.css.splitter.css.types.StyleSheet;
+import biz.gabrys.maven.plugins.css.splitter.css.type.NodeRule;
+import biz.gabrys.maven.plugins.css.splitter.css.type.StyleSheet;
 
 public class StylesheetMessagePrinter {
 
