@@ -21,8 +21,8 @@ import org.w3c.dom.css.CSSStyleSheet;
 
 import com.steadystate.css.parser.CSSOMParser;
 
-import biz.gabrys.maven.plugins.css.splitter.css.types.StyleSheet;
-import biz.gabrys.maven.plugins.css.splitter.steadystate.converters.StyleSheetConverter;
+import biz.gabrys.maven.plugins.css.splitter.css.type.StyleSheet;
+import biz.gabrys.maven.plugins.css.splitter.steadystate.converter.StyleSheetConverter;
 
 public class SteadyStateParser {
 

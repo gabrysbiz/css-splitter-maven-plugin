@@ -15,7 +15,7 @@ package biz.gabrys.maven.plugins.css.splitter.split;
 import java.util.ArrayList;
 import java.util.List;
 
-import biz.gabrys.maven.plugins.css.splitter.css.types.NodeRule;
+import biz.gabrys.maven.plugins.css.splitter.css.type.NodeRule;
 
 class MultipleRuleSplitter implements RuleSplitter {
 

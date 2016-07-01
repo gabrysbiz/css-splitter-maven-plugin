@@ -12,7 +12,7 @@
  */
 package biz.gabrys.maven.plugins.css.splitter.validation;
 
-import biz.gabrys.maven.plugins.css.splitter.css.types.StyleSheet;
+import biz.gabrys.maven.plugins.css.splitter.css.type.StyleSheet;
 
 public final class RulesLimitValidator {
 

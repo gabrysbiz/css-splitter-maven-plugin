@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>StyleRule.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">CSS Splitter Maven Plugin</a> &gt; <a href="index.source.html" class="el_package">biz.gabrys.maven.plugins.css.splitter.css.type</a> &gt; <span class="el_source">StyleRule.java</span></div><h1>StyleRule.java</h1><pre class="source lang-java linenums">/*
+ * CSS Splitter Maven Plugin
+ * http://css-splitter-maven-plugin.projects.gabrys.biz/
+ *
+ * Copyright (c) 2015 Adam Gabryś
+ *
+ * This file is licensed under the BSD 3-Clause (the &quot;License&quot;).
+ * You may not use this file except in compliance with the License.
+ * You may obtain:
+ * - a copy of the License at project page
+ * - a template of the License at https://opensource.org/licenses/BSD-3-Clause
+ */
+package biz.gabrys.maven.plugins.css.splitter.css.type;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.codehaus.plexus.util.StringUtils;
+
+public class StyleRule extends AbstractNodeRule {
+
+    private final List&lt;String&gt; selectors;
+    private final List&lt;StyleProperty&gt; properties;
+    private final boolean splittable;
+
+    public StyleRule(final List&lt;String&gt; selectors, final List&lt;StyleProperty&gt; properties) {
+<span class="fc" id="L27">        this(selectors, properties, true);</span>
+<span class="fc" id="L28">    }</span>
+
+<span class="fc" id="L30">    public StyleRule(final List&lt;String&gt; selectors, final List&lt;StyleProperty&gt; properties, final boolean splittable) {</span>
+<span class="fc" id="L31">        TreeUtils.fillNeighbors(this, properties);</span>
+<span class="fc" id="L32">        this.selectors = new ArrayList&lt;String&gt;(selectors);</span>
+<span class="fc" id="L33">        this.properties = new ArrayList&lt;StyleProperty&gt;(properties);</span>
+<span class="fc" id="L34">        this.splittable = splittable;</span>
+<span class="fc" id="L35">    }</span>
+
+    public List&lt;String&gt; getSelectors() {
+<span class="fc" id="L38">        return new ArrayList&lt;String&gt;(selectors);</span>
+    }
+
+    public List&lt;StyleProperty&gt; getProperties() {
+<span class="fc" id="L42">        return new ArrayList&lt;StyleProperty&gt;(properties);</span>
+    }
+
+    public boolean isSplittable() {
+<span class="nc" id="L46">        return splittable;</span>
+    }
+
+    @Override
+    protected void fillLines(final List&lt;String&gt; lines) {
+<span class="fc" id="L51">        lines.add(StringUtils.join(selectors.iterator(), &quot;, &quot;) + &quot; {&quot;);</span>
+<span class="fc bfc" id="L52" title="All 2 branches covered.">        for (final StyleProperty property : properties) {</span>
+<span class="fc" id="L53">            lines.add(INDENTATION + property.getCode());</span>
+<span class="fc" id="L54">        }</span>
+<span class="fc" id="L55">        lines.add(&quot;}&quot;);</span>
+<span class="fc" id="L56">    }</span>
+
+    @Override
+    protected int getSize2() {
+<span class="fc bfc" id="L60" title="All 2 branches covered.">        return properties.isEmpty() ? 1 : properties.size();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.7.201606060606</span></div></body></html>

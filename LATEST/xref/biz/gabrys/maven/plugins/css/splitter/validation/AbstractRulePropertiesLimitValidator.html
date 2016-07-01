@@ -20,7 +20,7 @@
 <a class="jxr_linenumber" name="L12" href="#L12">12</a>  <em class="jxr_comment"> */</em>
 <a class="jxr_linenumber" name="L13" href="#L13">13</a>  <strong class="jxr_keyword">package</strong> biz.gabrys.maven.plugins.css.splitter.validation;
 <a class="jxr_linenumber" name="L14" href="#L14">14</a>  
-<a class="jxr_linenumber" name="L15" href="#L15">15</a>  <strong class="jxr_keyword">import</strong> biz.gabrys.maven.plugins.css.splitter.css.types.NodeRule;
+<a class="jxr_linenumber" name="L15" href="#L15">15</a>  <strong class="jxr_keyword">import</strong> biz.gabrys.maven.plugins.css.splitter.css.type.NodeRule;
 <a class="jxr_linenumber" name="L16" href="#L16">16</a>  
 <a class="jxr_linenumber" name="L17" href="#L17">17</a>  <strong class="jxr_keyword">abstract</strong> <strong class="jxr_keyword">class</strong> AbstractRulePropertiesLimitValidator&lt;T <strong class="jxr_keyword">extends</strong> NodeRule&gt; <strong class="jxr_keyword">implements</strong> <a href="../../../../../../../biz/gabrys/maven/plugins/css/splitter/validation/RulePropertiesLimitValidator.html">RulePropertiesLimitValidator</a> {
 <a class="jxr_linenumber" name="L18" href="#L18">18</a>  
@@ -30,11 +30,11 @@
 <a class="jxr_linenumber" name="L22" href="#L22">22</a>          <strong class="jxr_keyword">this</strong>.clazz = clazz;
 <a class="jxr_linenumber" name="L23" href="#L23">23</a>      }
 <a class="jxr_linenumber" name="L24" href="#L24">24</a>  
-<a class="jxr_linenumber" name="L25" href="#L25">25</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">boolean</strong> isSupportedType(<strong class="jxr_keyword">final</strong> <a href="../../../../../../../biz/gabrys/maven/plugins/css/splitter/css/types/NodeRule.html">NodeRule</a> rule) {
+<a class="jxr_linenumber" name="L25" href="#L25">25</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">boolean</strong> isSupportedType(<strong class="jxr_keyword">final</strong> <a href="../../../../../../../biz/gabrys/maven/plugins/css/splitter/css/type/NodeRule.html">NodeRule</a> rule) {
 <a class="jxr_linenumber" name="L26" href="#L26">26</a>          <strong class="jxr_keyword">return</strong> rule != <strong class="jxr_keyword">null</strong> &amp;&amp; rule.getClass() == clazz;
 <a class="jxr_linenumber" name="L27" href="#L27">27</a>      }
 <a class="jxr_linenumber" name="L28" href="#L28">28</a>  
-<a class="jxr_linenumber" name="L29" href="#L29">29</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">void</strong> validate(<strong class="jxr_keyword">final</strong> <a href="../../../../../../../biz/gabrys/maven/plugins/css/splitter/css/types/NodeRule.html">NodeRule</a> rule, <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> limit) {
+<a class="jxr_linenumber" name="L29" href="#L29">29</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">void</strong> validate(<strong class="jxr_keyword">final</strong> <a href="../../../../../../../biz/gabrys/maven/plugins/css/splitter/css/type/NodeRule.html">NodeRule</a> rule, <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> limit) {
 <a class="jxr_linenumber" name="L30" href="#L30">30</a>          <strong class="jxr_keyword">if</strong> (!isSupportedType(rule)) {
 <a class="jxr_linenumber" name="L31" href="#L31">31</a>              <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IllegalArgumentException(String.format(<span class="jxr_string">"Cannot cast an instance of the %s to the %s class!"</span>,
 <a class="jxr_linenumber" name="L32" href="#L32">32</a>                      rule == <strong class="jxr_keyword">null</strong> ? <span class="jxr_string">"null"</span> : rule.getClass().getName(), clazz.getName()));

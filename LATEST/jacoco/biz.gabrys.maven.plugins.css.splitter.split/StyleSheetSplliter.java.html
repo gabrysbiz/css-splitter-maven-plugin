@@ -17,8 +17,8 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-import biz.gabrys.maven.plugins.css.splitter.css.types.NodeRule;
-import biz.gabrys.maven.plugins.css.splitter.css.types.StyleSheet;
+import biz.gabrys.maven.plugins.css.splitter.css.type.NodeRule;
+import biz.gabrys.maven.plugins.css.splitter.css.type.StyleSheet;
 
 public class StyleSheetSplliter {
 

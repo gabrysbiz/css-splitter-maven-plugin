@@ -46,7 +46,7 @@
 <a class="jxr_linenumber" name="L38" href="#L38">38</a>  <strong class="jxr_keyword">import</strong> biz.gabrys.maven.plugin.util.timer.SystemTimer;
 <a class="jxr_linenumber" name="L39" href="#L39">39</a>  <strong class="jxr_keyword">import</strong> biz.gabrys.maven.plugin.util.timer.Timer;
 <a class="jxr_linenumber" name="L40" href="#L40">40</a>  <strong class="jxr_keyword">import</strong> biz.gabrys.maven.plugins.css.splitter.css.Standard;
-<a class="jxr_linenumber" name="L41" href="#L41">41</a>  <strong class="jxr_keyword">import</strong> biz.gabrys.maven.plugins.css.splitter.css.types.StyleSheet;
+<a class="jxr_linenumber" name="L41" href="#L41">41</a>  <strong class="jxr_keyword">import</strong> biz.gabrys.maven.plugins.css.splitter.css.type.StyleSheet;
 <a class="jxr_linenumber" name="L42" href="#L42">42</a>  <strong class="jxr_keyword">import</strong> biz.gabrys.maven.plugins.css.splitter.message.StylesheetMessagePrinter;
 <a class="jxr_linenumber" name="L43" href="#L43">43</a>  <strong class="jxr_keyword">import</strong> biz.gabrys.maven.plugins.css.splitter.net.UrlEscaper;
 <a class="jxr_linenumber" name="L44" href="#L44">44</a>  <strong class="jxr_keyword">import</strong> biz.gabrys.maven.plugins.css.splitter.split.StyleSheetSplliter;
@@ -526,7 +526,7 @@
 <a class="jxr_linenumber" name="L518" href="#L518">518</a>             timer = SystemTimer.getStartedTimer();
 <a class="jxr_linenumber" name="L519" href="#L519">519</a>         }
 <a class="jxr_linenumber" name="L520" href="#L520">520</a>         <strong class="jxr_keyword">final</strong> String css = readCss(source);
-<a class="jxr_linenumber" name="L521" href="#L521">521</a>         <strong class="jxr_keyword">final</strong> <a href="../../../../../../biz/gabrys/maven/plugins/css/splitter/css/types/StyleSheet.html">StyleSheet</a> stylesheet = parseStyleSheet(css);
+<a class="jxr_linenumber" name="L521" href="#L521">521</a>         <strong class="jxr_keyword">final</strong> <a href="../../../../../../biz/gabrys/maven/plugins/css/splitter/css/type/StyleSheet.html">StyleSheet</a> stylesheet = parseStyleSheet(css);
 <a class="jxr_linenumber" name="L522" href="#L522">522</a>         validateStyleSheet(stylesheet);
 <a class="jxr_linenumber" name="L523" href="#L523">523</a>         <strong class="jxr_keyword">final</strong> List&lt;StyleSheet&gt; parts = splitToParts(stylesheet);
 <a class="jxr_linenumber" name="L524" href="#L524">524</a>         saveParts(source, parts);
@@ -543,12 +543,12 @@
 <a class="jxr_linenumber" name="L535" href="#L535">535</a>         }
 <a class="jxr_linenumber" name="L536" href="#L536">536</a>     }
 <a class="jxr_linenumber" name="L537" href="#L537">537</a> 
-<a class="jxr_linenumber" name="L538" href="#L538">538</a>     <strong class="jxr_keyword">private</strong> <a href="../../../../../../biz/gabrys/maven/plugins/css/splitter/css/types/StyleSheet.html">StyleSheet</a> parseStyleSheet(<strong class="jxr_keyword">final</strong> String css) {
+<a class="jxr_linenumber" name="L538" href="#L538">538</a>     <strong class="jxr_keyword">private</strong> <a href="../../../../../../biz/gabrys/maven/plugins/css/splitter/css/type/StyleSheet.html">StyleSheet</a> parseStyleSheet(<strong class="jxr_keyword">final</strong> String css) {
 <a class="jxr_linenumber" name="L539" href="#L539">539</a>         <strong class="jxr_keyword">if</strong> (getLog().isDebugEnabled()) {
 <a class="jxr_linenumber" name="L540" href="#L540">540</a>             getLog().debug(<span class="jxr_string">"Parsing stylesheet..."</span>);
 <a class="jxr_linenumber" name="L541" href="#L541">541</a>         }
 <a class="jxr_linenumber" name="L542" href="#L542">542</a>         <strong class="jxr_keyword">final</strong> <a href="../../../../../../biz/gabrys/maven/plugins/css/splitter/steadystate/ParserOptions.html">ParserOptions</a> options = <strong class="jxr_keyword">new</strong> <a href="../../../../../../biz/gabrys/maven/plugins/css/splitter/steadystate/ParserOptionsBuilder.html">ParserOptionsBuilder</a>().withStandard(Standard.create(standard)).withStrict(!nonstrict).create();
-<a class="jxr_linenumber" name="L543" href="#L543">543</a>         <strong class="jxr_keyword">final</strong> <a href="../../../../../../biz/gabrys/maven/plugins/css/splitter/css/types/StyleSheet.html">StyleSheet</a> stylesheet = <strong class="jxr_keyword">new</strong> <a href="../../../../../../biz/gabrys/maven/plugins/css/splitter/steadystate/SteadyStateParser.html">SteadyStateParser</a>(getLog()).parse(css, options);
+<a class="jxr_linenumber" name="L543" href="#L543">543</a>         <strong class="jxr_keyword">final</strong> <a href="../../../../../../biz/gabrys/maven/plugins/css/splitter/css/type/StyleSheet.html">StyleSheet</a> stylesheet = <strong class="jxr_keyword">new</strong> <a href="../../../../../../biz/gabrys/maven/plugins/css/splitter/steadystate/SteadyStateParser.html">SteadyStateParser</a>(getLog()).parse(css, options);
 <a class="jxr_linenumber" name="L544" href="#L544">544</a>         <strong class="jxr_keyword">new</strong> <a href="../../../../../../biz/gabrys/maven/plugins/css/splitter/message/StylesheetMessagePrinter.html">StylesheetMessagePrinter</a>(getLog(), !nonstrict).print(stylesheet);
 <a class="jxr_linenumber" name="L545" href="#L545">545</a>         <strong class="jxr_keyword">if</strong> (verbose) {
 <a class="jxr_linenumber" name="L546" href="#L546">546</a>             getLog().info(String.format(<span class="jxr_string">"Stylesheet contains %d rule%s."</span>, stylesheet.getSize(), stylesheet.getSize() != 1 ? 's' : <span class="jxr_string">""</span>));
@@ -556,7 +556,7 @@
 <a class="jxr_linenumber" name="L548" href="#L548">548</a>         <strong class="jxr_keyword">return</strong> stylesheet;
 <a class="jxr_linenumber" name="L549" href="#L549">549</a>     }
 <a class="jxr_linenumber" name="L550" href="#L550">550</a> 
-<a class="jxr_linenumber" name="L551" href="#L551">551</a>     <strong class="jxr_keyword">private</strong> List&lt;StyleSheet&gt; splitToParts(<strong class="jxr_keyword">final</strong> <a href="../../../../../../biz/gabrys/maven/plugins/css/splitter/css/types/StyleSheet.html">StyleSheet</a> stylesheet) {
+<a class="jxr_linenumber" name="L551" href="#L551">551</a>     <strong class="jxr_keyword">private</strong> List&lt;StyleSheet&gt; splitToParts(<strong class="jxr_keyword">final</strong> <a href="../../../../../../biz/gabrys/maven/plugins/css/splitter/css/type/StyleSheet.html">StyleSheet</a> stylesheet) {
 <a class="jxr_linenumber" name="L552" href="#L552">552</a>         <strong class="jxr_keyword">if</strong> (getLog().isDebugEnabled()) {
 <a class="jxr_linenumber" name="L553" href="#L553">553</a>             getLog().debug(<span class="jxr_string">"Splitting stylesheet to parts..."</span>);
 <a class="jxr_linenumber" name="L554" href="#L554">554</a>         }
@@ -567,7 +567,7 @@
 <a class="jxr_linenumber" name="L559" href="#L559">559</a>         <strong class="jxr_keyword">return</strong> parts;
 <a class="jxr_linenumber" name="L560" href="#L560">560</a>     }
 <a class="jxr_linenumber" name="L561" href="#L561">561</a> 
-<a class="jxr_linenumber" name="L562" href="#L562">562</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> validateStyleSheet(<strong class="jxr_keyword">final</strong> <a href="../../../../../../biz/gabrys/maven/plugins/css/splitter/css/types/StyleSheet.html">StyleSheet</a> stylesheet) {
+<a class="jxr_linenumber" name="L562" href="#L562">562</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> validateStyleSheet(<strong class="jxr_keyword">final</strong> <a href="../../../../../../biz/gabrys/maven/plugins/css/splitter/css/type/StyleSheet.html">StyleSheet</a> stylesheet) {
 <a class="jxr_linenumber" name="L563" href="#L563">563</a>         <strong class="jxr_keyword">if</strong> (getLog().isDebugEnabled()) {
 <a class="jxr_linenumber" name="L564" href="#L564">564</a>             getLog().debug(<span class="jxr_string">"Validating stylesheet..."</span>);
 <a class="jxr_linenumber" name="L565" href="#L565">565</a>         }
