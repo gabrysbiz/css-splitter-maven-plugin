@@ -18,7 +18,7 @@ public enum Standard {
 
     private final String version;
 
-    private Standard(final String version) {
+    Standard(final String version) {
         this.version = version;
     }
 
