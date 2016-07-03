@@ -12,7 +12,7 @@
             <answer>
                 <p>
                     <a href="http://www.eclipse.org/m2e/">M2Eclipse</a> is an Eclipse plugin which provides tight integration for Maven.
-                    It determines who and when plugins should be executed. Each plugin can store lifecycle mapping metadata with data
+                    It determines how and when plugins should be executed. Each plugin can store lifecycle mapping metadata with data
                     on which it based its decision
                     (see <a href="https://wiki.eclipse.org/M2E_compatible_maven_plugins#Overview">M2E compatible maven plugins</a>).
                     By default this plugin is only called on full builds. If you want to enable automatic split, then you need to add

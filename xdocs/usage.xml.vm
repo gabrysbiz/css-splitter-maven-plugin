@@ -82,12 +82,12 @@
         <section name="Invoke from the command-line">
             <p>
                 The goals for the ${project.name} are bound to their respective phases in the build lifecycle.
-                So to split your sources, you need only to tell Maven until which lifecycle to execute. 
+                To split your sources, you need only to tell Maven until which lifecycle to execute. 
                 The following will split your sources:
             </p>
             <pre>mvn process-sources</pre>
             <p>
-                You can also split CSS sources by execute only this plugin:
+                You can also split CSS sources by executing only this plugin:
             </p>
             <pre>mvn ${project.groupId}:${project.artifactId}:split</pre>
         </section>

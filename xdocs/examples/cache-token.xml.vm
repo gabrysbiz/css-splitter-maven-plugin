@@ -38,7 +38,7 @@
         </section>
         <section id="custom-type" name="Cache token with custom text">
             <p>
-                If you want to use custom text as cache token, then you need to:
+                If you want to use custom text as cache token, you need to:
             </p>
             <ul>
                 <li>set <a href="../split-mojo.html#cacheTokenType">cacheTokenType</a> to <code>custom</code></li>
@@ -118,7 +118,7 @@
         </section>
         <section id="date-type" name="Cache token with build time">
             <p>
-                If you want to add cache token with build time, then you need to set
+                If you want to add cache token with the build time, you need to set
                 <a href="../split-mojo.html#cacheTokenType">cacheTokenType</a> to <code>date</code>.
             </p>
             <pre>&lt;project&gt;
@@ -193,7 +193,7 @@
         </section>
         <section id="none-type" name="Disable addition of the cache token">
             <p>
-                If you want to disable addition of cache token (default action) then you need to set
+                If you want to disable addition of cache token (default action), you need to set
                 <a href="../split-mojo.html#cacheTokenType">cacheTokenType</a> to <code>none</code>.
                 <a href="../split-mojo.html#cacheTokenParameter">cacheTokenParameter</a> and
                 <a href="../split-mojo.html#cacheTokenValue">cacheTokenValue</a> will be ignored.

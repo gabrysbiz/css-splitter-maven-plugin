@@ -25,7 +25,7 @@
                     <td>This example describes how to use multiple source/output directories in single module.</td>
                 </tr>
                 <tr class="b">
-                    <td><a href="examples/output-file-structure.html">Output file structure (imports tree)</a></td>
+                    <td><a href="examples/output-file-structure.html">Output file structure (imports' tree)</a></td>
                     <td>This example shows how output file structure will change depending on the configuration.</td>
                 </tr>
                 <tr class="a">

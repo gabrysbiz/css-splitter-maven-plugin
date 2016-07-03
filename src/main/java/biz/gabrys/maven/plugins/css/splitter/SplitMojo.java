@@ -60,7 +60,7 @@ import biz.gabrys.maven.plugins.css.splitter.validation.StylePropertiesLimitVali
  * <li>reads source code</li>
  * <li>parses it using the <a href="http://cssparser.sourceforge.net/">CSS Parser</a> (parser removes all comments)</li>
  * <li>splits parsed document to "parts"</li>
- * <li>builds imports tree</li>
+ * <li>builds imports' tree</li>
  * <li>writes to files</li>
  * </ol>
  * <p>
@@ -211,7 +211,7 @@ public class SplitMojo extends AbstractMojo {
     protected int maxRules;
 
     /**
-     * The plugin failures build when a number of <a href="http://www.w3.org/Style/CSS/">CSS</a> rules in source file
+     * The plugin fails the build when a number of <a href="http://www.w3.org/Style/CSS/">CSS</a> rules in source file
      * exceeds this value.<br>
      * <b>Notice</b>: all values smaller than <tt>1</tt> are treated as <tt>2147483647</tt>.
      * @since 1.0.0
@@ -229,7 +229,7 @@ public class SplitMojo extends AbstractMojo {
     protected int maxImports;
 
     /**
-     * The plugin failures build when a number of <code>&#64;import</code> depth level exceed this value. The plugin
+     * The plugin fails the build when a number of <code>&#64;import</code> depth level exceed this value. The plugin
      * ignores <code>&#64;import</code> operations that come from the source code.<br>
      * <b>Notice</b>: all values smaller than <tt>1</tt> are treated as <tt>4</tt>.
      * @since 1.0.0
@@ -570,7 +570,7 @@ public class SplitMojo extends AbstractMojo {
 
     private void saveParts(final File source, final List<StyleSheet> parts) throws MojoFailureException {
         if (getLog().isDebugEnabled()) {
-            getLog().debug("Creating imports tree...");
+            getLog().debug("Creating imports' tree...");
         }
         final OrderedTree<StyleSheet> stylesheetsTree = new OrderedTree<StyleSheet>(parts, maxImports);
         validateImportsDepth(stylesheetsTree);

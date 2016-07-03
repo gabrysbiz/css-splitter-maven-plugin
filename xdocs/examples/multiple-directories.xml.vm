@@ -10,7 +10,7 @@
         <section name="Multiple source/output directories">
             <p>
                 If you want to use more than one <a href="../split-mojo.html#sourceDirectory">source</a> or
-                <a href="../split-mojo.html#outputDirectory">output</a> directory, then you must to configure multiple executions.
+                <a href="../split-mojo.html#outputDirectory">output</a> directory, you must configure multiple executions.
             </p>
             <pre>&lt;project&gt;
    ...

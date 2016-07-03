@@ -23,7 +23,7 @@
                 <li><a href="https://www.w3.org/TR/CSS1/">Cascading Style Sheets Level 1</a></li>
             </ul>
             <p>
-                For more information read a <a href="split-mojo.html">split</a> goal documentation or take a look into
+                For more information read the <a href="split-mojo.html">split</a> goal documentation or take a look into
                 <a href="#examples">examples</a>.
             </p>
         </section>
@@ -69,7 +69,7 @@
             <ul>
                 <li><a href="examples/patterns.html">Using include/exclude patterns</a></li>
                 <li><a href="examples/multiple-directories.html">Multiple source/output directories</a></li>
-                <li><a href="examples/output-file-structure.html">Output file structure (imports tree)</a></li>
+                <li><a href="examples/output-file-structure.html">Output file structure (imports' tree)</a></li>
                 <li><a href="examples/cache-token.html">Using cache token</a></li>
             </ul>
         </section>
