@@ -1,6 +1,6 @@
 # About
 [![License BSD 3-Clause](https://img.shields.io/badge/license-BSD%203--Clause-blue.svg)](http://css-splitter-maven-plugin.projects.gabrys.biz/license.txt)
-[![Build Status](https://travis-ci.org/gabrysbiz/css-splitter-maven-plugin.svg?branch=release%2F1.0.0)](https://travis-ci.org/gabrysbiz/css-splitter-maven-plugin)
+[![Build Status](https://travis-ci.org/gabrysbiz/css-splitter-maven-plugin.svg?branch=master)](https://travis-ci.org/gabrysbiz/css-splitter-maven-plugin)
 
 This plugin splits [CSS](http://www.w3.org/Style/CSS/) stylesheets to smaller files ("parts") which contain maximum [X](http://css-splitter-maven-plugin.projects.gabrys.biz/1.0.0/split-mojo.html#maxRules) rules. It uses a [CSS Parser](http://cssparser.sourceforge.net/) to parse source code.
 
