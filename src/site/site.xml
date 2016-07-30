@@ -41,6 +41,7 @@
                 <item name="Using cache token" href="examples/cache-token.html" />
             </item>
             <item name="FAQ" href="faq.html" />
+            <item name="Changelog" href="changelog.html" />
         </menu>
 
         <menu ref="reports" />

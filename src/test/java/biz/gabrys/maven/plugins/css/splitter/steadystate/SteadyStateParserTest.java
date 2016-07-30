@@ -28,7 +28,8 @@ public final class SteadyStateParserTest {
         css.append("@media screen {subrule {prop:val}}\n");
         css.append("@font-face {font-family: Arial;}\n");
         css.append("@page :first {prop:val}\n");
-        css.append("@unknown 'value';");
+        css.append("@unknown 'value';\n");
+        css.append("@keyframes mymove { 50% {top: 0px;} 100% {top: 100px;}");
 
         final SteadyStateParser parser = new SteadyStateParser(Mockito.mock(Log.class));
         final ParserOptions options = new ParserOptionsBuilder().withStandard(Standard.VERSION_3_0).withStrict(true).create();
@@ -37,7 +38,7 @@ public final class SteadyStateParserTest {
         Assert.assertNotNull("StyleSheet instance.", stylesheet);
         final List<NodeRule> rules = stylesheet.getRules();
         Assert.assertNotNull("StyleSheet rules instnace.", rules);
-        Assert.assertEquals("StyleSheet children rules.", 7, rules.size());
+        Assert.assertEquals("StyleSheet children rules.", 8, rules.size());
 
         final Iterator<NodeRule> iterator = rules.iterator();
         Assert.assertEquals("@charset rule instance class.", SimpleRule.class, iterator.next().getClass());
@@ -47,6 +48,7 @@ public final class SteadyStateParserTest {
         Assert.assertEquals("@font-face rule instance class.", StyleRule.class, iterator.next().getClass());
         Assert.assertEquals("@page rule instance class.", StyleRule.class, iterator.next().getClass());
         Assert.assertEquals("@unknown rule instance class.", UnknownRule.class, iterator.next().getClass());
+        Assert.assertEquals("@keyframes rule instance class.", UnknownRule.class, iterator.next().getClass());
     }
 
     // https://github.com/gabrysbiz/css-splitter-maven-plugin/issues/3#issuecomment-194338886
@@ -56,12 +58,12 @@ public final class SteadyStateParserTest {
         css.append("@font-face {");
         css.append("\tfont-family: FontAwesome;");
         css.append("\tsrc: url(../base/fonts/fontawesome-webfont.eot);");
+        css.append("\tsrc: ");
         final StringBuilder value = new StringBuilder();
         value.append("url(../base/fonts/fontawesome-webfont.eot?#iefix) format(\"embedded-opentype\"),");
         value.append(" url(../base/fonts/fontawesome-webfont.woff) format(\"woff\"),");
         value.append(" url(../base/fonts/fontawesome-webfont.ttf) format(\"truetype\"),");
         value.append(" url(../base/fonts/fontawesome-webfont.svg) format(\"svg\")");
-        css.append("\tsrc: ");
         css.append(value);
         css.append(';');
         css.append("\tfont-weight: normal;");
