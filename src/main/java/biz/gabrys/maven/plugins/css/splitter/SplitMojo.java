@@ -610,7 +610,7 @@ public class SplitMojo extends AbstractMojo {
         return new OrderedTree<T>(objects, maxImports);
     }
 
-    private List<String> convertToText(final List<StyleSheet> stylesheets) {
+    private static List<String> convertToText(final List<StyleSheet> stylesheets) {
         final List<String> texts = new ArrayList<String>(stylesheets.size());
         for (final StyleSheet stylesheet : stylesheets) {
             texts.add(stylesheet.toString());
