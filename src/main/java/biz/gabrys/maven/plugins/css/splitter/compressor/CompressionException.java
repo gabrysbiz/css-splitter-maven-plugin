@@ -10,13 +10,13 @@
  * - a copy of the License at project page
  * - a template of the License at https://opensource.org/licenses/BSD-3-Clause
  */
-package biz.gabrys.maven.plugins.css.splitter.steadystate;
+package biz.gabrys.maven.plugins.css.splitter.compressor;
 
-public class ParserException extends RuntimeException {
+public final class CompressionException extends RuntimeException {
 
-    private static final long serialVersionUID = 4994769384597712303L;
+    private static final long serialVersionUID = 140606401550176886L;
 
-    ParserException(final Throwable cause) {
+    CompressionException(final Throwable cause) {
         super(cause);
     }
 }

@@ -14,6 +14,7 @@ package biz.gabrys.maven.plugins.css.splitter;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -37,6 +38,7 @@ import biz.gabrys.maven.plugin.util.parameter.sanitizer.SimpleSanitizer;
 import biz.gabrys.maven.plugin.util.parameter.sanitizer.ValueSanitizer;
 import biz.gabrys.maven.plugin.util.timer.SystemTimer;
 import biz.gabrys.maven.plugin.util.timer.Timer;
+import biz.gabrys.maven.plugins.css.splitter.compressor.CodeCompressor;
 import biz.gabrys.maven.plugins.css.splitter.css.Standard;
 import biz.gabrys.maven.plugins.css.splitter.css.type.StyleSheet;
 import biz.gabrys.maven.plugins.css.splitter.message.StylesheetMessagePrinter;
@@ -263,6 +265,26 @@ public class SplitMojo extends AbstractMojo {
     protected boolean nonstrict;
 
     /**
+     * Whether the plugin should use <a href="http://yui.github.io/yuicompressor/">YUI Compressor</a> to compress the
+     * <a href="http://www.w3.org/Style/CSS/">CSS</a> code.
+     * @since 1.1.0
+     */
+    @Parameter(property = "css.splitter.compress", defaultValue = "false")
+    protected boolean compress;
+
+    /**
+     * Defines column number after which the plugin will insert a line break. From
+     * <a href="http://yui.github.io/yuicompressor/">YUI Compressor</a> documentation:<blockquote>Some source control
+     * tools don't like files containing lines longer than, say 8000 characters. The linebreak option is used in that
+     * case to split long lines after a specific column. Specify 0 to get a line break after each rule in
+     * CSS.</blockquote><b>Notice</b>: all values smaller than <tt>0</tt> means - do not split the line after any
+     * column.
+     * @since 1.1.0
+     */
+    @Parameter(property = "css.splitter.compressLineBreak", defaultValue = "-1")
+    protected int compressLineBreak;
+
+    /**
      * Defines cache token type which will be added to <code>&#64;import</code> links in destination
      * <a href="http://www.w3.org/Style/CSS/">CSS</a> stylesheets. Available options:
      * <ul>
@@ -350,6 +372,8 @@ public class SplitMojo extends AbstractMojo {
         logger.append("importsDepthLimit", importsDepthLimit, new SimpleSanitizer(importsDepthLimit > 0, MAX_IMPORTS_DEPTH_LIMIT));
         logger.append("standard", standard);
         logger.append("nonstrict", nonstrict);
+        logger.append("compress", compress);
+        logger.append("compressLineBreak", compressLineBreak);
         logger.append("cacheTokenType", cacheTokenType);
         logger.append("cacheTokenParameter", cacheTokenParameter);
         logger.append("cacheTokenValue", cacheTokenValue, new ValueSanitizer() {
@@ -520,8 +544,16 @@ public class SplitMojo extends AbstractMojo {
         final String css = readCss(source);
         final StyleSheet stylesheet = parseStyleSheet(css);
         validateStyleSheet(stylesheet);
+
         final List<StyleSheet> parts = splitToParts(stylesheet);
-        saveParts(source, parts);
+        validateImportsDepth(parts);
+
+        List<String> texts = convertToText(parts);
+        if (compress) {
+            texts = compressStyleSheets(texts);
+        }
+        saveParts(source, convertToTree(texts));
+
         if (timer != null) {
             getLog().info("Finished in " + timer.stop());
         }
@@ -559,31 +591,8 @@ public class SplitMojo extends AbstractMojo {
         return parts;
     }
 
-    private void validateStyleSheet(final StyleSheet stylesheet) {
-        if (getLog().isDebugEnabled()) {
-            getLog().debug("Validating stylesheet...");
-        }
-
-        new RulesLimitValidator(rulesLimit).validate(stylesheet);
-        new StylePropertiesLimitValidator(maxRules).validate(stylesheet);
-    }
-
-    private void saveParts(final File source, final List<StyleSheet> parts) throws MojoFailureException {
-        if (getLog().isDebugEnabled()) {
-            getLog().debug("Creating imports' tree...");
-        }
-        final OrderedTree<StyleSheet> stylesheetsTree = new OrderedTree<StyleSheet>(parts, maxImports);
-        validateImportsDepth(stylesheetsTree);
-
-        if (verbose) {
-            getLog().info("Saving CSS code...");
-        }
-        final int numberOfDigits = String.valueOf(stylesheetsTree.size()).length();
-        final String indexPattern = "%0" + numberOfDigits + 'd';
-        saveStyleSheetsTree(source, stylesheetsTree, indexPattern);
-    }
-
-    private void validateImportsDepth(final OrderedTreeNode<StyleSheet> tree) throws MojoFailureException {
+    private void validateImportsDepth(final List<StyleSheet> stylesheets) throws MojoFailureException {
+        final OrderedTree<StyleSheet> tree = convertToTree(stylesheets);
         final int depth = tree.getDepth();
         if (verbose) {
             getLog().info("Imports depth: " + depth);
@@ -597,7 +606,56 @@ public class SplitMojo extends AbstractMojo {
         }
     }
 
-    private void saveStyleSheetsTree(final File source, final OrderedTreeNode<StyleSheet> node, final String indexPattern)
+    private <T> OrderedTree<T> convertToTree(final List<T> objects) {
+        return new OrderedTree<T>(objects, maxImports);
+    }
+
+    private List<String> convertToText(final List<StyleSheet> stylesheets) {
+        final List<String> texts = new ArrayList<String>(stylesheets.size());
+        for (final StyleSheet stylesheet : stylesheets) {
+            texts.add(stylesheet.toString());
+        }
+        return texts;
+    }
+
+    private List<String> compressStyleSheets(final List<String> stylesheets) {
+        if (verbose) {
+            getLog().info("Compressing CSS code...");
+        }
+        final List<String> compressed = new ArrayList<String>(stylesheets.size());
+        final CodeCompressor compressor = new CodeCompressor(compressLineBreak);
+        for (int i = 0; i < stylesheets.size(); ++i) {
+            if (getLog().isDebugEnabled()) {
+                getLog().debug(String.format("Compressing stylesheet no. %d...", i + 1));
+            }
+            compressed.add(compressor.compress(stylesheets.get(i)));
+        }
+        return compressed;
+    }
+
+    private void validateStyleSheet(final StyleSheet stylesheet) {
+        if (getLog().isDebugEnabled()) {
+            getLog().debug("Validating stylesheet...");
+        }
+
+        new RulesLimitValidator(rulesLimit).validate(stylesheet);
+        new StylePropertiesLimitValidator(maxRules).validate(stylesheet);
+    }
+
+    private void saveParts(final File source, final OrderedTreeNode<String> stylesheetsTree) throws MojoFailureException {
+        if (getLog().isDebugEnabled()) {
+            getLog().debug("Creating imports' tree...");
+        }
+
+        if (verbose) {
+            getLog().info("Saving CSS code...");
+        }
+        final int numberOfDigits = String.valueOf(stylesheetsTree.size()).length();
+        final String indexPattern = "%0" + numberOfDigits + 'd';
+        saveStyleSheetsTree(source, stylesheetsTree, indexPattern);
+    }
+
+    private void saveStyleSheetsTree(final File source, final OrderedTreeNode<String> node, final String indexPattern)
             throws MojoFailureException {
         final DestinationFileCreator fileCreator = new DestinationFileCreator(sourceDirectory, outputDirectory);
         if (node.getOrder() == 0) {
@@ -609,12 +667,12 @@ public class SplitMojo extends AbstractMojo {
         final File target = fileCreator.create(source);
 
         if (node.hasValue()) {
-            saveCss(target, node.getValue().toString());
+            saveCss(target, node.getValue());
             return;
         }
 
         final StringBuilder imports = new StringBuilder();
-        for (final OrderedTreeNode<StyleSheet> child : node.getChildren()) {
+        for (final OrderedTreeNode<String> child : node.getChildren()) {
             final String index = String.format(indexPattern, child.getOrder());
             fileCreator.setFileNamePattern(outputPartNamePattern.replace(PART_INDEX_PARAMETER, index));
             final File childTarget = fileCreator.create(source);
@@ -627,7 +685,7 @@ public class SplitMojo extends AbstractMojo {
 
     private void saveCss(final File file, final String css) throws MojoFailureException {
         if (getLog().isDebugEnabled()) {
-            getLog().debug("Saving CSS code to " + file.getAbsolutePath());
+            getLog().debug("Saving stylesheet to " + file.getAbsolutePath());
         }
         try {
             FileUtils.write(file, css, encoding);
