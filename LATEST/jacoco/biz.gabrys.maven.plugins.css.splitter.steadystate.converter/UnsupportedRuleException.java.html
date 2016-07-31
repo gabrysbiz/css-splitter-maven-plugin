@@ -18,7 +18,7 @@ public class UnsupportedRuleException extends RuntimeException {
 
     private static final long serialVersionUID = -1784456425651473954L;
 
-    public UnsupportedRuleException(final CSSRule rule) {
+    UnsupportedRuleException(final CSSRule rule) {
 <span class="fc" id="L22">        super(String.format(&quot;Rule represented by \&quot;%s\&quot; class (type: %d) is unsupported in current contex! CSS code that causes error:%n%s&quot;,</span>
 <span class="fc" id="L23">                rule.getClass().getName(), rule.getType(), rule.getCssText()));</span>
 <span class="fc" id="L24">    }</span>
