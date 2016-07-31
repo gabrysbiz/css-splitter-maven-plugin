@@ -6,7 +6,7 @@ Dependencies:
 
 [See documentation](http://css-splitter-maven-plugin.projects.gabrys.biz/LATEST/)
 
-## 1.0
+## 1.0.0
 Initial release.
 
 [See documentation](http://css-splitter-maven-plugin.projects.gabrys.biz/1.0.0/)
