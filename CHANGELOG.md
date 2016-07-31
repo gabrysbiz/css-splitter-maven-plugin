@@ -9,4 +9,4 @@ Dependencies:
 ## 1.0
 Initial release.
 
-[See documentation](http://css-splitter-maven-plugin.projects.gabrys.biz/1.0/)
+[See documentation](http://css-splitter-maven-plugin.projects.gabrys.biz/1.0.0/)
