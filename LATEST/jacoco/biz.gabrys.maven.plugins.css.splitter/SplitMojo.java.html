@@ -610,7 +610,7 @@ import biz.gabrys.maven.plugins.css.splitter.validation.StylePropertiesLimitVali
 <span class="nc" id="L610">        return new OrderedTree&lt;T&gt;(objects, maxImports);</span>
     }
 
-    private List&lt;String&gt; convertToText(final List&lt;StyleSheet&gt; stylesheets) {
+    private static List&lt;String&gt; convertToText(final List&lt;StyleSheet&gt; stylesheets) {
 <span class="nc" id="L614">        final List&lt;String&gt; texts = new ArrayList&lt;String&gt;(stylesheets.size());</span>
 <span class="nc bnc" id="L615" title="All 2 branches missed.">        for (final StyleSheet stylesheet : stylesheets) {</span>
 <span class="nc" id="L616">            texts.add(stylesheet.toString());</span>
