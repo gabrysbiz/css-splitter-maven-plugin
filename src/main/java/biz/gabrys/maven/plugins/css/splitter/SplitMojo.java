@@ -275,7 +275,7 @@ public class SplitMojo extends AbstractMojo {
     /**
      * Defines column number after which the plugin will insert a line break. From
      * <a href="http://yui.github.io/yuicompressor/">YUI Compressor</a> documentation:<blockquote>Some source control
-     * tools don't like files containing lines longer than, say 8000 characters. The linebreak option is used in that
+     * tools do not like files containing lines longer than, say 8000 characters. The line break option is used in that
      * case to split long lines after a specific column. Specify 0 to get a line break after each rule in
      * CSS.</blockquote><b>Notice</b>: all values smaller than <tt>0</tt> means - do not split the line after any
      * column.
