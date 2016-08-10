@@ -1,10 +1,12 @@
 # CSS Splitter Maven Plugin Changelog
 
+## 1.1.1
+
 ## 1.1.0
 Features:
-* Added code compression (see the [compress](http://css-splitter-maven-plugin.projects.gabrys.biz/LATEST/split-mojo.html#compress) parameter)
+* Added code compression (see the [compress](http://css-splitter-maven-plugin.projects.gabrys.biz/1.1.0/split-mojo.html#compress) parameter)
 
-[See documentation](http://css-splitter-maven-plugin.projects.gabrys.biz/LATEST/)
+[See documentation](http://css-splitter-maven-plugin.projects.gabrys.biz/1.1.0/)
 
 ## 1.0.1
 Dependencies:
