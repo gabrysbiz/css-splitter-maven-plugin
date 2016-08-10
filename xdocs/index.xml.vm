@@ -71,6 +71,7 @@
                 <li><a href="examples/multiple-directories.html">Multiple source/output directories</a></li>
                 <li><a href="examples/output-file-structure.html">Output file structure (imports' tree)</a></li>
                 <li><a href="examples/cache-token.html">Using cache token</a></li>
+                <li><a href="examples/code-compression.html">Code compression</a></li>
             </ul>
         </section>
     </body>

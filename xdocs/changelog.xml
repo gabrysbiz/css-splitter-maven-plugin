@@ -7,11 +7,18 @@
     </properties>
 
     <body>
+        <section id="release-1.1.0" name="Release 1.1.0">
+            <p>Features:</p>
+            <ul>
+                <li>Added code compression (see the <a href="split-mojo.html#compress">compress</a> parameter)</li>
+            </ul>
+        </section>
         <section id="release-1.0.1" name="Release 1.0.1">
             <p>Dependencies:</p>
             <ul>
                 <li>Upgraded the <a href="http://cssparser.sourceforge.net/">CSS Parser</a> from 0.9.19 to 0.9.20</li>
             </ul>
+            <p><a href="http://css-splitter-maven-plugin.projects.gabrys.biz/1.0.1/">See documentation</a></p>
         </section>
         <section id="release-1.0.0" name="Release 1.0.0">
             <p>Initial release.</p>
