@@ -16,7 +16,7 @@ public final class ValidationException extends RuntimeException {
 
     private static final long serialVersionUID = 6558159741070419511L;
 
-    public ValidationException(final String message) {
+    ValidationException(final String message) {
         super(message);
     }
 }

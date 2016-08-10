@@ -5,11 +5,11 @@
 
     <groupId>biz.gabrys.maven.plugins</groupId>
     <artifactId>css-splitter-maven-plugin</artifactId>
-    <version>1.0.1</version>
+    <version>1.1.0</version>
     <packaging>maven-plugin</packaging>
     <name>CSS Splitter Maven Plugin</name>
     <description>Splits CSS stylesheets to smaller files ("parts") which contain maximum X rules.</description>
-    <url>http://css-splitter-maven-plugin.projects.gabrys.biz/1.0.1/</url>
+    <url>http://css-splitter-maven-plugin.projects.gabrys.biz/1.1.0/</url>
 
     <inceptionYear>2015</inceptionYear>
     <organization>
@@ -93,6 +93,11 @@
             <groupId>net.sourceforge.cssparser</groupId>
             <artifactId>cssparser</artifactId>
             <version>0.9.20</version>
+        </dependency>
+        <dependency>
+            <groupId>com.yahoo.platform.yui</groupId>
+            <artifactId>yuicompressor</artifactId>
+            <version>2.4.8</version>
         </dependency>
 
         <dependency>
