@@ -34,4 +34,5 @@ To provide you with better understanding of some usages of the CSS Splitter Mave
 * [Multiple source/output directories](http://css-splitter-maven-plugin.projects.gabrys.biz/LATEST/examples/multiple-directories.html)
 * [Output file structure (imports' tree)](http://css-splitter-maven-plugin.projects.gabrys.biz/LATEST/examples/output-file-structure.html)
 * [Using cache token](http://css-splitter-maven-plugin.projects.gabrys.biz/LATEST/examples/cache-token.html)
+* [Code compression](http://css-splitter-maven-plugin.projects.gabrys.biz/LATEST/examples/code-compression.html)
 
