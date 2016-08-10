@@ -1,0 +1,697 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SplitMojo.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">CSS Splitter Maven Plugin</a> &gt; <a href="index.source.html" class="el_package">biz.gabrys.maven.plugins.css.splitter</a> &gt; <span class="el_source">SplitMojo.java</span></div><h1>SplitMojo.java</h1><pre class="source lang-java linenums">/*
+ * CSS Splitter Maven Plugin
+ * http://css-splitter-maven-plugin.projects.gabrys.biz/
+ *
+ * Copyright (c) 2015 Adam Gabryś
+ *
+ * This file is licensed under the BSD 3-Clause (the &quot;License&quot;).
+ * You may not use this file except in compliance with the License.
+ * You may obtain:
+ * - a copy of the License at project page
+ * - a template of the License at https://opensource.org/licenses/BSD-3-Clause
+ */
+package biz.gabrys.maven.plugins.css.splitter;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
+import org.codehaus.plexus.util.StringUtils;
+
+import biz.gabrys.maven.plugin.util.io.DestinationFileCreator;
+import biz.gabrys.maven.plugin.util.io.FileScanner;
+import biz.gabrys.maven.plugin.util.io.ScannerFactory;
+import biz.gabrys.maven.plugin.util.io.ScannerPatternFormat;
+import biz.gabrys.maven.plugin.util.parameter.ParametersLogBuilder;
+import biz.gabrys.maven.plugin.util.parameter.sanitizer.LazySimpleSanitizer;
+import biz.gabrys.maven.plugin.util.parameter.sanitizer.LazySimpleSanitizer.ValueContainer;
+import biz.gabrys.maven.plugin.util.parameter.sanitizer.SimpleSanitizer;
+import biz.gabrys.maven.plugin.util.parameter.sanitizer.ValueSanitizer;
+import biz.gabrys.maven.plugin.util.timer.SystemTimer;
+import biz.gabrys.maven.plugin.util.timer.Timer;
+import biz.gabrys.maven.plugins.css.splitter.compressor.CodeCompressor;
+import biz.gabrys.maven.plugins.css.splitter.css.Standard;
+import biz.gabrys.maven.plugins.css.splitter.css.type.StyleSheet;
+import biz.gabrys.maven.plugins.css.splitter.message.StylesheetMessagePrinter;
+import biz.gabrys.maven.plugins.css.splitter.net.UrlEscaper;
+import biz.gabrys.maven.plugins.css.splitter.split.StyleSheetSplliter;
+import biz.gabrys.maven.plugins.css.splitter.steadystate.ParserOptions;
+import biz.gabrys.maven.plugins.css.splitter.steadystate.ParserOptionsBuilder;
+import biz.gabrys.maven.plugins.css.splitter.steadystate.SteadyStateParser;
+import biz.gabrys.maven.plugins.css.splitter.token.TokenType;
+import biz.gabrys.maven.plugins.css.splitter.tree.OrderedTree;
+import biz.gabrys.maven.plugins.css.splitter.tree.OrderedTreeNode;
+import biz.gabrys.maven.plugins.css.splitter.validation.RulesLimitValidator;
+import biz.gabrys.maven.plugins.css.splitter.validation.StylePropertiesLimitValidator;
+
+/**
+ * &lt;p&gt;
+ * Splits &lt;a href=&quot;http://www.w3.org/Style/CSS/&quot;&gt;CSS&lt;/a&gt; stylesheets to smaller files (&quot;parts&quot;) which contain maximum
+ * &lt;a href=&quot;split-mojo.html#maxRules&quot;&gt;X&lt;/a&gt; rules. The plugin performs the following steps:
+ * &lt;/p&gt;
+ * &lt;ol&gt;
+ * &lt;li&gt;reads source code&lt;/li&gt;
+ * &lt;li&gt;parses it using the &lt;a href=&quot;http://cssparser.sourceforge.net/&quot;&gt;CSS Parser&lt;/a&gt; (parser removes all comments)&lt;/li&gt;
+ * &lt;li&gt;splits parsed document to &quot;parts&quot;&lt;/li&gt;
+ * &lt;li&gt;builds imports' tree&lt;/li&gt;
+ * &lt;li&gt;writes to files&lt;/li&gt;
+ * &lt;/ol&gt;
+ * &lt;p&gt;
+ * During split process the plugin can divide &quot;standard style&quot; and &lt;code&gt;&amp;#64;media&lt;/code&gt; rules, which size is bigger
+ * than 1, into smaller.
+ * &lt;/p&gt;
+ * &lt;p&gt;
+ * Example:
+ * &lt;/p&gt;
+ * 
+ * &lt;pre&gt;
+ * /&amp;#42; size is equal to 1, not splittable (size smaller than 2) &amp;#42;/
+ * &amp;#64;import 'file.css';
+ *
+ * /&amp;#42; size is equal to 2, not splittable (not &quot;standard style&quot; or &amp;#64;media rule) &amp;#42;/
+ * &amp;#64;font-face {
+ *      font-family: FontFamilyName;
+ *      src: url(&amp;quot;font.woff2&amp;quot;) format(&amp;quot;woff2&amp;quot;), url(&amp;quot;font.ttf&amp;quot;) format(&amp;quot;truetype&amp;quot;);
+ * }
+ *
+ * /&amp;#42; size is equal to 4, splittable &amp;#42;/
+ * .element {
+ *      width: 100px;
+ *      height: 200px;
+ *      margin: 0;
+ *      padding: 0;
+ * }
+ *
+ * /&amp;#42; size is equal to 1, not splittable (size smaller than 2) &amp;#42;/
+ * selector1, selector2 &gt; selector3 {
+ *      width: 200px;
+ * }
+ *
+ * /&amp;#42; size is equal to 1 (for safety), not splittable (size smaller than 2) &amp;#42;/
+ * .empty {
+ * }
+ *
+ * /&amp;#42; size is equal to 1, not splittable (size smaller than 2) &amp;#42;/
+ * &amp;#64;media screen and (min-width: 480px) {
+ * }
+ *
+ * /&amp;#42; size is equal to 4 (1 + 2 + 1), splittable &amp;#42;/
+ * &amp;#64;media screen and (min-width: 480px) {
+ *
+ *     /&amp;#42; size is equal to 1, not splittable (size smaller than 2) &amp;#42;/
+ *     rule {
+ *          width: 100px;
+ *     }
+ *
+ *     /&amp;#42; size is equal to 2, splittable &amp;#42;/
+ *     rule2 {
+ *          width: 100px;
+ *          height: 100px;
+ *     }
+ *
+ *     /&amp;#42; size is equal to 1 (for safety), not splittable (size smaller than 2) &amp;#42;/
+ *     .empty {
+ *     }
+ * }
+ * &lt;/pre&gt;
+ * 
+ * @since 1.0.0
+ */
+@Mojo(name = &quot;split&quot;, defaultPhase = LifecyclePhase.PROCESS_SOURCES, threadSafe = true)
+<span class="nc" id="L130">public class SplitMojo extends AbstractMojo {</span>
+
+    private static final String MAX_RULES_DEFAULT_VALUE = &quot;4095&quot;;
+    private static final String MAX_RULES_LIMIT = &quot;2147483647&quot;;
+    private static final String MAX_IMPORTS_DEFAULT_VALUE = &quot;31&quot;;
+    private static final String MAX_IMPORTS_DEPTH_LIMIT = &quot;4&quot;;
+    private static final String PART_INDEX_PARAMETER = &quot;{index}&quot;;
+
+    /**
+     * Defines whether to skip the plugin execution.
+     * @since 1.0.0
+     */
+    @Parameter(property = &quot;css.splitter.skip&quot;, defaultValue = &quot;false&quot;)
+    protected boolean skip;
+
+    /**
+     * Defines whether the plugin runs in verbose mode.&lt;br&gt;
+     * &lt;b&gt;Notice&lt;/b&gt;: always true in debug mode.
+     * @since 1.0.0
+     */
+    @Parameter(property = &quot;css.splitter.verbose&quot;, defaultValue = &quot;false&quot;)
+    protected boolean verbose;
+
+    /**
+     * Forces to always split the &lt;a href=&quot;http://www.w3.org/Style/CSS/&quot;&gt;CSS&lt;/a&gt; stylesheets. By default sources are
+     * only split when modified or the &lt;a href=&quot;#outputFileNamePattern&quot;&gt;main destination file&lt;/a&gt; does not exist.
+     * @since 1.0.0
+     */
+    @Parameter(property = &quot;css.splitter.force&quot;, defaultValue = &quot;false&quot;)
+    protected boolean force;
+
+    /**
+     * The directory which contains the &lt;a href=&quot;http://www.w3.org/Style/CSS/&quot;&gt;CSS&lt;/a&gt; stylesheets.
+     * @since 1.0.0
+     */
+    @Parameter(property = &quot;css.splitter.sourceDirectory&quot;, defaultValue = &quot;${project.basedir}/src/main/css&quot;)
+    protected File sourceDirectory;
+
+    /**
+     * Specifies where to place split &lt;a href=&quot;http://www.w3.org/Style/CSS/&quot;&gt;CSS&lt;/a&gt; stylesheets.
+     * @since 1.0.0
+     */
+    @Parameter(property = &quot;css.splitter.outputDirectory&quot;, defaultValue = &quot;${project.build.directory}&quot;)
+    protected File outputDirectory;
+
+    /**
+     * Defines inclusion and exclusion fileset patterns format. Available options:
+     * &lt;ul&gt;
+     * &lt;li&gt;&lt;b&gt;ant&lt;/b&gt; - &lt;a href=&quot;http://ant.apache.org/manual/dirtasks.html#patterns&quot;&gt;Ant patterns&lt;/a&gt;&lt;/li&gt;
+     * &lt;li&gt;&lt;b&gt;regex&lt;/b&gt; - regular expressions (use '/' as path separator)&lt;/li&gt;
+     * &lt;/ul&gt;
+     * @since 1.0.0
+     */
+    @Parameter(property = &quot;css.splitter.filesetPatternFormat&quot;, defaultValue = &quot;ant&quot;)
+    protected String filesetPatternFormat;
+
+    /**
+     * List of files to include. Specified as fileset patterns which are relative to the
+     * &lt;a href=&quot;#sourceDirectory&quot;&gt;source directory&lt;/a&gt;. See &lt;a href=&quot;#filesetPatternFormat&quot;&gt;available fileset patterns
+     * formats&lt;/a&gt;.&lt;br&gt;
+     * &lt;b&gt;Default value is&lt;/b&gt;: &lt;tt&gt;[&quot;&amp;#42;&amp;#42;/&amp;#42;.css&quot;]&lt;/tt&gt; for &lt;a href=&quot;#filesetPatternFormat&quot;&gt;ant&lt;/a&gt; or
+     * &lt;tt&gt;[&quot;^.+\.css$&quot;]&lt;/tt&gt; for &lt;a href=&quot;#filesetPatternFormat&quot;&gt;regex&lt;/a&gt;.
+     * @since 1.0.0
+     */
+<span class="nc" id="L194">    @Parameter</span>
+    protected String[] includes = new String[0];
+
+    /**
+     * List of files to exclude. Specified as fileset patterns which are relative to the
+     * &lt;a href=&quot;#sourceDirectory&quot;&gt;source directory&lt;/a&gt;. See &lt;a href=&quot;#filesetPatternFormat&quot;&gt;available fileset patterns
+     * formats&lt;/a&gt;.&lt;br&gt;
+     * &lt;b&gt;Default value is&lt;/b&gt;: &lt;tt&gt;[]&lt;/tt&gt;.
+     * @since 1.0.0
+     */
+<span class="nc" id="L204">    @Parameter</span>
+    protected String[] excludes = new String[0];
+
+    /**
+     * The maximum number of &lt;a href=&quot;http://www.w3.org/Style/CSS/&quot;&gt;CSS&lt;/a&gt; rules in single &quot;part&quot;.&lt;br&gt;
+     * &lt;b&gt;Notice&lt;/b&gt;: all values smaller than &lt;tt&gt;1&lt;/tt&gt; are treated as &lt;tt&gt;4095&lt;/tt&gt;.
+     * @since 1.0.0
+     */
+    @Parameter(property = &quot;css.splitter.maxRules&quot;, defaultValue = MAX_RULES_DEFAULT_VALUE)
+    protected int maxRules;
+
+    /**
+     * The plugin fails the build when a number of &lt;a href=&quot;http://www.w3.org/Style/CSS/&quot;&gt;CSS&lt;/a&gt; rules in source file
+     * exceeds this value.&lt;br&gt;
+     * &lt;b&gt;Notice&lt;/b&gt;: all values smaller than &lt;tt&gt;1&lt;/tt&gt; are treated as &lt;tt&gt;2147483647&lt;/tt&gt;.
+     * @since 1.0.0
+     */
+    @Parameter(property = &quot;css.splitter.rulesLimit&quot;, defaultValue = MAX_RULES_LIMIT)
+    protected int rulesLimit;
+
+    /**
+     * The maximum number of generated &lt;code&gt;&amp;#64;import&lt;/code&gt; in a single file. The plugin ignores
+     * &lt;code&gt;&amp;#64;import&lt;/code&gt; operations that come from the source code.&lt;br&gt;
+     * &lt;b&gt;Notice&lt;/b&gt;: all values smaller than &lt;tt&gt;2&lt;/tt&gt; are treated as &lt;tt&gt;31&lt;/tt&gt;.
+     * @since 1.0.0
+     */
+    @Parameter(property = &quot;css.splitter.maxImports&quot;, defaultValue = MAX_IMPORTS_DEFAULT_VALUE)
+    protected int maxImports;
+
+    /**
+     * The plugin fails the build when a number of &lt;code&gt;&amp;#64;import&lt;/code&gt; depth level exceed this value. The plugin
+     * ignores &lt;code&gt;&amp;#64;import&lt;/code&gt; operations that come from the source code.&lt;br&gt;
+     * &lt;b&gt;Notice&lt;/b&gt;: all values smaller than &lt;tt&gt;1&lt;/tt&gt; are treated as &lt;tt&gt;4&lt;/tt&gt;.
+     * @since 1.0.0
+     */
+    @Parameter(property = &quot;css.splitter.importsDepthLimit&quot;, defaultValue = MAX_IMPORTS_DEPTH_LIMIT)
+    protected int importsDepthLimit;
+
+    /**
+     * The &lt;a href=&quot;http://www.w3.org/Style/CSS/&quot;&gt;CSS&lt;/a&gt; standard used to parse source code. Available values:
+     * &lt;ul&gt;
+     * &lt;li&gt;&lt;b&gt;3.0&lt;/b&gt; - &lt;a href=&quot;https://www.w3.org/Style/CSS/&quot;&gt;Cascading Style Sheets Level 3&lt;/a&gt;&lt;/li&gt;
+     * &lt;li&gt;&lt;b&gt;2.1&lt;/b&gt; - &lt;a href=&quot;https://www.w3.org/TR/CSS2/&quot;&gt;Cascading Style Sheets Level 2 Revision 1 (CSS 2.1)
+     * Specification&lt;/a&gt;&lt;/li&gt;
+     * &lt;li&gt;&lt;b&gt;2.0&lt;/b&gt; - &lt;a href=&quot;https://www.w3.org/TR/2008/REC-CSS2-20080411/&quot;&gt;Cascading Style Sheets Level 2&lt;/a&gt;&lt;/li&gt;
+     * &lt;li&gt;&lt;b&gt;1.0&lt;/b&gt; - &lt;a href=&quot;https://www.w3.org/TR/CSS1/&quot;&gt;Cascading Style Sheets Level 1&lt;/a&gt;&lt;/li&gt;
+     * &lt;/ul&gt;
+     * @since 1.0.0
+     */
+    @Parameter(property = &quot;css.splitter.standard&quot;, defaultValue = &quot;3.0&quot;)
+    protected String standard;
+
+    /**
+     * Defines whether the plugin runs in non-strict mode. In non-strict mode a
+     * &lt;a href=&quot;http://www.w3.org/Style/CSS/&quot;&gt;CSS&lt;/a&gt; parser adds support for non-standard structures (e.g.
+     * &lt;code&gt;&amp;#64;page&lt;/code&gt; rule inside &lt;code&gt;&amp;#64;media&lt;/code&gt;).&lt;br&gt;
+     * &lt;b&gt;Notice&lt;/b&gt;: this functionality may stop working or be removed at any time. You should fix your code instead of
+     * relying on this functionality.
+     * @since 1.0.0
+     */
+    @Parameter(property = &quot;css.splitter.nonstrict&quot;, defaultValue = &quot;false&quot;)
+    protected boolean nonstrict;
+
+    /**
+     * Whether the plugin should use &lt;a href=&quot;http://yui.github.io/yuicompressor/&quot;&gt;YUI Compressor&lt;/a&gt; to compress the
+     * &lt;a href=&quot;http://www.w3.org/Style/CSS/&quot;&gt;CSS&lt;/a&gt; code.
+     * @since 1.1.0
+     */
+    @Parameter(property = &quot;css.splitter.compress&quot;, defaultValue = &quot;false&quot;)
+    protected boolean compress;
+
+    /**
+     * Defines column number after which the plugin will insert a line break. From
+     * &lt;a href=&quot;http://yui.github.io/yuicompressor/&quot;&gt;YUI Compressor&lt;/a&gt; documentation:&lt;blockquote&gt;Some source control
+     * tools do not like files containing lines longer than, say 8000 characters. The line break option is used in that
+     * case to split long lines after a specific column. Specify 0 to get a line break after each rule in
+     * CSS.&lt;/blockquote&gt;&lt;b&gt;Notice&lt;/b&gt;: all values smaller than &lt;tt&gt;0&lt;/tt&gt; means - do not split the line after any
+     * column.
+     * @since 1.1.0
+     */
+    @Parameter(property = &quot;css.splitter.compressLineBreak&quot;, defaultValue = &quot;-1&quot;)
+    protected int compressLineBreak;
+
+    /**
+     * Defines cache token type which will be added to &lt;code&gt;&amp;#64;import&lt;/code&gt; links in destination
+     * &lt;a href=&quot;http://www.w3.org/Style/CSS/&quot;&gt;CSS&lt;/a&gt; stylesheets. Available options:
+     * &lt;ul&gt;
+     * &lt;li&gt;&lt;b&gt;custom&lt;/b&gt; - text specified by the user&lt;/li&gt;
+     * &lt;li&gt;&lt;b&gt;date&lt;/b&gt; - build date&lt;/li&gt;
+     * &lt;li&gt;&lt;b&gt;none&lt;/b&gt; - token will not be added&lt;/li&gt;
+     * &lt;/ul&gt;
+     * @since 1.0.0
+     */
+    @Parameter(property = &quot;css.splitter.cacheTokenType&quot;, defaultValue = &quot;none&quot;)
+    protected String cacheTokenType;
+
+    /**
+     * Defines cache token parameter name which will be added to &lt;code&gt;&amp;#64;import&lt;/code&gt; links in destination
+     * &lt;a href=&quot;http://www.w3.org/Style/CSS/&quot;&gt;CSS&lt;/a&gt; stylesheets.&lt;br&gt;
+     * &lt;b&gt;Notice&lt;/b&gt;: ignored when &lt;a href=&quot;#cacheTokenType&quot;&gt;cache token type&lt;/a&gt; is equal to &lt;tt&gt;none&lt;/tt&gt;.
+     * @since 1.0.0
+     */
+    @Parameter(property = &quot;css.splitter.cacheTokenParameter&quot;, defaultValue = &quot;v&quot;)
+    protected String cacheTokenParameter;
+
+    /**
+     * Stores different values depending on the &lt;a href=&quot;#cacheTokenType&quot;&gt;cache token type&lt;/a&gt;:
+     * &lt;ul&gt;
+     * &lt;li&gt;&lt;b&gt;custom&lt;/b&gt; - user specified value (e.g. &lt;code&gt;constantText&lt;/code&gt;, &lt;code&gt;${variable}&lt;/code&gt;)&lt;/li&gt;
+     * &lt;li&gt;&lt;b&gt;date&lt;/b&gt; - pattern for {@link java.text.SimpleDateFormat} object&lt;/li&gt;
+     * &lt;li&gt;&lt;b&gt;none&lt;/b&gt; - ignored&lt;/li&gt;
+     * &lt;/ul&gt;
+     * &lt;b&gt;Default value is&lt;/b&gt;: &lt;tt&gt;yyyyMMddHHmmss&lt;/tt&gt; if &lt;a href=&quot;#cacheTokenType&quot;&gt;cache token type&lt;/a&gt; is equal to
+     * &lt;tt&gt;date&lt;/tt&gt;.&lt;br&gt;
+     * &lt;b&gt;Required&lt;/b&gt;: &lt;tt&gt;YES&lt;/tt&gt; if &lt;a href=&quot;#cacheTokenType&quot;&gt;cache token type&lt;/a&gt; is equal to &lt;tt&gt;custom&lt;/tt&gt;.
+     * @since 1.0.0
+     */
+    @Parameter(property = &quot;css.splitter.cacheTokenValue&quot;)
+    protected String cacheTokenValue;
+
+    /**
+     * Sources encoding.
+     * @since 1.0.0
+     */
+    @Parameter(property = &quot;css.splitter.encoding&quot;, defaultValue = &quot;${project.build.sourceEncoding}&quot;)
+    protected String encoding;
+
+    /**
+     * Destination files naming pattern. {fileName} is equal to source file name without extension.
+     * @since 1.0.0
+     */
+    @Parameter(property = &quot;css.splitter.outputFileNamePattern&quot;, defaultValue = DestinationFileCreator.FILE_NAME_PARAMETER + &quot;.css&quot;)
+    protected String outputFileNamePattern;
+
+    /**
+     * Destination &quot;parts&quot; naming pattern. {fileName} is equal to source file name without extension, {index} is equal
+     * to &quot;part&quot; index (first is equal to 1). &quot;Parts&quot; are loaded in the browsers according to indexes. For correct
+     * listing files on all operating systems indexes can contain leading zeros.
+     * @since 1.0.0
+     */
+    @Parameter(property = &quot;css.splitter.outputPartNamePattern&quot;, defaultValue = DestinationFileCreator.FILE_NAME_PARAMETER + '-'
+            + PART_INDEX_PARAMETER + &quot;.css&quot;)
+    protected String outputPartNamePattern;
+
+<span class="nc" id="L348">    private String resolvedCacheToken = &quot;&quot;;</span>
+
+    private void logParameters() {
+<span class="nc bnc" id="L351" title="All 2 branches missed.">        if (!getLog().isDebugEnabled()) {</span>
+<span class="nc" id="L352">            return;</span>
+        }
+<span class="nc" id="L354">        final ParametersLogBuilder logger = new ParametersLogBuilder(getLog());</span>
+<span class="nc" id="L355">        logger.append(&quot;skip&quot;, skip);</span>
+<span class="nc" id="L356">        logger.append(&quot;verbose&quot;, verbose, new SimpleSanitizer(verbose, Boolean.TRUE));</span>
+<span class="nc" id="L357">        logger.append(&quot;force&quot;, force);</span>
+<span class="nc" id="L358">        logger.append(&quot;sourceDirectory&quot;, sourceDirectory);</span>
+<span class="nc" id="L359">        logger.append(&quot;outputDirectory&quot;, outputDirectory);</span>
+<span class="nc" id="L360">        logger.append(&quot;filesetPatternFormat&quot;, filesetPatternFormat);</span>
+<span class="nc bnc" id="L361" title="All 2 branches missed.">        logger.append(&quot;includes&quot;, includes, new LazySimpleSanitizer(includes.length != 0, new ValueContainer() {</span>
+
+            public Object getValue() {
+<span class="nc" id="L364">                return getDefaultIncludes();</span>
+            }
+        }));
+<span class="nc" id="L367">        logger.append(&quot;excludes&quot;, excludes);</span>
+<span class="nc bnc" id="L368" title="All 2 branches missed.">        logger.append(&quot;maxRules&quot;, maxRules, new SimpleSanitizer(maxRules &gt; 0, MAX_RULES_DEFAULT_VALUE));</span>
+<span class="nc bnc" id="L369" title="All 2 branches missed.">        logger.append(&quot;rulesLimit&quot;, rulesLimit, new SimpleSanitizer(rulesLimit &gt; 0, MAX_RULES_LIMIT));</span>
+<span class="nc bnc" id="L370" title="All 2 branches missed.">        logger.append(&quot;maxImports&quot;, maxImports,</span>
+                new SimpleSanitizer(maxImports &gt;= OrderedTree.MIN_NUMBER_OF_CHILDREN, MAX_IMPORTS_DEFAULT_VALUE));
+<span class="nc bnc" id="L372" title="All 2 branches missed.">        logger.append(&quot;importsDepthLimit&quot;, importsDepthLimit, new SimpleSanitizer(importsDepthLimit &gt; 0, MAX_IMPORTS_DEPTH_LIMIT));</span>
+<span class="nc" id="L373">        logger.append(&quot;standard&quot;, standard);</span>
+<span class="nc" id="L374">        logger.append(&quot;nonstrict&quot;, nonstrict);</span>
+<span class="nc" id="L375">        logger.append(&quot;compress&quot;, compress);</span>
+<span class="nc" id="L376">        logger.append(&quot;compressLineBreak&quot;, compressLineBreak);</span>
+<span class="nc" id="L377">        logger.append(&quot;cacheTokenType&quot;, cacheTokenType);</span>
+<span class="nc" id="L378">        logger.append(&quot;cacheTokenParameter&quot;, cacheTokenParameter);</span>
+<span class="nc" id="L379">        logger.append(&quot;cacheTokenValue&quot;, cacheTokenValue, new ValueSanitizer() {</span>
+
+            private Object sanitizedValue;
+
+            public boolean isValid(final Object value) {
+<span class="nc bnc" id="L384" title="All 2 branches missed.">                if (cacheTokenValue != null) {</span>
+<span class="nc" id="L385">                    return true;</span>
+                }
+<span class="nc" id="L387">                sanitizedValue = getDefaultCacheTokenValue();</span>
+<span class="nc bnc" id="L388" title="All 2 branches missed.">                return sanitizedValue == null;</span>
+            }
+
+            public Object sanitize(final Object value) {
+<span class="nc" id="L392">                return sanitizedValue;</span>
+            }
+        });
+<span class="nc" id="L395">        logger.append(&quot;encoding&quot;, encoding);</span>
+<span class="nc" id="L396">        logger.append(&quot;outputFileNamePattern&quot;, outputFileNamePattern);</span>
+<span class="nc" id="L397">        logger.append(&quot;outputPartNamePattern&quot;, outputPartNamePattern);</span>
+<span class="nc" id="L398">        logger.debug();</span>
+<span class="nc" id="L399">    }</span>
+
+    private String[] getDefaultIncludes() {
+<span class="nc bnc" id="L402" title="All 2 branches missed.">        if (ScannerPatternFormat.ANT.name().equalsIgnoreCase(filesetPatternFormat)) {</span>
+<span class="nc" id="L403">            return new String[] { &quot;**/*.css&quot; };</span>
+        } else {
+<span class="nc" id="L405">            return new String[] { &quot;^.+\\.css$&quot; };</span>
+        }
+    }
+
+    private String getDefaultCacheTokenValue() {
+<span class="nc bnc" id="L410" title="All 2 branches missed.">        if (TokenType.DATE.name().equalsIgnoreCase(cacheTokenType)) {</span>
+<span class="nc" id="L411">            return &quot;yyyyMMddHHmmss&quot;;</span>
+        } else {
+<span class="nc" id="L413">            return null;</span>
+        }
+    }
+
+    private void logNonstricWarning() {
+<span class="nc" id="L418">        getLog().warn(&quot;#################### NON-STRICT MODE ENABLED ####################&quot;);</span>
+<span class="nc" id="L419">        getLog().warn(&quot;This functionality may stop working or be removed at any time!&quot;);</span>
+<span class="nc" id="L420">        getLog().warn(&quot;You should fix your code instead of relying on this functionality.&quot;);</span>
+<span class="nc" id="L421">        getLog().warn(&quot;#################### NON-STRICT MODE ENABLED ####################&quot;);</span>
+<span class="nc" id="L422">    }</span>
+
+    private void calculateParameters() {
+<span class="nc bnc" id="L425" title="All 2 branches missed.">        if (getLog().isDebugEnabled()) {</span>
+<span class="nc" id="L426">            verbose = true;</span>
+        }
+<span class="nc bnc" id="L428" title="All 2 branches missed.">        if (includes.length == 0) {</span>
+<span class="nc" id="L429">            includes = getDefaultIncludes();</span>
+        }
+<span class="nc bnc" id="L431" title="All 2 branches missed.">        if (maxRules &lt; 1) {</span>
+<span class="nc" id="L432">            maxRules = Integer.parseInt(MAX_RULES_DEFAULT_VALUE);</span>
+        }
+<span class="nc bnc" id="L434" title="All 2 branches missed.">        if (rulesLimit &lt; 1) {</span>
+<span class="nc" id="L435">            rulesLimit = Integer.parseInt(MAX_RULES_LIMIT);</span>
+        }
+<span class="nc bnc" id="L437" title="All 2 branches missed.">        if (maxImports &lt; OrderedTree.MIN_NUMBER_OF_CHILDREN) {</span>
+<span class="nc" id="L438">            maxImports = Integer.parseInt(MAX_IMPORTS_DEFAULT_VALUE);</span>
+        }
+<span class="nc bnc" id="L440" title="All 2 branches missed.">        if (importsDepthLimit &lt; 1) {</span>
+<span class="nc" id="L441">            importsDepthLimit = Integer.parseInt(MAX_IMPORTS_DEPTH_LIMIT);</span>
+        }
+<span class="nc bnc" id="L443" title="All 2 branches missed.">        if (cacheTokenValue == null) {</span>
+<span class="nc" id="L444">            cacheTokenValue = getDefaultCacheTokenValue();</span>
+        }
+<span class="nc" id="L446">    }</span>
+
+    private void validateParameters() throws MojoExecutionException {
+<span class="nc bnc" id="L449" title="All 4 branches missed.">        if (cacheTokenValue == null &amp;&amp; TokenType.CUSTOM.name().equalsIgnoreCase(cacheTokenType)) {</span>
+<span class="nc" id="L450">            throw new MojoExecutionException(&quot;Parameter cacheTokenValue is required when cacheTokenType is equal to \&quot;custom\&quot;!&quot;);</span>
+        }
+<span class="nc" id="L452">    }</span>
+
+    public void execute() throws MojoExecutionException, MojoFailureException {
+<span class="nc" id="L455">        logParameters();</span>
+<span class="nc bnc" id="L456" title="All 2 branches missed.">        if (nonstrict) {</span>
+<span class="nc" id="L457">            logNonstricWarning();</span>
+        }
+<span class="nc bnc" id="L459" title="All 2 branches missed.">        if (skip) {</span>
+<span class="nc" id="L460">            getLog().info(&quot;Skipping job execution&quot;);</span>
+<span class="nc" id="L461">            return;</span>
+        }
+<span class="nc" id="L463">        calculateParameters();</span>
+<span class="nc" id="L464">        validateParameters();</span>
+<span class="nc" id="L465">        runSplitter();</span>
+<span class="nc bnc" id="L466" title="All 2 branches missed.">        if (nonstrict) {</span>
+<span class="nc" id="L467">            logNonstricWarning();</span>
+        }
+<span class="nc" id="L469">    }</span>
+
+    private void runSplitter() throws MojoFailureException {
+<span class="nc bnc" id="L472" title="All 2 branches missed.">        if (!sourceDirectory.exists()) {</span>
+<span class="nc" id="L473">            getLog().warn(&quot;Source directory does not exist: &quot; + sourceDirectory.getAbsolutePath());</span>
+<span class="nc" id="L474">            return;</span>
+        }
+<span class="nc" id="L476">        final Collection&lt;File&gt; files = getFiles();</span>
+<span class="nc bnc" id="L477" title="All 2 branches missed.">        if (files.isEmpty()) {</span>
+<span class="nc" id="L478">            getLog().warn(&quot;No sources to split&quot;);</span>
+<span class="nc" id="L479">            return;</span>
+        }
+<span class="nc" id="L481">        resolveCacheToken();</span>
+<span class="nc" id="L482">        splitFiles(files);</span>
+<span class="nc" id="L483">    }</span>
+
+    private Collection&lt;File&gt; getFiles() {
+<span class="nc" id="L486">        final ScannerPatternFormat patternFormat = ScannerPatternFormat.toPattern(filesetPatternFormat);</span>
+<span class="nc" id="L487">        final FileScanner scanner = new ScannerFactory().create(patternFormat, getLog());</span>
+<span class="nc bnc" id="L488" title="All 2 branches missed.">        if (verbose) {</span>
+<span class="nc" id="L489">            getLog().info(&quot;Scanning directory for sources...&quot;);</span>
+        }
+<span class="nc" id="L491">        return scanner.getFiles(sourceDirectory, includes, excludes);</span>
+    }
+
+    private void resolveCacheToken() {
+<span class="nc bnc" id="L495" title="All 2 branches missed.">        if (getLog().isDebugEnabled()) {</span>
+<span class="nc" id="L496">            getLog().debug(&quot;Resolving cache token...&quot;);</span>
+        }
+
+<span class="nc bnc" id="L499" title="All 2 branches missed.">        if (!TokenType.NONE.name().equalsIgnoreCase(cacheTokenType)) {</span>
+<span class="nc" id="L500">            final String value = TokenType.create(cacheTokenType).createFactory().create(cacheTokenValue);</span>
+<span class="nc" id="L501">            final StringBuilder cacheToken = new StringBuilder();</span>
+<span class="nc" id="L502">            cacheToken.append(UrlEscaper.escape(cacheTokenParameter));</span>
+<span class="nc" id="L503">            cacheToken.append('=');</span>
+<span class="nc" id="L504">            cacheToken.append(UrlEscaper.escape(value));</span>
+<span class="nc" id="L505">            resolvedCacheToken = cacheToken.toString();</span>
+        }
+
+<span class="nc bnc" id="L508" title="All 2 branches missed.">        if (verbose) {</span>
+<span class="nc" id="L509">            getLog().info(&quot;Cache token: &quot; + resolvedCacheToken);</span>
+        }
+<span class="nc" id="L511">    }</span>
+
+    private void splitFiles(final Collection&lt;File&gt; sources) throws MojoFailureException {
+<span class="nc bnc" id="L514" title="All 2 branches missed.">        final String sourceFilesText = &quot;source file&quot; + (sources.size() != 1 ? &quot;s&quot; : &quot;&quot;);</span>
+<span class="nc" id="L515">        getLog().info(&quot;Splitting &quot; + sources.size() + ' ' + sourceFilesText + &quot; to &quot; + outputDirectory.getAbsolutePath());</span>
+<span class="nc" id="L516">        final Timer timer = SystemTimer.getStartedTimer();</span>
+<span class="nc bnc" id="L517" title="All 2 branches missed.">        for (final File source : sources) {</span>
+<span class="nc bnc" id="L518" title="All 2 branches missed.">            if (isCompilationRequired(source)) {</span>
+<span class="nc" id="L519">                splitFile(source);</span>
+<span class="nc bnc" id="L520" title="All 2 branches missed.">            } else if (verbose) {</span>
+<span class="nc" id="L521">                getLog().info(&quot;Skipping stylesheet split (not modified): &quot; + source.getAbsolutePath());</span>
+            }
+<span class="nc" id="L523">        }</span>
+<span class="nc" id="L524">        getLog().info(&quot;Finished &quot; + sourceFilesText + &quot; split in &quot; + timer.stop());</span>
+<span class="nc" id="L525">    }</span>
+
+    private boolean isCompilationRequired(final File source) {
+<span class="nc bnc" id="L528" title="All 2 branches missed.">        if (force) {</span>
+<span class="nc" id="L529">            return true;</span>
+        }
+<span class="nc" id="L531">        final File destination = new DestinationFileCreator(sourceDirectory, outputDirectory, outputFileNamePattern).create(source);</span>
+<span class="nc bnc" id="L532" title="All 2 branches missed.">        if (!destination.exists()) {</span>
+<span class="nc" id="L533">            return true;</span>
+        }
+<span class="nc bnc" id="L535" title="All 2 branches missed.">        return source.lastModified() &gt; destination.lastModified();</span>
+    }
+
+    private void splitFile(final File source) throws MojoFailureException {
+<span class="nc" id="L539">        Timer timer = null;</span>
+<span class="nc bnc" id="L540" title="All 2 branches missed.">        if (verbose) {</span>
+<span class="nc" id="L541">            getLog().info(&quot;Splitting stylesheet: &quot; + source.getAbsolutePath());</span>
+<span class="nc" id="L542">            timer = SystemTimer.getStartedTimer();</span>
+        }
+<span class="nc" id="L544">        final String css = readCss(source);</span>
+<span class="nc" id="L545">        final StyleSheet stylesheet = parseStyleSheet(css);</span>
+<span class="nc" id="L546">        validateStyleSheet(stylesheet);</span>
+
+<span class="nc" id="L548">        final List&lt;StyleSheet&gt; parts = splitToParts(stylesheet);</span>
+<span class="nc" id="L549">        validateImportsDepth(parts);</span>
+
+<span class="nc" id="L551">        List&lt;String&gt; texts = convertToText(parts);</span>
+<span class="nc bnc" id="L552" title="All 2 branches missed.">        if (compress) {</span>
+<span class="nc" id="L553">            texts = compressStyleSheets(texts);</span>
+        }
+<span class="nc" id="L555">        saveParts(source, convertToTree(texts));</span>
+
+<span class="nc bnc" id="L557" title="All 2 branches missed.">        if (timer != null) {</span>
+<span class="nc" id="L558">            getLog().info(&quot;Finished in &quot; + timer.stop());</span>
+        }
+<span class="nc" id="L560">    }</span>
+
+    private String readCss(final File file) throws MojoFailureException {
+        try {
+<span class="nc" id="L564">            return FileUtils.readFileToString(file, encoding);</span>
+<span class="nc" id="L565">        } catch (final IOException e) {</span>
+<span class="nc" id="L566">            throw new MojoFailureException(&quot;Cannot read file: &quot; + file.getAbsolutePath(), e);</span>
+        }
+    }
+
+    private StyleSheet parseStyleSheet(final String css) {
+<span class="nc bnc" id="L571" title="All 2 branches missed.">        if (getLog().isDebugEnabled()) {</span>
+<span class="nc" id="L572">            getLog().debug(&quot;Parsing stylesheet...&quot;);</span>
+        }
+<span class="nc bnc" id="L574" title="All 2 branches missed.">        final ParserOptions options = new ParserOptionsBuilder().withStandard(Standard.create(standard)).withStrict(!nonstrict).create();</span>
+<span class="nc" id="L575">        final StyleSheet stylesheet = new SteadyStateParser(getLog()).parse(css, options);</span>
+<span class="nc bnc" id="L576" title="All 2 branches missed.">        new StylesheetMessagePrinter(getLog(), !nonstrict).print(stylesheet);</span>
+<span class="nc bnc" id="L577" title="All 2 branches missed.">        if (verbose) {</span>
+<span class="nc bnc" id="L578" title="All 2 branches missed.">            getLog().info(String.format(&quot;Stylesheet contains %d rule%s.&quot;, stylesheet.getSize(), stylesheet.getSize() != 1 ? 's' : &quot;&quot;));</span>
+        }
+<span class="nc" id="L580">        return stylesheet;</span>
+    }
+
+    private List&lt;StyleSheet&gt; splitToParts(final StyleSheet stylesheet) {
+<span class="nc bnc" id="L584" title="All 2 branches missed.">        if (getLog().isDebugEnabled()) {</span>
+<span class="nc" id="L585">            getLog().debug(&quot;Splitting stylesheet to parts...&quot;);</span>
+        }
+<span class="nc" id="L587">        final List&lt;StyleSheet&gt; parts = new StyleSheetSplliter(maxRules).split(stylesheet);</span>
+<span class="nc bnc" id="L588" title="All 2 branches missed.">        if (verbose) {</span>
+<span class="nc bnc" id="L589" title="All 2 branches missed.">            getLog().info(String.format(&quot;Split to %d stylesheet%s.&quot;, parts.size(), parts.size() == 1 ? &quot;&quot; : &quot;s&quot;));</span>
+        }
+<span class="nc" id="L591">        return parts;</span>
+    }
+
+    private void validateImportsDepth(final List&lt;StyleSheet&gt; stylesheets) throws MojoFailureException {
+<span class="nc" id="L595">        final OrderedTree&lt;StyleSheet&gt; tree = convertToTree(stylesheets);</span>
+<span class="nc" id="L596">        final int depth = tree.getDepth();</span>
+<span class="nc bnc" id="L597" title="All 2 branches missed.">        if (verbose) {</span>
+<span class="nc" id="L598">            getLog().info(&quot;Imports depth: &quot; + depth);</span>
+        }
+<span class="nc bnc" id="L600" title="All 2 branches missed.">        if (getLog().isDebugEnabled()) {</span>
+<span class="nc" id="L601">            getLog().debug(&quot;Validating imports depth...&quot;);</span>
+        }
+<span class="nc bnc" id="L603" title="All 2 branches missed.">        if (depth &gt; importsDepthLimit) {</span>
+<span class="nc" id="L604">            throw new MojoFailureException(</span>
+<span class="nc" id="L605">                    String.format(&quot;The number of @import depth (%d) exceeded the allowable limit (%d)!&quot;, depth, importsDepthLimit));</span>
+        }
+<span class="nc" id="L607">    }</span>
+
+    private &lt;T&gt; OrderedTree&lt;T&gt; convertToTree(final List&lt;T&gt; objects) {
+<span class="nc" id="L610">        return new OrderedTree&lt;T&gt;(objects, maxImports);</span>
+    }
+
+    private static List&lt;String&gt; convertToText(final List&lt;StyleSheet&gt; stylesheets) {
+<span class="nc" id="L614">        final List&lt;String&gt; texts = new ArrayList&lt;String&gt;(stylesheets.size());</span>
+<span class="nc bnc" id="L615" title="All 2 branches missed.">        for (final StyleSheet stylesheet : stylesheets) {</span>
+<span class="nc" id="L616">            texts.add(stylesheet.toString());</span>
+<span class="nc" id="L617">        }</span>
+<span class="nc" id="L618">        return texts;</span>
+    }
+
+    private List&lt;String&gt; compressStyleSheets(final List&lt;String&gt; stylesheets) {
+<span class="nc bnc" id="L622" title="All 2 branches missed.">        if (verbose) {</span>
+<span class="nc" id="L623">            getLog().info(&quot;Compressing CSS code...&quot;);</span>
+        }
+<span class="nc" id="L625">        final List&lt;String&gt; compressed = new ArrayList&lt;String&gt;(stylesheets.size());</span>
+<span class="nc" id="L626">        final CodeCompressor compressor = new CodeCompressor(compressLineBreak);</span>
+<span class="nc bnc" id="L627" title="All 2 branches missed.">        for (int i = 0; i &lt; stylesheets.size(); ++i) {</span>
+<span class="nc bnc" id="L628" title="All 2 branches missed.">            if (getLog().isDebugEnabled()) {</span>
+<span class="nc" id="L629">                getLog().debug(String.format(&quot;Compressing stylesheet no. %d...&quot;, i + 1));</span>
+            }
+<span class="nc" id="L631">            compressed.add(compressor.compress(stylesheets.get(i)));</span>
+        }
+<span class="nc" id="L633">        return compressed;</span>
+    }
+
+    private void validateStyleSheet(final StyleSheet stylesheet) {
+<span class="nc bnc" id="L637" title="All 2 branches missed.">        if (getLog().isDebugEnabled()) {</span>
+<span class="nc" id="L638">            getLog().debug(&quot;Validating stylesheet...&quot;);</span>
+        }
+
+<span class="nc" id="L641">        new RulesLimitValidator(rulesLimit).validate(stylesheet);</span>
+<span class="nc" id="L642">        new StylePropertiesLimitValidator(maxRules).validate(stylesheet);</span>
+<span class="nc" id="L643">    }</span>
+
+    private void saveParts(final File source, final OrderedTreeNode&lt;String&gt; stylesheetsTree) throws MojoFailureException {
+<span class="nc bnc" id="L646" title="All 2 branches missed.">        if (getLog().isDebugEnabled()) {</span>
+<span class="nc" id="L647">            getLog().debug(&quot;Creating imports' tree...&quot;);</span>
+        }
+
+<span class="nc bnc" id="L650" title="All 2 branches missed.">        if (verbose) {</span>
+<span class="nc" id="L651">            getLog().info(&quot;Saving CSS code...&quot;);</span>
+        }
+<span class="nc" id="L653">        final int numberOfDigits = String.valueOf(stylesheetsTree.size()).length();</span>
+<span class="nc" id="L654">        final String indexPattern = &quot;%0&quot; + numberOfDigits + 'd';</span>
+<span class="nc" id="L655">        saveStyleSheetsTree(source, stylesheetsTree, indexPattern);</span>
+<span class="nc" id="L656">    }</span>
+
+    private void saveStyleSheetsTree(final File source, final OrderedTreeNode&lt;String&gt; node, final String indexPattern)
+            throws MojoFailureException {
+<span class="nc" id="L660">        final DestinationFileCreator fileCreator = new DestinationFileCreator(sourceDirectory, outputDirectory);</span>
+<span class="nc bnc" id="L661" title="All 2 branches missed.">        if (node.getOrder() == 0) {</span>
+<span class="nc" id="L662">            fileCreator.setFileNamePattern(outputFileNamePattern);</span>
+        } else {
+<span class="nc" id="L664">            final String index = String.format(indexPattern, node.getOrder());</span>
+<span class="nc" id="L665">            fileCreator.setFileNamePattern(outputPartNamePattern.replace(PART_INDEX_PARAMETER, index));</span>
+        }
+<span class="nc" id="L667">        final File target = fileCreator.create(source);</span>
+
+<span class="nc bnc" id="L669" title="All 2 branches missed.">        if (node.hasValue()) {</span>
+<span class="nc" id="L670">            saveCss(target, node.getValue());</span>
+<span class="nc" id="L671">            return;</span>
+        }
+
+<span class="nc" id="L674">        final StringBuilder imports = new StringBuilder();</span>
+<span class="nc bnc" id="L675" title="All 2 branches missed.">        for (final OrderedTreeNode&lt;String&gt; child : node.getChildren()) {</span>
+<span class="nc" id="L676">            final String index = String.format(indexPattern, child.getOrder());</span>
+<span class="nc" id="L677">            fileCreator.setFileNamePattern(outputPartNamePattern.replace(PART_INDEX_PARAMETER, index));</span>
+<span class="nc" id="L678">            final File childTarget = fileCreator.create(source);</span>
+<span class="nc" id="L679">            saveStyleSheetsTree(source, child, indexPattern);</span>
+<span class="nc bnc" id="L680" title="All 2 branches missed.">            final String parameters = StringUtils.isEmpty(resolvedCacheToken) ? &quot;&quot; : '?' + resolvedCacheToken;</span>
+<span class="nc" id="L681">            imports.append(String.format(&quot;@import \&quot;%s%s\&quot;;%n&quot;, childTarget.getName(), parameters));</span>
+<span class="nc" id="L682">        }</span>
+<span class="nc" id="L683">        saveCss(target, imports.toString());</span>
+<span class="nc" id="L684">    }</span>
+
+    private void saveCss(final File file, final String css) throws MojoFailureException {
+<span class="nc bnc" id="L687" title="All 2 branches missed.">        if (getLog().isDebugEnabled()) {</span>
+<span class="nc" id="L688">            getLog().debug(&quot;Saving stylesheet to &quot; + file.getAbsolutePath());</span>
+        }
+        try {
+<span class="nc" id="L691">            FileUtils.write(file, css, encoding);</span>
+<span class="nc" id="L692">        } catch (final IOException e) {</span>
+<span class="nc" id="L693">            throw new MojoFailureException(&quot;Cannot save file: &quot; + file.getAbsolutePath(), e);</span>
+<span class="nc" id="L694">        }</span>
+<span class="nc" id="L695">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.7.201606060606</span></div></body></html>

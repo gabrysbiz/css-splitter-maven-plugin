@@ -3,13 +3,18 @@
     xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
     <url>
         <loc>http://css-splitter-maven-plugin.projects.gabrys.biz/</loc>
-        <lastmod>2016-07-30</lastmod>
+        <lastmod>2016-08-10</lastmod>
         <priority>1.0</priority>
+    </url>
+    <url>
+        <loc>http://css-splitter-maven-plugin.projects.gabrys.biz/1.1.0/</loc>
+        <lastmod>2016-08-10</lastmod>
+        <priority>0.8</priority>
     </url>
     <url>
         <loc>http://css-splitter-maven-plugin.projects.gabrys.biz/1.0.1/</loc>
         <lastmod>2016-07-31</lastmod>
-        <priority>0.8</priority>
+        <priority>0.5</priority>
     </url>
     <url>
         <loc>http://css-splitter-maven-plugin.projects.gabrys.biz/1.0.0/</loc>
