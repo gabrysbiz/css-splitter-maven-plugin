@@ -10,7 +10,7 @@
         <section id="release-1.1.0" name="Release 1.1.0">
             <p>Features:</p>
             <ul>
-                <li>Added code compression (see <a href="split-mojo.html#compress">compress</a> parameter)</li>
+                <li>Added code compression (see the <a href="split-mojo.html#compress">compress</a> parameter)</li>
             </ul>
         </section>
         <section id="release-1.0.1" name="Release 1.0.1">

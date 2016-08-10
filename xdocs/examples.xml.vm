@@ -32,6 +32,10 @@
                     <td><a href="examples/cache-token.html">Using cache token</a></td>
                     <td>This example describes how to enable addition of cache token to <code>@import</code> links.</td>
                 </tr>
+                <tr class="a">
+                    <td><a href="examples/code-compression.html">Code compression</a></td>
+                    <td>This example shows how to enable code compression (minification).</td>
+                </tr>
             </table>
         </section>
     </body>

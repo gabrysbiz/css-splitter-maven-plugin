@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document xmlns="http://maven.apache.org/XDOC/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
+
+    <properties>
+        <title>Code compression</title>
+    </properties>
+
+    <body>
+        <section name="Code compression">
+            <p>
+                The plugin supports code compression using <a href="http://yui.github.io/yuicompressor/">YUI Compressor</a>
+                You can enable minification by settng the <a href="../split-mojo.html#compress">compress</a> parameter to
+                <code>true</code>:
+            </p>
+            <pre>&lt;project&gt;
+   ...
+   &lt;build&gt;
+      &lt;plugins&gt;
+         ...
+         &lt;plugin&gt;
+            &lt;groupId&gt;${project.groupId}&lt;/groupId&gt;
+            &lt;artifactId&gt;${project.artifactId}&lt;/artifactId&gt;
+            &lt;version&gt;${project.version}&lt;/version&gt;
+            &lt;executions&gt;
+               &lt;execution&gt;
+                  &lt;goals&gt;
+                     &lt;goal&gt;split&lt;/goal&gt;
+                  &lt;/goals&gt;
+                  &lt;configuration&gt;
+                     &lt;compress&gt;true&lt;/compress&gt;
+                  &lt;/configuration&gt;
+               &lt;/execution&gt;
+            &lt;/executions&gt;
+         &lt;/plugin&gt;
+      &lt;/plugins&gt;
+   &lt;/build&gt;
+&lt;project&gt;</pre>
+            <p>
+                Additionaly you can set the column number after which the plugin will insert a line break
+                by settng the <a href="../split-mojo.html#compressLineBreak">compressLineBreak</a> parameter.
+                From <a href="http://yui.github.io/yuicompressor/">YUI Compressor</a> documentation:
+            </p>
+            <blockquote>Some source control tools do not like files containing lines longer than, say 8000 characters.
+The line break option is used in that case to split long lines after a specific column.</blockquote>
+            <pre>&lt;project&gt;
+   ...
+   &lt;build&gt;
+      &lt;plugins&gt;
+         ...
+         &lt;plugin&gt;
+            &lt;groupId&gt;${project.groupId}&lt;/groupId&gt;
+            &lt;artifactId&gt;${project.artifactId}&lt;/artifactId&gt;
+            &lt;version&gt;${project.version}&lt;/version&gt;
+            &lt;executions&gt;
+               &lt;execution&gt;
+                  &lt;goals&gt;
+                     &lt;goal&gt;split&lt;/goal&gt;
+                  &lt;/goals&gt;
+                  &lt;configuration&gt;
+                     &lt;compress&gt;true&lt;/compress&gt;
+                     &lt;compressLineBreak&gt;100&lt;/compressLineBreak&gt;
+                  &lt;/configuration&gt;
+               &lt;/execution&gt;
+            &lt;/executions&gt;
+         &lt;/plugin&gt;
+      &lt;/plugins&gt;
+   &lt;/build&gt;
+&lt;project&gt;</pre>
+        </section>
+    </body>
+</document>
