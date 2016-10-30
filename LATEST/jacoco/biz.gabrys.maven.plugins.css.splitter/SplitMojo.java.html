@@ -341,8 +341,8 @@ import biz.gabrys.maven.plugins.css.splitter.validation.StylePropertiesLimitVali
      * listing files on all operating systems indexes can contain leading zeros.
      * @since 1.0.0
      */
-    @Parameter(property = &quot;css.splitter.outputPartNamePattern&quot;, defaultValue = DestinationFileCreator.FILE_NAME_PARAMETER + '-'
-            + PART_INDEX_PARAMETER + &quot;.css&quot;)
+    @Parameter(property = &quot;css.splitter.outputPartNamePattern&quot;,
+            defaultValue = DestinationFileCreator.FILE_NAME_PARAMETER + '-' + PART_INDEX_PARAMETER + &quot;.css&quot;)
     protected String outputPartNamePattern;
 
 <span class="nc" id="L348">    private String resolvedCacheToken = &quot;&quot;;</span>
