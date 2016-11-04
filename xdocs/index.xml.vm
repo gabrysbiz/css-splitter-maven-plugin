@@ -14,7 +14,7 @@
                 source code.
             </p>
             <p>
-                The <a href="http://cssparser.sourceforge.net/">CSS Parser</a> supports following standards:
+                <a href="http://cssparser.sourceforge.net/">CSS Parser</a> supports following standards:
             </p>
             <ul>
                 <li><a href="https://www.w3.org/Style/CSS/">Cascading Style Sheets Level 3</a></li>

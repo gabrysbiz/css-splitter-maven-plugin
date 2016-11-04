@@ -8,6 +8,14 @@
 
     <body>
         <section id="release-1.1.1" name="Release 1.1.1">
+            <p>Dependencies:</p>
+            <ul>
+                <li>
+                    Upgraded <a href="http://maven-plugin-utils.projects.gabrys.biz/">Maven Plugin Utils</a>
+                    from <a href="http://maven-plugin-utils.projects.gabrys.biz/1.3.0/">1.3.0</a>
+                    to <a href="http://maven-plugin-utils.projects.gabrys.biz/1.4.0/">1.4.0</a>
+                </li>
+            </ul>
         </section>
         <section id="release-1.1.0" name="Release 1.1.0">
             <p>Features:</p>
@@ -19,7 +27,7 @@
         <section id="release-1.0.1" name="Release 1.0.1">
             <p>Dependencies:</p>
             <ul>
-                <li>Upgraded the <a href="http://cssparser.sourceforge.net/">CSS Parser</a> from 0.9.19 to 0.9.20</li>
+                <li>Upgraded <a href="http://cssparser.sourceforge.net/">CSS Parser</a> from 0.9.19 to 0.9.20</li>
             </ul>
             <p><a href="http://css-splitter-maven-plugin.projects.gabrys.biz/1.0.1/">See documentation</a></p>
         </section>
