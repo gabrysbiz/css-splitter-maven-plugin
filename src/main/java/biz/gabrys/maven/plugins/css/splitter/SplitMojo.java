@@ -341,8 +341,8 @@ public class SplitMojo extends AbstractMojo {
      * listing files on all operating systems indexes can contain leading zeros.
      * @since 1.0.0
      */
-    @Parameter(property = "css.splitter.outputPartNamePattern", defaultValue = DestinationFileCreator.FILE_NAME_PARAMETER + '-'
-            + PART_INDEX_PARAMETER + ".css")
+    @Parameter(property = "css.splitter.outputPartNamePattern",
+            defaultValue = DestinationFileCreator.FILE_NAME_PARAMETER + '-' + PART_INDEX_PARAMETER + ".css")
     protected String outputPartNamePattern;
 
     private String resolvedCacheToken = "";
