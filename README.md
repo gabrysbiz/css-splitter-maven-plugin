@@ -4,7 +4,7 @@
 
 This plugin splits [CSS](http://www.w3.org/Style/CSS/) stylesheets to smaller files ("parts") which contain maximum [X](http://css-splitter-maven-plugin.projects.gabrys.biz/LATEST/split-mojo.html#maxRules) rules. It uses a [CSS Parser](http://cssparser.sourceforge.net/) to parse source code.
 
-[CSS Parser](http://cssparser.sourceforge.net/) supports following standards:
+The [CSS Parser](http://cssparser.sourceforge.net/) supports following standards:
 * [Cascading Style Sheets Level 3](https://www.w3.org/Style/CSS/)
 * [Cascading Style Sheets Level 2 Revision 1 (CSS 2.1) Specification](https://www.w3.org/TR/CSS2/)
 * [Cascading Style Sheets Level 2](https://www.w3.org/TR/2008/REC-CSS2-20080411/)
