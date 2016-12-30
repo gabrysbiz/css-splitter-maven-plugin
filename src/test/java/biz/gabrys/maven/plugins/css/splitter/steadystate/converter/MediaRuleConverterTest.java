@@ -11,6 +11,7 @@ import com.steadystate.css.dom.CSSRuleListImpl;
 import com.steadystate.css.dom.CSSStyleRuleImpl;
 import com.steadystate.css.dom.MediaListImpl;
 
+import biz.gabrys.maven.plugins.css.splitter.css.Standard;
 import biz.gabrys.maven.plugins.css.splitter.css.type.ComplexRule;
 import biz.gabrys.maven.plugins.css.splitter.css.type.NodeRule;
 
@@ -18,10 +19,14 @@ public final class MediaRuleConverterTest {
 
     @Test
     public void isSupportedType_ruleHasValidType_returnsTrue() {
-        final MediaRuleConverter converter = new MediaRuleConverter(true);
+        final RuleConverter<?> ruleConverter = Mockito.mock(RuleConverter.class);
+        final MediaRuleConverter converter = new MediaRuleConverter(ruleConverter);
+
         final CSSMediaRuleImpl rule = new CSSMediaRuleImpl();
         final boolean supported = converter.isSupportedType(rule);
+
         Assert.assertTrue("Should return true.", supported);
+        Mockito.verifyZeroInteractions(ruleConverter);
     }
 
     @Test
@@ -54,5 +59,58 @@ public final class MediaRuleConverterTest {
         final List<NodeRule> rules = converted.getRules();
         Assert.assertNotNull("Converted rule children.", rules);
         Assert.assertEquals("Converted rule children size.", 1, rules.size());
+    }
+
+    @Test
+    public void createConverter_strictAndNotCSS3_returnsStyleRuleConverter() {
+        for (final Standard standard : Standard.values()) {
+            if (Standard.VERSION_3_0 == standard) {
+                continue;
+            }
+            final MediaRuleConverter thisObject = Mockito.mock(MediaRuleConverter.class);
+            final RuleConverter<?> converter = MediaRuleConverter.createConverter(thisObject, standard, true);
+            Assert.assertNotNull(String.format("Converter instance for standard %s.", standard), converter);
+            Assert.assertEquals(String.format("Converter class for standard %s.", standard), StyleRuleConverter.class,
+                    converter.getClass());
+            Mockito.verifyZeroInteractions(thisObject);
+        }
+    }
+
+    @Test
+    public void createConverter_strictAndCSS3_returnsMultipleRuleConverter() {
+        final MediaRuleConverter thisObject = Mockito.mock(MediaRuleConverter.class);
+        final RuleConverter<?> converter = MediaRuleConverter.createConverter(thisObject, Standard.VERSION_3_0, true);
+        Assert.assertNotNull("Converter instance.", converter);
+        Assert.assertEquals("Converter class.", MultipleRuleConverter.class, converter.getClass());
+
+        final MultipleRuleConverter ruleConverter = (MultipleRuleConverter) converter;
+        final List<RuleConverter<?>> children = ruleConverter.converters;
+        Assert.assertEquals("Converters quantity.", 2, children.size());
+        Assert.assertEquals("First converter class.", StyleRuleConverter.class, children.get(0).getClass());
+        Assert.assertEquals("Second converter instance.", thisObject, children.get(1));
+        Mockito.verifyZeroInteractions(thisObject);
+    }
+
+    @Test
+    public void createConverter_notStrict_returnsMultipleRuleConverter() {
+        for (final Standard standard : Standard.values()) {
+            final MediaRuleConverter thisObject = Mockito.mock(MediaRuleConverter.class);
+            final RuleConverter<?> converter = MediaRuleConverter.createConverter(thisObject, standard, false);
+            Assert.assertNotNull(String.format("Converter instance for standard %s.", standard), converter);
+            Assert.assertEquals(String.format("Converter class for standard %s.", standard), MultipleRuleConverter.class,
+                    converter.getClass());
+
+            final MultipleRuleConverter ruleConverter = (MultipleRuleConverter) converter;
+            final List<RuleConverter<?>> children = ruleConverter.converters;
+            Assert.assertEquals(String.format("Converters quantity for standard %s.", standard), 4, children.size());
+            Assert.assertEquals(String.format("First converter class for standard %s.", standard), StyleRuleConverter.class,
+                    children.get(0).getClass());
+            Assert.assertEquals(String.format("Second converter instance for standard %s.", standard), thisObject, children.get(1));
+            Assert.assertEquals(String.format("Third converter class for standard %s.", standard), PageRuleConverter.class,
+                    children.get(2).getClass());
+            Assert.assertEquals(String.format("Fourth converter class for standard %s.", standard), UnknownRuleConverter.class,
+                    children.get(3).getClass());
+            Mockito.verifyZeroInteractions(thisObject);
+        }
     }
 }

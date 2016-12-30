@@ -21,6 +21,7 @@ import org.w3c.dom.css.CSSRuleList;
 import com.steadystate.css.dom.CSSMediaRuleImpl;
 import com.steadystate.css.dom.MediaListImpl;
 
+import biz.gabrys.maven.plugins.css.splitter.css.Standard;
 import biz.gabrys.maven.plugins.css.splitter.css.type.ComplexRule;
 import biz.gabrys.maven.plugins.css.splitter.css.type.NodeRule;
 
@@ -28,23 +29,30 @@ class MediaRuleConverter extends AbstractRuleConverter<CSSMediaRuleImpl, Complex
 
     private final RuleConverter<?> converter;
 
-    MediaRuleConverter(final boolean strict) {
+    MediaRuleConverter(final Standard standard, final boolean strict) {
         super(CSSMediaRuleImpl.class);
-        if (strict) {
-            converter = new StyleRuleConverter();
-        } else {
-            final List<RuleConverter<?>> converters = new ArrayList<RuleConverter<?>>();
-            converters.add(new StyleRuleConverter());
-            converters.add(new PageRuleConverter());
-            converters.add(new UnknownRuleConverter());
-            converter = new MultipleRuleConverter(converters);
-        }
+        converter = createConverter(this, standard, strict);
     }
 
     // for tests
     MediaRuleConverter(final RuleConverter<?> converter) {
         super(CSSMediaRuleImpl.class);
         this.converter = converter;
+    }
+
+    static RuleConverter<?> createConverter(final MediaRuleConverter thisObject, final Standard standard, final boolean strict) {
+        if (strict && Standard.VERSION_3_0 != standard) {
+            return new StyleRuleConverter();
+        }
+
+        final List<RuleConverter<?>> converters = new ArrayList<RuleConverter<?>>();
+        converters.add(new StyleRuleConverter());
+        converters.add(thisObject);
+        if (!strict) {
+            converters.add(new PageRuleConverter());
+            converters.add(new UnknownRuleConverter());
+        }
+        return new MultipleRuleConverter(converters);
     }
 
     @Override

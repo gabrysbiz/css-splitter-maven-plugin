@@ -48,7 +48,7 @@ public class SteadyStateParser {
         }
         errorHandler.validate();
 
-        final StyleSheetConverter converter = new StyleSheetConverter(options.isStrict());
+        final StyleSheetConverter converter = new StyleSheetConverter(options.getStandard(), options.isStrict());
         return converter.convert(stylesheet);
     }
 }

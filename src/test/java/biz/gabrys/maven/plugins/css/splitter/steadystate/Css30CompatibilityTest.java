@@ -39,12 +39,15 @@ public final class Css30CompatibilityTest {
         parser.parse("@media all { @import 'file.css'; }", options);
     }
 
-    @Test(expected = ParserException.class)
-    public void parse_mediaStoresMediaRule_throwsException() {
+    @Test
+    public void parse_mediaStoresMediaRule_supported() {
         final Log logger = Mockito.mock(Log.class);
         final SteadyStateParser parser = new SteadyStateParser(logger);
 
-        parser.parse("@media all { @media all { } }", options);
+        final StyleSheet stylesheet = parser.parse("@media all { @media all { } }", options);
+
+        final ComplexRule media = (ComplexRule) stylesheet.getRules().get(0);
+        Assert.assertEquals("Stylesheet nested rule class.", ComplexRule.class, media.getRules().get(0).getClass());
     }
 
     @Test

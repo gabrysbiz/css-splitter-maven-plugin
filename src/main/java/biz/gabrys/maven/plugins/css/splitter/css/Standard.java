@@ -30,4 +30,9 @@ public enum Standard {
         }
         throw new IllegalArgumentException(String.format("CSS standard \"%s\" is not supported!", value));
     }
+
+    @Override
+    public String toString() {
+        return version;
+    }
 }
