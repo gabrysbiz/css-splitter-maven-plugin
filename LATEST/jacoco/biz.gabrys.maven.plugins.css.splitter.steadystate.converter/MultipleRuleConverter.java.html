@@ -22,7 +22,7 @@ import biz.gabrys.maven.plugins.css.splitter.css.type.NodeRule;
 
 class MultipleRuleConverter implements RuleConverter&lt;NodeRule&gt; {
 
-    private final List&lt;RuleConverter&lt;?&gt;&gt; converters;
+    protected final List&lt;RuleConverter&lt;?&gt;&gt; converters;
 
 <span class="fc" id="L27">    MultipleRuleConverter(final Collection&lt;RuleConverter&lt;?&gt;&gt; converters) {</span>
 <span class="fc" id="L28">        this.converters = new ArrayList&lt;RuleConverter&lt;?&gt;&gt;(converters);</span>

@@ -48,7 +48,7 @@ public class SteadyStateParser {
 <span class="fc" id="L48">        }</span>
 <span class="fc" id="L49">        errorHandler.validate();</span>
 
-<span class="fc" id="L51">        final StyleSheetConverter converter = new StyleSheetConverter(options.isStrict());</span>
+<span class="fc" id="L51">        final StyleSheetConverter converter = new StyleSheetConverter(options.getStandard(), options.isStrict());</span>
 <span class="fc" id="L52">        return converter.convert(stylesheet);</span>
     }
 }

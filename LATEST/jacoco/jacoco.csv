@@ -1,7 +1,7 @@
 GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
 CSS Splitter Maven Plugin,biz.gabrys.maven.plugins.css.splitter.tree,OrderedTree.LeafWithDistance,0,9,0,0,0,4,0,1,0,1
 CSS Splitter Maven Plugin,biz.gabrys.maven.plugins.css.splitter.tree,OrderedTree,32,389,2,50,3,95,2,41,0,17
-CSS Splitter Maven Plugin,biz.gabrys.maven.plugins.css.splitter.css,Standard,5,95,0,4,0,9,1,6,1,4
+CSS Splitter Maven Plugin,biz.gabrys.maven.plugins.css.splitter.css,Standard,5,98,0,4,0,10,1,7,1,5
 CSS Splitter Maven Plugin,biz.gabrys.maven.plugins.css.splitter,SplitMojo.new ValueSanitizer() {...},27,0,4,0,6,0,5,0,3,0
 CSS Splitter Maven Plugin,biz.gabrys.maven.plugins.css.splitter,SplitMojo.new LazySimpleSanitizer.ValueContainer() {...},10,0,0,0,2,0,2,0,2,0
 CSS Splitter Maven Plugin,biz.gabrys.maven.plugins.css.splitter,SplitMojo,1200,0,118,0,214,0,84,0,25,0
@@ -14,9 +14,9 @@ CSS Splitter Maven Plugin,biz.gabrys.maven.plugins.css.splitter.steadystate.conv
 CSS Splitter Maven Plugin,biz.gabrys.maven.plugins.css.splitter.steadystate.converter,CharsetRuleConverter,0,10,0,0,0,3,0,2,0,2
 CSS Splitter Maven Plugin,biz.gabrys.maven.plugins.css.splitter.steadystate.converter,UnsupportedRuleException,0,24,0,0,0,3,0,1,0,1
 CSS Splitter Maven Plugin,biz.gabrys.maven.plugins.css.splitter.steadystate.converter,StyleRuleConverter,0,64,0,4,0,12,0,4,0,2
-CSS Splitter Maven Plugin,biz.gabrys.maven.plugins.css.splitter.steadystate.converter,StyleSheetConverter,0,104,0,4,0,22,0,5,0,3
+CSS Splitter Maven Plugin,biz.gabrys.maven.plugins.css.splitter.steadystate.converter,StyleSheetConverter,0,107,0,4,0,22,0,6,0,4
 CSS Splitter Maven Plugin,biz.gabrys.maven.plugins.css.splitter.steadystate.converter,UnknownRuleConverter,0,10,0,0,0,3,0,2,0,2
-CSS Splitter Maven Plugin,biz.gabrys.maven.plugins.css.splitter.steadystate.converter,MediaRuleConverter,0,102,0,6,0,21,0,6,0,3
+CSS Splitter Maven Plugin,biz.gabrys.maven.plugins.css.splitter.steadystate.converter,MediaRuleConverter,0,117,0,12,0,25,0,10,0,4
 CSS Splitter Maven Plugin,biz.gabrys.maven.plugins.css.splitter.steadystate.converter,FontFaceRuleConverter,0,48,0,2,0,8,0,3,0,2
 CSS Splitter Maven Plugin,biz.gabrys.maven.plugins.css.splitter.steadystate.converter,PageRuleConverter,0,66,0,4,0,12,0,4,0,2
 CSS Splitter Maven Plugin,biz.gabrys.maven.plugins.css.splitter.steadystate.converter,MultipleRuleConverter,0,52,0,8,0,13,0,8,0,4
@@ -38,7 +38,7 @@ CSS Splitter Maven Plugin,biz.gabrys.maven.plugins.css.splitter.message,TreeMess
 CSS Splitter Maven Plugin,biz.gabrys.maven.plugins.css.splitter.message,StylesheetMessagePrinter,13,27,0,4,3,8,1,4,1,2
 CSS Splitter Maven Plugin,biz.gabrys.maven.plugins.css.splitter.message,AnyMessagePrinter,33,37,2,6,9,9,4,6,3,3
 CSS Splitter Maven Plugin,biz.gabrys.maven.plugins.css.splitter.steadystate,ParserException,0,4,0,0,0,2,0,1,0,1
-CSS Splitter Maven Plugin,biz.gabrys.maven.plugins.css.splitter.steadystate,SteadyStateParser,6,54,0,0,2,13,0,2,0,2
+CSS Splitter Maven Plugin,biz.gabrys.maven.plugins.css.splitter.steadystate,SteadyStateParser,6,56,0,0,2,13,0,2,0,2
 CSS Splitter Maven Plugin,biz.gabrys.maven.plugins.css.splitter.steadystate,NativeParserFactory,12,35,0,0,4,8,0,3,0,3
 CSS Splitter Maven Plugin,biz.gabrys.maven.plugins.css.splitter.steadystate,ParserOptionsBuilder,0,37,0,2,0,11,0,6,0,5
 CSS Splitter Maven Plugin,biz.gabrys.maven.plugins.css.splitter.steadystate,SteadyErrorHandler,0,80,1,5,0,24,1,8,0,6
