@@ -47,7 +47,9 @@ class MediaRuleConverter extends AbstractRuleConverter<CSSMediaRuleImpl, Complex
 
         final List<RuleConverter<?>> converters = new ArrayList<RuleConverter<?>>();
         converters.add(new StyleRuleConverter());
-        converters.add(thisObject);
+        if (Standard.VERSION_3_0 == standard) {
+            converters.add(thisObject);
+        }
         if (!strict) {
             converters.add(new PageRuleConverter());
             converters.add(new UnknownRuleConverter());
