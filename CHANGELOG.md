@@ -18,7 +18,7 @@ Dependencies:
 
 ## 1.1.0
 Features:
-* Added code compression (see the [compress](http://css-splitter-maven-plugin.projects.gabrys.biz/1.1.0/split-mojo.html#compress) parameter)
+* Added code compression (see [compress](http://css-splitter-maven-plugin.projects.gabrys.biz/1.1.0/split-mojo.html#compress) parameter)
 
 [See documentation](http://css-splitter-maven-plugin.projects.gabrys.biz/1.1.0/)
 

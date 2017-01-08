@@ -37,7 +37,7 @@
             <p>Features:</p>
             <ul>
                 <li>
-                    Added code compression (see the
+                    Added code compression (see
                     <a href="http://css-splitter-maven-plugin.projects.gabrys.biz/1.1.0/split-mojo.html#compress">compress</a>
                     parameter)
                 </li>
