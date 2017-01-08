@@ -29,4 +29,11 @@ public final class StandardTest {
     public void create_unsupportedStandard_throwsException() {
         Standard.create("unsupported");
     }
+
+    @Test
+    public void isSameAs() {
+        for (final Standard standard : Standard.values()) {
+            Assert.assertTrue(String.format("Verification for standard %s.", standard), standard.isSameAs(standard.toString()));
+        }
+    }
 }

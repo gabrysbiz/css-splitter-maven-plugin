@@ -11,7 +11,8 @@ import biz.gabrys.maven.plugins.css.splitter.css.type.UnknownRule;
 
 public final class Css10CompatibilityTest {
 
-    private final ParserOptions options = new ParserOptionsBuilder().withStandard(Standard.VERSION_1_0).withStrict(false).create();
+    private static final Standard STANDARD = Standard.VERSION_1_0;
+    private static final ParserOptions options = new ParserOptionsBuilder().withStandard(STANDARD).withStrict(false).create();
 
     @Test
     public void parse_mediaRule_returnsUnknown() {
@@ -21,5 +22,15 @@ public final class Css10CompatibilityTest {
         final StyleSheet stylesheet = parser.parse("@media all { rule { width: 100px; } }", options);
 
         Assert.assertEquals("@media rule class.", UnknownRule.class, stylesheet.getRules().get(0).getClass());
+    }
+
+    @Test(expected = ParserException.class)
+    public void parse_starHackIsDisabled_throwsException() {
+        new StarHackTester(STANDARD, false).parse();
+    }
+
+    @Test(expected = ParserException.class)
+    public void parse_starHackIsEnabled_throwsException() {
+        new StarHackTester(STANDARD, true).parse();
     }
 }

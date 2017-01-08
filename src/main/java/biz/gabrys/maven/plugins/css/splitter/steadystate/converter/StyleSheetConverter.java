@@ -20,6 +20,7 @@ import org.w3c.dom.css.CSSRule;
 import org.w3c.dom.css.CSSRuleList;
 import org.w3c.dom.css.CSSStyleSheet;
 
+import biz.gabrys.maven.plugins.css.splitter.css.Standard;
 import biz.gabrys.maven.plugins.css.splitter.css.type.NodeRule;
 import biz.gabrys.maven.plugins.css.splitter.css.type.StyleSheet;
 
@@ -27,21 +28,25 @@ public class StyleSheetConverter {
 
     private final RuleConverter<?> converter;
 
-    public StyleSheetConverter(final boolean strict) {
-        final List<RuleConverter<?>> converters = new ArrayList<RuleConverter<?>>();
-        converters.add(new StyleRuleConverter());
-        converters.add(new MediaRuleConverter(strict));
-        converters.add(new FontFaceRuleConverter());
-        converters.add(new PageRuleConverter());
-        converters.add(new ImportRuleConverter());
-        converters.add(new CharsetRuleConverter());
-        converters.add(new UnknownRuleConverter());
-        converter = new MultipleRuleConverter(converters);
+    public StyleSheetConverter(final Standard standard, final boolean strict) {
+        this(createConverter(standard, strict));
     }
 
     // for tests
     StyleSheetConverter(final RuleConverter<?> converter) {
         this.converter = converter;
+    }
+
+    static MultipleRuleConverter createConverter(final Standard standard, final boolean strict) {
+        final List<RuleConverter<?>> converters = new ArrayList<RuleConverter<?>>();
+        converters.add(new StyleRuleConverter());
+        converters.add(new MediaRuleConverter(standard, strict));
+        converters.add(new FontFaceRuleConverter());
+        converters.add(new PageRuleConverter());
+        converters.add(new ImportRuleConverter());
+        converters.add(new CharsetRuleConverter());
+        converters.add(new UnknownRuleConverter());
+        return new MultipleRuleConverter(converters);
     }
 
     public StyleSheet convert(final CSSStyleSheet stylesheet) {
