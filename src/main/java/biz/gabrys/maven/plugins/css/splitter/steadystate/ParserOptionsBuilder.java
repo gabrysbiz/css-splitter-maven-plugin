@@ -28,6 +28,11 @@ public class ParserOptionsBuilder {
         return this;
     }
 
+    public ParserOptionsBuilder withStarHack(final boolean allowed) {
+        getOptions().starHackAllowed = allowed;
+        return this;
+    }
+
     public ParserOptions create() {
         final ParserOptions opts = getOptions();
         options = null;
@@ -45,6 +50,7 @@ public class ParserOptionsBuilder {
 
         private Standard standard;
         private boolean strict;
+        private boolean starHackAllowed;
 
         public Standard getStandard() {
             return standard;
@@ -52,6 +58,10 @@ public class ParserOptionsBuilder {
 
         public boolean isStrict() {
             return strict;
+        }
+
+        public boolean isStarHackAllowed() {
+            return starHackAllowed;
         }
     }
 }
