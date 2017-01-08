@@ -12,9 +12,9 @@
             <ul>
                 <li>Added support for nested <code>@media</code> rules in CSS 3.0</li>
                 <li>
-                    Added support for &quot;star hack&quot; (see
+                    Added support for &quot;star hack&quot; in CSS 2.1 and 3.0 (see
                     <a href="split-mojo.html#starHackAllowed">starHackAllowed</a>
-                    parameter) in CSS 2.1 and 3.0
+                    parameter)
                 </li>
             </ul>
             <p>Dependencies:</p>
