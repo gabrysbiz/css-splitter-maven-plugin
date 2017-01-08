@@ -105,29 +105,6 @@ public final class SteadyStateParserTest {
     }
 
     @Test
-    public void parse_documentContainsPropertiesWithStarHackButSupportIsDisabled_throwsException() {
-        final StringBuilder css = new StringBuilder();
-        css.append("div {\n");
-        css.append(" width: 0;\n");
-        css.append(" *width: 0;\n");
-        css.append(" height: 0;\n");
-        css.append("}\n");
-
-        final SteadyStateParser parser = new SteadyStateParser(Mockito.mock(Log.class));
-
-        for (final Standard standard : Standard.values()) {
-            final ParserOptions options = new ParserOptionsBuilder().withStandard(standard).withStarHack(false).create();
-
-            try {
-                parser.parse(css.toString(), options);
-                Assert.fail(String.format("Should throw exception for standard %s.", standard));
-            } catch (final ParserException e) {
-                // ok
-            }
-        }
-    }
-
-    @Test
     public void parse_documentContainsPropertiesWithStarHackAndSupportIsEnabled_returnsStyleShees() {
         final StringBuilder css = new StringBuilder();
         css.append("div {\n");
