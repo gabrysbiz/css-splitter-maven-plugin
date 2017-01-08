@@ -1,10 +1,10 @@
 GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
 CSS Splitter Maven Plugin,biz.gabrys.maven.plugins.css.splitter.tree,OrderedTree.LeafWithDistance,0,9,0,0,0,4,0,1,0,1
 CSS Splitter Maven Plugin,biz.gabrys.maven.plugins.css.splitter.tree,OrderedTree,32,389,2,50,3,95,2,41,0,17
-CSS Splitter Maven Plugin,biz.gabrys.maven.plugins.css.splitter.css,Standard,5,98,0,4,0,10,1,7,1,5
+CSS Splitter Maven Plugin,biz.gabrys.maven.plugins.css.splitter.css,Standard,5,103,0,4,0,11,1,8,1,6
 CSS Splitter Maven Plugin,biz.gabrys.maven.plugins.css.splitter,SplitMojo.new ValueSanitizer() {...},27,0,4,0,6,0,5,0,3,0
 CSS Splitter Maven Plugin,biz.gabrys.maven.plugins.css.splitter,SplitMojo.new LazySimpleSanitizer.ValueContainer() {...},10,0,0,0,2,0,2,0,2,0
-CSS Splitter Maven Plugin,biz.gabrys.maven.plugins.css.splitter,SplitMojo,1210,0,118,0,216,0,84,0,25,0
+CSS Splitter Maven Plugin,biz.gabrys.maven.plugins.css.splitter,SplitMojo,1246,0,130,0,219,0,90,0,25,0
 CSS Splitter Maven Plugin,biz.gabrys.maven.plugins.css.splitter.token,TokenType,5,109,0,7,0,11,1,9,1,5
 CSS Splitter Maven Plugin,biz.gabrys.maven.plugins.css.splitter.token,TokenType.new Object() {...},2,17,0,0,0,1,0,1,0,1
 CSS Splitter Maven Plugin,biz.gabrys.maven.plugins.css.splitter.token,DateTokenValueFactory,4,14,0,0,1,3,1,2,1,2
