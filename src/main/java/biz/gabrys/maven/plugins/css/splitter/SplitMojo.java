@@ -275,7 +275,7 @@ public class SplitMojo extends AbstractMojo {
      * }
      * </pre>
      * 
-     * <b>Notice</b>: ignored when <a href="#standard">standard</a> is equal to 1.0 or 2.0.
+     * <b>Notice</b>: ignored when <a href="#standard">standard</a> is equal to <code>1.0</code> or <code>2.0</code>.
      * @since 1.2.0
      */
     @Parameter(property = "css.splitter.starHackAllowed", defaultValue = "false")
