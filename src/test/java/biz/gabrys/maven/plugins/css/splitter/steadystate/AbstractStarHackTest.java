@@ -37,7 +37,7 @@ abstract class AbstractStarHackTest {
     }
 
     @Test
-    public void parse_starHackIsEnabled_returnsStyleShees() {
+    public void parse_starHackIsEnabled_returnsStyleSheet() {
         final StringBuilder css = new StringBuilder();
         css.append("div {\n");
         css.append(" width: 0;\n");

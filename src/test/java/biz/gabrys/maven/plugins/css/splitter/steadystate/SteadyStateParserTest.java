@@ -1,6 +1,5 @@
 package biz.gabrys.maven.plugins.css.splitter.steadystate;
 
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -102,44 +101,5 @@ public final class SteadyStateParserTest {
         property = properties.get(4);
         Assert.assertEquals("FontFace first style property name.", "font-style", property.getName());
         Assert.assertEquals("FontFace first style property value.", "normal", property.getValue());
-    }
-
-    @Test
-    public void parse_documentContainsPropertiesWithStarHackAndSupportIsEnabled_returnsStyleShees() {
-        final StringBuilder css = new StringBuilder();
-        css.append("div {\n");
-        css.append(" width: 0;\n");
-        css.append(" *width: 0;\n");
-        css.append(" height: 0;\n");
-        css.append("}\n");
-
-        final SteadyStateParser parser = new SteadyStateParser(Mockito.mock(Log.class));
-
-        // TODO: does not work with CSS 1.0 and 2.0 -> https://sourceforge.net/p/cssparser/bugs/62/
-        // for (final Standard standard : Standard.values()) {
-        for (final Standard standard : Arrays.asList(Standard.VERSION_3_0, Standard.VERSION_2_1)) {
-            final ParserOptions options = new ParserOptionsBuilder().withStandard(standard).withStarHack(true).create();
-
-            final StyleSheet stylesheet;
-            try {
-                stylesheet = parser.parse(css.toString(), options);
-            } catch (final ParserException e) {
-                Assert.fail(String.format("Parser cannot parse stylesheet for standard %s.", standard));
-                return;
-            }
-            Assert.assertNotNull(String.format("StyleSheet instance for standard %s.", standard), stylesheet);
-            final List<NodeRule> rules = stylesheet.getRules();
-            Assert.assertNotNull(String.format("StyleSheet rules instnace for standard %s.", standard), rules);
-            Assert.assertEquals(String.format("StyleSheet children rules for standard %s.", standard), 1, rules.size());
-            Assert.assertEquals(String.format("First child class for standard %s.", standard), StyleRule.class, rules.get(0).getClass());
-
-            final StyleRule styleRule = (StyleRule) rules.get(0);
-            final List<StyleProperty> properties = styleRule.getProperties();
-            Assert.assertEquals(String.format("Properties quantity for standard %s.", standard), 3, properties.size());
-            Assert.assertEquals(String.format("First property code for standard %s.", standard), "width: 0;", properties.get(0).getCode());
-            Assert.assertEquals(String.format("Second property code for standard %s.", standard), "*width: 0;",
-                    properties.get(1).getCode());
-            Assert.assertEquals(String.format("Third property code for standard %s.", standard), "height: 0;", properties.get(2).getCode());
-        }
     }
 }
