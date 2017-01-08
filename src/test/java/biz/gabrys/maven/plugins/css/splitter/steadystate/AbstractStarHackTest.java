@@ -13,7 +13,7 @@ import biz.gabrys.maven.plugins.css.splitter.css.type.StyleProperty;
 import biz.gabrys.maven.plugins.css.splitter.css.type.StyleRule;
 import biz.gabrys.maven.plugins.css.splitter.css.type.StyleSheet;
 
-abstract class AbstractStarHackTest {
+public abstract class AbstractStarHackTest {
 
     private final Standard standard;
 
