@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.apache.maven.plugin.logging.Log;
 import org.junit.Assert;
-import org.junit.Test;
 import org.mockito.Mockito;
 
 import biz.gabrys.maven.plugins.css.splitter.css.Standard;
@@ -13,16 +12,17 @@ import biz.gabrys.maven.plugins.css.splitter.css.type.StyleProperty;
 import biz.gabrys.maven.plugins.css.splitter.css.type.StyleRule;
 import biz.gabrys.maven.plugins.css.splitter.css.type.StyleSheet;
 
-public abstract class AbstractStarHackTest {
+final class StarHackTester {
 
     private final Standard standard;
+    private final boolean starHackAllowed;
 
-    public AbstractStarHackTest(final Standard standard) {
+    public StarHackTester(final Standard standard, final boolean starHackAllowed) {
         this.standard = standard;
+        this.starHackAllowed = starHackAllowed;
     }
 
-    @Test(expected = ParserException.class)
-    public void parse_starHackIsDisabled_throwsException() {
+    public StyleSheet parse() {
         final StringBuilder css = new StringBuilder();
         css.append("div {\n");
         css.append(" width: 0;\n");
@@ -31,24 +31,11 @@ public abstract class AbstractStarHackTest {
         css.append("}\n");
 
         final SteadyStateParser parser = new SteadyStateParser(Mockito.mock(Log.class));
-        final ParserOptions options = new ParserOptionsBuilder().withStandard(standard).withStarHack(false).create();
-
-        parser.parse(css.toString(), options);
+        final ParserOptions options = new ParserOptionsBuilder().withStandard(standard).withStarHack(starHackAllowed).create();
+        return parser.parse(css.toString(), options);
     }
 
-    @Test
-    public void parse_starHackIsEnabled_returnsStyleSheet() {
-        final StringBuilder css = new StringBuilder();
-        css.append("div {\n");
-        css.append(" width: 0;\n");
-        css.append(" *width: 0;\n");
-        css.append(" height: 0;\n");
-        css.append("}\n");
-
-        final SteadyStateParser parser = new SteadyStateParser(Mockito.mock(Log.class));
-        final ParserOptions options = new ParserOptionsBuilder().withStandard(standard).withStarHack(true).create();
-
-        final StyleSheet stylesheet = parser.parse(css.toString(), options);
+    public void verify(final StyleSheet stylesheet) {
         Assert.assertNotNull(String.format("StyleSheet instance for standard %s.", standard), stylesheet);
         final List<NodeRule> rules = stylesheet.getRules();
         Assert.assertNotNull(String.format("StyleSheet rules instnace for standard %s.", standard), rules);

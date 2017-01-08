@@ -13,7 +13,8 @@ import biz.gabrys.maven.plugins.css.splitter.css.type.UnknownRule;
 
 public final class Css30CompatibilityTest {
 
-    private final ParserOptions options = new ParserOptionsBuilder().withStandard(Standard.VERSION_3_0).withStrict(false).create();
+    private static final Standard STANDARD = Standard.VERSION_3_0;
+    private static final ParserOptions options = new ParserOptionsBuilder().withStandard(STANDARD).withStrict(false).create();
 
     @Test(expected = ParserException.class)
     public void parse_mediaStoresCharsetRule_throwsException() {
@@ -81,5 +82,18 @@ public final class Css30CompatibilityTest {
 
         final ComplexRule media = (ComplexRule) stylesheet.getRules().get(0);
         Assert.assertEquals("Stylesheet nested rule class.", UnknownRule.class, media.getRules().get(0).getClass());
+    }
+
+    @Test(expected = ParserException.class)
+    public void parse_starHackIsDisabled_throwsException() {
+        new StarHackTester(STANDARD, false).parse();
+    }
+
+    @Test
+    public void parse_starHackIsEnabled_returnsStyleSheet() {
+        final StarHackTester tester = new StarHackTester(STANDARD, true);
+        final StyleSheet stylesheet = tester.parse();
+        Assert.assertNotNull("Stylesheet.", stylesheet);
+        tester.verify(stylesheet);
     }
 }

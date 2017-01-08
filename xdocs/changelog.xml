@@ -14,7 +14,7 @@
                 <li>
                     Added support for &quot;star hack&quot; (see
                     <a href="split-mojo.html#starHackAllowed">starHackAllowed</a>
-                    parameter)
+                    parameter) in CSS 2.1 and 3.0
                 </li>
             </ul>
             <p>Dependencies:</p>

@@ -275,6 +275,7 @@ public class SplitMojo extends AbstractMojo {
      * }
      * </pre>
      * 
+     * <b>Notice</b>: ignored when <a href="#standard">standard</a> is equal to 1.0 or 2.0.
      * @since 1.2.0
      */
     @Parameter(property = "css.splitter.starHackAllowed", defaultValue = "false")
@@ -388,7 +389,8 @@ public class SplitMojo extends AbstractMojo {
         logger.append("importsDepthLimit", importsDepthLimit, new SimpleSanitizer(importsDepthLimit > 0, MAX_IMPORTS_DEPTH_LIMIT));
         logger.append("standard", standard);
         logger.append("nonstrict", nonstrict);
-        logger.append("starHackAllowed", starHackAllowed);
+        logger.append("starHackAllowed", starHackAllowed, new SimpleSanitizer(
+                !starHackAllowed || !(Standard.VERSION_2_0.isSameAs(standard) || Standard.VERSION_1_0.isSameAs(standard)), Boolean.FALSE));
         logger.append("compress", compress);
         logger.append("compressLineBreak", compressLineBreak);
         logger.append("cacheTokenType", cacheTokenType);
@@ -456,6 +458,9 @@ public class SplitMojo extends AbstractMojo {
         }
         if (importsDepthLimit < 1) {
             importsDepthLimit = Integer.parseInt(MAX_IMPORTS_DEPTH_LIMIT);
+        }
+        if (starHackAllowed && (Standard.VERSION_2_0.isSameAs(standard) || Standard.VERSION_1_0.isSameAs(standard))) {
+            starHackAllowed = false;
         }
         if (cacheTokenValue == null) {
             cacheTokenValue = getDefaultCacheTokenValue();

@@ -31,6 +31,10 @@ public enum Standard {
         throw new IllegalArgumentException(String.format("CSS standard \"%s\" is not supported!", value));
     }
 
+    public boolean isSameAs(final String value) {
+        return version.equals(value);
+    }
+
     @Override
     public String toString() {
         return version;
