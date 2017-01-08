@@ -131,9 +131,9 @@ public final class SteadyStateParserTest {
     public void parse_documentContainsPropertiesWithStarHackAndSupportIsEnabled_returnsStyleShees() {
         final StringBuilder css = new StringBuilder();
         css.append("div {\n");
-        css.append(" width: 0px;\n");
-        css.append(" *width: 0px;\n");
-        css.append(" height: 0px;\n");
+        css.append(" width: 0;\n");
+        css.append(" *width: 0;\n");
+        css.append(" height: 0;\n");
         css.append("}\n");
 
         final SteadyStateParser parser = new SteadyStateParser(Mockito.mock(Log.class));
