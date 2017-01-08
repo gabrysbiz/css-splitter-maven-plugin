@@ -28,30 +28,40 @@ import biz.gabrys.maven.plugins.css.splitter.css.Standard;
 <span class="fc" id="L28">        return this;</span>
     }
 
+    public ParserOptionsBuilder withStarHack(final boolean allowed) {
+<span class="fc" id="L32">        getOptions().starHackAllowed = allowed;</span>
+<span class="fc" id="L33">        return this;</span>
+    }
+
     public ParserOptions create() {
-<span class="fc" id="L32">        final ParserOptions opts = getOptions();</span>
-<span class="fc" id="L33">        options = null;</span>
-<span class="fc" id="L34">        return opts;</span>
+<span class="fc" id="L37">        final ParserOptions opts = getOptions();</span>
+<span class="fc" id="L38">        options = null;</span>
+<span class="fc" id="L39">        return opts;</span>
     }
 
     private ParserOptionsImpl getOptions() {
-<span class="fc bfc" id="L38" title="All 2 branches covered.">        if (options == null) {</span>
-<span class="fc" id="L39">            options = new ParserOptionsImpl();</span>
+<span class="fc bfc" id="L43" title="All 2 branches covered.">        if (options == null) {</span>
+<span class="fc" id="L44">            options = new ParserOptionsImpl();</span>
         }
-<span class="fc" id="L41">        return options;</span>
+<span class="fc" id="L46">        return options;</span>
     }
 
-<span class="fc" id="L44">    private static final class ParserOptionsImpl implements ParserOptions {</span>
+<span class="fc" id="L49">    private static final class ParserOptionsImpl implements ParserOptions {</span>
 
         private Standard standard;
         private boolean strict;
+        private boolean starHackAllowed;
 
         public Standard getStandard() {
-<span class="fc" id="L50">            return standard;</span>
+<span class="fc" id="L56">            return standard;</span>
         }
 
         public boolean isStrict() {
-<span class="fc" id="L54">            return strict;</span>
+<span class="fc" id="L60">            return strict;</span>
+        }
+
+        public boolean isStarHackAllowed() {
+<span class="fc" id="L64">            return starHackAllowed;</span>
         }
     }
 }
