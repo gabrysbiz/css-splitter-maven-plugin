@@ -15,8 +15,7 @@ package biz.gabrys.maven.plugins.css.splitter.steadystate;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.w3c.css.sac.Parser;
-
+import com.steadystate.css.parser.SACParser;
 import com.steadystate.css.parser.SACParserCSS1;
 import com.steadystate.css.parser.SACParserCSS2;
 import com.steadystate.css.parser.SACParserCSS21;
@@ -24,19 +23,19 @@ import com.steadystate.css.parser.SACParserCSS3;
 
 import biz.gabrys.maven.plugins.css.splitter.css.Standard;
 
-class NativeParserFactory {
+class SACParserFactory {
 
-    private static final Map<Standard, Class<? extends Parser>> PARSERS_BY_CSS_STANDARD;
+    private static final Map<Standard, Class<? extends SACParser>> PARSERS_BY_CSS_STANDARD;
 
     static {
-        PARSERS_BY_CSS_STANDARD = new ConcurrentHashMap<Standard, Class<? extends Parser>>();
+        PARSERS_BY_CSS_STANDARD = new ConcurrentHashMap<Standard, Class<? extends SACParser>>();
         PARSERS_BY_CSS_STANDARD.put(Standard.VERSION_1_0, SACParserCSS1.class);
         PARSERS_BY_CSS_STANDARD.put(Standard.VERSION_2_0, SACParserCSS2.class);
         PARSERS_BY_CSS_STANDARD.put(Standard.VERSION_2_1, SACParserCSS21.class);
         PARSERS_BY_CSS_STANDARD.put(Standard.VERSION_3_0, SACParserCSS3.class);
     }
 
-    Parser create(final Standard standard) {
+    SACParser create(final Standard standard) {
         try {
             return PARSERS_BY_CSS_STANDARD.get(standard).newInstance();
         } catch (final InstantiationException e) {

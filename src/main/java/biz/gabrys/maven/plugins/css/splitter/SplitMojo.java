@@ -265,6 +265,23 @@ public class SplitMojo extends AbstractMojo {
     protected boolean nonstrict;
 
     /**
+     * Defines whether the plugin allows to use "star hack" in stylesheets. "Star hack" works only in Internet Explorer
+     * browsers - versions 7 and older. Example:
+     * 
+     * <pre>
+     * color {
+     *   color: red;   /&#42; all browsers &#42;/
+     *   *color: blue; /&#42; IE7 and below &#42;/
+     * }
+     * </pre>
+     * 
+     * <b>Notice</b>: ignored when <a href="#standard">standard</a> is equal to <code>1.0</code> or <code>2.0</code>.
+     * @since 1.2.0
+     */
+    @Parameter(property = "css.splitter.starHackAllowed", defaultValue = "false")
+    protected boolean starHackAllowed;
+
+    /**
      * Whether the plugin should use <a href="http://yui.github.io/yuicompressor/">YUI Compressor</a> to compress the
      * <a href="http://www.w3.org/Style/CSS/">CSS</a> code.
      * @since 1.1.0
@@ -372,6 +389,8 @@ public class SplitMojo extends AbstractMojo {
         logger.append("importsDepthLimit", importsDepthLimit, new SimpleSanitizer(importsDepthLimit > 0, MAX_IMPORTS_DEPTH_LIMIT));
         logger.append("standard", standard);
         logger.append("nonstrict", nonstrict);
+        logger.append("starHackAllowed", starHackAllowed, new SimpleSanitizer(
+                !starHackAllowed || !(Standard.VERSION_2_0.isSameAs(standard) || Standard.VERSION_1_0.isSameAs(standard)), Boolean.FALSE));
         logger.append("compress", compress);
         logger.append("compressLineBreak", compressLineBreak);
         logger.append("cacheTokenType", cacheTokenType);
@@ -439,6 +458,9 @@ public class SplitMojo extends AbstractMojo {
         }
         if (importsDepthLimit < 1) {
             importsDepthLimit = Integer.parseInt(MAX_IMPORTS_DEPTH_LIMIT);
+        }
+        if (starHackAllowed && (Standard.VERSION_2_0.isSameAs(standard) || Standard.VERSION_1_0.isSameAs(standard))) {
+            starHackAllowed = false;
         }
         if (cacheTokenValue == null) {
             cacheTokenValue = getDefaultCacheTokenValue();
@@ -571,7 +593,8 @@ public class SplitMojo extends AbstractMojo {
         if (getLog().isDebugEnabled()) {
             getLog().debug("Parsing stylesheet...");
         }
-        final ParserOptions options = new ParserOptionsBuilder().withStandard(Standard.create(standard)).withStrict(!nonstrict).create();
+        final ParserOptions options = new ParserOptionsBuilder().withStandard(Standard.create(standard)).withStrict(!nonstrict)
+                .withStarHack(starHackAllowed).create();
         final StyleSheet stylesheet = new SteadyStateParser(getLog()).parse(css, options);
         new StylesheetMessagePrinter(getLog(), !nonstrict).print(stylesheet);
         if (verbose) {

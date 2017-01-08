@@ -5,11 +5,11 @@
 
     <groupId>biz.gabrys.maven.plugins</groupId>
     <artifactId>css-splitter-maven-plugin</artifactId>
-    <version>1.1.1</version>
+    <version>1.2.0</version>
     <packaging>maven-plugin</packaging>
     <name>CSS Splitter Maven Plugin</name>
     <description>Splits CSS stylesheets to smaller files ("parts") which contain maximum X rules.</description>
-    <url>http://css-splitter-maven-plugin.projects.gabrys.biz/1.1.1/</url>
+    <url>http://css-splitter-maven-plugin.projects.gabrys.biz/1.2.0/</url>
 
     <inceptionYear>2015</inceptionYear>
     <organization>
@@ -62,7 +62,7 @@
         </snapshotRepository>
         <repository>
             <id>ossrh</id>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
         </repository>
     </distributionManagement>
 
@@ -80,7 +80,8 @@
         <dependency>
             <groupId>org.apache.maven.plugin-tools</groupId>
             <artifactId>maven-plugin-annotations</artifactId>
-            <version>3.5</version>
+            <!-- latest compatible with JDK 1.5 -->
+            <version>3.4</version>
             <scope>provided</scope>
         </dependency>
 
@@ -92,7 +93,7 @@
         <dependency>
             <groupId>net.sourceforge.cssparser</groupId>
             <artifactId>cssparser</artifactId>
-            <version>0.9.20</version>
+            <version>0.9.21</version>
         </dependency>
         <dependency>
             <groupId>com.yahoo.platform.yui</groupId>
@@ -109,6 +110,7 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
+            <!-- latest compatible with JDK 1.5 -->
             <version>1.10.19</version>
             <scope>test</scope>
         </dependency>
@@ -116,9 +118,9 @@
 
     <repositories>
         <repository>
-            <id>oss-sonatype</id>
-            <name>oss-sonatype</name>
-            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+            <id>sonatype-nexus-snapshots</id>
+            <name>Sonatype's SNAPSHOT repository</name>
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
             <releases>
                 <enabled>false</enabled>
             </releases>
@@ -172,11 +174,11 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-resources-plugin</artifactId>
-                    <version>3.0.1</version>
+                    <version>3.0.2</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-site-plugin</artifactId>
-                    <version>3.5.1</version>
+                    <version>3.6</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-source-plugin</artifactId>

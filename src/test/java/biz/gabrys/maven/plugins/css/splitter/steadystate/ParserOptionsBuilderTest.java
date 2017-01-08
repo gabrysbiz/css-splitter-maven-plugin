@@ -24,4 +24,12 @@ public final class ParserOptionsBuilderTest {
             Assert.assertEquals("Strict value.", strict, options.isStrict());
         }
     }
+
+    @Test
+    public void create_checkStarHack() {
+        for (final boolean allowed : Arrays.asList(true, false)) {
+            final ParserOptions options = new ParserOptionsBuilder().withStarHack(allowed).create();
+            Assert.assertEquals("Star hack value.", allowed, options.isStarHackAllowed());
+        }
+    }
 }

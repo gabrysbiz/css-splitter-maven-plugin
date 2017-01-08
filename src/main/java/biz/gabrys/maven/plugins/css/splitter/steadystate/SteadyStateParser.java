@@ -20,6 +20,7 @@ import org.w3c.css.sac.InputSource;
 import org.w3c.dom.css.CSSStyleSheet;
 
 import com.steadystate.css.parser.CSSOMParser;
+import com.steadystate.css.parser.SACParser;
 
 import biz.gabrys.maven.plugins.css.splitter.css.type.StyleSheet;
 import biz.gabrys.maven.plugins.css.splitter.steadystate.converter.StyleSheetConverter;
@@ -33,8 +34,11 @@ public class SteadyStateParser {
     }
 
     public StyleSheet parse(final String css, final ParserOptions options) {
-        final NativeParserFactory factory = new NativeParserFactory();
-        final CSSOMParser parser = new CSSOMParser(factory.create(options.getStandard()));
+        final SACParserFactory factory = new SACParserFactory();
+        final SACParser sacParser = factory.create(options.getStandard());
+        sacParser.setIeStarHackAccepted(options.isStarHackAllowed());
+
+        final CSSOMParser parser = new CSSOMParser(sacParser);
 
         final SteadyErrorHandler errorHandler = new SteadyErrorHandler(logger);
         parser.setErrorHandler(errorHandler);
@@ -48,7 +52,7 @@ public class SteadyStateParser {
         }
         errorHandler.validate();
 
-        final StyleSheetConverter converter = new StyleSheetConverter(options.isStrict());
+        final StyleSheetConverter converter = new StyleSheetConverter(options.getStandard(), options.isStrict());
         return converter.convert(stylesheet);
     }
 }

@@ -19,4 +19,6 @@ public interface ParserOptions {
     Standard getStandard();
 
     boolean isStrict();
+
+    boolean isStarHackAllowed();
 }

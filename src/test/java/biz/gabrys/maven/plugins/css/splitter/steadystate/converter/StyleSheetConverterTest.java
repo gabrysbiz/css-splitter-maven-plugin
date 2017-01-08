@@ -10,6 +10,7 @@ import com.steadystate.css.dom.CSSRuleListImpl;
 import com.steadystate.css.dom.CSSStyleRuleImpl;
 import com.steadystate.css.dom.CSSStyleSheetImpl;
 
+import biz.gabrys.maven.plugins.css.splitter.css.Standard;
 import biz.gabrys.maven.plugins.css.splitter.css.type.NodeRule;
 import biz.gabrys.maven.plugins.css.splitter.css.type.StyleRule;
 import biz.gabrys.maven.plugins.css.splitter.css.type.StyleSheet;
@@ -52,5 +53,21 @@ public final class StyleSheetConverterTest {
         ruleList.add(styleRule);
         stylesheet.setCssRules(ruleList);
         converter.convert(stylesheet);
+    }
+
+    @Test
+    public void createConverter_returnsMultipleRuleConverter() {
+        final MultipleRuleConverter converter = StyleSheetConverter.createConverter(Standard.VERSION_3_0, true);
+        Assert.assertNotNull("Converter instance.", converter);
+
+        final List<RuleConverter<?>> children = converter.converters;
+        Assert.assertEquals("Converters quantity.", 7, children.size());
+        Assert.assertEquals("First converter class.", StyleRuleConverter.class, children.get(0).getClass());
+        Assert.assertEquals("Second converter class.", MediaRuleConverter.class, children.get(1).getClass());
+        Assert.assertEquals("Third converter class.", FontFaceRuleConverter.class, children.get(2).getClass());
+        Assert.assertEquals("Fourth converter class.", PageRuleConverter.class, children.get(3).getClass());
+        Assert.assertEquals("Fifth converter class.", ImportRuleConverter.class, children.get(4).getClass());
+        Assert.assertEquals("Sixth converter class.", CharsetRuleConverter.class, children.get(5).getClass());
+        Assert.assertEquals("Seventh converter class.", UnknownRuleConverter.class, children.get(6).getClass());
     }
 }
