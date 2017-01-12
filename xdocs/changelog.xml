@@ -12,7 +12,7 @@
             <ul>
                 <li>Added support for nested <code>@media</code> rules in CSS 3.0</li>
                 <li>
-                    Added support for &quot;star hack&quot; in CSS 2.1 and 3.0 (see
+                    Added support for &quot;star hack&quot; in CSS 2.1 and 3.0 (see the
                     <a href="split-mojo.html#starHackAllowed">starHackAllowed</a>
                     parameter)
                 </li>
@@ -37,7 +37,7 @@
             <p>Features:</p>
             <ul>
                 <li>
-                    Added code compression (see
+                    Added code compression (see the
                     <a href="http://css-splitter-maven-plugin.projects.gabrys.biz/1.1.0/split-mojo.html#compress">compress</a>
                     parameter)
                 </li>
