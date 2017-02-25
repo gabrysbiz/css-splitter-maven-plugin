@@ -1,5 +1,11 @@
 # CSS Splitter Maven Plugin Changelog
 
+## 1.2.1
+Dependencies:
+* Upgraded [CSS Parser](http://cssparser.sourceforge.net/) from 0.9.21 to 0.9.22
+
+[See documentation](http://css-splitter-maven-plugin.projects.gabrys.biz/1.2.1/)
+
 ## 1.2.0
 Features:
 * Added support for nested `@media` rules in CSS 3.0
