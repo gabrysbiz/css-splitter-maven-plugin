@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AnyMessagePrinter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">CSS Splitter Maven Plugin</a> &gt; <a href="index.source.html" class="el_package">biz.gabrys.maven.plugins.css.splitter.message</a> &gt; <span class="el_source">AnyMessagePrinter.java</span></div><h1>AnyMessagePrinter.java</h1><pre class="source lang-java linenums">/*
+ * CSS Splitter Maven Plugin
+ * http://css-splitter-maven-plugin.projects.gabrys.biz/
+ *
+ * Copyright (c) 2015 Adam Gabryś
+ *
+ * This file is licensed under the BSD 3-Clause (the &quot;License&quot;).
+ * You may not use this file except in compliance with the License.
+ * You may obtain:
+ * - a copy of the License at project page
+ * - a template of the License at https://opensource.org/licenses/BSD-3-Clause
+ */
+package biz.gabrys.maven.plugins.css.splitter.message;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.maven.plugin.logging.Log;
+
+import biz.gabrys.maven.plugins.css.splitter.css.type.NodeRule;
+
+class AnyMessagePrinter implements MessagePrinter {
+
+    private final List&lt;MessagePrinter&gt; printers;
+
+<span class="nc" id="L26">    AnyMessagePrinter(final Log logger, final boolean strict) {</span>
+<span class="nc" id="L27">        printers = new ArrayList&lt;MessagePrinter&gt;();</span>
+<span class="nc" id="L28">        addPrinter(new UnknownRuleSizeMessagePrinter(logger), printers);</span>
+<span class="nc" id="L29">        addPrinter(new ComplexRuleInvalidContentMessagePrinter(logger, strict), printers);</span>
+<span class="nc" id="L30">    }</span>
+
+    // for tests
+<span class="fc" id="L33">    AnyMessagePrinter(final List&lt;MessagePrinter&gt; printers) {</span>
+<span class="fc" id="L34">        this.printers = new ArrayList&lt;MessagePrinter&gt;(printers);</span>
+<span class="fc" id="L35">    }</span>
+
+    private static void addPrinter(final MessagePrinter printer, final List&lt;MessagePrinter&gt; printers) {
+<span class="nc bnc" id="L38" title="All 2 branches missed.">        if (printer.isEnabled()) {</span>
+<span class="nc" id="L39">            printers.add(printer);</span>
+        }
+<span class="nc" id="L41">    }</span>
+
+    public boolean isEnabled() {
+<span class="fc bfc" id="L44" title="All 2 branches covered.">        return !printers.isEmpty();</span>
+    }
+
+    public boolean isSupportedType(final NodeRule rule) {
+<span class="nc" id="L48">        return true;</span>
+    }
+
+    public void print(final NodeRule rule) {
+<span class="fc bfc" id="L52" title="All 2 branches covered.">        for (final MessagePrinter printer : printers) {</span>
+<span class="fc bfc" id="L53" title="All 2 branches covered.">            if (printer.isSupportedType(rule)) {</span>
+<span class="fc" id="L54">                printer.print(rule);</span>
+            }
+<span class="fc" id="L56">        }</span>
+<span class="fc" id="L57">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ComplexRule.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">CSS Splitter Maven Plugin</a> &gt; <a href="index.source.html" class="el_package">biz.gabrys.maven.plugins.css.splitter.css.type</a> &gt; <span class="el_source">ComplexRule.java</span></div><h1>ComplexRule.java</h1><pre class="source lang-java linenums">/*
+ * CSS Splitter Maven Plugin
+ * http://css-splitter-maven-plugin.projects.gabrys.biz/
+ *
+ * Copyright (c) 2015 Adam Gabryś
+ *
+ * This file is licensed under the BSD 3-Clause (the &quot;License&quot;).
+ * You may not use this file except in compliance with the License.
+ * You may obtain:
+ * - a copy of the License at project page
+ * - a template of the License at https://opensource.org/licenses/BSD-3-Clause
+ */
+package biz.gabrys.maven.plugins.css.splitter.css.type;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.codehaus.plexus.util.StringUtils;
+
+public class ComplexRule extends AbstractNodeRule {
+
+    private final String type;
+    private final List&lt;String&gt; selectors;
+    private final List&lt;NodeRule&gt; rules;
+
+<span class="fc" id="L26">    public ComplexRule(final String type, final List&lt;String&gt; selectors, final List&lt;? extends NodeRule&gt; rules) {</span>
+<span class="fc" id="L27">        TreeUtils.fillNeighbors(this, rules);</span>
+<span class="fc" id="L28">        this.type = type;</span>
+<span class="fc" id="L29">        this.selectors = new ArrayList&lt;String&gt;(selectors);</span>
+<span class="fc" id="L30">        this.rules = new ArrayList&lt;NodeRule&gt;(rules);</span>
+<span class="fc" id="L31">    }</span>
+
+    public String getType() {
+<span class="nc" id="L34">        return type;</span>
+    }
+
+    public List&lt;String&gt; getSelectors() {
+<span class="fc" id="L38">        return new ArrayList&lt;String&gt;(selectors);</span>
+    }
+
+    public List&lt;NodeRule&gt; getRules() {
+<span class="fc" id="L42">        return new ArrayList&lt;NodeRule&gt;(rules);</span>
+    }
+
+    @Override
+    protected void fillLines(final List&lt;String&gt; lines) {
+<span class="fc" id="L47">        lines.add(type + ' ' + StringUtils.join(selectors.iterator(), &quot;, &quot;) + &quot; {&quot;);</span>
+<span class="fc bfc" id="L48" title="All 2 branches covered.">        for (final NodeRule rule : rules) {</span>
+<span class="fc" id="L49">            final String[] childLines = rule.getLines();</span>
+<span class="fc bfc" id="L50" title="All 2 branches covered.">            for (final String childLine : childLines) {</span>
+<span class="fc" id="L51">                lines.add(INDENTATION + childLine);</span>
+            }
+<span class="fc" id="L53">        }</span>
+<span class="fc" id="L54">        lines.add(&quot;}&quot;);</span>
+<span class="fc" id="L55">    }</span>
+
+    @Override
+    protected int getSize2() {
+<span class="fc" id="L59">        int size = 0;</span>
+<span class="fc bfc" id="L60" title="All 2 branches covered.">        for (final NodeRule rule : rules) {</span>
+<span class="fc" id="L61">            size += rule.getSize();</span>
+<span class="fc" id="L62">        }</span>
+<span class="fc bfc" id="L63" title="All 2 branches covered.">        if (size == 0) {</span>
+<span class="fc" id="L64">            return 1;</span>
+        }
+<span class="fc" id="L66">        return size;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SteadyErrorHandler.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">CSS Splitter Maven Plugin</a> &gt; <a href="index.source.html" class="el_package">biz.gabrys.maven.plugins.css.splitter.steadystate</a> &gt; <span class="el_source">SteadyErrorHandler.java</span></div><h1>SteadyErrorHandler.java</h1><pre class="source lang-java linenums">/*
+ * CSS Splitter Maven Plugin
+ * http://css-splitter-maven-plugin.projects.gabrys.biz/
+ *
+ * Copyright (c) 2015 Adam Gabryś
+ *
+ * This file is licensed under the BSD 3-Clause (the &quot;License&quot;).
+ * You may not use this file except in compliance with the License.
+ * You may obtain:
+ * - a copy of the License at project page
+ * - a template of the License at https://opensource.org/licenses/BSD-3-Clause
+ */
+package biz.gabrys.maven.plugins.css.splitter.steadystate;
+
+import org.apache.maven.plugin.logging.Log;
+import org.w3c.css.sac.CSSParseException;
+import org.w3c.css.sac.ErrorHandler;
+
+class SteadyErrorHandler implements ErrorHandler {
+
+    private final Log logger;
+    private CSSParseException firstError;
+
+<span class="fc" id="L24">    SteadyErrorHandler(final Log logger) {</span>
+<span class="fc" id="L25">        this.logger = logger;</span>
+<span class="fc" id="L26">    }</span>
+
+    void validate() {
+<span class="fc bfc" id="L29" title="All 2 branches covered.">        if (firstError != null) {</span>
+<span class="fc" id="L30">            throw new ParserException(firstError);</span>
+        }
+<span class="fc" id="L32">    }</span>
+
+    public void warning(final CSSParseException exception) {
+<span class="fc" id="L35">        logger.warn(convertExceptionToString(exception));</span>
+<span class="fc" id="L36">    }</span>
+
+    public void error(final CSSParseException exception) {
+<span class="fc" id="L39">        logger.error(convertExceptionToString(exception));</span>
+<span class="fc bfc" id="L40" title="All 2 branches covered.">        if (firstError == null) {</span>
+<span class="fc" id="L41">            firstError = exception;</span>
+        }
+<span class="fc" id="L43">    }</span>
+
+    public void fatalError(final CSSParseException exception) {
+<span class="fc" id="L46">        logger.error(convertExceptionToString(exception));</span>
+<span class="pc bpc" id="L47" title="1 of 2 branches missed.">        if (firstError == null) {</span>
+<span class="fc" id="L48">            firstError = exception;</span>
+        }
+<span class="fc" id="L50">    }</span>
+
+    private static String convertExceptionToString(final CSSParseException exception) {
+<span class="fc" id="L53">        final StringBuilder text = new StringBuilder();</span>
+<span class="fc" id="L54">        text.append('[');</span>
+<span class="fc" id="L55">        text.append(exception.getLineNumber());</span>
+<span class="fc" id="L56">        text.append(':');</span>
+<span class="fc" id="L57">        text.append(exception.getColumnNumber());</span>
+<span class="fc" id="L58">        text.append(&quot;] &quot;);</span>
+<span class="fc" id="L59">        text.append(exception.getMessage());</span>
+<span class="fc" id="L60">        return text.toString();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.8.201612092310</span></div></body></html>
