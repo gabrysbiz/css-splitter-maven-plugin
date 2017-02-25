@@ -1,9 +1,15 @@
 # CSS Splitter Maven Plugin Changelog
 
+## 1.2.1
+Dependencies:
+* Upgraded [CSS Parser](http://cssparser.sourceforge.net/) from 0.9.21 to 0.9.22
+
+[See documentation](http://css-splitter-maven-plugin.projects.gabrys.biz/1.2.1/)
+
 ## 1.2.0
 Features:
 * Added support for nested `@media` rules in CSS 3.0
-* Added support for "star hack" in CSS 2.1 and 3.0 (see [starHackAllowed](http://css-splitter-maven-plugin.projects.gabrys.biz/1.2.0/split-mojo.html#starHackAllowed) parameter)
+* Added support for "star hack" in CSS 2.1 and 3.0 (see the [starHackAllowed](http://css-splitter-maven-plugin.projects.gabrys.biz/1.2.0/split-mojo.html#starHackAllowed) parameter)
 
 Dependencies:
 * Upgraded [CSS Parser](http://cssparser.sourceforge.net/) from 0.9.20 to 0.9.21
