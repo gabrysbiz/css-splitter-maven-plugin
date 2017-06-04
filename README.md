@@ -10,7 +10,6 @@ This plugin splits [CSS](http://www.w3.org/Style/CSS/) stylesheets to smaller fi
 * [Cascading Style Sheets Level 2](https://www.w3.org/TR/2008/REC-CSS2-20080411/)
 * [Cascading Style Sheets Level 1](https://www.w3.org/TR/CSS1/)
 
-
 For more information read the [split](http://css-splitter-maven-plugin.projects.gabrys.biz/LATEST/split-mojo.html) goal documentation or take a look into [examples](#examples).
 
 # Goals Overview

@@ -7,11 +7,18 @@
     </properties>
 
     <body>
+        <section id="release-1.2.2" name="Release 1.2.2">
+            <p>Dependencies:</p>
+            <ul>
+                <li>Upgraded <a href="http://cssparser.sourceforge.net/">CSS Parser</a> from 0.9.22 to 0.9.23</li>
+            </ul>
+        </section>
         <section id="release-1.2.1" name="Release 1.2.1">
             <p>Dependencies:</p>
             <ul>
                 <li>Upgraded <a href="http://cssparser.sourceforge.net/">CSS Parser</a> from 0.9.21 to 0.9.22</li>
             </ul>
+            <p><a href="http://css-splitter-maven-plugin.projects.gabrys.biz/1.2.1/">See documentation</a></p>
         </section>
         <section id="release-1.2.0" name="Release 1.2.0">
             <p>Features:</p>
