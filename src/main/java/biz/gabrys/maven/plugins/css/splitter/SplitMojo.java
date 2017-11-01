@@ -528,7 +528,11 @@ public class SplitMojo extends AbstractMojo {
         }
 
         if (verbose) {
-            getLog().info("Cache token: " + resolvedCacheToken);
+            if (StringUtils.isEmpty(resolvedCacheToken)) {
+                getLog().info("Cache token is empty");
+            } else {
+                getLog().info("Cache token: " + resolvedCacheToken);
+            }
         }
     }
 

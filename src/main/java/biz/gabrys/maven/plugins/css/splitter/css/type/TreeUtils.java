@@ -12,8 +12,6 @@
  */
 package biz.gabrys.maven.plugins.css.splitter.css.type;
 
-import java.util.List;
-
 final class TreeUtils {
 
     private TreeUtils() {
@@ -21,7 +19,7 @@ final class TreeUtils {
     }
 
     @SuppressWarnings({ "rawtypes", "unchecked" })
-    public static void fillNeighbors(final NodeRule parent, final List<? extends Node<?, ?>> children) {
+    public static void fillNeighbors(final NodeRule parent, final Iterable<? extends Node<?, ?>> children) {
         Node previous = null;
         for (final Node child : children) {
             child.setPrevious(previous);

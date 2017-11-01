@@ -5,11 +5,11 @@
 
     <groupId>biz.gabrys.maven.plugins</groupId>
     <artifactId>css-splitter-maven-plugin</artifactId>
-    <version>1.2.2</version>
+    <version>1.2.3</version>
     <packaging>maven-plugin</packaging>
     <name>CSS Splitter Maven Plugin</name>
     <description>Splits CSS stylesheets to smaller files ("parts") which contain maximum X rules.</description>
-    <url>http://css-splitter-maven-plugin.projects.gabrys.biz/1.2.2/</url>
+    <url>http://css-splitter-maven-plugin.projects.gabrys.biz/1.2.3/</url>
 
     <inceptionYear>2015</inceptionYear>
     <organization>
@@ -88,12 +88,12 @@
         <dependency>
             <groupId>biz.gabrys.maven</groupId>
             <artifactId>plugin-utils</artifactId>
-            <version>1.4.0</version>
+            <version>1.4.1</version>
         </dependency>
         <dependency>
             <groupId>net.sourceforge.cssparser</groupId>
             <artifactId>cssparser</artifactId>
-            <version>0.9.23</version>
+            <version>0.9.24</version>
         </dependency>
         <dependency>
             <groupId>com.yahoo.platform.yui</groupId>
@@ -143,7 +143,7 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.6.1</version>
+                    <version>3.7.0</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-deploy-plugin</artifactId>
@@ -186,7 +186,7 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>2.20</version>
+                    <version>2.20.1</version>
                 </plugin>
                 <plugin>
                     <groupId>com.mycila</groupId>

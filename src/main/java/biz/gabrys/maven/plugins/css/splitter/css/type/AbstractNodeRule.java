@@ -35,7 +35,7 @@ public abstract class AbstractNodeRule extends NodeImpl<NodeRule, NodeRule> impl
     public String[] getLines() {
         final List<String> lines = new LinkedList<String>();
         fillLines(lines);
-        return lines.toArray(new String[lines.size()]);
+        return lines.toArray(new String[0]);
     }
 
     protected abstract void fillLines(List<String> lines);

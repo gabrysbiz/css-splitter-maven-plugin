@@ -36,10 +36,7 @@ class SteadyErrorHandler implements ErrorHandler {
     }
 
     public void error(final CSSParseException exception) {
-        logger.error(convertExceptionToString(exception));
-        if (firstError == null) {
-            firstError = exception;
-        }
+        fatalError(exception);
     }
 
     public void fatalError(final CSSParseException exception) {
