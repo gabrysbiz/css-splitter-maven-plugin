@@ -20,8 +20,8 @@
 <a class="jxr_linenumber" name="L12" href="#L12">12</a>  <em class="jxr_comment"> */</em>
 <a class="jxr_linenumber" name="L13" href="#L13">13</a>  <strong class="jxr_keyword">package</strong> biz.gabrys.maven.plugins.css.splitter.steadystate;
 <a class="jxr_linenumber" name="L14" href="#L14">14</a>  
-<a class="jxr_linenumber" name="L15" href="#L15">15</a>  <strong class="jxr_keyword">import</strong> java.util.Map;
-<a class="jxr_linenumber" name="L16" href="#L16">16</a>  <strong class="jxr_keyword">import</strong> java.util.concurrent.ConcurrentHashMap;
+<a class="jxr_linenumber" name="L15" href="#L15">15</a>  <strong class="jxr_keyword">import</strong> java.util.EnumMap;
+<a class="jxr_linenumber" name="L16" href="#L16">16</a>  <strong class="jxr_keyword">import</strong> java.util.Map;
 <a class="jxr_linenumber" name="L17" href="#L17">17</a>  
 <a class="jxr_linenumber" name="L18" href="#L18">18</a>  <strong class="jxr_keyword">import</strong> com.steadystate.css.parser.SACParser;
 <a class="jxr_linenumber" name="L19" href="#L19">19</a>  <strong class="jxr_keyword">import</strong> com.steadystate.css.parser.SACParserCSS1;
@@ -36,7 +36,7 @@
 <a class="jxr_linenumber" name="L28" href="#L28">28</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> Map&lt;Standard, Class&lt;? <strong class="jxr_keyword">extends</strong> SACParser&gt;&gt; PARSERS_BY_CSS_STANDARD;
 <a class="jxr_linenumber" name="L29" href="#L29">29</a>  
 <a class="jxr_linenumber" name="L30" href="#L30">30</a>      <strong class="jxr_keyword">static</strong> {
-<a class="jxr_linenumber" name="L31" href="#L31">31</a>          PARSERS_BY_CSS_STANDARD = <strong class="jxr_keyword">new</strong> ConcurrentHashMap&lt;Standard, Class&lt;? <strong class="jxr_keyword">extends</strong> SACParser&gt;&gt;();
+<a class="jxr_linenumber" name="L31" href="#L31">31</a>          PARSERS_BY_CSS_STANDARD = <strong class="jxr_keyword">new</strong> EnumMap&lt;Standard, Class&lt;? <strong class="jxr_keyword">extends</strong> SACParser&gt;&gt;(Standard.<strong class="jxr_keyword">class</strong>);
 <a class="jxr_linenumber" name="L32" href="#L32">32</a>          PARSERS_BY_CSS_STANDARD.put(Standard.VERSION_1_0, SACParserCSS1.<strong class="jxr_keyword">class</strong>);
 <a class="jxr_linenumber" name="L33" href="#L33">33</a>          PARSERS_BY_CSS_STANDARD.put(Standard.VERSION_2_0, SACParserCSS2.<strong class="jxr_keyword">class</strong>);
 <a class="jxr_linenumber" name="L34" href="#L34">34</a>          PARSERS_BY_CSS_STANDARD.put(Standard.VERSION_2_1, SACParserCSS21.<strong class="jxr_keyword">class</strong>);

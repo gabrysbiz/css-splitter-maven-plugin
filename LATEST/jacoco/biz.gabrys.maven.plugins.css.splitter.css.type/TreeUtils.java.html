@@ -12,26 +12,24 @@
  */
 package biz.gabrys.maven.plugins.css.splitter.css.type;
 
-import java.util.List;
-
 final class TreeUtils {
 
-<span class="nc" id="L19">    private TreeUtils() {</span>
+<span class="nc" id="L17">    private TreeUtils() {</span>
         // blocks the possibility of create a new instance
-<span class="nc" id="L21">    }</span>
+<span class="nc" id="L19">    }</span>
 
     @SuppressWarnings({ &quot;rawtypes&quot;, &quot;unchecked&quot; })
-    public static void fillNeighbors(final NodeRule parent, final List&lt;? extends Node&lt;?, ?&gt;&gt; children) {
-<span class="fc" id="L25">        Node previous = null;</span>
-<span class="fc bfc" id="L26" title="All 2 branches covered.">        for (final Node child : children) {</span>
-<span class="fc" id="L27">            child.setPrevious(previous);</span>
-<span class="fc" id="L28">            child.setParent(parent);</span>
-<span class="fc" id="L29">            child.setNext(null);</span>
-<span class="fc bfc" id="L30" title="All 2 branches covered.">            if (previous != null) {</span>
-<span class="fc" id="L31">                previous.setNext(child);</span>
+    public static void fillNeighbors(final NodeRule parent, final Iterable&lt;? extends Node&lt;?, ?&gt;&gt; children) {
+<span class="fc" id="L23">        Node previous = null;</span>
+<span class="fc bfc" id="L24" title="All 2 branches covered.">        for (final Node child : children) {</span>
+<span class="fc" id="L25">            child.setPrevious(previous);</span>
+<span class="fc" id="L26">            child.setParent(parent);</span>
+<span class="fc" id="L27">            child.setNext(null);</span>
+<span class="fc bfc" id="L28" title="All 2 branches covered.">            if (previous != null) {</span>
+<span class="fc" id="L29">                previous.setNext(child);</span>
             }
-<span class="fc" id="L33">            previous = child;</span>
-<span class="fc" id="L34">        }</span>
-<span class="fc" id="L35">    }</span>
+<span class="fc" id="L31">            previous = child;</span>
+<span class="fc" id="L32">        }</span>
+<span class="fc" id="L33">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

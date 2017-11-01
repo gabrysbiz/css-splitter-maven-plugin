@@ -536,195 +536,199 @@
 <a class="jxr_linenumber" name="L528" href="#L528">528</a>         }
 <a class="jxr_linenumber" name="L529" href="#L529">529</a> 
 <a class="jxr_linenumber" name="L530" href="#L530">530</a>         <strong class="jxr_keyword">if</strong> (verbose) {
-<a class="jxr_linenumber" name="L531" href="#L531">531</a>             getLog().info(<span class="jxr_string">"Cache token: "</span> + resolvedCacheToken);
-<a class="jxr_linenumber" name="L532" href="#L532">532</a>         }
-<a class="jxr_linenumber" name="L533" href="#L533">533</a>     }
-<a class="jxr_linenumber" name="L534" href="#L534">534</a> 
-<a class="jxr_linenumber" name="L535" href="#L535">535</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> splitFiles(<strong class="jxr_keyword">final</strong> Collection&lt;File&gt; sources) <strong class="jxr_keyword">throws</strong> MojoFailureException {
-<a class="jxr_linenumber" name="L536" href="#L536">536</a>         <strong class="jxr_keyword">final</strong> String sourceFilesText = <span class="jxr_string">"source file"</span> + (sources.size() != 1 ? <span class="jxr_string">"s"</span> : <span class="jxr_string">""</span>);
-<a class="jxr_linenumber" name="L537" href="#L537">537</a>         getLog().info(<span class="jxr_string">"Splitting "</span> + sources.size() + ' ' + sourceFilesText + <span class="jxr_string">" to "</span> + outputDirectory.getAbsolutePath());
-<a class="jxr_linenumber" name="L538" href="#L538">538</a>         <strong class="jxr_keyword">final</strong> Timer timer = SystemTimer.getStartedTimer();
-<a class="jxr_linenumber" name="L539" href="#L539">539</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">final</strong> File source : sources) {
-<a class="jxr_linenumber" name="L540" href="#L540">540</a>             <strong class="jxr_keyword">if</strong> (isCompilationRequired(source)) {
-<a class="jxr_linenumber" name="L541" href="#L541">541</a>                 splitFile(source);
-<a class="jxr_linenumber" name="L542" href="#L542">542</a>             } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (verbose) {
-<a class="jxr_linenumber" name="L543" href="#L543">543</a>                 getLog().info(<span class="jxr_string">"Skipping stylesheet split (not modified): "</span> + source.getAbsolutePath());
-<a class="jxr_linenumber" name="L544" href="#L544">544</a>             }
-<a class="jxr_linenumber" name="L545" href="#L545">545</a>         }
-<a class="jxr_linenumber" name="L546" href="#L546">546</a>         getLog().info(<span class="jxr_string">"Finished "</span> + sourceFilesText + <span class="jxr_string">" split in "</span> + timer.stop());
-<a class="jxr_linenumber" name="L547" href="#L547">547</a>     }
-<a class="jxr_linenumber" name="L548" href="#L548">548</a> 
-<a class="jxr_linenumber" name="L549" href="#L549">549</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">boolean</strong> isCompilationRequired(<strong class="jxr_keyword">final</strong> File source) {
-<a class="jxr_linenumber" name="L550" href="#L550">550</a>         <strong class="jxr_keyword">if</strong> (force) {
-<a class="jxr_linenumber" name="L551" href="#L551">551</a>             <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">true</strong>;
-<a class="jxr_linenumber" name="L552" href="#L552">552</a>         }
-<a class="jxr_linenumber" name="L553" href="#L553">553</a>         <strong class="jxr_keyword">final</strong> File destination = <strong class="jxr_keyword">new</strong> DestinationFileCreator(sourceDirectory, outputDirectory, outputFileNamePattern).create(source);
-<a class="jxr_linenumber" name="L554" href="#L554">554</a>         <strong class="jxr_keyword">if</strong> (!destination.exists()) {
+<a class="jxr_linenumber" name="L531" href="#L531">531</a>             <strong class="jxr_keyword">if</strong> (StringUtils.isEmpty(resolvedCacheToken)) {
+<a class="jxr_linenumber" name="L532" href="#L532">532</a>                 getLog().info(<span class="jxr_string">"Cache token is empty"</span>);
+<a class="jxr_linenumber" name="L533" href="#L533">533</a>             } <strong class="jxr_keyword">else</strong> {
+<a class="jxr_linenumber" name="L534" href="#L534">534</a>                 getLog().info(<span class="jxr_string">"Cache token: "</span> + resolvedCacheToken);
+<a class="jxr_linenumber" name="L535" href="#L535">535</a>             }
+<a class="jxr_linenumber" name="L536" href="#L536">536</a>         }
+<a class="jxr_linenumber" name="L537" href="#L537">537</a>     }
+<a class="jxr_linenumber" name="L538" href="#L538">538</a> 
+<a class="jxr_linenumber" name="L539" href="#L539">539</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> splitFiles(<strong class="jxr_keyword">final</strong> Collection&lt;File&gt; sources) <strong class="jxr_keyword">throws</strong> MojoFailureException {
+<a class="jxr_linenumber" name="L540" href="#L540">540</a>         <strong class="jxr_keyword">final</strong> String sourceFilesText = <span class="jxr_string">"source file"</span> + (sources.size() != 1 ? <span class="jxr_string">"s"</span> : <span class="jxr_string">""</span>);
+<a class="jxr_linenumber" name="L541" href="#L541">541</a>         getLog().info(<span class="jxr_string">"Splitting "</span> + sources.size() + ' ' + sourceFilesText + <span class="jxr_string">" to "</span> + outputDirectory.getAbsolutePath());
+<a class="jxr_linenumber" name="L542" href="#L542">542</a>         <strong class="jxr_keyword">final</strong> Timer timer = SystemTimer.getStartedTimer();
+<a class="jxr_linenumber" name="L543" href="#L543">543</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">final</strong> File source : sources) {
+<a class="jxr_linenumber" name="L544" href="#L544">544</a>             <strong class="jxr_keyword">if</strong> (isCompilationRequired(source)) {
+<a class="jxr_linenumber" name="L545" href="#L545">545</a>                 splitFile(source);
+<a class="jxr_linenumber" name="L546" href="#L546">546</a>             } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (verbose) {
+<a class="jxr_linenumber" name="L547" href="#L547">547</a>                 getLog().info(<span class="jxr_string">"Skipping stylesheet split (not modified): "</span> + source.getAbsolutePath());
+<a class="jxr_linenumber" name="L548" href="#L548">548</a>             }
+<a class="jxr_linenumber" name="L549" href="#L549">549</a>         }
+<a class="jxr_linenumber" name="L550" href="#L550">550</a>         getLog().info(<span class="jxr_string">"Finished "</span> + sourceFilesText + <span class="jxr_string">" split in "</span> + timer.stop());
+<a class="jxr_linenumber" name="L551" href="#L551">551</a>     }
+<a class="jxr_linenumber" name="L552" href="#L552">552</a> 
+<a class="jxr_linenumber" name="L553" href="#L553">553</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">boolean</strong> isCompilationRequired(<strong class="jxr_keyword">final</strong> File source) {
+<a class="jxr_linenumber" name="L554" href="#L554">554</a>         <strong class="jxr_keyword">if</strong> (force) {
 <a class="jxr_linenumber" name="L555" href="#L555">555</a>             <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">true</strong>;
 <a class="jxr_linenumber" name="L556" href="#L556">556</a>         }
-<a class="jxr_linenumber" name="L557" href="#L557">557</a>         <strong class="jxr_keyword">return</strong> source.lastModified() &gt; destination.lastModified();
-<a class="jxr_linenumber" name="L558" href="#L558">558</a>     }
-<a class="jxr_linenumber" name="L559" href="#L559">559</a> 
-<a class="jxr_linenumber" name="L560" href="#L560">560</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> splitFile(<strong class="jxr_keyword">final</strong> File source) <strong class="jxr_keyword">throws</strong> MojoFailureException {
-<a class="jxr_linenumber" name="L561" href="#L561">561</a>         Timer timer = <strong class="jxr_keyword">null</strong>;
-<a class="jxr_linenumber" name="L562" href="#L562">562</a>         <strong class="jxr_keyword">if</strong> (verbose) {
-<a class="jxr_linenumber" name="L563" href="#L563">563</a>             getLog().info(<span class="jxr_string">"Splitting stylesheet: "</span> + source.getAbsolutePath());
-<a class="jxr_linenumber" name="L564" href="#L564">564</a>             timer = SystemTimer.getStartedTimer();
-<a class="jxr_linenumber" name="L565" href="#L565">565</a>         }
-<a class="jxr_linenumber" name="L566" href="#L566">566</a>         <strong class="jxr_keyword">final</strong> String css = readCss(source);
-<a class="jxr_linenumber" name="L567" href="#L567">567</a>         <strong class="jxr_keyword">final</strong> <a href="../../../../../../biz/gabrys/maven/plugins/css/splitter/css/type/StyleSheet.html">StyleSheet</a> stylesheet = parseStyleSheet(css);
-<a class="jxr_linenumber" name="L568" href="#L568">568</a>         validateStyleSheet(stylesheet);
-<a class="jxr_linenumber" name="L569" href="#L569">569</a> 
-<a class="jxr_linenumber" name="L570" href="#L570">570</a>         <strong class="jxr_keyword">final</strong> List&lt;StyleSheet&gt; parts = splitToParts(stylesheet);
-<a class="jxr_linenumber" name="L571" href="#L571">571</a>         validateImportsDepth(parts);
-<a class="jxr_linenumber" name="L572" href="#L572">572</a> 
-<a class="jxr_linenumber" name="L573" href="#L573">573</a>         List&lt;String&gt; texts = convertToText(parts);
-<a class="jxr_linenumber" name="L574" href="#L574">574</a>         <strong class="jxr_keyword">if</strong> (compress) {
-<a class="jxr_linenumber" name="L575" href="#L575">575</a>             texts = compressStyleSheets(texts);
-<a class="jxr_linenumber" name="L576" href="#L576">576</a>         }
-<a class="jxr_linenumber" name="L577" href="#L577">577</a>         saveParts(source, convertToTree(texts));
-<a class="jxr_linenumber" name="L578" href="#L578">578</a> 
-<a class="jxr_linenumber" name="L579" href="#L579">579</a>         <strong class="jxr_keyword">if</strong> (timer != <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L580" href="#L580">580</a>             getLog().info(<span class="jxr_string">"Finished in "</span> + timer.stop());
-<a class="jxr_linenumber" name="L581" href="#L581">581</a>         }
-<a class="jxr_linenumber" name="L582" href="#L582">582</a>     }
-<a class="jxr_linenumber" name="L583" href="#L583">583</a> 
-<a class="jxr_linenumber" name="L584" href="#L584">584</a>     <strong class="jxr_keyword">private</strong> String readCss(<strong class="jxr_keyword">final</strong> File file) <strong class="jxr_keyword">throws</strong> MojoFailureException {
-<a class="jxr_linenumber" name="L585" href="#L585">585</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L586" href="#L586">586</a>             <strong class="jxr_keyword">return</strong> FileUtils.readFileToString(file, encoding);
-<a class="jxr_linenumber" name="L587" href="#L587">587</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> IOException e) {
-<a class="jxr_linenumber" name="L588" href="#L588">588</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> MojoFailureException(<span class="jxr_string">"Cannot read file: "</span> + file.getAbsolutePath(), e);
-<a class="jxr_linenumber" name="L589" href="#L589">589</a>         }
-<a class="jxr_linenumber" name="L590" href="#L590">590</a>     }
-<a class="jxr_linenumber" name="L591" href="#L591">591</a> 
-<a class="jxr_linenumber" name="L592" href="#L592">592</a>     <strong class="jxr_keyword">private</strong> <a href="../../../../../../biz/gabrys/maven/plugins/css/splitter/css/type/StyleSheet.html">StyleSheet</a> parseStyleSheet(<strong class="jxr_keyword">final</strong> String css) {
-<a class="jxr_linenumber" name="L593" href="#L593">593</a>         <strong class="jxr_keyword">if</strong> (getLog().isDebugEnabled()) {
-<a class="jxr_linenumber" name="L594" href="#L594">594</a>             getLog().debug(<span class="jxr_string">"Parsing stylesheet..."</span>);
-<a class="jxr_linenumber" name="L595" href="#L595">595</a>         }
-<a class="jxr_linenumber" name="L596" href="#L596">596</a>         <strong class="jxr_keyword">final</strong> <a href="../../../../../../biz/gabrys/maven/plugins/css/splitter/steadystate/ParserOptions.html">ParserOptions</a> options = <strong class="jxr_keyword">new</strong> <a href="../../../../../../biz/gabrys/maven/plugins/css/splitter/steadystate/ParserOptionsBuilder.html">ParserOptionsBuilder</a>().withStandard(Standard.create(standard)).withStrict(!nonstrict)
-<a class="jxr_linenumber" name="L597" href="#L597">597</a>                 .withStarHack(starHackAllowed).create();
-<a class="jxr_linenumber" name="L598" href="#L598">598</a>         <strong class="jxr_keyword">final</strong> <a href="../../../../../../biz/gabrys/maven/plugins/css/splitter/css/type/StyleSheet.html">StyleSheet</a> stylesheet = <strong class="jxr_keyword">new</strong> <a href="../../../../../../biz/gabrys/maven/plugins/css/splitter/steadystate/SteadyStateParser.html">SteadyStateParser</a>(getLog()).parse(css, options);
-<a class="jxr_linenumber" name="L599" href="#L599">599</a>         <strong class="jxr_keyword">new</strong> <a href="../../../../../../biz/gabrys/maven/plugins/css/splitter/message/StylesheetMessagePrinter.html">StylesheetMessagePrinter</a>(getLog(), !nonstrict).print(stylesheet);
-<a class="jxr_linenumber" name="L600" href="#L600">600</a>         <strong class="jxr_keyword">if</strong> (verbose) {
-<a class="jxr_linenumber" name="L601" href="#L601">601</a>             getLog().info(String.format(<span class="jxr_string">"Stylesheet contains %d rule%s."</span>, stylesheet.getSize(), stylesheet.getSize() != 1 ? 's' : <span class="jxr_string">""</span>));
-<a class="jxr_linenumber" name="L602" href="#L602">602</a>         }
-<a class="jxr_linenumber" name="L603" href="#L603">603</a>         <strong class="jxr_keyword">return</strong> stylesheet;
-<a class="jxr_linenumber" name="L604" href="#L604">604</a>     }
-<a class="jxr_linenumber" name="L605" href="#L605">605</a> 
-<a class="jxr_linenumber" name="L606" href="#L606">606</a>     <strong class="jxr_keyword">private</strong> List&lt;StyleSheet&gt; splitToParts(<strong class="jxr_keyword">final</strong> <a href="../../../../../../biz/gabrys/maven/plugins/css/splitter/css/type/StyleSheet.html">StyleSheet</a> stylesheet) {
-<a class="jxr_linenumber" name="L607" href="#L607">607</a>         <strong class="jxr_keyword">if</strong> (getLog().isDebugEnabled()) {
-<a class="jxr_linenumber" name="L608" href="#L608">608</a>             getLog().debug(<span class="jxr_string">"Splitting stylesheet to parts..."</span>);
-<a class="jxr_linenumber" name="L609" href="#L609">609</a>         }
-<a class="jxr_linenumber" name="L610" href="#L610">610</a>         <strong class="jxr_keyword">final</strong> List&lt;StyleSheet&gt; parts = <strong class="jxr_keyword">new</strong> <a href="../../../../../../biz/gabrys/maven/plugins/css/splitter/split/StyleSheetSplliter.html">StyleSheetSplliter</a>(maxRules).split(stylesheet);
-<a class="jxr_linenumber" name="L611" href="#L611">611</a>         <strong class="jxr_keyword">if</strong> (verbose) {
-<a class="jxr_linenumber" name="L612" href="#L612">612</a>             getLog().info(String.format(<span class="jxr_string">"Split to %d stylesheet%s."</span>, parts.size(), parts.size() == 1 ? <span class="jxr_string">""</span> : <span class="jxr_string">"s"</span>));
+<a class="jxr_linenumber" name="L557" href="#L557">557</a>         <strong class="jxr_keyword">final</strong> File destination = <strong class="jxr_keyword">new</strong> DestinationFileCreator(sourceDirectory, outputDirectory, outputFileNamePattern).create(source);
+<a class="jxr_linenumber" name="L558" href="#L558">558</a>         <strong class="jxr_keyword">if</strong> (!destination.exists()) {
+<a class="jxr_linenumber" name="L559" href="#L559">559</a>             <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">true</strong>;
+<a class="jxr_linenumber" name="L560" href="#L560">560</a>         }
+<a class="jxr_linenumber" name="L561" href="#L561">561</a>         <strong class="jxr_keyword">return</strong> source.lastModified() &gt; destination.lastModified();
+<a class="jxr_linenumber" name="L562" href="#L562">562</a>     }
+<a class="jxr_linenumber" name="L563" href="#L563">563</a> 
+<a class="jxr_linenumber" name="L564" href="#L564">564</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> splitFile(<strong class="jxr_keyword">final</strong> File source) <strong class="jxr_keyword">throws</strong> MojoFailureException {
+<a class="jxr_linenumber" name="L565" href="#L565">565</a>         Timer timer = <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="L566" href="#L566">566</a>         <strong class="jxr_keyword">if</strong> (verbose) {
+<a class="jxr_linenumber" name="L567" href="#L567">567</a>             getLog().info(<span class="jxr_string">"Splitting stylesheet: "</span> + source.getAbsolutePath());
+<a class="jxr_linenumber" name="L568" href="#L568">568</a>             timer = SystemTimer.getStartedTimer();
+<a class="jxr_linenumber" name="L569" href="#L569">569</a>         }
+<a class="jxr_linenumber" name="L570" href="#L570">570</a>         <strong class="jxr_keyword">final</strong> String css = readCss(source);
+<a class="jxr_linenumber" name="L571" href="#L571">571</a>         <strong class="jxr_keyword">final</strong> <a href="../../../../../../biz/gabrys/maven/plugins/css/splitter/css/type/StyleSheet.html">StyleSheet</a> stylesheet = parseStyleSheet(css);
+<a class="jxr_linenumber" name="L572" href="#L572">572</a>         validateStyleSheet(stylesheet);
+<a class="jxr_linenumber" name="L573" href="#L573">573</a> 
+<a class="jxr_linenumber" name="L574" href="#L574">574</a>         <strong class="jxr_keyword">final</strong> List&lt;StyleSheet&gt; parts = splitToParts(stylesheet);
+<a class="jxr_linenumber" name="L575" href="#L575">575</a>         validateImportsDepth(parts);
+<a class="jxr_linenumber" name="L576" href="#L576">576</a> 
+<a class="jxr_linenumber" name="L577" href="#L577">577</a>         List&lt;String&gt; texts = convertToText(parts);
+<a class="jxr_linenumber" name="L578" href="#L578">578</a>         <strong class="jxr_keyword">if</strong> (compress) {
+<a class="jxr_linenumber" name="L579" href="#L579">579</a>             texts = compressStyleSheets(texts);
+<a class="jxr_linenumber" name="L580" href="#L580">580</a>         }
+<a class="jxr_linenumber" name="L581" href="#L581">581</a>         saveParts(source, convertToTree(texts));
+<a class="jxr_linenumber" name="L582" href="#L582">582</a> 
+<a class="jxr_linenumber" name="L583" href="#L583">583</a>         <strong class="jxr_keyword">if</strong> (timer != <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L584" href="#L584">584</a>             getLog().info(<span class="jxr_string">"Finished in "</span> + timer.stop());
+<a class="jxr_linenumber" name="L585" href="#L585">585</a>         }
+<a class="jxr_linenumber" name="L586" href="#L586">586</a>     }
+<a class="jxr_linenumber" name="L587" href="#L587">587</a> 
+<a class="jxr_linenumber" name="L588" href="#L588">588</a>     <strong class="jxr_keyword">private</strong> String readCss(<strong class="jxr_keyword">final</strong> File file) <strong class="jxr_keyword">throws</strong> MojoFailureException {
+<a class="jxr_linenumber" name="L589" href="#L589">589</a>         <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L590" href="#L590">590</a>             <strong class="jxr_keyword">return</strong> FileUtils.readFileToString(file, encoding);
+<a class="jxr_linenumber" name="L591" href="#L591">591</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> IOException e) {
+<a class="jxr_linenumber" name="L592" href="#L592">592</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> MojoFailureException(<span class="jxr_string">"Cannot read file: "</span> + file.getAbsolutePath(), e);
+<a class="jxr_linenumber" name="L593" href="#L593">593</a>         }
+<a class="jxr_linenumber" name="L594" href="#L594">594</a>     }
+<a class="jxr_linenumber" name="L595" href="#L595">595</a> 
+<a class="jxr_linenumber" name="L596" href="#L596">596</a>     <strong class="jxr_keyword">private</strong> <a href="../../../../../../biz/gabrys/maven/plugins/css/splitter/css/type/StyleSheet.html">StyleSheet</a> parseStyleSheet(<strong class="jxr_keyword">final</strong> String css) {
+<a class="jxr_linenumber" name="L597" href="#L597">597</a>         <strong class="jxr_keyword">if</strong> (getLog().isDebugEnabled()) {
+<a class="jxr_linenumber" name="L598" href="#L598">598</a>             getLog().debug(<span class="jxr_string">"Parsing stylesheet..."</span>);
+<a class="jxr_linenumber" name="L599" href="#L599">599</a>         }
+<a class="jxr_linenumber" name="L600" href="#L600">600</a>         <strong class="jxr_keyword">final</strong> <a href="../../../../../../biz/gabrys/maven/plugins/css/splitter/steadystate/ParserOptions.html">ParserOptions</a> options = <strong class="jxr_keyword">new</strong> <a href="../../../../../../biz/gabrys/maven/plugins/css/splitter/steadystate/ParserOptionsBuilder.html">ParserOptionsBuilder</a>().withStandard(Standard.create(standard)).withStrict(!nonstrict)
+<a class="jxr_linenumber" name="L601" href="#L601">601</a>                 .withStarHack(starHackAllowed).create();
+<a class="jxr_linenumber" name="L602" href="#L602">602</a>         <strong class="jxr_keyword">final</strong> <a href="../../../../../../biz/gabrys/maven/plugins/css/splitter/css/type/StyleSheet.html">StyleSheet</a> stylesheet = <strong class="jxr_keyword">new</strong> <a href="../../../../../../biz/gabrys/maven/plugins/css/splitter/steadystate/SteadyStateParser.html">SteadyStateParser</a>(getLog()).parse(css, options);
+<a class="jxr_linenumber" name="L603" href="#L603">603</a>         <strong class="jxr_keyword">new</strong> <a href="../../../../../../biz/gabrys/maven/plugins/css/splitter/message/StylesheetMessagePrinter.html">StylesheetMessagePrinter</a>(getLog(), !nonstrict).print(stylesheet);
+<a class="jxr_linenumber" name="L604" href="#L604">604</a>         <strong class="jxr_keyword">if</strong> (verbose) {
+<a class="jxr_linenumber" name="L605" href="#L605">605</a>             getLog().info(String.format(<span class="jxr_string">"Stylesheet contains %d rule%s."</span>, stylesheet.getSize(), stylesheet.getSize() != 1 ? 's' : <span class="jxr_string">""</span>));
+<a class="jxr_linenumber" name="L606" href="#L606">606</a>         }
+<a class="jxr_linenumber" name="L607" href="#L607">607</a>         <strong class="jxr_keyword">return</strong> stylesheet;
+<a class="jxr_linenumber" name="L608" href="#L608">608</a>     }
+<a class="jxr_linenumber" name="L609" href="#L609">609</a> 
+<a class="jxr_linenumber" name="L610" href="#L610">610</a>     <strong class="jxr_keyword">private</strong> List&lt;StyleSheet&gt; splitToParts(<strong class="jxr_keyword">final</strong> <a href="../../../../../../biz/gabrys/maven/plugins/css/splitter/css/type/StyleSheet.html">StyleSheet</a> stylesheet) {
+<a class="jxr_linenumber" name="L611" href="#L611">611</a>         <strong class="jxr_keyword">if</strong> (getLog().isDebugEnabled()) {
+<a class="jxr_linenumber" name="L612" href="#L612">612</a>             getLog().debug(<span class="jxr_string">"Splitting stylesheet to parts..."</span>);
 <a class="jxr_linenumber" name="L613" href="#L613">613</a>         }
-<a class="jxr_linenumber" name="L614" href="#L614">614</a>         <strong class="jxr_keyword">return</strong> parts;
-<a class="jxr_linenumber" name="L615" href="#L615">615</a>     }
-<a class="jxr_linenumber" name="L616" href="#L616">616</a> 
-<a class="jxr_linenumber" name="L617" href="#L617">617</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> validateImportsDepth(<strong class="jxr_keyword">final</strong> List&lt;StyleSheet&gt; stylesheets) <strong class="jxr_keyword">throws</strong> MojoFailureException {
-<a class="jxr_linenumber" name="L618" href="#L618">618</a>         <strong class="jxr_keyword">final</strong> OrderedTree&lt;StyleSheet&gt; tree = convertToTree(stylesheets);
-<a class="jxr_linenumber" name="L619" href="#L619">619</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> depth = tree.getDepth();
-<a class="jxr_linenumber" name="L620" href="#L620">620</a>         <strong class="jxr_keyword">if</strong> (verbose) {
-<a class="jxr_linenumber" name="L621" href="#L621">621</a>             getLog().info(<span class="jxr_string">"Imports depth: "</span> + depth);
-<a class="jxr_linenumber" name="L622" href="#L622">622</a>         }
-<a class="jxr_linenumber" name="L623" href="#L623">623</a>         <strong class="jxr_keyword">if</strong> (getLog().isDebugEnabled()) {
-<a class="jxr_linenumber" name="L624" href="#L624">624</a>             getLog().debug(<span class="jxr_string">"Validating imports depth..."</span>);
-<a class="jxr_linenumber" name="L625" href="#L625">625</a>         }
-<a class="jxr_linenumber" name="L626" href="#L626">626</a>         <strong class="jxr_keyword">if</strong> (depth &gt; importsDepthLimit) {
-<a class="jxr_linenumber" name="L627" href="#L627">627</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> MojoFailureException(
-<a class="jxr_linenumber" name="L628" href="#L628">628</a>                     String.format(<span class="jxr_string">"The number of @import depth (%d) exceeded the allowable limit (%d)!"</span>, depth, importsDepthLimit));
+<a class="jxr_linenumber" name="L614" href="#L614">614</a>         <strong class="jxr_keyword">final</strong> List&lt;StyleSheet&gt; parts = <strong class="jxr_keyword">new</strong> <a href="../../../../../../biz/gabrys/maven/plugins/css/splitter/split/StyleSheetSplliter.html">StyleSheetSplliter</a>(maxRules).split(stylesheet);
+<a class="jxr_linenumber" name="L615" href="#L615">615</a>         <strong class="jxr_keyword">if</strong> (verbose) {
+<a class="jxr_linenumber" name="L616" href="#L616">616</a>             getLog().info(String.format(<span class="jxr_string">"Split to %d stylesheet%s."</span>, parts.size(), parts.size() == 1 ? <span class="jxr_string">""</span> : <span class="jxr_string">"s"</span>));
+<a class="jxr_linenumber" name="L617" href="#L617">617</a>         }
+<a class="jxr_linenumber" name="L618" href="#L618">618</a>         <strong class="jxr_keyword">return</strong> parts;
+<a class="jxr_linenumber" name="L619" href="#L619">619</a>     }
+<a class="jxr_linenumber" name="L620" href="#L620">620</a> 
+<a class="jxr_linenumber" name="L621" href="#L621">621</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> validateImportsDepth(<strong class="jxr_keyword">final</strong> List&lt;StyleSheet&gt; stylesheets) <strong class="jxr_keyword">throws</strong> MojoFailureException {
+<a class="jxr_linenumber" name="L622" href="#L622">622</a>         <strong class="jxr_keyword">final</strong> OrderedTree&lt;StyleSheet&gt; tree = convertToTree(stylesheets);
+<a class="jxr_linenumber" name="L623" href="#L623">623</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> depth = tree.getDepth();
+<a class="jxr_linenumber" name="L624" href="#L624">624</a>         <strong class="jxr_keyword">if</strong> (verbose) {
+<a class="jxr_linenumber" name="L625" href="#L625">625</a>             getLog().info(<span class="jxr_string">"Imports depth: "</span> + depth);
+<a class="jxr_linenumber" name="L626" href="#L626">626</a>         }
+<a class="jxr_linenumber" name="L627" href="#L627">627</a>         <strong class="jxr_keyword">if</strong> (getLog().isDebugEnabled()) {
+<a class="jxr_linenumber" name="L628" href="#L628">628</a>             getLog().debug(<span class="jxr_string">"Validating imports depth..."</span>);
 <a class="jxr_linenumber" name="L629" href="#L629">629</a>         }
-<a class="jxr_linenumber" name="L630" href="#L630">630</a>     }
-<a class="jxr_linenumber" name="L631" href="#L631">631</a> 
-<a class="jxr_linenumber" name="L632" href="#L632">632</a>     <strong class="jxr_keyword">private</strong> &lt;T&gt; OrderedTree&lt;T&gt; convertToTree(<strong class="jxr_keyword">final</strong> List&lt;T&gt; objects) {
-<a class="jxr_linenumber" name="L633" href="#L633">633</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> OrderedTree&lt;T&gt;(objects, maxImports);
+<a class="jxr_linenumber" name="L630" href="#L630">630</a>         <strong class="jxr_keyword">if</strong> (depth &gt; importsDepthLimit) {
+<a class="jxr_linenumber" name="L631" href="#L631">631</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> MojoFailureException(
+<a class="jxr_linenumber" name="L632" href="#L632">632</a>                     String.format(<span class="jxr_string">"The number of @import depth (%d) exceeded the allowable limit (%d)!"</span>, depth, importsDepthLimit));
+<a class="jxr_linenumber" name="L633" href="#L633">633</a>         }
 <a class="jxr_linenumber" name="L634" href="#L634">634</a>     }
 <a class="jxr_linenumber" name="L635" href="#L635">635</a> 
-<a class="jxr_linenumber" name="L636" href="#L636">636</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> List&lt;String&gt; convertToText(<strong class="jxr_keyword">final</strong> List&lt;StyleSheet&gt; stylesheets) {
-<a class="jxr_linenumber" name="L637" href="#L637">637</a>         <strong class="jxr_keyword">final</strong> List&lt;String&gt; texts = <strong class="jxr_keyword">new</strong> ArrayList&lt;String&gt;(stylesheets.size());
-<a class="jxr_linenumber" name="L638" href="#L638">638</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">final</strong> StyleSheet stylesheet : stylesheets) {
-<a class="jxr_linenumber" name="L639" href="#L639">639</a>             texts.add(stylesheet.toString());
-<a class="jxr_linenumber" name="L640" href="#L640">640</a>         }
-<a class="jxr_linenumber" name="L641" href="#L641">641</a>         <strong class="jxr_keyword">return</strong> texts;
-<a class="jxr_linenumber" name="L642" href="#L642">642</a>     }
-<a class="jxr_linenumber" name="L643" href="#L643">643</a> 
-<a class="jxr_linenumber" name="L644" href="#L644">644</a>     <strong class="jxr_keyword">private</strong> List&lt;String&gt; compressStyleSheets(<strong class="jxr_keyword">final</strong> List&lt;String&gt; stylesheets) {
-<a class="jxr_linenumber" name="L645" href="#L645">645</a>         <strong class="jxr_keyword">if</strong> (verbose) {
-<a class="jxr_linenumber" name="L646" href="#L646">646</a>             getLog().info(<span class="jxr_string">"Compressing CSS code..."</span>);
-<a class="jxr_linenumber" name="L647" href="#L647">647</a>         }
-<a class="jxr_linenumber" name="L648" href="#L648">648</a>         <strong class="jxr_keyword">final</strong> List&lt;String&gt; compressed = <strong class="jxr_keyword">new</strong> ArrayList&lt;String&gt;(stylesheets.size());
-<a class="jxr_linenumber" name="L649" href="#L649">649</a>         <strong class="jxr_keyword">final</strong> <a href="../../../../../../biz/gabrys/maven/plugins/css/splitter/compressor/CodeCompressor.html">CodeCompressor</a> compressor = <strong class="jxr_keyword">new</strong> <a href="../../../../../../biz/gabrys/maven/plugins/css/splitter/compressor/CodeCompressor.html">CodeCompressor</a>(compressLineBreak);
-<a class="jxr_linenumber" name="L650" href="#L650">650</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = 0; i &lt; stylesheets.size(); ++i) {
-<a class="jxr_linenumber" name="L651" href="#L651">651</a>             <strong class="jxr_keyword">if</strong> (getLog().isDebugEnabled()) {
-<a class="jxr_linenumber" name="L652" href="#L652">652</a>                 getLog().debug(String.format(<span class="jxr_string">"Compressing stylesheet no. %d..."</span>, i + 1));
-<a class="jxr_linenumber" name="L653" href="#L653">653</a>             }
-<a class="jxr_linenumber" name="L654" href="#L654">654</a>             compressed.add(compressor.compress(stylesheets.get(i)));
-<a class="jxr_linenumber" name="L655" href="#L655">655</a>         }
-<a class="jxr_linenumber" name="L656" href="#L656">656</a>         <strong class="jxr_keyword">return</strong> compressed;
-<a class="jxr_linenumber" name="L657" href="#L657">657</a>     }
-<a class="jxr_linenumber" name="L658" href="#L658">658</a> 
-<a class="jxr_linenumber" name="L659" href="#L659">659</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> validateStyleSheet(<strong class="jxr_keyword">final</strong> <a href="../../../../../../biz/gabrys/maven/plugins/css/splitter/css/type/StyleSheet.html">StyleSheet</a> stylesheet) {
-<a class="jxr_linenumber" name="L660" href="#L660">660</a>         <strong class="jxr_keyword">if</strong> (getLog().isDebugEnabled()) {
-<a class="jxr_linenumber" name="L661" href="#L661">661</a>             getLog().debug(<span class="jxr_string">"Validating stylesheet..."</span>);
-<a class="jxr_linenumber" name="L662" href="#L662">662</a>         }
-<a class="jxr_linenumber" name="L663" href="#L663">663</a> 
-<a class="jxr_linenumber" name="L664" href="#L664">664</a>         <strong class="jxr_keyword">new</strong> <a href="../../../../../../biz/gabrys/maven/plugins/css/splitter/validation/RulesLimitValidator.html">RulesLimitValidator</a>(rulesLimit).validate(stylesheet);
-<a class="jxr_linenumber" name="L665" href="#L665">665</a>         <strong class="jxr_keyword">new</strong> <a href="../../../../../../biz/gabrys/maven/plugins/css/splitter/validation/StylePropertiesLimitValidator.html">StylePropertiesLimitValidator</a>(maxRules).validate(stylesheet);
-<a class="jxr_linenumber" name="L666" href="#L666">666</a>     }
+<a class="jxr_linenumber" name="L636" href="#L636">636</a>     <strong class="jxr_keyword">private</strong> &lt;T&gt; OrderedTree&lt;T&gt; convertToTree(<strong class="jxr_keyword">final</strong> List&lt;T&gt; objects) {
+<a class="jxr_linenumber" name="L637" href="#L637">637</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> OrderedTree&lt;T&gt;(objects, maxImports);
+<a class="jxr_linenumber" name="L638" href="#L638">638</a>     }
+<a class="jxr_linenumber" name="L639" href="#L639">639</a> 
+<a class="jxr_linenumber" name="L640" href="#L640">640</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> List&lt;String&gt; convertToText(<strong class="jxr_keyword">final</strong> List&lt;StyleSheet&gt; stylesheets) {
+<a class="jxr_linenumber" name="L641" href="#L641">641</a>         <strong class="jxr_keyword">final</strong> List&lt;String&gt; texts = <strong class="jxr_keyword">new</strong> ArrayList&lt;String&gt;(stylesheets.size());
+<a class="jxr_linenumber" name="L642" href="#L642">642</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">final</strong> StyleSheet stylesheet : stylesheets) {
+<a class="jxr_linenumber" name="L643" href="#L643">643</a>             texts.add(stylesheet.toString());
+<a class="jxr_linenumber" name="L644" href="#L644">644</a>         }
+<a class="jxr_linenumber" name="L645" href="#L645">645</a>         <strong class="jxr_keyword">return</strong> texts;
+<a class="jxr_linenumber" name="L646" href="#L646">646</a>     }
+<a class="jxr_linenumber" name="L647" href="#L647">647</a> 
+<a class="jxr_linenumber" name="L648" href="#L648">648</a>     <strong class="jxr_keyword">private</strong> List&lt;String&gt; compressStyleSheets(<strong class="jxr_keyword">final</strong> List&lt;String&gt; stylesheets) {
+<a class="jxr_linenumber" name="L649" href="#L649">649</a>         <strong class="jxr_keyword">if</strong> (verbose) {
+<a class="jxr_linenumber" name="L650" href="#L650">650</a>             getLog().info(<span class="jxr_string">"Compressing CSS code..."</span>);
+<a class="jxr_linenumber" name="L651" href="#L651">651</a>         }
+<a class="jxr_linenumber" name="L652" href="#L652">652</a>         <strong class="jxr_keyword">final</strong> List&lt;String&gt; compressed = <strong class="jxr_keyword">new</strong> ArrayList&lt;String&gt;(stylesheets.size());
+<a class="jxr_linenumber" name="L653" href="#L653">653</a>         <strong class="jxr_keyword">final</strong> <a href="../../../../../../biz/gabrys/maven/plugins/css/splitter/compressor/CodeCompressor.html">CodeCompressor</a> compressor = <strong class="jxr_keyword">new</strong> <a href="../../../../../../biz/gabrys/maven/plugins/css/splitter/compressor/CodeCompressor.html">CodeCompressor</a>(compressLineBreak);
+<a class="jxr_linenumber" name="L654" href="#L654">654</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = 0; i &lt; stylesheets.size(); ++i) {
+<a class="jxr_linenumber" name="L655" href="#L655">655</a>             <strong class="jxr_keyword">if</strong> (getLog().isDebugEnabled()) {
+<a class="jxr_linenumber" name="L656" href="#L656">656</a>                 getLog().debug(String.format(<span class="jxr_string">"Compressing stylesheet no. %d..."</span>, i + 1));
+<a class="jxr_linenumber" name="L657" href="#L657">657</a>             }
+<a class="jxr_linenumber" name="L658" href="#L658">658</a>             compressed.add(compressor.compress(stylesheets.get(i)));
+<a class="jxr_linenumber" name="L659" href="#L659">659</a>         }
+<a class="jxr_linenumber" name="L660" href="#L660">660</a>         <strong class="jxr_keyword">return</strong> compressed;
+<a class="jxr_linenumber" name="L661" href="#L661">661</a>     }
+<a class="jxr_linenumber" name="L662" href="#L662">662</a> 
+<a class="jxr_linenumber" name="L663" href="#L663">663</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> validateStyleSheet(<strong class="jxr_keyword">final</strong> <a href="../../../../../../biz/gabrys/maven/plugins/css/splitter/css/type/StyleSheet.html">StyleSheet</a> stylesheet) {
+<a class="jxr_linenumber" name="L664" href="#L664">664</a>         <strong class="jxr_keyword">if</strong> (getLog().isDebugEnabled()) {
+<a class="jxr_linenumber" name="L665" href="#L665">665</a>             getLog().debug(<span class="jxr_string">"Validating stylesheet..."</span>);
+<a class="jxr_linenumber" name="L666" href="#L666">666</a>         }
 <a class="jxr_linenumber" name="L667" href="#L667">667</a> 
-<a class="jxr_linenumber" name="L668" href="#L668">668</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> saveParts(<strong class="jxr_keyword">final</strong> File source, <strong class="jxr_keyword">final</strong> OrderedTreeNode&lt;String&gt; stylesheetsTree) <strong class="jxr_keyword">throws</strong> MojoFailureException {
-<a class="jxr_linenumber" name="L669" href="#L669">669</a>         <strong class="jxr_keyword">if</strong> (getLog().isDebugEnabled()) {
-<a class="jxr_linenumber" name="L670" href="#L670">670</a>             getLog().debug(<span class="jxr_string">"Creating imports' tree..."</span>);
-<a class="jxr_linenumber" name="L671" href="#L671">671</a>         }
-<a class="jxr_linenumber" name="L672" href="#L672">672</a> 
-<a class="jxr_linenumber" name="L673" href="#L673">673</a>         <strong class="jxr_keyword">if</strong> (verbose) {
-<a class="jxr_linenumber" name="L674" href="#L674">674</a>             getLog().info(<span class="jxr_string">"Saving CSS code..."</span>);
+<a class="jxr_linenumber" name="L668" href="#L668">668</a>         <strong class="jxr_keyword">new</strong> <a href="../../../../../../biz/gabrys/maven/plugins/css/splitter/validation/RulesLimitValidator.html">RulesLimitValidator</a>(rulesLimit).validate(stylesheet);
+<a class="jxr_linenumber" name="L669" href="#L669">669</a>         <strong class="jxr_keyword">new</strong> <a href="../../../../../../biz/gabrys/maven/plugins/css/splitter/validation/StylePropertiesLimitValidator.html">StylePropertiesLimitValidator</a>(maxRules).validate(stylesheet);
+<a class="jxr_linenumber" name="L670" href="#L670">670</a>     }
+<a class="jxr_linenumber" name="L671" href="#L671">671</a> 
+<a class="jxr_linenumber" name="L672" href="#L672">672</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> saveParts(<strong class="jxr_keyword">final</strong> File source, <strong class="jxr_keyword">final</strong> OrderedTreeNode&lt;String&gt; stylesheetsTree) <strong class="jxr_keyword">throws</strong> MojoFailureException {
+<a class="jxr_linenumber" name="L673" href="#L673">673</a>         <strong class="jxr_keyword">if</strong> (getLog().isDebugEnabled()) {
+<a class="jxr_linenumber" name="L674" href="#L674">674</a>             getLog().debug(<span class="jxr_string">"Creating imports' tree..."</span>);
 <a class="jxr_linenumber" name="L675" href="#L675">675</a>         }
-<a class="jxr_linenumber" name="L676" href="#L676">676</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> numberOfDigits = String.valueOf(stylesheetsTree.size()).length();
-<a class="jxr_linenumber" name="L677" href="#L677">677</a>         <strong class="jxr_keyword">final</strong> String indexPattern = <span class="jxr_string">"%0"</span> + numberOfDigits + 'd';
-<a class="jxr_linenumber" name="L678" href="#L678">678</a>         saveStyleSheetsTree(source, stylesheetsTree, indexPattern);
-<a class="jxr_linenumber" name="L679" href="#L679">679</a>     }
-<a class="jxr_linenumber" name="L680" href="#L680">680</a> 
-<a class="jxr_linenumber" name="L681" href="#L681">681</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> saveStyleSheetsTree(<strong class="jxr_keyword">final</strong> File source, <strong class="jxr_keyword">final</strong> OrderedTreeNode&lt;String&gt; node, <strong class="jxr_keyword">final</strong> String indexPattern)
-<a class="jxr_linenumber" name="L682" href="#L682">682</a>             <strong class="jxr_keyword">throws</strong> MojoFailureException {
-<a class="jxr_linenumber" name="L683" href="#L683">683</a>         <strong class="jxr_keyword">final</strong> DestinationFileCreator fileCreator = <strong class="jxr_keyword">new</strong> DestinationFileCreator(sourceDirectory, outputDirectory);
-<a class="jxr_linenumber" name="L684" href="#L684">684</a>         <strong class="jxr_keyword">if</strong> (node.getOrder() == 0) {
-<a class="jxr_linenumber" name="L685" href="#L685">685</a>             fileCreator.setFileNamePattern(outputFileNamePattern);
-<a class="jxr_linenumber" name="L686" href="#L686">686</a>         } <strong class="jxr_keyword">else</strong> {
-<a class="jxr_linenumber" name="L687" href="#L687">687</a>             <strong class="jxr_keyword">final</strong> String index = String.format(indexPattern, node.getOrder());
-<a class="jxr_linenumber" name="L688" href="#L688">688</a>             fileCreator.setFileNamePattern(outputPartNamePattern.replace(PART_INDEX_PARAMETER, index));
-<a class="jxr_linenumber" name="L689" href="#L689">689</a>         }
-<a class="jxr_linenumber" name="L690" href="#L690">690</a>         <strong class="jxr_keyword">final</strong> File target = fileCreator.create(source);
-<a class="jxr_linenumber" name="L691" href="#L691">691</a> 
-<a class="jxr_linenumber" name="L692" href="#L692">692</a>         <strong class="jxr_keyword">if</strong> (node.hasValue()) {
-<a class="jxr_linenumber" name="L693" href="#L693">693</a>             saveCss(target, node.getValue());
-<a class="jxr_linenumber" name="L694" href="#L694">694</a>             <strong class="jxr_keyword">return</strong>;
-<a class="jxr_linenumber" name="L695" href="#L695">695</a>         }
-<a class="jxr_linenumber" name="L696" href="#L696">696</a> 
-<a class="jxr_linenumber" name="L697" href="#L697">697</a>         <strong class="jxr_keyword">final</strong> StringBuilder imports = <strong class="jxr_keyword">new</strong> StringBuilder();
-<a class="jxr_linenumber" name="L698" href="#L698">698</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">final</strong> OrderedTreeNode&lt;String&gt; child : node.getChildren()) {
-<a class="jxr_linenumber" name="L699" href="#L699">699</a>             <strong class="jxr_keyword">final</strong> String index = String.format(indexPattern, child.getOrder());
-<a class="jxr_linenumber" name="L700" href="#L700">700</a>             fileCreator.setFileNamePattern(outputPartNamePattern.replace(PART_INDEX_PARAMETER, index));
-<a class="jxr_linenumber" name="L701" href="#L701">701</a>             <strong class="jxr_keyword">final</strong> File childTarget = fileCreator.create(source);
-<a class="jxr_linenumber" name="L702" href="#L702">702</a>             saveStyleSheetsTree(source, child, indexPattern);
-<a class="jxr_linenumber" name="L703" href="#L703">703</a>             <strong class="jxr_keyword">final</strong> String parameters = StringUtils.isEmpty(resolvedCacheToken) ? <span class="jxr_string">""</span> : '?' + resolvedCacheToken;
-<a class="jxr_linenumber" name="L704" href="#L704">704</a>             imports.append(String.format(<span class="jxr_string">"@import \&quot;%s%s\&quot;;%n"</span>, childTarget.getName(), parameters));
-<a class="jxr_linenumber" name="L705" href="#L705">705</a>         }
-<a class="jxr_linenumber" name="L706" href="#L706">706</a>         saveCss(target, imports.toString());
-<a class="jxr_linenumber" name="L707" href="#L707">707</a>     }
-<a class="jxr_linenumber" name="L708" href="#L708">708</a> 
-<a class="jxr_linenumber" name="L709" href="#L709">709</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> saveCss(<strong class="jxr_keyword">final</strong> File file, <strong class="jxr_keyword">final</strong> String css) <strong class="jxr_keyword">throws</strong> MojoFailureException {
-<a class="jxr_linenumber" name="L710" href="#L710">710</a>         <strong class="jxr_keyword">if</strong> (getLog().isDebugEnabled()) {
-<a class="jxr_linenumber" name="L711" href="#L711">711</a>             getLog().debug(<span class="jxr_string">"Saving stylesheet to "</span> + file.getAbsolutePath());
-<a class="jxr_linenumber" name="L712" href="#L712">712</a>         }
-<a class="jxr_linenumber" name="L713" href="#L713">713</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L714" href="#L714">714</a>             FileUtils.write(file, css, encoding);
-<a class="jxr_linenumber" name="L715" href="#L715">715</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> IOException e) {
-<a class="jxr_linenumber" name="L716" href="#L716">716</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> MojoFailureException(<span class="jxr_string">"Cannot save file: "</span> + file.getAbsolutePath(), e);
-<a class="jxr_linenumber" name="L717" href="#L717">717</a>         }
-<a class="jxr_linenumber" name="L718" href="#L718">718</a>     }
-<a class="jxr_linenumber" name="L719" href="#L719">719</a> }
+<a class="jxr_linenumber" name="L676" href="#L676">676</a> 
+<a class="jxr_linenumber" name="L677" href="#L677">677</a>         <strong class="jxr_keyword">if</strong> (verbose) {
+<a class="jxr_linenumber" name="L678" href="#L678">678</a>             getLog().info(<span class="jxr_string">"Saving CSS code..."</span>);
+<a class="jxr_linenumber" name="L679" href="#L679">679</a>         }
+<a class="jxr_linenumber" name="L680" href="#L680">680</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> numberOfDigits = String.valueOf(stylesheetsTree.size()).length();
+<a class="jxr_linenumber" name="L681" href="#L681">681</a>         <strong class="jxr_keyword">final</strong> String indexPattern = <span class="jxr_string">"%0"</span> + numberOfDigits + 'd';
+<a class="jxr_linenumber" name="L682" href="#L682">682</a>         saveStyleSheetsTree(source, stylesheetsTree, indexPattern);
+<a class="jxr_linenumber" name="L683" href="#L683">683</a>     }
+<a class="jxr_linenumber" name="L684" href="#L684">684</a> 
+<a class="jxr_linenumber" name="L685" href="#L685">685</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> saveStyleSheetsTree(<strong class="jxr_keyword">final</strong> File source, <strong class="jxr_keyword">final</strong> OrderedTreeNode&lt;String&gt; node, <strong class="jxr_keyword">final</strong> String indexPattern)
+<a class="jxr_linenumber" name="L686" href="#L686">686</a>             <strong class="jxr_keyword">throws</strong> MojoFailureException {
+<a class="jxr_linenumber" name="L687" href="#L687">687</a>         <strong class="jxr_keyword">final</strong> DestinationFileCreator fileCreator = <strong class="jxr_keyword">new</strong> DestinationFileCreator(sourceDirectory, outputDirectory);
+<a class="jxr_linenumber" name="L688" href="#L688">688</a>         <strong class="jxr_keyword">if</strong> (node.getOrder() == 0) {
+<a class="jxr_linenumber" name="L689" href="#L689">689</a>             fileCreator.setFileNamePattern(outputFileNamePattern);
+<a class="jxr_linenumber" name="L690" href="#L690">690</a>         } <strong class="jxr_keyword">else</strong> {
+<a class="jxr_linenumber" name="L691" href="#L691">691</a>             <strong class="jxr_keyword">final</strong> String index = String.format(indexPattern, node.getOrder());
+<a class="jxr_linenumber" name="L692" href="#L692">692</a>             fileCreator.setFileNamePattern(outputPartNamePattern.replace(PART_INDEX_PARAMETER, index));
+<a class="jxr_linenumber" name="L693" href="#L693">693</a>         }
+<a class="jxr_linenumber" name="L694" href="#L694">694</a>         <strong class="jxr_keyword">final</strong> File target = fileCreator.create(source);
+<a class="jxr_linenumber" name="L695" href="#L695">695</a> 
+<a class="jxr_linenumber" name="L696" href="#L696">696</a>         <strong class="jxr_keyword">if</strong> (node.hasValue()) {
+<a class="jxr_linenumber" name="L697" href="#L697">697</a>             saveCss(target, node.getValue());
+<a class="jxr_linenumber" name="L698" href="#L698">698</a>             <strong class="jxr_keyword">return</strong>;
+<a class="jxr_linenumber" name="L699" href="#L699">699</a>         }
+<a class="jxr_linenumber" name="L700" href="#L700">700</a> 
+<a class="jxr_linenumber" name="L701" href="#L701">701</a>         <strong class="jxr_keyword">final</strong> StringBuilder imports = <strong class="jxr_keyword">new</strong> StringBuilder();
+<a class="jxr_linenumber" name="L702" href="#L702">702</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">final</strong> OrderedTreeNode&lt;String&gt; child : node.getChildren()) {
+<a class="jxr_linenumber" name="L703" href="#L703">703</a>             <strong class="jxr_keyword">final</strong> String index = String.format(indexPattern, child.getOrder());
+<a class="jxr_linenumber" name="L704" href="#L704">704</a>             fileCreator.setFileNamePattern(outputPartNamePattern.replace(PART_INDEX_PARAMETER, index));
+<a class="jxr_linenumber" name="L705" href="#L705">705</a>             <strong class="jxr_keyword">final</strong> File childTarget = fileCreator.create(source);
+<a class="jxr_linenumber" name="L706" href="#L706">706</a>             saveStyleSheetsTree(source, child, indexPattern);
+<a class="jxr_linenumber" name="L707" href="#L707">707</a>             <strong class="jxr_keyword">final</strong> String parameters = StringUtils.isEmpty(resolvedCacheToken) ? <span class="jxr_string">""</span> : '?' + resolvedCacheToken;
+<a class="jxr_linenumber" name="L708" href="#L708">708</a>             imports.append(String.format(<span class="jxr_string">"@import \&quot;%s%s\&quot;;%n"</span>, childTarget.getName(), parameters));
+<a class="jxr_linenumber" name="L709" href="#L709">709</a>         }
+<a class="jxr_linenumber" name="L710" href="#L710">710</a>         saveCss(target, imports.toString());
+<a class="jxr_linenumber" name="L711" href="#L711">711</a>     }
+<a class="jxr_linenumber" name="L712" href="#L712">712</a> 
+<a class="jxr_linenumber" name="L713" href="#L713">713</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> saveCss(<strong class="jxr_keyword">final</strong> File file, <strong class="jxr_keyword">final</strong> String css) <strong class="jxr_keyword">throws</strong> MojoFailureException {
+<a class="jxr_linenumber" name="L714" href="#L714">714</a>         <strong class="jxr_keyword">if</strong> (getLog().isDebugEnabled()) {
+<a class="jxr_linenumber" name="L715" href="#L715">715</a>             getLog().debug(<span class="jxr_string">"Saving stylesheet to "</span> + file.getAbsolutePath());
+<a class="jxr_linenumber" name="L716" href="#L716">716</a>         }
+<a class="jxr_linenumber" name="L717" href="#L717">717</a>         <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L718" href="#L718">718</a>             FileUtils.write(file, css, encoding);
+<a class="jxr_linenumber" name="L719" href="#L719">719</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> IOException e) {
+<a class="jxr_linenumber" name="L720" href="#L720">720</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> MojoFailureException(<span class="jxr_string">"Cannot save file: "</span> + file.getAbsolutePath(), e);
+<a class="jxr_linenumber" name="L721" href="#L721">721</a>         }
+<a class="jxr_linenumber" name="L722" href="#L722">722</a>     }
+<a class="jxr_linenumber" name="L723" href="#L723">723</a> }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2015&#x2013;2017 <a href="http://www.gabrys.biz/">gabrys.biz</a>. All rights reserved.</div>
