@@ -5,11 +5,11 @@
 
     <groupId>biz.gabrys.maven.plugins</groupId>
     <artifactId>css-splitter-maven-plugin</artifactId>
-    <version>1.2.3-SNAPSHOT</version>
+    <version>1.2.3</version>
     <packaging>maven-plugin</packaging>
     <name>CSS Splitter Maven Plugin</name>
     <description>Splits CSS stylesheets to smaller files ("parts") which contain maximum X rules.</description>
-    <url>http://css-splitter-maven-plugin.projects.gabrys.biz/LATEST/</url>
+    <url>http://css-splitter-maven-plugin.projects.gabrys.biz/1.2.3/</url>
 
     <inceptionYear>2015</inceptionYear>
     <organization>
