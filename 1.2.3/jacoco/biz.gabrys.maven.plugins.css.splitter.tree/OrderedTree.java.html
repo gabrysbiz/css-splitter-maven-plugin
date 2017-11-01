@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OrderedTree.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">CSS Splitter Maven Plugin</a> &gt; <a href="index.source.html" class="el_package">biz.gabrys.maven.plugins.css.splitter.tree</a> &gt; <span class="el_source">OrderedTree.java</span></div><h1>OrderedTree.java</h1><pre class="source lang-java linenums">/*
+ * CSS Splitter Maven Plugin
+ * http://css-splitter-maven-plugin.projects.gabrys.biz/
+ *
+ * Copyright (c) 2015 Adam Gabryś
+ *
+ * This file is licensed under the BSD 3-Clause (the &quot;License&quot;).
+ * You may not use this file except in compliance with the License.
+ * You may obtain:
+ * - a copy of the License at project page
+ * - a template of the License at https://opensource.org/licenses/BSD-3-Clause
+ */
+package biz.gabrys.maven.plugins.css.splitter.tree;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
+public class OrderedTree&lt;T&gt; implements OrderedTreeNode&lt;T&gt; {
+
+    public static final int MIN_NUMBER_OF_CHILDREN = 2;
+
+    private final int numberOfChildren;
+    private final List&lt;OrderedTree&lt;T&gt;&gt; children;
+    private T value;
+    private int order;
+
+    public OrderedTree(final List&lt;T&gt; objects, final int numberOfChildren) {
+<span class="fc" id="L29">        this(numberOfChildren);</span>
+
+<span class="fc bfc" id="L31" title="All 2 branches covered.">        if (objects.isEmpty()) {</span>
+<span class="fc" id="L32">            return;</span>
+        }
+
+        // root node is a leaf, so we need to create size - 1 additional leaves
+<span class="fc" id="L36">        createLeaves(objects.size() - 1);</span>
+<span class="fc" id="L37">        fillLeaves(objects);</span>
+<span class="fc" id="L38">        fillOrder(0);</span>
+<span class="fc" id="L39">    }</span>
+
+<span class="fc" id="L41">    private OrderedTree(final int numberOfChildren) {</span>
+<span class="pc bpc" id="L42" title="1 of 2 branches missed.">        if (numberOfChildren &lt; MIN_NUMBER_OF_CHILDREN) {</span>
+<span class="nc" id="L43">            throw new IllegalArgumentException(&quot;Number of children cannot be smaller than 2! Current value: &quot; + numberOfChildren);</span>
+        }
+<span class="fc" id="L45">        this.numberOfChildren = numberOfChildren;</span>
+<span class="fc" id="L46">        children = new ArrayList&lt;OrderedTree&lt;T&gt;&gt;(numberOfChildren);</span>
+<span class="fc" id="L47">    }</span>
+
+    public List&lt;OrderedTreeNode&lt;T&gt;&gt; getChildren() {
+<span class="fc" id="L50">        return new ArrayList&lt;OrderedTreeNode&lt;T&gt;&gt;(children);</span>
+    }
+
+    public boolean hasValue() {
+<span class="fc bfc" id="L54" title="All 2 branches covered.">        return value != null;</span>
+    }
+
+    public T getValue() {
+<span class="fc" id="L58">        return value;</span>
+    }
+
+    public int getOrder() {
+<span class="fc" id="L62">        return order;</span>
+    }
+
+    public int size() {
+<span class="fc bfc" id="L66" title="All 2 branches covered.">        int size = hasValue() ? 1 : 0;</span>
+<span class="fc bfc" id="L67" title="All 2 branches covered.">        for (final OrderedTree&lt;T&gt; child : children) {</span>
+<span class="fc bfc" id="L68" title="All 2 branches covered.">            if (!child.isLeaf()) {</span>
+<span class="fc" id="L69">                ++size;</span>
+            }
+<span class="fc" id="L71">            size += child.size();</span>
+<span class="fc" id="L72">        }</span>
+<span class="fc" id="L73">        return size;</span>
+    }
+
+    public int getDepth() {
+<span class="fc bfc" id="L77" title="All 2 branches covered.">        if (isLeaf()) {</span>
+<span class="fc" id="L78">            return 0;</span>
+        }
+<span class="fc" id="L80">        int max = 0;</span>
+<span class="fc bfc" id="L81" title="All 2 branches covered.">        for (final OrderedTree&lt;T&gt; child : children) {</span>
+<span class="fc" id="L82">            final int tmp = child.getDepth();</span>
+<span class="fc bfc" id="L83" title="All 2 branches covered.">            if (tmp &gt; max) {</span>
+<span class="fc" id="L84">                max = tmp;</span>
+            }
+<span class="fc" id="L86">        }</span>
+<span class="fc" id="L87">        return 1 + max;</span>
+    }
+
+    private void createLeaves(final int count) {
+<span class="fc bfc" id="L91" title="All 2 branches covered.">        for (int i = 0; i &lt; count; ++i) {</span>
+<span class="fc" id="L92">            createLeaf();</span>
+        }
+<span class="fc" id="L94">    }</span>
+
+    private void createLeaf() {
+<span class="fc bfc" id="L97" title="All 2 branches covered.">        if (isLeaf()) {</span>
+<span class="fc" id="L98">            children.add(new OrderedTree&lt;T&gt;(numberOfChildren));</span>
+<span class="fc" id="L99">            children.add(new OrderedTree&lt;T&gt;(numberOfChildren));</span>
+
+<span class="fc bfc" id="L101" title="All 2 branches covered.">        } else if (children.size() &lt; numberOfChildren) {</span>
+<span class="fc" id="L102">            children.add(new OrderedTree&lt;T&gt;(numberOfChildren));</span>
+
+        } else {
+<span class="fc" id="L105">            OrderedTree&lt;T&gt; node = getNotFullyFilledNode();</span>
+<span class="fc bfc" id="L106" title="All 2 branches covered.">            if (node == null) {</span>
+<span class="fc" id="L107">                node = findNearestLeafNode();</span>
+            }
+<span class="fc" id="L109">            node.createLeaf();</span>
+        }
+<span class="fc" id="L111">    }</span>
+
+    private boolean isLeaf() {
+<span class="fc" id="L114">        return children.isEmpty();</span>
+    }
+
+    private OrderedTree&lt;T&gt; getNotFullyFilledNode() {
+<span class="fc bfc" id="L118" title="All 2 branches covered.">        if (isLeaf()) {</span>
+<span class="fc" id="L119">            return null;</span>
+        }
+
+<span class="fc bfc" id="L122" title="All 2 branches covered.">        if (children.size() &lt; numberOfChildren) {</span>
+<span class="fc" id="L123">            return this;</span>
+        }
+
+<span class="fc bfc" id="L126" title="All 2 branches covered.">        for (final OrderedTree&lt;T&gt; child : children) {</span>
+<span class="fc" id="L127">            final OrderedTree&lt;T&gt; node = child.getNotFullyFilledNode();</span>
+<span class="fc bfc" id="L128" title="All 2 branches covered.">            if (node != null) {</span>
+<span class="fc" id="L129">                return node;</span>
+            }
+<span class="fc" id="L131">        }</span>
+<span class="fc" id="L132">        return null;</span>
+    }
+
+    private OrderedTree&lt;T&gt; findNearestLeafNode() {
+<span class="fc" id="L136">        final List&lt;LeafWithDistance&lt;T&gt;&gt; leaves = getLeavesWithDistances();</span>
+<span class="fc" id="L137">        LeafWithDistance&lt;T&gt; leafWithDistance = leaves.get(0);</span>
+<span class="fc" id="L138">        OrderedTree&lt;T&gt; leaf = leafWithDistance.leaf;</span>
+<span class="fc" id="L139">        int distance = leafWithDistance.distance;</span>
+<span class="fc bfc" id="L140" title="All 2 branches covered.">        for (int i = 1; i &lt; leaves.size(); ++i) {</span>
+<span class="fc" id="L141">            leafWithDistance = leaves.get(i);</span>
+<span class="fc bfc" id="L142" title="All 2 branches covered.">            if (leafWithDistance.distance &lt; distance) {</span>
+<span class="fc" id="L143">                leaf = leafWithDistance.leaf;</span>
+<span class="fc" id="L144">                distance = leafWithDistance.distance;</span>
+            }
+        }
+<span class="fc" id="L147">        return leaf;</span>
+    }
+
+    private List&lt;LeafWithDistance&lt;T&gt;&gt; getLeavesWithDistances() {
+<span class="fc bfc" id="L151" title="All 2 branches covered.">        if (isLeaf()) {</span>
+<span class="fc" id="L152">            final List&lt;LeafWithDistance&lt;T&gt;&gt; leaves = new ArrayList&lt;LeafWithDistance&lt;T&gt;&gt;();</span>
+<span class="fc" id="L153">            leaves.add(new LeafWithDistance&lt;T&gt;(this, 0));</span>
+<span class="fc" id="L154">            return leaves;</span>
+        }
+
+<span class="fc" id="L157">        final List&lt;LeafWithDistance&lt;T&gt;&gt; leaves = new LinkedList&lt;LeafWithDistance&lt;T&gt;&gt;();</span>
+<span class="fc bfc" id="L158" title="All 2 branches covered.">        for (final OrderedTree&lt;T&gt; child : children) {</span>
+<span class="fc bfc" id="L159" title="All 2 branches covered.">            for (final LeafWithDistance&lt;T&gt; leafWithDistance : child.getLeavesWithDistances()) {</span>
+<span class="fc" id="L160">                leaves.add(new LeafWithDistance&lt;T&gt;(leafWithDistance.leaf, leafWithDistance.distance + 1));</span>
+<span class="fc" id="L161">            }</span>
+<span class="fc" id="L162">        }</span>
+<span class="fc" id="L163">        return leaves;</span>
+    }
+
+    private void fillLeaves(final List&lt;T&gt; objects) {
+<span class="fc" id="L167">        final List&lt;OrderedTree&lt;T&gt;&gt; leaves = getLeaves();</span>
+<span class="pc bpc" id="L168" title="1 of 2 branches missed.">        if (leaves.size() != objects.size()) {</span>
+<span class="nc" id="L169">            throw new IllegalStateException(</span>
+<span class="nc" id="L170">                    String.format(&quot;Leaves quantity (%d) is other that objects quantity (%d)!&quot;, leaves.size(), objects.size()));</span>
+        }
+<span class="fc bfc" id="L172" title="All 2 branches covered.">        for (int i = 0; i &lt; objects.size(); ++i) {</span>
+<span class="fc" id="L173">            leaves.get(i).value = objects.get(i);</span>
+        }
+<span class="fc" id="L175">    }</span>
+
+    private List&lt;OrderedTree&lt;T&gt;&gt; getLeaves() {
+<span class="fc" id="L178">        final List&lt;LeafWithDistance&lt;T&gt;&gt; leavesWithDistances = getLeavesWithDistances();</span>
+<span class="fc" id="L179">        final List&lt;OrderedTree&lt;T&gt;&gt; leaves = new ArrayList&lt;OrderedTree&lt;T&gt;&gt;(leavesWithDistances.size());</span>
+<span class="fc bfc" id="L180" title="All 2 branches covered.">        for (final LeafWithDistance&lt;T&gt; leafWithDistance : leavesWithDistances) {</span>
+<span class="fc" id="L181">            leaves.add(leafWithDistance.leaf);</span>
+<span class="fc" id="L182">        }</span>
+<span class="fc" id="L183">        return leaves;</span>
+    }
+
+    private int fillOrder(final int index) {
+<span class="fc" id="L187">        order = index;</span>
+<span class="fc" id="L188">        int childOrder = index;</span>
+<span class="fc bfc" id="L189" title="All 2 branches covered.">        for (final OrderedTree&lt;T&gt; child : children) {</span>
+<span class="fc" id="L190">            ++childOrder;</span>
+<span class="fc" id="L191">            childOrder = child.fillOrder(childOrder);</span>
+<span class="fc" id="L192">        }</span>
+<span class="fc" id="L193">        return childOrder;</span>
+    }
+
+    private static final class LeafWithDistance&lt;T&gt; {
+
+        private final OrderedTree&lt;T&gt; leaf;
+        private final int distance;
+
+<span class="fc" id="L201">        private LeafWithDistance(final OrderedTree&lt;T&gt; leaf, final int distance) {</span>
+<span class="fc" id="L202">            this.leaf = leaf;</span>
+<span class="fc" id="L203">            this.distance = distance;</span>
+<span class="fc" id="L204">        }</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>

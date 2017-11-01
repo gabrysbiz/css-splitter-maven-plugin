@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>StyleRuleSplitter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">CSS Splitter Maven Plugin</a> &gt; <a href="index.source.html" class="el_package">biz.gabrys.maven.plugins.css.splitter.split</a> &gt; <span class="el_source">StyleRuleSplitter.java</span></div><h1>StyleRuleSplitter.java</h1><pre class="source lang-java linenums">/*
+ * CSS Splitter Maven Plugin
+ * http://css-splitter-maven-plugin.projects.gabrys.biz/
+ *
+ * Copyright (c) 2015 Adam Gabryś
+ *
+ * This file is licensed under the BSD 3-Clause (the &quot;License&quot;).
+ * You may not use this file except in compliance with the License.
+ * You may obtain:
+ * - a copy of the License at project page
+ * - a template of the License at https://opensource.org/licenses/BSD-3-Clause
+ */
+package biz.gabrys.maven.plugins.css.splitter.split;
+
+import java.util.List;
+
+import biz.gabrys.maven.plugins.css.splitter.css.type.StyleProperty;
+import biz.gabrys.maven.plugins.css.splitter.css.type.StyleRule;
+
+class StyleRuleSplitter extends AbstractRuleSplitter&lt;StyleRule&gt; {
+
+    private final NeighborsManager neighborsManager;
+
+    StyleRuleSplitter() {
+<span class="nc" id="L25">        this(new NeighborsManager());</span>
+<span class="nc" id="L26">    }</span>
+
+    // fot tests
+    StyleRuleSplitter(final NeighborsManager neighborsManager) {
+<span class="fc" id="L30">        super(StyleRule.class);</span>
+<span class="fc" id="L31">        this.neighborsManager = neighborsManager;</span>
+<span class="fc" id="L32">    }</span>
+
+    @Override
+    protected boolean isSplittable2(final StyleRule rule) {
+<span class="fc" id="L36">        return rule.isSplittable();</span>
+    }
+
+    @Override
+    protected SplitResult split2(final StyleRule rule, final int splitAfter) {
+<span class="fc" id="L41">        final List&lt;StyleProperty&gt; properties = rule.getProperties();</span>
+<span class="fc" id="L42">        final StyleRule first = new StyleRule(rule.getSelectors(), properties.subList(0, splitAfter));</span>
+<span class="fc" id="L43">        final StyleRule second = new StyleRule(rule.getSelectors(), properties.subList(splitAfter, properties.size()));</span>
+<span class="fc" id="L44">        neighborsManager.fill(rule, first, second);</span>
+<span class="fc" id="L45">        return new SplitResult(first, second);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
