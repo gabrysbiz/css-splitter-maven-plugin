@@ -12,8 +12,8 @@
  */
 package biz.gabrys.maven.plugins.css.splitter.steadystate;
 
+import java.util.EnumMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import com.steadystate.css.parser.SACParser;
 import com.steadystate.css.parser.SACParserCSS1;
@@ -28,7 +28,7 @@ class SACParserFactory {
     private static final Map<Standard, Class<? extends SACParser>> PARSERS_BY_CSS_STANDARD;
 
     static {
-        PARSERS_BY_CSS_STANDARD = new ConcurrentHashMap<Standard, Class<? extends SACParser>>();
+        PARSERS_BY_CSS_STANDARD = new EnumMap<Standard, Class<? extends SACParser>>(Standard.class);
         PARSERS_BY_CSS_STANDARD.put(Standard.VERSION_1_0, SACParserCSS1.class);
         PARSERS_BY_CSS_STANDARD.put(Standard.VERSION_2_0, SACParserCSS2.class);
         PARSERS_BY_CSS_STANDARD.put(Standard.VERSION_2_1, SACParserCSS21.class);
