@@ -1,6 +1,9 @@
 package biz.gabrys.maven.plugins.css.splitter.steadystate.converter;
 
-import org.junit.Assert;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Test;
 
 import com.steadystate.css.dom.CSSUnknownRuleImpl;
@@ -13,8 +16,10 @@ public final class UnknownRuleConverterTest {
     public void isSupportedType_ruleHasValidType_returnsTrue() {
         final UnknownRuleConverter converter = new UnknownRuleConverter();
         final CSSUnknownRuleImpl rule = new CSSUnknownRuleImpl();
+
         final boolean supported = converter.isSupportedType(rule);
-        Assert.assertTrue("Should return true.", supported);
+
+        assertTrue(supported);
     }
 
     @Test
@@ -25,7 +30,8 @@ public final class UnknownRuleConverterTest {
         rule.setCssText(code);
 
         final UnknownRule converted = converter.convert(rule);
-        Assert.assertNotNull("Converted rule instance.", converted);
-        Assert.assertEquals("Converted rule code.", code, converted.getCode());
+
+        assertNotNull(converted);
+        assertEquals(code, converted.getCode());
     }
 }

@@ -1,6 +1,9 @@
 package biz.gabrys.maven.plugins.css.splitter.steadystate.converter;
 
-import org.junit.Assert;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Test;
 
 import com.steadystate.css.dom.CSSImportRuleImpl;
@@ -13,8 +16,10 @@ public final class ImportRuleConverterTest {
     public void isSupportedType_ruleHasValidType_returnsTrue() {
         final ImportRuleConverter converter = new ImportRuleConverter();
         final CSSImportRuleImpl rule = new CSSImportRuleImpl();
+
         final boolean supported = converter.isSupportedType(rule);
-        Assert.assertTrue("Should return true.", supported);
+
+        assertTrue(supported);
     }
 
     @Test
@@ -25,7 +30,7 @@ public final class ImportRuleConverterTest {
         rule.setCssText(code);
 
         final SimpleRule converted = converter.convert(rule);
-        Assert.assertNotNull("Converted rule instance.", converted);
-        Assert.assertEquals("Converted rule code.", "@import url(file.css);", converted.getCode());
+        assertNotNull("Converted rule instance should not be equal to null", converted);
+        assertEquals("Converted rule code", "@import url(file.css);", converted.getCode());
     }
 }

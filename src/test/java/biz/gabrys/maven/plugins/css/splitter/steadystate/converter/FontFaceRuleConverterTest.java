@@ -1,8 +1,11 @@
 package biz.gabrys.maven.plugins.css.splitter.steadystate.converter;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.util.List;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import com.steadystate.css.dom.CSSFontFaceRuleImpl;
@@ -19,8 +22,10 @@ public final class FontFaceRuleConverterTest {
     public void isSupportedType_ruleHasValidType_returnsTrue() {
         final FontFaceRuleConverter converter = new FontFaceRuleConverter();
         final CSSFontFaceRuleImpl rule = new CSSFontFaceRuleImpl();
+
         final boolean supported = converter.isSupportedType(rule);
-        Assert.assertTrue("Should return true.", supported);
+
+        assertTrue(supported);
     }
 
     @Test
@@ -37,16 +42,16 @@ public final class FontFaceRuleConverterTest {
         rule.setStyle(style);
 
         final StyleRule converted = converter.convert(rule);
-        Assert.assertNotNull("Converted rule instance.", converted);
+        assertNotNull("Converted rule instance should not be equal to null", converted);
         final List<String> selectors = converted.getSelectors();
-        Assert.assertNotNull("Converted rule selectors instance.", selectors);
-        Assert.assertEquals("Converted rule selectors size.", 1, selectors.size());
-        Assert.assertEquals("Converted rule selector.", "@font-face", selectors.get(0));
+        assertNotNull("Converted rule selectors instance should not be equal to null", selectors);
+        assertEquals("Converted rule selectors size", 1, selectors.size());
+        assertEquals("Converted rule selector", "@font-face", selectors.get(0));
         final List<StyleProperty> properties = converted.getProperties();
-        Assert.assertNotNull("Converted rule properties instance.", properties);
-        Assert.assertEquals("Converted rule properties size.", 1, properties.size());
+        assertNotNull("Converted rule properties instance should not be equal to null", properties);
+        assertEquals("Converted rule properties size", 1, properties.size());
         final StyleProperty styleProperty = properties.get(0);
-        Assert.assertEquals("Converted rule property name.", property.getName(), styleProperty.getName());
-        Assert.assertEquals("Converted rule property value.", value.getCssText(), styleProperty.getValue());
+        assertEquals("Converted rule property name", property.getName(), styleProperty.getName());
+        assertEquals("Converted rule property value", value.getCssText(), styleProperty.getValue());
     }
 }

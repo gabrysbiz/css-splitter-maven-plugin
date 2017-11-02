@@ -1,10 +1,13 @@
 package biz.gabrys.maven.plugins.css.splitter.css.type;
 
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verifyZeroInteractions;
+
 import java.util.Arrays;
 
-import org.junit.Assert;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import biz.gabrys.maven.plugins.css.splitter.test.SupportedTestNodeRule;
 
@@ -19,26 +22,26 @@ public final class TreeUtilsTest {
 
         TreeUtils.fillNeighbors(null, Arrays.asList(firstRule, secondRule, thirdRule, fourthRule));
 
-        Assert.assertNull("First rule parent invalid", firstRule.getParent());
-        Assert.assertNull("First rule previous invalid", firstRule.getPrevious());
-        Assert.assertTrue("First rule next invalid", secondRule == firstRule.getNext());
+        assertNull("First rule parent invalid", firstRule.getParent());
+        assertNull("First rule previous invalid", firstRule.getPrevious());
+        assertSame("First rule next invalid", secondRule, firstRule.getNext());
 
-        Assert.assertNull("Second rule parent invalid", secondRule.getParent());
-        Assert.assertTrue("Second rule previous invalid", firstRule == secondRule.getPrevious());
-        Assert.assertTrue("Second rule next invalid", thirdRule == secondRule.getNext());
+        assertNull("Second rule parent invalid", secondRule.getParent());
+        assertSame("Second rule previous invalid", firstRule, secondRule.getPrevious());
+        assertSame("Second rule next invalid", thirdRule, secondRule.getNext());
 
-        Assert.assertNull("Third rule parent invalid", thirdRule.getParent());
-        Assert.assertTrue("Third rule previous invalid", secondRule == thirdRule.getPrevious());
-        Assert.assertTrue("Third rule next invalid", fourthRule == thirdRule.getNext());
+        assertNull("Third rule parent invalid", thirdRule.getParent());
+        assertSame("Third rule previous invalid", secondRule, thirdRule.getPrevious());
+        assertSame("Third rule next invalid", fourthRule, thirdRule.getNext());
 
-        Assert.assertNull("Fourth rule parent invalid", fourthRule.getParent());
-        Assert.assertTrue("Fourth rule previous invalid", thirdRule == fourthRule.getPrevious());
-        Assert.assertNull("Fourth rule next invalid", fourthRule.getNext());
+        assertNull("Fourth rule parent invalid", fourthRule.getParent());
+        assertSame("Fourth rule previous invalid", thirdRule, fourthRule.getPrevious());
+        assertNull("Fourth rule next invalid", fourthRule.getNext());
     }
 
     @Test
     public void fillNeighbors_parentIsNotNull() {
-        final NodeRule parent = Mockito.mock(NodeRule.class);
+        final NodeRule parent = mock(NodeRule.class);
 
         final NodeRule firstRule = new SupportedTestNodeRule();
         final NodeRule secondRule = new SupportedTestNodeRule();
@@ -47,22 +50,22 @@ public final class TreeUtilsTest {
 
         TreeUtils.fillNeighbors(parent, Arrays.asList(firstRule, secondRule, thirdRule, fourthRule));
 
-        Assert.assertTrue("First rule parent invalid", parent == firstRule.getParent());
-        Assert.assertNull("First rule previous invalid", firstRule.getPrevious());
-        Assert.assertTrue("First rule next invalid", secondRule == firstRule.getNext());
+        assertSame("First rule parent invalid", parent, firstRule.getParent());
+        assertNull("First rule previous invalid", firstRule.getPrevious());
+        assertSame("First rule next invalid", secondRule, firstRule.getNext());
 
-        Assert.assertTrue("Second rule parent invalid", parent == secondRule.getParent());
-        Assert.assertTrue("Second rule previous invalid", firstRule == secondRule.getPrevious());
-        Assert.assertTrue("Second rule next invalid", thirdRule == secondRule.getNext());
+        assertSame("Second rule parent invalid", parent, secondRule.getParent());
+        assertSame("Second rule previous invalid", firstRule, secondRule.getPrevious());
+        assertSame("Second rule next invalid", thirdRule, secondRule.getNext());
 
-        Assert.assertTrue("Third rule parent invalid", parent == thirdRule.getParent());
-        Assert.assertTrue("Third rule previous invalid", secondRule == thirdRule.getPrevious());
-        Assert.assertTrue("Third rule next invalid", fourthRule == thirdRule.getNext());
+        assertSame("Third rule parent invalid", parent, thirdRule.getParent());
+        assertSame("Third rule previous invalid", secondRule, thirdRule.getPrevious());
+        assertSame("Third rule next invalid", fourthRule, thirdRule.getNext());
 
-        Assert.assertTrue("Fourth rule parent invalid", parent == fourthRule.getParent());
-        Assert.assertTrue("Fourth rule previous invalid", thirdRule == fourthRule.getPrevious());
-        Assert.assertNull("Fourth rule next invalid", fourthRule.getNext());
+        assertSame("Fourth rule parent invalid", parent, fourthRule.getParent());
+        assertSame("Fourth rule previous invalid", thirdRule, fourthRule.getPrevious());
+        assertNull("Fourth rule next invalid", fourthRule.getNext());
 
-        Mockito.verifyZeroInteractions(parent);
+        verifyZeroInteractions(parent);
     }
 }

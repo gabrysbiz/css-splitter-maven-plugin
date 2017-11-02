@@ -1,11 +1,16 @@
 package biz.gabrys.maven.plugins.css.splitter.css.type;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+
 import java.util.List;
 
-import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Matchers;
-import org.mockito.Mockito;
 
 public final class AbstractNodeRuleTest {
 
@@ -13,44 +18,44 @@ public final class AbstractNodeRuleTest {
 
     @Test
     public void getCode() {
-        final NodeRuleImpl rule = Mockito.spy(new NodeRuleImpl());
+        final NodeRuleImpl rule = spy(new NodeRuleImpl());
 
         final String code = rule.getCode();
 
-        Assert.assertEquals("Rule code.", CSS_CODE, code);
-        Mockito.verify(rule).getCode();
-        Mockito.verify(rule).getLines();
-        Mockito.verify(rule).fillLines(Matchers.<List<String>>any());
-        Mockito.verifyNoMoreInteractions(rule);
+        assertEquals(CSS_CODE, code);
+        verify(rule).getCode();
+        verify(rule).getLines();
+        verify(rule).fillLines(Matchers.<List<String>>any());
+        verifyNoMoreInteractions(rule);
     }
 
     @Test
     public void getLines() {
-        final NodeRuleImpl rule = Mockito.spy(new NodeRuleImpl());
+        final NodeRuleImpl rule = spy(new NodeRuleImpl());
 
         final String[] lines = rule.getLines();
 
-        Assert.assertNotNull("Lines object.", lines);
-        Assert.assertEquals("Lines quantity.", 1, lines.length);
-        Assert.assertEquals("1 line.", CSS_CODE, lines[0]);
-        Mockito.verify(rule).getLines();
-        Mockito.verify(rule).fillLines(Matchers.<List<String>>any());
-        Mockito.verifyNoMoreInteractions(rule);
+        assertNotNull("Lines object should not be equal to null", lines);
+        assertEquals("Lines quantity", 1, lines.length);
+        assertEquals("1 line", CSS_CODE, lines[0]);
+        verify(rule).getLines();
+        verify(rule).fillLines(Matchers.<List<String>>any());
+        verifyNoMoreInteractions(rule);
     }
 
     @Test
     public void getSize() {
-        final NodeRuleImpl rule = Mockito.spy(new NodeRuleImpl());
+        final NodeRuleImpl rule = spy(new NodeRuleImpl());
 
         rule.getSize();
-        Mockito.verify(rule).getSize();
-        Mockito.verify(rule).getSize2();
-        Mockito.verifyNoMoreInteractions(rule);
+        verify(rule).getSize();
+        verify(rule).getSize2();
+        verifyNoMoreInteractions(rule);
 
         rule.getSize();
-        Mockito.verify(rule, Mockito.times(2)).getSize();
-        Mockito.verify(rule).getSize2();
-        Mockito.verifyNoMoreInteractions(rule);
+        verify(rule, times(2)).getSize();
+        verify(rule).getSize2();
+        verifyNoMoreInteractions(rule);
     }
 
     private static class NodeRuleImpl extends AbstractNodeRule {

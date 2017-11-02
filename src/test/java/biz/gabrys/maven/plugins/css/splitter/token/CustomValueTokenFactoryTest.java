@@ -1,6 +1,7 @@
 package biz.gabrys.maven.plugins.css.splitter.token;
 
-import org.junit.Assert;
+import static org.junit.Assert.assertSame;
+
 import org.junit.Test;
 
 public final class CustomValueTokenFactoryTest {
@@ -9,7 +10,6 @@ public final class CustomValueTokenFactoryTest {
     public void create() {
         final CustomValueTokenFactory factory = new CustomValueTokenFactory();
         final String value = "value";
-
-        Assert.assertTrue("Instances should be the same.", value == factory.create(value));
+        assertSame(value, factory.create(value));
     }
 }

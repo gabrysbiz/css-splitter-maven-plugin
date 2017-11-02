@@ -1,8 +1,11 @@
 package biz.gabrys.maven.plugins.css.splitter.steadystate.converter;
 
-import org.junit.Assert;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
+
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import com.steadystate.css.dom.CSSCharsetRuleImpl;
 import com.steadystate.css.dom.CSSFontFaceRuleImpl;
@@ -15,21 +18,21 @@ public final class AbstractRuleConverterTest {
     public void isSupportedType_ruleIsNull_returnsFalse() {
         final RuleConverterImpl converter = new RuleConverterImpl();
         final boolean supported = converter.isSupportedType(null);
-        Assert.assertFalse("Should return false for null.", supported);
+        assertFalse(supported);
     }
 
     @Test
     public void isSupportedType_ruleHasInvalidType_returnsFalse() {
         final RuleConverterImpl converter = new RuleConverterImpl();
         final boolean supported = converter.isSupportedType(new CSSFontFaceRuleImpl());
-        Assert.assertFalse("Should return false for invalid rule.", supported);
+        assertFalse(supported);
     }
 
     @Test
     public void isSupportedType_ruleHasValidType_returnsTrue() {
         final RuleConverterImpl converter = new RuleConverterImpl();
         final boolean supported = converter.isSupportedType(new CSSCharsetRuleImpl());
-        Assert.assertTrue("Should return false for valid rule.", supported);
+        assertTrue(supported);
     }
 
     @Test(expected = UnsupportedRuleException.class)
@@ -40,12 +43,12 @@ public final class AbstractRuleConverterTest {
 
     @Test
     public void convert_typeIsValid_executesConvert2() {
-        final RuleConverterImpl converter = Mockito.spy(new RuleConverterImpl());
+        final RuleConverterImpl converter = spy(new RuleConverterImpl());
 
         final CSSCharsetRuleImpl rule = new CSSCharsetRuleImpl();
         converter.convert(rule);
 
-        Mockito.verify(converter).convert2(rule);
+        verify(converter).convert2(rule);
     }
 
     private static class RuleConverterImpl extends AbstractRuleConverter<CSSCharsetRuleImpl, NodeRule> {

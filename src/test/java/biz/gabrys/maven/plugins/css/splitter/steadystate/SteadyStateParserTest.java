@@ -1,12 +1,14 @@
 package biz.gabrys.maven.plugins.css.splitter.steadystate;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.mock;
+
 import java.util.Iterator;
 import java.util.List;
 
 import org.apache.maven.plugin.logging.Log;
-import org.junit.Assert;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import biz.gabrys.maven.plugins.css.splitter.css.Standard;
 import biz.gabrys.maven.plugins.css.splitter.css.type.ComplexRule;
@@ -31,24 +33,24 @@ public final class SteadyStateParserTest {
         css.append("@unknown 'value';\n");
         css.append("@keyframes mymove { 50% {top: 0px;} 100% {top: 100px;}");
 
-        final SteadyStateParser parser = new SteadyStateParser(Mockito.mock(Log.class));
+        final SteadyStateParser parser = new SteadyStateParser(mock(Log.class));
         final ParserOptions options = new ParserOptionsBuilder().withStandard(Standard.VERSION_3_0).withStrict(true).create();
         final StyleSheet stylesheet = parser.parse(css.toString(), options);
 
-        Assert.assertNotNull("StyleSheet instance.", stylesheet);
+        assertNotNull("StyleSheet instance should not be equal to null", stylesheet);
         final List<NodeRule> rules = stylesheet.getRules();
-        Assert.assertNotNull("StyleSheet rules instnace.", rules);
-        Assert.assertEquals("StyleSheet children rules.", 8, rules.size());
+        assertNotNull("StyleSheet rules instnace should not be equal to null", rules);
+        assertEquals("StyleSheet children rules", 8, rules.size());
 
         final Iterator<NodeRule> iterator = rules.iterator();
-        Assert.assertEquals("@charset rule instance class.", SimpleRule.class, iterator.next().getClass());
-        Assert.assertEquals("@import rule instance class.", SimpleRule.class, iterator.next().getClass());
-        Assert.assertEquals("Style rule instance class.", StyleRule.class, iterator.next().getClass());
-        Assert.assertEquals("@media rule instance class.", ComplexRule.class, iterator.next().getClass());
-        Assert.assertEquals("@font-face rule instance class.", StyleRule.class, iterator.next().getClass());
-        Assert.assertEquals("@page rule instance class.", StyleRule.class, iterator.next().getClass());
-        Assert.assertEquals("@unknown rule instance class.", UnknownRule.class, iterator.next().getClass());
-        Assert.assertEquals("@keyframes rule instance class.", UnknownRule.class, iterator.next().getClass());
+        assertEquals("@charset rule instance class", SimpleRule.class, iterator.next().getClass());
+        assertEquals("@import rule instance class", SimpleRule.class, iterator.next().getClass());
+        assertEquals("Style rule instance class", StyleRule.class, iterator.next().getClass());
+        assertEquals("@media rule instance class", ComplexRule.class, iterator.next().getClass());
+        assertEquals("@font-face rule instance class", StyleRule.class, iterator.next().getClass());
+        assertEquals("@page rule instance class", StyleRule.class, iterator.next().getClass());
+        assertEquals("@unknown rule instance class", UnknownRule.class, iterator.next().getClass());
+        assertEquals("@keyframes rule instance class", UnknownRule.class, iterator.next().getClass());
     }
 
     // https://github.com/gabrysbiz/css-splitter-maven-plugin/issues/3#issuecomment-194338886
@@ -70,36 +72,36 @@ public final class SteadyStateParserTest {
         css.append("\tfont-style: normal;");
         css.append("}");
 
-        final SteadyStateParser parser = new SteadyStateParser(Mockito.mock(Log.class));
+        final SteadyStateParser parser = new SteadyStateParser(mock(Log.class));
         final ParserOptions options = new ParserOptionsBuilder().withStandard(Standard.VERSION_3_0).withStrict(true).create();
         final StyleSheet stylesheet = parser.parse(css.toString(), options);
 
-        Assert.assertNotNull("StyleSheet instance.", stylesheet);
+        assertNotNull("StyleSheet instance should not be equal to null", stylesheet);
         final List<NodeRule> rules = stylesheet.getRules();
-        Assert.assertNotNull("StyleSheet rules instnace.", rules);
-        Assert.assertEquals("StyleSheet children rules.", 1, rules.size());
+        assertNotNull("StyleSheet rules instnace should not be equal to null", rules);
+        assertEquals("StyleSheet children rules", 1, rules.size());
         final NodeRule rule = rules.get(0);
-        Assert.assertEquals("StyleSheet children rule class.", StyleRule.class, rule.getClass());
+        assertEquals("StyleSheet children rule class", StyleRule.class, rule.getClass());
         final StyleRule fontFaceRule = (StyleRule) rule;
         final List<String> selectors = fontFaceRule.getSelectors();
-        Assert.assertEquals("FontFace rule selectors count.", 1, selectors.size());
-        Assert.assertEquals("FontFace rule selector.", "@font-face", selectors.get(0));
+        assertEquals("FontFace rule selectors count", 1, selectors.size());
+        assertEquals("FontFace rule selector", "@font-face", selectors.get(0));
         final List<StyleProperty> properties = fontFaceRule.getProperties();
-        Assert.assertEquals("FontFace style properties.", 5, properties.size());
+        assertEquals("FontFace style properties", 5, properties.size());
         StyleProperty property = properties.get(0);
-        Assert.assertEquals("FontFace first style property name.", "font-family", property.getName());
-        Assert.assertEquals("FontFace first style property value.", "FontAwesome", property.getValue());
+        assertEquals("FontFace first style property name", "font-family", property.getName());
+        assertEquals("FontFace first style property value", "FontAwesome", property.getValue());
         property = properties.get(1);
-        Assert.assertEquals("FontFace first style property name.", "src", property.getName());
-        Assert.assertEquals("FontFace first style property value.", "url(../base/fonts/fontawesome-webfont.eot)", property.getValue());
+        assertEquals("FontFace first style property name", "src", property.getName());
+        assertEquals("FontFace first style property value", "url(../base/fonts/fontawesome-webfont.eot)", property.getValue());
         property = properties.get(2);
-        Assert.assertEquals("FontFace first style property name.", "src", property.getName());
-        Assert.assertEquals("FontFace first style property value.", value.toString(), property.getValue());
+        assertEquals("FontFace first style property name", "src", property.getName());
+        assertEquals("FontFace first style property value", value.toString(), property.getValue());
         property = properties.get(3);
-        Assert.assertEquals("FontFace first style property name.", "font-weight", property.getName());
-        Assert.assertEquals("FontFace first style property value.", "normal", property.getValue());
+        assertEquals("FontFace first style property name", "font-weight", property.getName());
+        assertEquals("FontFace first style property value", "normal", property.getValue());
         property = properties.get(4);
-        Assert.assertEquals("FontFace first style property name.", "font-style", property.getName());
-        Assert.assertEquals("FontFace first style property value.", "normal", property.getValue());
+        assertEquals("FontFace first style property name", "font-style", property.getName());
+        assertEquals("FontFace first style property value", "normal", property.getValue());
     }
 }

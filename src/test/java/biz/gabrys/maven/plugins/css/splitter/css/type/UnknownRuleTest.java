@@ -1,6 +1,8 @@
 package biz.gabrys.maven.plugins.css.splitter.css.type;
 
-import org.junit.Assert;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import org.junit.Test;
 
 public final class UnknownRuleTest {
@@ -20,15 +22,15 @@ public final class UnknownRuleTest {
         final UnknownRule rule = new UnknownRule(code.toString());
         final String[] lines = rule.getLines();
 
-        Assert.assertNotNull("Lines object.", lines);
-        Assert.assertEquals("Lines quantity.", 8, lines.length);
-        Assert.assertEquals("Line no. 1.", "@keyframes rotate {", lines[0]);
-        Assert.assertEquals("Line no. 2.", "from  {", lines[1]);
-        Assert.assertEquals("Line no. 3.", "  transform: rotate(0deg);", lines[2]);
-        Assert.assertEquals("Line no. 4.", "}", lines[3]);
-        Assert.assertEquals("Line no. 5.", "to {", lines[4]);
-        Assert.assertEquals("Line no. 6.", "  transform: rotate(360deg);", lines[5]);
-        Assert.assertEquals("Line no. 7.", "}", lines[6]);
-        Assert.assertEquals("Line no. 8.", "}", lines[7]);
+        assertNotNull("Lines object should not be equal to null", lines);
+        assertEquals("Lines quantity", 8, lines.length);
+        assertEquals("Line no. 1", "@keyframes rotate {", lines[0]);
+        assertEquals("Line no. 2", "from  {", lines[1]);
+        assertEquals("Line no. 3", "  transform: rotate(0deg);", lines[2]);
+        assertEquals("Line no. 4", "}", lines[3]);
+        assertEquals("Line no. 5", "to {", lines[4]);
+        assertEquals("Line no. 6", "  transform: rotate(360deg);", lines[5]);
+        assertEquals("Line no. 7", "}", lines[6]);
+        assertEquals("Line no. 8", "}", lines[7]);
     }
 }

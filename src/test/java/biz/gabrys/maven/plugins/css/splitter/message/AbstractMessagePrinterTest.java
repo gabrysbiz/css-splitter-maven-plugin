@@ -1,9 +1,13 @@
 package biz.gabrys.maven.plugins.css.splitter.message;
 
-import org.junit.Assert;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
+
 import org.junit.Test;
-import org.mockito.Matchers;
-import org.mockito.Mockito;
 
 import biz.gabrys.maven.plugins.css.splitter.css.type.NodeRule;
 import biz.gabrys.maven.plugins.css.splitter.test.NotSupportedTestNodeRule;
@@ -15,41 +19,41 @@ public final class AbstractMessagePrinterTest {
     public void isSupportedType_ruleIsNull_returnsFalse() {
         final MessagePrinterImpl printer = new MessagePrinterImpl();
         final boolean supported = printer.isSupportedType(null);
-        Assert.assertFalse("Should return false for null.", supported);
+        assertFalse(supported);
     }
 
     @Test
     public void isSupportedType_ruleHasInvalidType_returnsFalse() {
         final MessagePrinterImpl printer = new MessagePrinterImpl();
         final boolean supported = printer.isSupportedType(new NotSupportedTestNodeRule());
-        Assert.assertFalse("Should return false for invalid rule.", supported);
+        assertFalse(supported);
     }
 
     @Test
     public void isSupportedType_ruleHasValidType_returnsTrue() {
         final MessagePrinterImpl printer = new MessagePrinterImpl();
         final boolean supported = printer.isSupportedType(new SupportedTestNodeRule());
-        Assert.assertTrue("Should return false for valid rule.", supported);
+        assertTrue(supported);
     }
 
     @Test
     public void count_ruleIsInvalid_doesNothing() {
-        final MessagePrinterImpl printer = Mockito.spy(new MessagePrinterImpl());
+        final MessagePrinterImpl printer = spy(new MessagePrinterImpl());
 
         final NodeRule rule = new NotSupportedTestNodeRule();
         printer.print(rule);
 
-        Mockito.verify(printer, Mockito.never()).print2(Matchers.any(SupportedTestNodeRule.class));
+        verify(printer, never()).print2(any(SupportedTestNodeRule.class));
     }
 
     @Test
     public void convert_typeIsValid_executesPrint2() {
-        final MessagePrinterImpl printer = Mockito.spy(new MessagePrinterImpl());
+        final MessagePrinterImpl printer = spy(new MessagePrinterImpl());
 
         final SupportedTestNodeRule rule = new SupportedTestNodeRule();
         printer.print(rule);
 
-        Mockito.verify(printer).print2(rule);
+        verify(printer).print2(rule);
     }
 
     private static class MessagePrinterImpl extends AbstractMessagePrinter<SupportedTestNodeRule> {
