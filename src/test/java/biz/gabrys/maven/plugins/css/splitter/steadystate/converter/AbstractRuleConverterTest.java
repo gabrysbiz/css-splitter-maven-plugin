@@ -1,7 +1,6 @@
 package biz.gabrys.maven.plugins.css.splitter.steadystate.converter;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 
@@ -18,21 +17,21 @@ public final class AbstractRuleConverterTest {
     public void isSupportedType_ruleIsNull_returnsFalse() {
         final RuleConverterImpl converter = new RuleConverterImpl();
         final boolean supported = converter.isSupportedType(null);
-        assertFalse(supported);
+        assertThat(supported).isFalse();
     }
 
     @Test
     public void isSupportedType_ruleHasInvalidType_returnsFalse() {
         final RuleConverterImpl converter = new RuleConverterImpl();
         final boolean supported = converter.isSupportedType(new CSSFontFaceRuleImpl());
-        assertFalse(supported);
+        assertThat(supported).isFalse();
     }
 
     @Test
     public void isSupportedType_ruleHasValidType_returnsTrue() {
         final RuleConverterImpl converter = new RuleConverterImpl();
         final boolean supported = converter.isSupportedType(new CSSCharsetRuleImpl());
-        assertTrue(supported);
+        assertThat(supported).isTrue();
     }
 
     @Test(expected = UnsupportedRuleException.class)
@@ -59,7 +58,6 @@ public final class AbstractRuleConverterTest {
 
         @Override
         protected NodeRule convert2(final CSSCharsetRuleImpl rule) {
-            // do nothing
             return null;
         }
     }

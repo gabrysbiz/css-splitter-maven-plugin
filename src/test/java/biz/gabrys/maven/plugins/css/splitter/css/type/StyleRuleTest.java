@@ -1,7 +1,6 @@
 package biz.gabrys.maven.plugins.css.splitter.css.type;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
 import java.util.ArrayList;
@@ -21,10 +20,9 @@ public final class StyleRuleTest {
         final StyleRule rule = new StyleRule(selectors, properties);
         final String[] lines = rule.getLines();
 
-        assertNotNull("Lines object should not be equal to null", lines);
-        assertEquals("Lines quantity", 2, lines.length);
-        assertEquals("Line no. 1", "sel1, sel2 {", lines[0]);
-        assertEquals("Line no. 2", "}", lines[1]);
+        assertThat(lines).hasSize(2);
+        assertThat(lines[0]).isEqualTo("sel1, sel2 {");
+        assertThat(lines[1]).isEqualTo("}");
     }
 
     @Test
@@ -37,12 +35,11 @@ public final class StyleRuleTest {
         final StyleRule rule = new StyleRule(selectors, properties);
         final String[] lines = rule.getLines();
 
-        assertNotNull("Lines object should not be equal to null", lines);
-        assertEquals("Lines quantity", 4, lines.length);
-        assertEquals("Line no. 1", "div, #id, ul > li {", lines[0]);
-        assertEquals("Line no. 2", "  name: value;", lines[1]);
-        assertEquals("Line no. 3", "  prop: val;", lines[2]);
-        assertEquals("Line no. 4", "}", lines[3]);
+        assertThat(lines).hasSize(4);
+        assertThat(lines[0]).isEqualTo("div, #id, ul > li {");
+        assertThat(lines[1]).isEqualTo("  name: value;");
+        assertThat(lines[2]).isEqualTo("  prop: val;");
+        assertThat(lines[3]).isEqualTo("}");
     }
 
     @Test
@@ -53,7 +50,7 @@ public final class StyleRuleTest {
         final StyleRule rule = new StyleRule(selectors, properties);
         final int size = rule.getSize2();
 
-        assertEquals(1, size);
+        assertThat(size).isEqualTo(1);
     }
 
     @Test
@@ -68,6 +65,6 @@ public final class StyleRuleTest {
         final StyleRule rule = new StyleRule(selectors, properties);
         final int size = rule.getSize2();
 
-        assertEquals(3, size);
+        assertThat(size).isEqualTo(3);
     }
 }

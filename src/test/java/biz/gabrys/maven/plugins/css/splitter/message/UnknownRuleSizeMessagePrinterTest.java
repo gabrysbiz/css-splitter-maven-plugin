@@ -1,7 +1,6 @@
 package biz.gabrys.maven.plugins.css.splitter.message;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -18,10 +17,11 @@ public final class UnknownRuleSizeMessagePrinterTest {
     public void isEnabled_debugIsEnabled_returnsTrue() {
         final Log logger = mock(Log.class);
         final UnknownRuleSizeMessagePrinter printer = new UnknownRuleSizeMessagePrinter(logger);
-
         when(logger.isDebugEnabled()).thenReturn(Boolean.TRUE);
 
-        assertTrue(printer.isEnabled());
+        final boolean enabled = printer.isEnabled();
+
+        assertThat(enabled).isTrue();
         verify(logger).isDebugEnabled();
         verifyNoMoreInteractions(logger);
     }
@@ -30,16 +30,17 @@ public final class UnknownRuleSizeMessagePrinterTest {
     public void isEnabled_debugIsDisabled_returnsFalse() {
         final Log logger = mock(Log.class);
         final UnknownRuleSizeMessagePrinter printer = new UnknownRuleSizeMessagePrinter(logger);
-
         when(logger.isDebugEnabled()).thenReturn(Boolean.FALSE);
 
-        assertFalse(printer.isEnabled());
+        final boolean enabled = printer.isEnabled();
+
+        assertThat(enabled).isFalse();
         verify(logger).isDebugEnabled();
         verifyNoMoreInteractions(logger);
     }
 
     @Test
-    public void print2_ruleWithOneProperty() {
+    public void print2_ruleWithOneProperty_prints() {
         final Log logger = mock(Log.class);
         final UnknownRuleSizeMessagePrinter printer = new UnknownRuleSizeMessagePrinter(logger);
 
@@ -48,6 +49,7 @@ public final class UnknownRuleSizeMessagePrinterTest {
         when(rule.getSize()).thenReturn(1);
 
         printer.print2(rule);
+
         verify(rule).getCode();
         verify(logger).debug("Found non-standard (unknown) rule:\n_code_");
         verify(rule).getSize();
@@ -56,7 +58,7 @@ public final class UnknownRuleSizeMessagePrinterTest {
     }
 
     @Test
-    public void print2_ruleWithZeroProperties() {
+    public void print2_ruleWithZeroProperties_prints() {
         final Log logger = mock(Log.class);
         final UnknownRuleSizeMessagePrinter printer = new UnknownRuleSizeMessagePrinter(logger);
 
@@ -65,6 +67,7 @@ public final class UnknownRuleSizeMessagePrinterTest {
         when(rule.getSize()).thenReturn(0);
 
         printer.print2(rule);
+
         verify(rule).getCode();
         verify(logger).debug("Found non-standard (unknown) rule:\n@f {}");
         verify(rule).getSize();
@@ -73,7 +76,7 @@ public final class UnknownRuleSizeMessagePrinterTest {
     }
 
     @Test
-    public void print2_ruleWithThreeProperties() {
+    public void print2_ruleWithThreeProperties_prints() {
         final Log logger = mock(Log.class);
         final UnknownRuleSizeMessagePrinter printer = new UnknownRuleSizeMessagePrinter(logger);
 
@@ -82,6 +85,7 @@ public final class UnknownRuleSizeMessagePrinterTest {
         when(rule.getSize()).thenReturn(3);
 
         printer.print2(rule);
+
         verify(rule).getCode();
         verify(logger).debug("Found non-standard (unknown) rule:\n_three_");
         verify(rule).getSize();

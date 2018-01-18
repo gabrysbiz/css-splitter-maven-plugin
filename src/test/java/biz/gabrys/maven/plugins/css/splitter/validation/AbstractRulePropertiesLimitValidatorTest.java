@@ -1,7 +1,6 @@
 package biz.gabrys.maven.plugins.css.splitter.validation;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 
@@ -17,19 +16,22 @@ public final class AbstractRulePropertiesLimitValidatorTest {
     @Test
     public void isSupportedType_ruleIsNull_returnsFalse() {
         final TestValidator<NodeRule> validator = new TestValidator<NodeRule>(NodeRule.class);
-        assertFalse(validator.isSupportedType(null));
+        final boolean supported = validator.isSupportedType(null);
+        assertThat(supported).isFalse();
     }
 
     @Test
     public void isSupportedType_ruleClassIsNotSupported_returnsFalse() {
         final TestValidator<NodeRule> validator = new TestValidator<NodeRule>(NodeRule.class);
-        assertFalse(validator.isSupportedType(new NotSupportedTestNodeRule()));
+        final boolean supported = validator.isSupportedType(new NotSupportedTestNodeRule());
+        assertThat(supported).isFalse();
     }
 
     @Test
     public void isSupportedType_ruleClassIsSupported_returnsTrue() {
         final TestValidator<SupportedTestNodeRule> validator = new TestValidator<SupportedTestNodeRule>(SupportedTestNodeRule.class);
-        assertTrue(validator.isSupportedType(new SupportedTestNodeRule()));
+        final boolean supported = validator.isSupportedType(new SupportedTestNodeRule());
+        assertThat(supported).isTrue();
     }
 
     @Test(expected = IllegalArgumentException.class)

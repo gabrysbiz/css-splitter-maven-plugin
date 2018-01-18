@@ -2,7 +2,7 @@
  * CSS Splitter Maven Plugin
  * http://css-splitter-maven-plugin.projects.gabrys.biz/
  *
- * Copyright (c) 2015 Adam Gabryś
+ * Copyright (c) 2015 Adam Gabrys
  *
  * This file is licensed under the BSD 3-Clause (the "License").
  * You may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ public abstract class AbstractNodeRule extends NodeImpl<NodeRule, NodeRule> impl
 
     private Integer size;
 
+    @Override
     public String getCode() {
         final String[] lines = getLines();
         final StringBuilder code = new StringBuilder();
@@ -32,6 +33,7 @@ public abstract class AbstractNodeRule extends NodeImpl<NodeRule, NodeRule> impl
         return code.toString();
     }
 
+    @Override
     public String[] getLines() {
         final List<String> lines = new LinkedList<String>();
         fillLines(lines);
@@ -40,6 +42,7 @@ public abstract class AbstractNodeRule extends NodeImpl<NodeRule, NodeRule> impl
 
     protected abstract void fillLines(List<String> lines);
 
+    @Override
     public int getSize() {
         if (size == null) {
             size = getSize2();

@@ -1,8 +1,6 @@
 package biz.gabrys.maven.plugins.css.splitter.steadystate.converter;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
 
@@ -19,7 +17,7 @@ public final class ImportRuleConverterTest {
 
         final boolean supported = converter.isSupportedType(rule);
 
-        assertTrue(supported);
+        assertThat(supported).isTrue();
     }
 
     @Test
@@ -30,7 +28,8 @@ public final class ImportRuleConverterTest {
         rule.setCssText(code);
 
         final SimpleRule converted = converter.convert(rule);
-        assertNotNull("Converted rule instance should not be equal to null", converted);
-        assertEquals("Converted rule code", "@import url(file.css);", converted.getCode());
+
+        assertThat(converted).isNotNull();
+        assertThat(converted.getCode()).isEqualTo("@import url(file.css);");
     }
 }

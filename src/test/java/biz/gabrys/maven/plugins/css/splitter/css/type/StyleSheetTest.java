@@ -1,6 +1,6 @@
 package biz.gabrys.maven.plugins.css.splitter.css.type;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -16,7 +16,7 @@ public final class StyleSheetTest {
     public void toString_sheetHasZeroRules() {
         final StyleSheet stylesheet = new StyleSheet(Collections.<NodeRule>emptyList());
         final String code = stylesheet.toString();
-        assertEquals("", code);
+        assertThat(code).isEmpty();
     }
 
     @Test
@@ -32,7 +32,7 @@ public final class StyleSheetTest {
         final StyleSheet stylesheet = new StyleSheet(rules);
         final String code = stylesheet.toString();
 
-        assertEquals("abc\ndef\n", code);
+        assertThat(code).isEqualTo("abc\ndef\n");
     }
 
     @Test
@@ -42,7 +42,7 @@ public final class StyleSheetTest {
         final StyleSheet stylesheet = new StyleSheet(rules);
         final int size = stylesheet.getSize();
 
-        assertEquals(0, size);
+        assertThat(size).isZero();
     }
 
     @Test
@@ -58,6 +58,6 @@ public final class StyleSheetTest {
         final StyleSheet stylesheet = new StyleSheet(rules);
         final int size = stylesheet.getSize();
 
-        assertEquals(5, size);
+        assertThat(size).isEqualTo(5);
     }
 }

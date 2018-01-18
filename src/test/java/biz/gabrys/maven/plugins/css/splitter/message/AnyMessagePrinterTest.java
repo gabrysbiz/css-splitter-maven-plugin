@@ -1,7 +1,6 @@
 package biz.gabrys.maven.plugins.css.splitter.message;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -20,14 +19,20 @@ public final class AnyMessagePrinterTest {
     @Test
     public void isEnabled_printersAreEmpty_returnsFalse() {
         final AnyMessagePrinter printer = new AnyMessagePrinter(Collections.<MessagePrinter>emptyList());
-        assertFalse(printer.isEnabled());
+
+        final boolean enabled = printer.isEnabled();
+
+        assertThat(enabled).isFalse();
     }
 
     @Test
     public void isEnabled_printersAreNotEmpty_returnsTrue() {
         final List<MessagePrinter> printers = Arrays.asList(mock(MessagePrinter.class));
         final AnyMessagePrinter printer = new AnyMessagePrinter(printers);
-        assertTrue(printer.isEnabled());
+
+        final boolean enabled = printer.isEnabled();
+
+        assertThat(enabled).isTrue();
     }
 
     @Test

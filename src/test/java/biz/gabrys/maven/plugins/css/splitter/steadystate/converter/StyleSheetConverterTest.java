@@ -1,11 +1,8 @@
 package biz.gabrys.maven.plugins.css.splitter.steadystate.converter;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
-import java.util.List;
 
 import org.junit.Test;
 
@@ -14,7 +11,6 @@ import com.steadystate.css.dom.CSSStyleRuleImpl;
 import com.steadystate.css.dom.CSSStyleSheetImpl;
 
 import biz.gabrys.maven.plugins.css.splitter.css.Standard;
-import biz.gabrys.maven.plugins.css.splitter.css.type.NodeRule;
 import biz.gabrys.maven.plugins.css.splitter.css.type.StyleRule;
 import biz.gabrys.maven.plugins.css.splitter.css.type.StyleSheet;
 
@@ -36,11 +32,9 @@ public final class StyleSheetConverterTest {
         stylesheet.setCssRules(ruleList);
 
         final StyleSheet convertedStyleSheet = converter.convert(stylesheet);
-        assertNotNull("Converted stylesheet instance should not be equal to null", convertedStyleSheet);
-        final List<NodeRule> childRules = convertedStyleSheet.getRules();
-        assertNotNull("Converted stylesheet rules instance should not be equal to null", childRules);
-        assertEquals("Converted stylesheet rules size", 1, childRules.size());
-        assertEquals("Converted stylesheet rule", convertedStyleRule, childRules.get(0));
+
+        assertThat(convertedStyleSheet).isNotNull();
+        assertThat(convertedStyleSheet.getRules()).containsExactly(convertedStyleRule);
     }
 
     @Test(expected = UnsupportedRuleException.class)
@@ -61,16 +55,15 @@ public final class StyleSheetConverterTest {
     @Test
     public void createConverter_returnsMultipleRuleConverter() {
         final MultipleRuleConverter converter = StyleSheetConverter.createConverter(Standard.VERSION_3_0, true);
-        assertNotNull("Converter instance should not be equal to null", converter);
 
-        final List<RuleConverter<?>> children = converter.converters;
-        assertEquals("Converters quantity", 7, children.size());
-        assertEquals("First converter class", StyleRuleConverter.class, children.get(0).getClass());
-        assertEquals("Second converter class", MediaRuleConverter.class, children.get(1).getClass());
-        assertEquals("Third converter class", FontFaceRuleConverter.class, children.get(2).getClass());
-        assertEquals("Fourth converter class", PageRuleConverter.class, children.get(3).getClass());
-        assertEquals("Fifth converter class", ImportRuleConverter.class, children.get(4).getClass());
-        assertEquals("Sixth converter class", CharsetRuleConverter.class, children.get(5).getClass());
-        assertEquals("Seventh converter class", UnknownRuleConverter.class, children.get(6).getClass());
+        assertThat(converter).isNotNull();
+        assertThat(converter.converters).hasSize(7);
+        assertThat(converter.converters.get(0)).isExactlyInstanceOf(StyleRuleConverter.class);
+        assertThat(converter.converters.get(1)).isExactlyInstanceOf(MediaRuleConverter.class);
+        assertThat(converter.converters.get(2)).isExactlyInstanceOf(FontFaceRuleConverter.class);
+        assertThat(converter.converters.get(3)).isExactlyInstanceOf(PageRuleConverter.class);
+        assertThat(converter.converters.get(4)).isExactlyInstanceOf(ImportRuleConverter.class);
+        assertThat(converter.converters.get(5)).isExactlyInstanceOf(CharsetRuleConverter.class);
+        assertThat(converter.converters.get(6)).isExactlyInstanceOf(UnknownRuleConverter.class);
     }
 }

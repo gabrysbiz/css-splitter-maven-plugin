@@ -1,7 +1,6 @@
 package biz.gabrys.maven.plugins.css.splitter.steadystate;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
 import java.util.List;
@@ -38,17 +37,21 @@ final class StarHackTester {
     }
 
     public void verify(final StyleSheet stylesheet) {
-        assertNotNull(String.format("StyleSheet instance for standard %s should not be equal to null", standard), stylesheet);
         final List<NodeRule> rules = stylesheet.getRules();
-        assertNotNull(String.format("StyleSheet rules instnace for standard %s should not be equal to null", standard), rules);
-        assertEquals(String.format("StyleSheet children rules for standard %s", standard), 1, rules.size());
-        assertEquals(String.format("First child class for standard %s", standard), StyleRule.class, rules.get(0).getClass());
+        assertThat(rules).hasSize(1);
+        assertThat(rules.get(0)).isExactlyInstanceOf(StyleRule.class);
 
         final StyleRule styleRule = (StyleRule) rules.get(0);
         final List<StyleProperty> properties = styleRule.getProperties();
-        assertEquals(String.format("Properties quantity for standard %s", standard), 3, properties.size());
-        assertEquals(String.format("First property code for standard %s", standard), "width: 0;", properties.get(0).getCode());
-        assertEquals(String.format("Second property code for standard %s", standard), "*width: 0;", properties.get(1).getCode());
-        assertEquals(String.format("Third property code for standard %s", standard), "height: 0;", properties.get(2).getCode());
+        assertThat(properties).hasSize(3);
+        final StyleProperty property1 = properties.get(0);
+        assertThat(property1).isNotNull();
+        assertThat(property1.getCode()).isEqualTo("width: 0;");
+        final StyleProperty property2 = properties.get(1);
+        assertThat(property2).isNotNull();
+        assertThat(property2.getCode()).isEqualTo("*width: 0;");
+        final StyleProperty property3 = properties.get(2);
+        assertThat(property3).isNotNull();
+        assertThat(property3.getCode()).isEqualTo("height: 0;");
     }
 }

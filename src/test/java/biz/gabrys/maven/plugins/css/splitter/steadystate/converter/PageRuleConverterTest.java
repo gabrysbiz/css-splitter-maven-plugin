@@ -1,8 +1,6 @@
 package biz.gabrys.maven.plugins.css.splitter.steadystate.converter;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 
@@ -22,7 +20,7 @@ public final class PageRuleConverterTest {
 
         final boolean supported = converter.isSupportedType(rule);
 
-        assertTrue(supported);
+        assertThat(supported).isTrue();
     }
 
     @Test
@@ -32,16 +30,13 @@ public final class PageRuleConverterTest {
         rule.setCssText("@page :first { name: value; }");
 
         final StyleRule converted = converter.convert(rule);
-        assertNotNull("Converted rule instance should not be equal to null", converted);
-        final List<String> selectors = converted.getSelectors();
-        assertNotNull("Converted rule selectors instance should not be equal to null", selectors);
-        assertEquals("Converted rule selectors size", 1, selectors.size());
-        assertEquals("Converted rule selector", "@page :first", selectors.get(0));
+        assertThat(converted).isNotNull();
+        assertThat(converted.getSelectors()).containsExactly("@page :first");
         final List<StyleProperty> properties = converted.getProperties();
-        assertNotNull("Converted rule properties instance should not be equal to null", properties);
-        assertEquals("Converted rule properties size", 1, properties.size());
+        assertThat(properties).hasSize(1);
         final StyleProperty styleProperty = properties.get(0);
-        assertEquals("Converted rule property name", "name", styleProperty.getName());
-        assertEquals("Converted rule property value", "value", styleProperty.getValue());
+        assertThat(styleProperty).isNotNull();
+        assertThat(styleProperty.getName()).isEqualTo("name");
+        assertThat(styleProperty.getValue()).isEqualTo("value");
     }
 }

@@ -1,9 +1,6 @@
 package biz.gabrys.maven.plugins.css.splitter.split;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -29,7 +26,7 @@ public final class StyleRuleSplitterTest {
 
         final boolean splittable = splitter.isSplittable2(rule);
 
-        assertTrue(splittable);
+        assertThat(splittable).isTrue();
     }
 
     @Test
@@ -42,7 +39,7 @@ public final class StyleRuleSplitterTest {
 
         final boolean splittable = splitter.isSplittable2(rule);
 
-        assertFalse(splittable);
+        assertThat(splittable).isFalse();
     }
 
     @Test
@@ -65,23 +62,18 @@ public final class StyleRuleSplitterTest {
         final SplitResult result = splitter.split2(rule, 1);
 
         final StyleRule firstRule = (StyleRule) result.getBefore();
-        assertNotNull("First rule should not be equal to null", firstRule);
+        assertThat(firstRule).isNotNull();
         final List<String> firstRuleSelectors = firstRule.getSelectors();
-        assertEquals("First rule selectors quantity", selectors.size(), firstRuleSelectors.size());
-        assertTrue("First rule selectors list", selectors.containsAll(firstRuleSelectors));
-        final List<StyleProperty> firstRuleProperties = firstRule.getProperties();
-        assertEquals("First rule properties quantity", 1, firstRuleProperties.size());
-        assertTrue("First rule contains first property", firstRuleProperties.contains(property1));
+        assertThat(firstRuleSelectors).hasSameSizeAs(selectors);
+        assertThat(selectors).containsAll(firstRuleSelectors);
+        assertThat(firstRule.getProperties()).containsExactly(property1);
 
         final StyleRule secondRule = (StyleRule) result.getAfter();
-        assertNotNull("Second rule should not be equal to null", secondRule);
+        assertThat(secondRule).isNotNull();
         final List<String> secondRuleSelectors = secondRule.getSelectors();
-        assertEquals("Second rule selectors quantity", selectors.size(), secondRuleSelectors.size());
-        assertTrue("Second rule selectors list", selectors.containsAll(secondRuleSelectors));
-        final List<StyleProperty> secondRuleProperties = secondRule.getProperties();
-        assertEquals("Second rule properties quantity", 2, secondRuleProperties.size());
-        assertTrue("Second rule contains second property", secondRuleProperties.contains(property2));
-        assertTrue("Second rule contains third property", secondRuleProperties.contains(property3));
+        assertThat(secondRuleSelectors).hasSameSizeAs(selectors);
+        assertThat(selectors).containsAll(secondRuleSelectors);
+        assertThat(secondRule.getProperties()).containsExactly(property2, property3);
 
         verify(neighborsManager).fill(rule, firstRule, secondRule);
         verifyNoMoreInteractions(neighborsManager);

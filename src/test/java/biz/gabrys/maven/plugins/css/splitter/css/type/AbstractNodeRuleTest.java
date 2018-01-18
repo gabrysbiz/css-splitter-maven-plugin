@@ -1,7 +1,6 @@
 package biz.gabrys.maven.plugins.css.splitter.css.type;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -10,7 +9,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import java.util.List;
 
 import org.junit.Test;
-import org.mockito.Matchers;
+import org.mockito.ArgumentMatchers;
 
 public final class AbstractNodeRuleTest {
 
@@ -22,10 +21,10 @@ public final class AbstractNodeRuleTest {
 
         final String code = rule.getCode();
 
-        assertEquals(CSS_CODE, code);
+        assertThat(code).isEqualTo(CSS_CODE);
         verify(rule).getCode();
         verify(rule).getLines();
-        verify(rule).fillLines(Matchers.<List<String>>any());
+        verify(rule).fillLines(ArgumentMatchers.<List<String>>any());
         verifyNoMoreInteractions(rule);
     }
 
@@ -35,11 +34,9 @@ public final class AbstractNodeRuleTest {
 
         final String[] lines = rule.getLines();
 
-        assertNotNull("Lines object should not be equal to null", lines);
-        assertEquals("Lines quantity", 1, lines.length);
-        assertEquals("1 line", CSS_CODE, lines[0]);
+        assertThat(lines).containsExactly(CSS_CODE);
         verify(rule).getLines();
-        verify(rule).fillLines(Matchers.<List<String>>any());
+        verify(rule).fillLines(ArgumentMatchers.<List<String>>any());
         verifyNoMoreInteractions(rule);
     }
 

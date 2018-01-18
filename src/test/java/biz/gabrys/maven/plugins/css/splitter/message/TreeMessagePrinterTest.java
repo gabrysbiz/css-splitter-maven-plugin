@@ -1,7 +1,6 @@
 package biz.gabrys.maven.plugins.css.splitter.message;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -22,31 +21,32 @@ public final class TreeMessagePrinterTest {
     public void isEnabled_internalPrinterIsEnabled_returnsTrue() {
         final MessagePrinter internalPrinter = mock(MessagePrinter.class);
         final TreeMessagePrinter printer = new TreeMessagePrinter(internalPrinter);
-
         when(internalPrinter.isEnabled()).thenReturn(Boolean.TRUE);
+
         final boolean enabled = printer.isEnabled();
 
-        assertTrue(enabled);
+        assertThat(enabled).isTrue();
     }
 
     @Test
     public void isEnabled_internalPrinterIsDisabled_returnsFalse() {
         final MessagePrinter internalPrinter = mock(MessagePrinter.class);
         final TreeMessagePrinter printer = new TreeMessagePrinter(internalPrinter);
-
         when(internalPrinter.isEnabled()).thenReturn(Boolean.FALSE);
+
         final boolean enabled = printer.isEnabled();
 
-        assertFalse(enabled);
+        assertThat(enabled).isFalse();
     }
 
     @Test
-    public void print_nonComplexRuleAndInternalPrinterSupportsIt() {
+    public void print_nonComplexRuleAndInternalPrinterSupportsIt_prints() {
         final MessagePrinter internalPrinter = mock(MessagePrinter.class);
         final TreeMessagePrinter printer = new TreeMessagePrinter(internalPrinter);
 
         final NodeRule rule = mock(NodeRule.class);
         when(internalPrinter.isSupportedType(rule)).thenReturn(Boolean.TRUE);
+
         printer.print(rule);
 
         verify(internalPrinter).isSupportedType(rule);
@@ -56,12 +56,13 @@ public final class TreeMessagePrinterTest {
     }
 
     @Test
-    public void print_nonComplexRuleAndInternalPrinterDoesNotSupportIt() {
+    public void print_nonComplexRuleAndInternalPrinterDoesNotSupportIt_prints() {
         final MessagePrinter internalPrinter = mock(MessagePrinter.class);
         final TreeMessagePrinter printer = new TreeMessagePrinter(internalPrinter);
 
         final NodeRule rule = mock(NodeRule.class);
         when(internalPrinter.isSupportedType(rule)).thenReturn(Boolean.FALSE);
+
         printer.print(rule);
 
         verify(internalPrinter).isSupportedType(rule);
@@ -70,7 +71,7 @@ public final class TreeMessagePrinterTest {
     }
 
     @Test
-    public void print_complexRuleAndInternalPrinterSupportsIt() {
+    public void print_complexRuleAndInternalPrinterSupportsIt_prints() {
         final MessagePrinter internalPrinter = mock(MessagePrinter.class);
         final TreeMessagePrinter printer = new TreeMessagePrinter(internalPrinter);
 
@@ -100,7 +101,7 @@ public final class TreeMessagePrinterTest {
     }
 
     @Test
-    public void print_complexRuleAndInternalPrinterDoesNotSupportIt() {
+    public void print_complexRuleAndInternalPrinterDoesNotSupportIt_prints() {
         final MessagePrinter internalPrinter = mock(MessagePrinter.class);
         final TreeMessagePrinter printer = new TreeMessagePrinter(internalPrinter);
 

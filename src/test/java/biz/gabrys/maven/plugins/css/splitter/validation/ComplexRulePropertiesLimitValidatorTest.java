@@ -89,7 +89,7 @@ public final class ComplexRulePropertiesLimitValidatorTest {
         when(internalValidator.isSupportedType(childRule2)).thenReturn(Boolean.TRUE);
 
         final int limit = 10;
-        doThrow(new ValidationException("error")).when(internalValidator).validate(childRule2, limit);
+        doThrow(ValidationException.class).when(internalValidator).validate(childRule2, limit);
 
         validator.validate2(rule, limit);
     }

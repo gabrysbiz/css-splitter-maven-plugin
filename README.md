@@ -17,8 +17,8 @@ For more information read the [split](http://css-splitter-maven-plugin.projects.
 
 # Requirements
 The plugin to run requires:
-* Java 5.0 or higher
-* Maven 2.0.11 or higher
+* Java 6 or higher
+* Maven 3 or higher
 
 # Usage
 General instructions on how to use the CSS Splitter Maven Plugin can be found on the [usage](http://css-splitter-maven-plugin.projects.gabrys.biz/LATEST/usage.html) page. Some more specific use cases are described in the examples given below. Last but not least, users occasionally contribute additional examples, tips or errata to the plugin's [wiki](https://github.com/gabrysbiz/css-splitter-maven-plugin/wiki) page.

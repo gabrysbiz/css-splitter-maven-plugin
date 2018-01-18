@@ -1,7 +1,6 @@
 package biz.gabrys.maven.plugins.css.splitter.css.type;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
 
@@ -22,15 +21,14 @@ public final class UnknownRuleTest {
         final UnknownRule rule = new UnknownRule(code.toString());
         final String[] lines = rule.getLines();
 
-        assertNotNull("Lines object should not be equal to null", lines);
-        assertEquals("Lines quantity", 8, lines.length);
-        assertEquals("Line no. 1", "@keyframes rotate {", lines[0]);
-        assertEquals("Line no. 2", "from  {", lines[1]);
-        assertEquals("Line no. 3", "  transform: rotate(0deg);", lines[2]);
-        assertEquals("Line no. 4", "}", lines[3]);
-        assertEquals("Line no. 5", "to {", lines[4]);
-        assertEquals("Line no. 6", "  transform: rotate(360deg);", lines[5]);
-        assertEquals("Line no. 7", "}", lines[6]);
-        assertEquals("Line no. 8", "}", lines[7]);
+        assertThat(lines).hasSize(8);
+        assertThat(lines[0]).isEqualTo("@keyframes rotate {");
+        assertThat(lines[1]).isEqualTo("from  {");
+        assertThat(lines[2]).isEqualTo("  transform: rotate(0deg);");
+        assertThat(lines[3]).isEqualTo("}");
+        assertThat(lines[4]).isEqualTo("to {");
+        assertThat(lines[5]).isEqualTo("  transform: rotate(360deg);");
+        assertThat(lines[6]).isEqualTo("}");
+        assertThat(lines[7]).isEqualTo("}");
     }
 }

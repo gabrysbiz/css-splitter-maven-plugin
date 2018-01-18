@@ -2,7 +2,7 @@
  * CSS Splitter Maven Plugin
  * http://css-splitter-maven-plugin.projects.gabrys.biz/
  *
- * Copyright (c) 2015 Adam Gabryś
+ * Copyright (c) 2015 Adam Gabrys
  *
  * This file is licensed under the BSD 3-Clause (the "License").
  * You may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ import java.util.Locale;
 
 class DateTokenValueFactory implements TokenValueFactory {
 
+    @Override
     public String create(final String value) {
         final DateFormat dateFormat = new SimpleDateFormat(value, Locale.ENGLISH);
         return dateFormat.format(getNow());

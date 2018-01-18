@@ -1,7 +1,6 @@
 package biz.gabrys.maven.plugins.css.splitter.message;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -25,14 +24,20 @@ public final class ComplexRuleInvalidContentMessagePrinterTest {
     public void isEnabled_strictIsEnabled_returnsFalse() {
         final Log logger = mock(Log.class);
         final ComplexRuleInvalidContentMessagePrinter printer = new ComplexRuleInvalidContentMessagePrinter(logger, true);
-        assertFalse(printer.isEnabled());
+
+        final boolean enabled = printer.isEnabled();
+
+        assertThat(enabled).isFalse();
     }
 
     @Test
     public void isEnabled_strictIsDisabled_returnsTrue() {
         final Log logger = mock(Log.class);
         final ComplexRuleInvalidContentMessagePrinter printer = new ComplexRuleInvalidContentMessagePrinter(logger, false);
-        assertTrue(printer.isEnabled());
+
+        final boolean enabled = printer.isEnabled();
+
+        assertThat(enabled).isTrue();
     }
 
     @Test
@@ -49,6 +54,7 @@ public final class ComplexRuleInvalidContentMessagePrinterTest {
         when(rule.getRules()).thenReturn(rules);
 
         printer.print2(rule);
+
         verifyZeroInteractions(logger);
     }
 
@@ -72,6 +78,7 @@ public final class ComplexRuleInvalidContentMessagePrinterTest {
         when(rule.getRules()).thenReturn(rules);
 
         printer.print2(rule);
+
         verify(logger, times(2)).warn("NON-STRICT: found non-standard content in @media rule!");
         verify(logger).warn(String.format("NON-STRICT: non-standard content:%nunknown-code"));
         verify(logger, times(2)).warn(String.format("NON-STRICT: @media rule code:%nfull-code"));

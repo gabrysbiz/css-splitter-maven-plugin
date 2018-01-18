@@ -1,9 +1,6 @@
 package biz.gabrys.maven.plugins.css.splitter.steadystate.converter;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -32,7 +29,7 @@ public final class MultipleRuleConverterTest {
 
         final boolean supported = converter.isSupportedType(rule);
 
-        assertFalse(supported);
+        assertThat(supported).isFalse();
         verify(internalConverter1).isSupportedType(rule);
         verify(internalConverter2).isSupportedType(rule);
         verifyZeroInteractions(internalConverter1, internalConverter2);
@@ -51,7 +48,7 @@ public final class MultipleRuleConverterTest {
 
         final boolean supported = converter.isSupportedType(rule);
 
-        assertTrue(supported);
+        assertThat(supported).isTrue();
         verify(internalConverter1).isSupportedType(rule);
         verify(internalConverter2).isSupportedType(rule);
         verifyNoMoreInteractions(internalConverter1, internalConverter2);
@@ -85,8 +82,7 @@ public final class MultipleRuleConverterTest {
 
         final NodeRule converted = converter.convert(rule);
 
-        assertNotNull("Converted rule instance should not be equal to null", converted);
-        assertEquals("Converted rule", styleRule, converted);
+        assertThat(converted).isEqualTo(styleRule);
         verify(internalConverter1).isSupportedType(rule);
         verify(internalConverter2).isSupportedType(rule);
         verify(internalConverter2).convert(rule);
@@ -108,8 +104,7 @@ public final class MultipleRuleConverterTest {
 
         final NodeRule converted = converter.convert(rule);
 
-        assertNotNull("Converted rule instance should not be equal to null", converted);
-        assertEquals("Converted rule", styleRule, converted);
+        assertThat(converted).isEqualTo(styleRule);
         verify(internalConverter1).isSupportedType(rule);
         verify(internalConverter1).convert(rule);
         verifyNoMoreInteractions(internalConverter1);

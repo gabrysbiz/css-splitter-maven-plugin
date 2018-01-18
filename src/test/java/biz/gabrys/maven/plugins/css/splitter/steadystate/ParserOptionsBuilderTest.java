@@ -1,6 +1,6 @@
 package biz.gabrys.maven.plugins.css.splitter.steadystate;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Arrays;
 
@@ -14,7 +14,7 @@ public final class ParserOptionsBuilderTest {
     public void create_checkStandards() {
         for (final Standard standard : Standard.values()) {
             final ParserOptions options = new ParserOptionsBuilder().withStandard(standard).create();
-            assertEquals(standard, options.getStandard());
+            assertThat(options.getStandard()).isSameAs(standard);
         }
     }
 
@@ -22,7 +22,7 @@ public final class ParserOptionsBuilderTest {
     public void create_checkStrict() {
         for (final boolean strict : Arrays.asList(Boolean.TRUE, Boolean.FALSE)) {
             final ParserOptions options = new ParserOptionsBuilder().withStrict(strict).create();
-            assertEquals(strict, options.isStrict());
+            assertThat(options.isStrict()).isEqualTo(strict);
         }
     }
 
@@ -30,7 +30,7 @@ public final class ParserOptionsBuilderTest {
     public void create_checkStarHack() {
         for (final boolean allowed : Arrays.asList(Boolean.TRUE, Boolean.FALSE)) {
             final ParserOptions options = new ParserOptionsBuilder().withStarHack(allowed).create();
-            assertEquals(allowed, options.isStarHackAllowed());
+            assertThat(options.isStarHackAllowed()).isEqualTo(allowed);
         }
     }
 }

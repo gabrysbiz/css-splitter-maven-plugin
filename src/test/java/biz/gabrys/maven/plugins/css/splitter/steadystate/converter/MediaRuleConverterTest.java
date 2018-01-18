@@ -1,13 +1,9 @@
 package biz.gabrys.maven.plugins.css.splitter.steadystate.converter;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
-
-import java.util.List;
 
 import org.junit.Test;
 
@@ -30,7 +26,7 @@ public final class MediaRuleConverterTest {
         final CSSMediaRuleImpl rule = new CSSMediaRuleImpl();
         final boolean supported = converter.isSupportedType(rule);
 
-        assertTrue(supported);
+        assertThat(supported).isTrue();
         verifyZeroInteractions(ruleConverter);
     }
 
@@ -55,15 +51,9 @@ public final class MediaRuleConverterTest {
         final MediaRuleConverter converter = new MediaRuleConverter(internalConverter);
 
         final ComplexRule converted = converter.convert(rule);
-        assertNotNull("Converted rule instance should not be equal to null", converted);
-        final List<String> selectors = converted.getSelectors();
-        assertNotNull("Converted rule selectors instance should not be equal to null", selectors);
-        assertEquals("Converted rule selectors size", 1, selectors.size());
-        assertEquals("Converted rule selector", selector, selectors.get(0));
-
-        final List<NodeRule> rules = converted.getRules();
-        assertNotNull("Converted rule children should not be equal to null", rules);
-        assertEquals("Converted rule children size", 1, rules.size());
+        assertThat(converted).isNotNull();
+        assertThat(converted.getSelectors()).containsExactly(selector);
+        assertThat(converted.getRules()).hasSize(1);
     }
 
     @Test
@@ -74,8 +64,8 @@ public final class MediaRuleConverterTest {
             }
             final MediaRuleConverter thisObject = mock(MediaRuleConverter.class);
             final RuleConverter<?> converter = MediaRuleConverter.createConverter(thisObject, standard, true);
-            assertNotNull(String.format("Converter instance for standard %s should not be equal to null", standard), converter);
-            assertEquals(String.format("Converter class for standard %s", standard), StyleRuleConverter.class, converter.getClass());
+            assertThat(converter).overridingErrorMessage("Converter for standard %s should be an instance of StyleRuleConverter", standard)
+                    .isExactlyInstanceOf(StyleRuleConverter.class);
             verifyZeroInteractions(thisObject);
         }
     }
@@ -83,15 +73,14 @@ public final class MediaRuleConverterTest {
     @Test
     public void createConverter_strictAndCSS3_returnsMultipleRuleConverterWith2Subconverters() {
         final MediaRuleConverter thisObject = mock(MediaRuleConverter.class);
-        final RuleConverter<?> converter = MediaRuleConverter.createConverter(thisObject, Standard.VERSION_3_0, true);
-        assertNotNull("Converter instance should not be equal to null", converter);
-        assertEquals("Converter class", MultipleRuleConverter.class, converter.getClass());
 
+        final RuleConverter<?> converter = MediaRuleConverter.createConverter(thisObject, Standard.VERSION_3_0, true);
+
+        assertThat(converter).isExactlyInstanceOf(MultipleRuleConverter.class);
         final MultipleRuleConverter ruleConverter = (MultipleRuleConverter) converter;
-        final List<RuleConverter<?>> children = ruleConverter.converters;
-        assertEquals("Converters quantity", 2, children.size());
-        assertEquals("First converter class", StyleRuleConverter.class, children.get(0).getClass());
-        assertEquals("Second converter instance", thisObject, children.get(1));
+        assertThat(ruleConverter.converters).hasSize(2);
+        assertThat(ruleConverter.converters.get(0)).isExactlyInstanceOf(StyleRuleConverter.class);
+        assertThat(ruleConverter.converters.get(1)).isSameAs(thisObject);
         verifyZeroInteractions(thisObject);
     }
 
@@ -103,18 +92,22 @@ public final class MediaRuleConverterTest {
             }
             final MediaRuleConverter thisObject = mock(MediaRuleConverter.class);
             final RuleConverter<?> converter = MediaRuleConverter.createConverter(thisObject, standard, false);
-            assertNotNull(String.format("Converter instance for standard %s should not be equal to null", standard), converter);
-            assertEquals(String.format("Converter class for standard %s", standard), MultipleRuleConverter.class, converter.getClass());
+
+            assertThat(converter)
+                    .overridingErrorMessage("Converter for standard %s should be an instance of MultipleRuleConverter", standard)
+                    .isExactlyInstanceOf(MultipleRuleConverter.class);
 
             final MultipleRuleConverter ruleConverter = (MultipleRuleConverter) converter;
-            final List<RuleConverter<?>> children = ruleConverter.converters;
-            assertEquals(String.format("Converters quantity for standard %s", standard), 3, children.size());
-            assertEquals(String.format("First converter class for standard %s", standard), StyleRuleConverter.class,
-                    children.get(0).getClass());
-            assertEquals(String.format("Second converter class for standard %s", standard), PageRuleConverter.class,
-                    children.get(1).getClass());
-            assertEquals(String.format("Third converter class for standard %s", standard), UnknownRuleConverter.class,
-                    children.get(2).getClass());
+            assertThat(ruleConverter.converters).hasSize(3);
+            assertThat(ruleConverter.converters.get(0))
+                    .overridingErrorMessage("First converter for standard %s should be an instance of StyleRuleConverter", standard)
+                    .isExactlyInstanceOf(StyleRuleConverter.class);
+            assertThat(ruleConverter.converters.get(1))
+                    .overridingErrorMessage("Second converter for standard %s should be an instance of PageRuleConverter", standard)
+                    .isExactlyInstanceOf(PageRuleConverter.class);
+            assertThat(ruleConverter.converters.get(2))
+                    .overridingErrorMessage("Third converter for standard %s should be an instance of UnknownRuleConverter", standard)
+                    .isExactlyInstanceOf(UnknownRuleConverter.class);
             verifyZeroInteractions(thisObject);
         }
     }
@@ -122,17 +115,16 @@ public final class MediaRuleConverterTest {
     @Test
     public void createConverter_notStrictAndCSS3_returnsMultipleRuleConverterWith4Subconverters() {
         final MediaRuleConverter thisObject = mock(MediaRuleConverter.class);
-        final RuleConverter<?> converter = MediaRuleConverter.createConverter(thisObject, Standard.VERSION_3_0, false);
-        assertNotNull("Converter instance should not be equal to null", converter);
-        assertEquals("Converter class", MultipleRuleConverter.class, converter.getClass());
 
+        final RuleConverter<?> converter = MediaRuleConverter.createConverter(thisObject, Standard.VERSION_3_0, false);
+
+        assertThat(converter).isExactlyInstanceOf(MultipleRuleConverter.class);
         final MultipleRuleConverter ruleConverter = (MultipleRuleConverter) converter;
-        final List<RuleConverter<?>> children = ruleConverter.converters;
-        assertEquals("Converters quantity", 4, children.size());
-        assertEquals("First converter class", StyleRuleConverter.class, children.get(0).getClass());
-        assertEquals("Second converter instance", thisObject, children.get(1));
-        assertEquals("Third converter class", PageRuleConverter.class, children.get(2).getClass());
-        assertEquals("Fourth converter class", UnknownRuleConverter.class, children.get(3).getClass());
+        assertThat(ruleConverter.converters).hasSize(4);
+        assertThat(ruleConverter.converters.get(0)).isExactlyInstanceOf(StyleRuleConverter.class);
+        assertThat(ruleConverter.converters.get(1)).isSameAs(thisObject);
+        assertThat(ruleConverter.converters.get(2)).isExactlyInstanceOf(PageRuleConverter.class);
+        assertThat(ruleConverter.converters.get(3)).isExactlyInstanceOf(UnknownRuleConverter.class);
         verifyZeroInteractions(thisObject);
     }
 }

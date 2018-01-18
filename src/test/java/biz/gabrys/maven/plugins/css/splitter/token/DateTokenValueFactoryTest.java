@@ -1,6 +1,6 @@
 package biz.gabrys.maven.plugins.css.splitter.token;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.spy;
 
@@ -19,6 +19,8 @@ public final class DateTokenValueFactoryTest {
         calendar.set(Calendar.DAY_OF_MONTH, 22);
         doReturn(calendar.getTime()).when(factory).getNow();
 
-        assertEquals("20150422", factory.create("yyyyMMdd"));
+        final String date = factory.create("yyyyMMdd");
+
+        assertThat(date).isEqualTo("20150422");
     }
 }

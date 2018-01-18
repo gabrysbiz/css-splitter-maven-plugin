@@ -83,7 +83,7 @@ public final class StylePropertiesLimitValidatorTest {
         when(ruleValidator.isSupportedType(rule)).thenReturn(true);
         when(stylesheet.getRules()).thenReturn(Arrays.asList(rule));
 
-        doThrow(new ValidationException("error")).when(ruleValidator).validate(rule, limit);
+        doThrow(ValidationException.class).when(ruleValidator).validate(rule, limit);
 
         validator.validate(stylesheet);
     }

@@ -1,6 +1,6 @@
 package biz.gabrys.maven.plugins.css.splitter.split;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -25,8 +25,8 @@ public class StyleSheetSplliterTest {
         when(stylesheet.getRules()).thenReturn(Collections.<NodeRule>emptyList());
 
         final List<StyleSheet> sheets = splliter.split(stylesheet);
-        assertEquals("Sheets quantity", 1, sheets.size());
-        assertEquals("First document", stylesheet, sheets.get(0));
+
+        assertThat(sheets).containsExactly(stylesheet);
     }
 
     @Test
@@ -52,9 +52,10 @@ public class StyleSheetSplliterTest {
         when(rulesSplitter.split(rules3, limit)).thenReturn(new RulesContainer(rules3, Collections.<NodeRule>emptyList()));
 
         final List<StyleSheet> sheets = splliter.split(stylesheet);
-        assertEquals("Sheets quantity", 3, sheets.size());
-        assertEquals("First document rules", rules1, sheets.get(0).getRules());
-        assertEquals("Second document rules", rules2, sheets.get(1).getRules());
-        assertEquals("Third document rules", rules3, sheets.get(2).getRules());
+
+        assertThat(sheets).hasSize(3);
+        assertThat(sheets.get(0).getRules()).containsExactlyElementsOf(rules1);
+        assertThat(sheets.get(1).getRules()).containsExactlyElementsOf(rules2);
+        assertThat(sheets.get(2).getRules()).containsExactlyElementsOf(rules3);
     }
 }

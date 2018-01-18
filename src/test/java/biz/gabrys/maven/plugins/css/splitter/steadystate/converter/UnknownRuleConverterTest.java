@@ -1,8 +1,6 @@
 package biz.gabrys.maven.plugins.css.splitter.steadystate.converter;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
 
@@ -19,7 +17,7 @@ public final class UnknownRuleConverterTest {
 
         final boolean supported = converter.isSupportedType(rule);
 
-        assertTrue(supported);
+        assertThat(supported).isTrue();
     }
 
     @Test
@@ -31,7 +29,7 @@ public final class UnknownRuleConverterTest {
 
         final UnknownRule converted = converter.convert(rule);
 
-        assertNotNull(converted);
-        assertEquals(code, converted.getCode());
+        assertThat(converted).isNotNull();
+        assertThat(converted.getCode()).isEqualTo(code);
     }
 }

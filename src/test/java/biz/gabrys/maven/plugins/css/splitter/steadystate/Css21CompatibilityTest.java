@@ -1,7 +1,6 @@
 package biz.gabrys.maven.plugins.css.splitter.steadystate;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
 import org.apache.maven.plugin.logging.Log;
@@ -34,7 +33,9 @@ public final class Css21CompatibilityTest {
         final StyleSheet stylesheet = parser.parse("@media all { @font-face { font-family: Arial; } }", options);
 
         final ComplexRule media = (ComplexRule) stylesheet.getRules().get(0);
-        assertEquals(UnknownRule.class, media.getRules().get(0).getClass());
+        assertThat(media).isNotNull();
+        assertThat(media.getRules()).isNotNull();
+        assertThat(media.getRules().get(0)).isExactlyInstanceOf(UnknownRule.class);
     }
 
     @Test(expected = ParserException.class)
@@ -61,7 +62,9 @@ public final class Css21CompatibilityTest {
         final StyleSheet stylesheet = parser.parse("@media all { @page { size: 8.5; } }", options);
 
         final ComplexRule media = (ComplexRule) stylesheet.getRules().get(0);
-        assertEquals(StyleRule.class, media.getRules().get(0).getClass());
+        assertThat(media).isNotNull();
+        assertThat(media.getRules()).isNotNull();
+        assertThat(media.getRules().get(0)).isExactlyInstanceOf(StyleRule.class);
     }
 
     @Test
@@ -72,7 +75,9 @@ public final class Css21CompatibilityTest {
         final StyleSheet stylesheet = parser.parse("@media all { style { width: 1px; }}", options);
 
         final ComplexRule media = (ComplexRule) stylesheet.getRules().get(0);
-        assertEquals(StyleRule.class, media.getRules().get(0).getClass());
+        assertThat(media).isNotNull();
+        assertThat(media.getRules()).isNotNull();
+        assertThat(media.getRules().get(0)).isExactlyInstanceOf(StyleRule.class);
     }
 
     @Test
@@ -83,7 +88,9 @@ public final class Css21CompatibilityTest {
         final StyleSheet stylesheet = parser.parse("@media all { @unknown { size: 1px; } }", options);
 
         final ComplexRule media = (ComplexRule) stylesheet.getRules().get(0);
-        assertEquals(UnknownRule.class, media.getRules().get(0).getClass());
+        assertThat(media).isNotNull();
+        assertThat(media.getRules()).isNotNull();
+        assertThat(media.getRules().get(0)).isExactlyInstanceOf(UnknownRule.class);
     }
 
     @Test(expected = ParserException.class)
@@ -95,7 +102,7 @@ public final class Css21CompatibilityTest {
     public void parse_starHackIsEnabled_returnsStyleSheet() {
         final StarHackTester tester = new StarHackTester(STANDARD, true);
         final StyleSheet stylesheet = tester.parse();
-        assertNotNull(stylesheet);
+        assertThat(stylesheet).isNotNull();
         tester.verify(stylesheet);
     }
 }

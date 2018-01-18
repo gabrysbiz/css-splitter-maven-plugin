@@ -1,8 +1,7 @@
 package biz.gabrys.maven.plugins.css.splitter.message;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
@@ -19,21 +18,21 @@ public final class AbstractMessagePrinterTest {
     public void isSupportedType_ruleIsNull_returnsFalse() {
         final MessagePrinterImpl printer = new MessagePrinterImpl();
         final boolean supported = printer.isSupportedType(null);
-        assertFalse(supported);
+        assertThat(supported).isFalse();
     }
 
     @Test
     public void isSupportedType_ruleHasInvalidType_returnsFalse() {
         final MessagePrinterImpl printer = new MessagePrinterImpl();
         final boolean supported = printer.isSupportedType(new NotSupportedTestNodeRule());
-        assertFalse(supported);
+        assertThat(supported).isFalse();
     }
 
     @Test
     public void isSupportedType_ruleHasValidType_returnsTrue() {
         final MessagePrinterImpl printer = new MessagePrinterImpl();
         final boolean supported = printer.isSupportedType(new SupportedTestNodeRule());
-        assertTrue(supported);
+        assertThat(supported).isTrue();
     }
 
     @Test
@@ -62,6 +61,7 @@ public final class AbstractMessagePrinterTest {
             super(SupportedTestNodeRule.class);
         }
 
+        @Override
         public boolean isEnabled() {
             return false;
         }

@@ -1,8 +1,6 @@
 package biz.gabrys.maven.plugins.css.splitter.split;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -36,7 +34,7 @@ public final class MultipleRuleSplitterTest {
 
         final boolean splittable = splitter.isSplittable(rule);
 
-        assertTrue(splittable);
+        assertThat(splittable).isTrue();
         verify(splitter1).isSplittable(rule);
         verify(splitter2).isSplittable(rule);
         verifyNoMoreInteractions(splitter1, splitter2);
@@ -59,7 +57,7 @@ public final class MultipleRuleSplitterTest {
 
         final boolean splittable = splitter.isSplittable(rule);
 
-        assertFalse(splittable);
+        assertThat(splittable).isFalse();
         verify(splitter1).isSplittable(rule);
         verify(splitter2).isSplittable(rule);
         verifyNoMoreInteractions(splitter1, splitter2);
@@ -78,8 +76,8 @@ public final class MultipleRuleSplitterTest {
 
         final RuleSplitter splitter2 = mock(RuleSplitter.class);
         when(splitter2.isSplittable(rule)).thenReturn(true);
-        final SplitResult result = mock(SplitResult.class);
-        when(splitter2.split(rule, splitAfter)).thenReturn(result);
+        final SplitResult expectedResult = mock(SplitResult.class);
+        when(splitter2.split(rule, splitAfter)).thenReturn(expectedResult);
         splitters.add(splitter2);
 
         final RuleSplitter splitter3 = mock(RuleSplitter.class);
@@ -87,9 +85,9 @@ public final class MultipleRuleSplitterTest {
 
         final MultipleRuleSplitter splitter = new MultipleRuleSplitter(splitters);
 
-        final SplitResult returnedResult = splitter.split(rule, splitAfter);
+        final SplitResult result = splitter.split(rule, splitAfter);
 
-        assertEquals(result, returnedResult);
+        assertThat(result).isSameAs(expectedResult);
         verify(splitter1).isSplittable(rule);
         verify(splitter2).isSplittable(rule);
         verify(splitter2).split(rule, splitAfter);

@@ -1,12 +1,15 @@
 package biz.gabrys.maven.plugins.css.splitter.steadystate;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
+
+import java.util.List;
 
 import org.apache.maven.plugin.logging.Log;
 import org.junit.Test;
 
 import biz.gabrys.maven.plugins.css.splitter.css.Standard;
+import biz.gabrys.maven.plugins.css.splitter.css.type.NodeRule;
 import biz.gabrys.maven.plugins.css.splitter.css.type.StyleSheet;
 import biz.gabrys.maven.plugins.css.splitter.css.type.UnknownRule;
 
@@ -22,7 +25,10 @@ public final class Css10CompatibilityTest {
 
         final StyleSheet stylesheet = parser.parse("@media all { rule { width: 100px; } }", options);
 
-        assertEquals(UnknownRule.class, stylesheet.getRules().get(0).getClass());
+        assertThat(stylesheet).isNotNull();
+        final List<NodeRule> rules = stylesheet.getRules();
+        assertThat(rules).hasSize(1);
+        assertThat(rules.get(0)).isExactlyInstanceOf(UnknownRule.class);
     }
 
     @Test(expected = ParserException.class)

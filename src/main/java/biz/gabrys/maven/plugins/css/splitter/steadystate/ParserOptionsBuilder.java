@@ -2,7 +2,7 @@
  * CSS Splitter Maven Plugin
  * http://css-splitter-maven-plugin.projects.gabrys.biz/
  *
- * Copyright (c) 2015 Adam Gabryś
+ * Copyright (c) 2015 Adam Gabrys
  *
  * This file is licensed under the BSD 3-Clause (the "License").
  * You may not use this file except in compliance with the License.
@@ -52,14 +52,17 @@ public class ParserOptionsBuilder {
         private boolean strict;
         private boolean starHackAllowed;
 
+        @Override
         public Standard getStandard() {
             return standard;
         }
 
+        @Override
         public boolean isStrict() {
             return strict;
         }
 
+        @Override
         public boolean isStarHackAllowed() {
             return starHackAllowed;
         }

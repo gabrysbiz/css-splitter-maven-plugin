@@ -1,6 +1,6 @@
 package biz.gabrys.maven.plugins.css.splitter.split;
 
-import static org.junit.Assert.assertFalse;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 
@@ -15,14 +15,16 @@ public final class AbstractRuleSplitterTest {
     public void isSplittable_ruleHasInvalidType_returnsFalse() {
         final RuleSplitterImpl splitter = new RuleSplitterImpl();
         final boolean splittable = splitter.isSplittable(new NotSupportedTestNodeRule());
-        assertFalse(splittable);
+        assertThat(splittable).isFalse();
     }
 
     @Test
     public void isSplittable_ruleHasValidType_executesIsSplittable2() {
         final RuleSplitterImpl splitter = spy(new RuleSplitterImpl());
         final SupportedTestNodeRule rule = new SupportedTestNodeRule();
+
         splitter.isSplittable(rule);
+
         verify(splitter).isSplittable2(rule);
     }
 
@@ -37,7 +39,9 @@ public final class AbstractRuleSplitterTest {
         final RuleSplitterImpl splitter = spy(new RuleSplitterImpl());
         final SupportedTestNodeRule rule = new SupportedTestNodeRule();
         final int splitAfter = 3;
+
         splitter.split(rule, splitAfter);
+
         verify(splitter).split2(rule, splitAfter);
     }
 
@@ -49,13 +53,11 @@ public final class AbstractRuleSplitterTest {
 
         @Override
         protected boolean isSplittable2(final SupportedTestNodeRule rule) {
-            // do nothing
             return true;
         }
 
         @Override
         protected SplitResult split2(final SupportedTestNodeRule rule, final int splitAfter) {
-            // do nothing
             return null;
         }
     }

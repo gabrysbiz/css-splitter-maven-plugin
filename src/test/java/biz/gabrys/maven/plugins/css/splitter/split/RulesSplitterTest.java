@@ -1,7 +1,6 @@
 package biz.gabrys.maven.plugins.css.splitter.split;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -31,14 +30,8 @@ public final class RulesSplitterTest {
 
         final RulesContainer container = splitter.split(rules, 2);
 
-        final List<NodeRule> before = container.before;
-        assertEquals("Before rules quantity", 1, before.size());
-        assertEquals("Before rules first element", rule1, before.get(0));
-
-        final List<NodeRule> after = container.after;
-        assertEquals("After rules quantity", 1, after.size());
-        assertEquals("After rules first element", rule2, after.get(0));
-
+        assertThat(container.before).containsExactly(rule1);
+        assertThat(container.after).containsExactly(rule2);
         verify(rule1).getSize();
         verify(rule2).getSize();
         verifyNoMoreInteractions(rule1, rule2);
@@ -62,16 +55,8 @@ public final class RulesSplitterTest {
 
         final RulesContainer container = splitter.split(rules, 4);
 
-        final List<NodeRule> before = container.before;
-        assertEquals("Before rules quantity", 2, before.size());
-        assertEquals("Before rules first element", rule1, before.get(0));
-        assertEquals("Before rules second element", rule2, before.get(1));
-
-        final List<NodeRule> after = container.after;
-        assertEquals("After rules quantity", 2, after.size());
-        assertEquals("After rules first element", rule3, after.get(0));
-        assertEquals("After rules second element", rule4, after.get(1));
-
+        assertThat(container.before).containsExactly(rule1, rule2);
+        assertThat(container.after).containsExactly(rule3, rule4);
         verify(rule1).getSize();
         verify(rule2).getSize();
         verify(rule3).getSize();
@@ -97,15 +82,8 @@ public final class RulesSplitterTest {
 
         final RulesContainer container = splitter.split(rules, 4);
 
-        final List<NodeRule> before = container.before;
-        assertEquals("Before rules quantity", 2, before.size());
-        assertEquals("Before rules first element", rule1, before.get(0));
-        assertEquals("Before rules second element", ruleBefore, before.get(1));
-
-        final List<NodeRule> after = container.after;
-        assertEquals("After rules quantity", 1, after.size());
-        assertEquals("After rules first element", ruleAfter, after.get(0));
-
+        assertThat(container.before).containsExactly(rule1, ruleBefore);
+        assertThat(container.after).containsExactly(ruleAfter);
         verify(rule1).getSize();
         verify(rule2).getSize();
         verify(ruleSplitter).isSplittable(rule2);
@@ -131,15 +109,8 @@ public final class RulesSplitterTest {
 
         final RulesContainer container = splitter.split(rules, 4);
 
-        final List<NodeRule> before = container.before;
-        assertEquals("Before rules quantity", 1, before.size());
-        assertEquals("Before rules first element", ruleBefore, before.get(0));
-
-        final List<NodeRule> after = container.after;
-        assertEquals("After rules quantity", 2, after.size());
-        assertEquals("After rules first element", ruleAfter, after.get(0));
-        assertEquals("After rules second element", rule2, after.get(1));
-
+        assertThat(container.before).containsExactly(ruleBefore);
+        assertThat(container.after).containsExactly(ruleAfter, rule2);
         verify(rule1).getSize();
         verify(ruleSplitter).isSplittable(rule1);
         verify(ruleSplitter).split(rule1, 4);
@@ -167,16 +138,8 @@ public final class RulesSplitterTest {
 
         final RulesContainer container = splitter.split(rules, 4);
 
-        final List<NodeRule> before = container.before;
-        assertEquals("Before rules quantity", 2, before.size());
-        assertEquals("Before rules first element", rule1, before.get(0));
-        assertEquals("Before rules second element", ruleBefore, before.get(1));
-
-        final List<NodeRule> after = container.after;
-        assertEquals("After rules quantity", 2, after.size());
-        assertEquals("Before rules first element", ruleAfter, after.get(0));
-        assertEquals("Before rules second element", rule3, after.get(1));
-
+        assertThat(container.before).containsExactly(rule1, ruleBefore);
+        assertThat(container.after).containsExactly(ruleAfter, rule3);
         verify(rule1).getSize();
         verify(rule2).getSize();
         verify(ruleSplitter).isSplittable(rule2);
@@ -201,15 +164,8 @@ public final class RulesSplitterTest {
 
         final RulesContainer container = splitter.split(rules, 4);
 
-        final List<NodeRule> before = container.before;
-        assertEquals("Before rules quantity", 1, before.size());
-        assertEquals("Before rules first element", rule1, before.get(0));
-
-        final List<NodeRule> after = container.after;
-        assertEquals("After rules quantity", 2, after.size());
-        assertEquals("Before rules first element", rule2, after.get(0));
-        assertEquals("Before rules second element", rule3, after.get(1));
-
+        assertThat(container.before).containsExactly(rule1);
+        assertThat(container.after).containsExactly(rule2, rule3);
         verify(rule1).getSize();
         verify(rule2).getSize();
         verify(ruleSplitter).isSplittable(rule2);
@@ -230,14 +186,8 @@ public final class RulesSplitterTest {
 
         final RulesContainer container = splitter.split(rules, 4);
 
-        final List<NodeRule> before = container.before;
-        assertEquals("Before rules quantity", 2, before.size());
-        assertEquals("Before rules first element", rule1, before.get(0));
-        assertEquals("Before rules second element", rule2, before.get(1));
-
-        final List<NodeRule> after = container.after;
-        assertTrue("After rules should be empty", after.isEmpty());
-
+        assertThat(container.before).containsExactly(rule1, rule2);
+        assertThat(container.after).isEmpty();
         verify(rule1).getSize();
         verify(rule2).getSize();
         verifyNoMoreInteractions(rule1, rule2);

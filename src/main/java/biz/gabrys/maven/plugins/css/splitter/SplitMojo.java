@@ -2,7 +2,7 @@
  * CSS Splitter Maven Plugin
  * http://css-splitter-maven-plugin.projects.gabrys.biz/
  *
- * Copyright (c) 2015 Adam Gabryś
+ * Copyright (c) 2015 Adam Gabrys
  *
  * This file is licensed under the BSD 3-Clause (the "License").
  * You may not use this file except in compliance with the License.
@@ -377,6 +377,7 @@ public class SplitMojo extends AbstractMojo {
         logger.append("filesetPatternFormat", filesetPatternFormat);
         logger.append("includes", includes, new LazySimpleSanitizer(includes.length != 0, new ValueContainer() {
 
+            @Override
             public Object getValue() {
                 return getDefaultIncludes();
             }
@@ -399,6 +400,7 @@ public class SplitMojo extends AbstractMojo {
 
             private Object sanitizedValue;
 
+            @Override
             public boolean isValid(final Object value) {
                 if (cacheTokenValue != null) {
                     return true;
@@ -407,6 +409,7 @@ public class SplitMojo extends AbstractMojo {
                 return sanitizedValue == null;
             }
 
+            @Override
             public Object sanitize(final Object value) {
                 return sanitizedValue;
             }
@@ -473,6 +476,7 @@ public class SplitMojo extends AbstractMojo {
         }
     }
 
+    @Override
     public void execute() throws MojoExecutionException, MojoFailureException {
         logParameters();
         if (nonstrict) {

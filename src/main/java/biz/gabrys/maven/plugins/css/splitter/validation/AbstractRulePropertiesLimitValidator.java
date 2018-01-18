@@ -2,7 +2,7 @@
  * CSS Splitter Maven Plugin
  * http://css-splitter-maven-plugin.projects.gabrys.biz/
  *
- * Copyright (c) 2015 Adam Gabryś
+ * Copyright (c) 2015 Adam Gabrys
  *
  * This file is licensed under the BSD 3-Clause (the "License").
  * You may not use this file except in compliance with the License.
@@ -22,10 +22,12 @@ abstract class AbstractRulePropertiesLimitValidator<T extends NodeRule> implemen
         this.clazz = clazz;
     }
 
+    @Override
     public final boolean isSupportedType(final NodeRule rule) {
         return rule != null && rule.getClass() == clazz;
     }
 
+    @Override
     public final void validate(final NodeRule rule, final int limit) {
         if (!isSupportedType(rule)) {
             throw new IllegalArgumentException(String.format("Cannot cast an instance of the %s to the %s class!",

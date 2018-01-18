@@ -1,8 +1,6 @@
 package biz.gabrys.maven.plugins.css.splitter.split;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
@@ -46,22 +44,18 @@ public final class ComplexRuleSplitterTest {
         final SplitResult result = complexSplitter.split2(rule, 2);
 
         final ComplexRule firstRule = (ComplexRule) result.getBefore();
-        assertNotNull("First rule should not be equal to null", firstRule);
+        assertThat(firstRule).isNotNull();
         final List<String> firstRuleSelectors = firstRule.getSelectors();
-        assertEquals("First rule selectors quantity", selectors.size(), firstRuleSelectors.size());
-        assertTrue("First rule selectors list", selectors.containsAll(firstRuleSelectors));
-        final List<NodeRule> firstRuleChildren = firstRule.getRules();
-        assertEquals("First children rules list size", 1, firstRuleChildren.size());
-        assertEquals("First children rules first element", rule1, firstRuleChildren.get(0));
+        assertThat(firstRuleSelectors).hasSameSizeAs(selectors);
+        assertThat(selectors).containsAll(firstRuleSelectors);
+        assertThat(firstRule.getRules()).containsExactly(rule1);
 
         final ComplexRule secondRule = (ComplexRule) result.getAfter();
-        assertNotNull("Second rule should not be equal to null", secondRule);
+        assertThat(secondRule).isNotNull();
         final List<String> secondRuleSelectors = secondRule.getSelectors();
-        assertEquals("Second rule selectors quantity", selectors.size(), secondRuleSelectors.size());
-        assertTrue("Second rule selectors list", selectors.containsAll(secondRuleSelectors));
-        final List<NodeRule> secondRuleChildren = secondRule.getRules();
-        assertEquals("Second children rules list size", 1, secondRuleChildren.size());
-        assertEquals("Second children rules first element", rule2, secondRuleChildren.get(0));
+        assertThat(secondRuleSelectors).hasSameSizeAs(selectors);
+        assertThat(selectors).containsAll(secondRuleSelectors);
+        assertThat(secondRule.getRules()).containsExactly(rule2);
 
         verify(neighborsManager).fill(rule, firstRule, secondRule);
         verifyNoMoreInteractions(neighborsManager);

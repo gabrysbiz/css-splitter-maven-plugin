@@ -7,6 +7,21 @@
     </properties>
 
     <body>
+        <section id="release-2.0.0" name="Release 2.0.0">
+            <p>Features:</p>
+            <ul>
+                <li>Set compatibility with Java 6+</li>
+                <li>Set compatibility with Maven 3+</li>
+            </ul>
+            <p>Dependencies:</p>
+            <ul>
+                <li>
+                   Upgraded <a href="http://maven-plugin-utils.projects.gabrys.biz/">Maven Plugin Utils</a>
+                   from <a href="http://maven-plugin-utils.projects.gabrys.biz/1.4.1/">1.4.1</a>
+                   to <a href="http://maven-plugin-utils.projects.gabrys.biz/2.0.0/">2.0.0</a>
+               </li>
+            </ul>
+        </section>
         <section id="release-1.2.3" name="Release 1.2.3">
             <p>Dependencies:</p>
             <ul>
@@ -17,6 +32,7 @@
                     to <a href="http://maven-plugin-utils.projects.gabrys.biz/1.4.1/">1.4.1</a>
                 </li>
             </ul>
+            <p><a href="http://css-splitter-maven-plugin.projects.gabrys.biz/1.2.3/">See documentation</a></p>
         </section>
         <section id="release-1.2.2" name="Release 1.2.2">
             <p>Dependencies:</p>

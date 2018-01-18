@@ -1,7 +1,6 @@
 package biz.gabrys.maven.plugins.css.splitter.css.type;
 
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verifyZeroInteractions;
 
@@ -22,21 +21,21 @@ public final class TreeUtilsTest {
 
         TreeUtils.fillNeighbors(null, Arrays.asList(firstRule, secondRule, thirdRule, fourthRule));
 
-        assertNull("First rule parent invalid", firstRule.getParent());
-        assertNull("First rule previous invalid", firstRule.getPrevious());
-        assertSame("First rule next invalid", secondRule, firstRule.getNext());
+        assertThat(firstRule.getParent()).isNull();
+        assertThat(firstRule.getPrevious()).isNull();
+        assertThat(firstRule.getNext()).isSameAs(secondRule);
 
-        assertNull("Second rule parent invalid", secondRule.getParent());
-        assertSame("Second rule previous invalid", firstRule, secondRule.getPrevious());
-        assertSame("Second rule next invalid", thirdRule, secondRule.getNext());
+        assertThat(secondRule.getParent()).isNull();
+        assertThat(secondRule.getPrevious()).isSameAs(firstRule);
+        assertThat(secondRule.getNext()).isSameAs(thirdRule);
 
-        assertNull("Third rule parent invalid", thirdRule.getParent());
-        assertSame("Third rule previous invalid", secondRule, thirdRule.getPrevious());
-        assertSame("Third rule next invalid", fourthRule, thirdRule.getNext());
+        assertThat(thirdRule.getParent()).isNull();
+        assertThat(thirdRule.getPrevious()).isSameAs(secondRule);
+        assertThat(thirdRule.getNext()).isSameAs(fourthRule);
 
-        assertNull("Fourth rule parent invalid", fourthRule.getParent());
-        assertSame("Fourth rule previous invalid", thirdRule, fourthRule.getPrevious());
-        assertNull("Fourth rule next invalid", fourthRule.getNext());
+        assertThat(fourthRule.getParent()).isNull();
+        assertThat(fourthRule.getPrevious()).isSameAs(thirdRule);
+        assertThat(fourthRule.getNext()).isNull();
     }
 
     @Test
@@ -50,21 +49,21 @@ public final class TreeUtilsTest {
 
         TreeUtils.fillNeighbors(parent, Arrays.asList(firstRule, secondRule, thirdRule, fourthRule));
 
-        assertSame("First rule parent invalid", parent, firstRule.getParent());
-        assertNull("First rule previous invalid", firstRule.getPrevious());
-        assertSame("First rule next invalid", secondRule, firstRule.getNext());
+        assertThat(firstRule.getParent()).isSameAs(parent);
+        assertThat(firstRule.getPrevious()).isNull();
+        assertThat(firstRule.getNext()).isSameAs(secondRule);
 
-        assertSame("Second rule parent invalid", parent, secondRule.getParent());
-        assertSame("Second rule previous invalid", firstRule, secondRule.getPrevious());
-        assertSame("Second rule next invalid", thirdRule, secondRule.getNext());
+        assertThat(secondRule.getParent()).isSameAs(parent);
+        assertThat(secondRule.getPrevious()).isSameAs(firstRule);
+        assertThat(secondRule.getNext()).isSameAs(thirdRule);
 
-        assertSame("Third rule parent invalid", parent, thirdRule.getParent());
-        assertSame("Third rule previous invalid", secondRule, thirdRule.getPrevious());
-        assertSame("Third rule next invalid", fourthRule, thirdRule.getNext());
+        assertThat(thirdRule.getParent()).isSameAs(parent);
+        assertThat(thirdRule.getPrevious()).isSameAs(secondRule);
+        assertThat(thirdRule.getNext()).isSameAs(fourthRule);
 
-        assertSame("Fourth rule parent invalid", parent, fourthRule.getParent());
-        assertSame("Fourth rule previous invalid", thirdRule, fourthRule.getPrevious());
-        assertNull("Fourth rule next invalid", fourthRule.getNext());
+        assertThat(fourthRule.getParent()).isSameAs(parent);
+        assertThat(fourthRule.getPrevious()).isSameAs(thirdRule);
+        assertThat(fourthRule.getNext()).isNull();
 
         verifyZeroInteractions(parent);
     }
