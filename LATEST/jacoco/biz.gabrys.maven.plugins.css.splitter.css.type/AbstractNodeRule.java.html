@@ -2,7 +2,7 @@
  * CSS Splitter Maven Plugin
  * http://css-splitter-maven-plugin.projects.gabrys.biz/
  *
- * Copyright (c) 2015 Adam Gabryś
+ * Copyright (c) 2015 Adam Gabrys
  *
  * This file is licensed under the BSD 3-Clause (the &quot;License&quot;).
  * You may not use this file except in compliance with the License.
@@ -21,37 +21,40 @@ import java.util.List;
 
     private Integer size;
 
+    @Override
     public String getCode() {
-<span class="fc" id="L25">        final String[] lines = getLines();</span>
-<span class="fc" id="L26">        final StringBuilder code = new StringBuilder();</span>
-<span class="fc" id="L27">        code.append(lines[0]);</span>
-<span class="fc bfc" id="L28" title="All 2 branches covered.">        for (int i = 1; i &lt; lines.length; ++i) {</span>
-<span class="fc" id="L29">            code.append('\n');</span>
-<span class="fc" id="L30">            code.append(lines[i]);</span>
+<span class="fc" id="L26">        final String[] lines = getLines();</span>
+<span class="fc" id="L27">        final StringBuilder code = new StringBuilder();</span>
+<span class="fc" id="L28">        code.append(lines[0]);</span>
+<span class="fc bfc" id="L29" title="All 2 branches covered.">        for (int i = 1; i &lt; lines.length; ++i) {</span>
+<span class="fc" id="L30">            code.append('\n');</span>
+<span class="fc" id="L31">            code.append(lines[i]);</span>
         }
-<span class="fc" id="L32">        return code.toString();</span>
+<span class="fc" id="L33">        return code.toString();</span>
     }
 
+    @Override
     public String[] getLines() {
-<span class="fc" id="L36">        final List&lt;String&gt; lines = new LinkedList&lt;String&gt;();</span>
-<span class="fc" id="L37">        fillLines(lines);</span>
-<span class="fc" id="L38">        return lines.toArray(new String[0]);</span>
+<span class="fc" id="L38">        final List&lt;String&gt; lines = new LinkedList&lt;String&gt;();</span>
+<span class="fc" id="L39">        fillLines(lines);</span>
+<span class="fc" id="L40">        return lines.toArray(new String[0]);</span>
     }
 
     protected abstract void fillLines(List&lt;String&gt; lines);
 
+    @Override
     public int getSize() {
-<span class="fc bfc" id="L44" title="All 2 branches covered.">        if (size == null) {</span>
-<span class="fc" id="L45">            size = getSize2();</span>
+<span class="fc bfc" id="L47" title="All 2 branches covered.">        if (size == null) {</span>
+<span class="fc" id="L48">            size = getSize2();</span>
         }
-<span class="fc" id="L47">        return size;</span>
+<span class="fc" id="L50">        return size;</span>
     }
 
     protected abstract int getSize2();
 
     @Override
     public String toString() {
-<span class="fc" id="L54">        return getCode() + '\n';</span>
+<span class="fc" id="L57">        return getCode() + '\n';</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.0.201801022044</span></div></body></html>

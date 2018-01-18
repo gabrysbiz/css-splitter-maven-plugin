@@ -10,7 +10,7 @@
 <a class="jxr_linenumber" name="L2" href="#L2">2</a>   <em class="jxr_comment"> * CSS Splitter Maven Plugin</em>
 <a class="jxr_linenumber" name="L3" href="#L3">3</a>   <em class="jxr_comment"> * <a href="http://css-splitter-maven-plugin.projects.gabrys.biz" target="alexandria_uri">http://css-splitter-maven-plugin.projects.gabrys.biz</a>/</em>
 <a class="jxr_linenumber" name="L4" href="#L4">4</a>   <em class="jxr_comment"> *</em>
-<a class="jxr_linenumber" name="L5" href="#L5">5</a>   <em class="jxr_comment"> * Copyright (c) 2015 Adam Gabryś</em>
+<a class="jxr_linenumber" name="L5" href="#L5">5</a>   <em class="jxr_comment"> * Copyright (c) 2015 Adam Gabrys</em>
 <a class="jxr_linenumber" name="L6" href="#L6">6</a>   <em class="jxr_comment"> *</em>
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   <em class="jxr_comment"> * This file is licensed under the BSD 3-Clause (the "License").</em>
 <a class="jxr_linenumber" name="L8" href="#L8">8</a>   <em class="jxr_comment"> * You may not use this file except in compliance with the License.</em>
@@ -37,23 +37,24 @@
 <a class="jxr_linenumber" name="L29" href="#L29">29</a>          <strong class="jxr_keyword">this</strong>.strict = strict;
 <a class="jxr_linenumber" name="L30" href="#L30">30</a>      }
 <a class="jxr_linenumber" name="L31" href="#L31">31</a>  
-<a class="jxr_linenumber" name="L32" href="#L32">32</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">boolean</strong> isEnabled() {
-<a class="jxr_linenumber" name="L33" href="#L33">33</a>          <strong class="jxr_keyword">return</strong> !strict;
-<a class="jxr_linenumber" name="L34" href="#L34">34</a>      }
-<a class="jxr_linenumber" name="L35" href="#L35">35</a>  
-<a class="jxr_linenumber" name="L36" href="#L36">36</a>      @Override
-<a class="jxr_linenumber" name="L37" href="#L37">37</a>      <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> print2(<strong class="jxr_keyword">final</strong> <a href="../../../../../../../biz/gabrys/maven/plugins/css/splitter/css/type/ComplexRule.html">ComplexRule</a> rule) {
-<a class="jxr_linenumber" name="L38" href="#L38">38</a>          <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">final</strong> NodeRule child : rule.getRules()) {
-<a class="jxr_linenumber" name="L39" href="#L39">39</a>              <strong class="jxr_keyword">if</strong> (!(child instanceof StyleRule)) {
-<a class="jxr_linenumber" name="L40" href="#L40">40</a>                  logger.warn(String.format(<span class="jxr_string">"NON-STRICT: found non-standard content in %s rule!"</span>, rule.getType()));
-<a class="jxr_linenumber" name="L41" href="#L41">41</a>                  logger.warn(String.format(<span class="jxr_string">"NON-STRICT: non-standard content:%n%s"</span>, child.getCode()));
-<a class="jxr_linenumber" name="L42" href="#L42">42</a>                  logger.warn(String.format(<span class="jxr_string">"NON-STRICT: %s rule code:%n%s"</span>, rule.getType(), rule.getCode()));
-<a class="jxr_linenumber" name="L43" href="#L43">43</a>              }
-<a class="jxr_linenumber" name="L44" href="#L44">44</a>          }
-<a class="jxr_linenumber" name="L45" href="#L45">45</a>      }
-<a class="jxr_linenumber" name="L46" href="#L46">46</a>  }
+<a class="jxr_linenumber" name="L32" href="#L32">32</a>      @Override
+<a class="jxr_linenumber" name="L33" href="#L33">33</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">boolean</strong> isEnabled() {
+<a class="jxr_linenumber" name="L34" href="#L34">34</a>          <strong class="jxr_keyword">return</strong> !strict;
+<a class="jxr_linenumber" name="L35" href="#L35">35</a>      }
+<a class="jxr_linenumber" name="L36" href="#L36">36</a>  
+<a class="jxr_linenumber" name="L37" href="#L37">37</a>      @Override
+<a class="jxr_linenumber" name="L38" href="#L38">38</a>      <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> print2(<strong class="jxr_keyword">final</strong> <a href="../../../../../../../biz/gabrys/maven/plugins/css/splitter/css/type/ComplexRule.html">ComplexRule</a> rule) {
+<a class="jxr_linenumber" name="L39" href="#L39">39</a>          <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">final</strong> NodeRule child : rule.getRules()) {
+<a class="jxr_linenumber" name="L40" href="#L40">40</a>              <strong class="jxr_keyword">if</strong> (!(child instanceof StyleRule)) {
+<a class="jxr_linenumber" name="L41" href="#L41">41</a>                  logger.warn(String.format(<span class="jxr_string">"NON-STRICT: found non-standard content in %s rule!"</span>, rule.getType()));
+<a class="jxr_linenumber" name="L42" href="#L42">42</a>                  logger.warn(String.format(<span class="jxr_string">"NON-STRICT: non-standard content:%n%s"</span>, child.getCode()));
+<a class="jxr_linenumber" name="L43" href="#L43">43</a>                  logger.warn(String.format(<span class="jxr_string">"NON-STRICT: %s rule code:%n%s"</span>, rule.getType(), rule.getCode()));
+<a class="jxr_linenumber" name="L44" href="#L44">44</a>              }
+<a class="jxr_linenumber" name="L45" href="#L45">45</a>          }
+<a class="jxr_linenumber" name="L46" href="#L46">46</a>      }
+<a class="jxr_linenumber" name="L47" href="#L47">47</a>  }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2015&#x2013;2017 <a href="http://www.gabrys.biz/">gabrys.biz</a>. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2015&#x2013;2018 <a href="http://www.gabrys.biz/">gabrys.biz</a>. All rights reserved.</div>
 </body>
 </html>

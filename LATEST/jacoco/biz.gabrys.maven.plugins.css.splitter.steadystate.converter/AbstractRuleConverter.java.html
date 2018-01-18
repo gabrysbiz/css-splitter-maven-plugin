@@ -2,7 +2,7 @@
  * CSS Splitter Maven Plugin
  * http://css-splitter-maven-plugin.projects.gabrys.biz/
  *
- * Copyright (c) 2015 Adam Gabryś
+ * Copyright (c) 2015 Adam Gabrys
  *
  * This file is licensed under the BSD 3-Clause (the &quot;License&quot;).
  * You may not use this file except in compliance with the License.
@@ -26,17 +26,19 @@ abstract class AbstractRuleConverter&lt;F extends AbstractCSSRuleImpl, T extends
 <span class="fc" id="L26">        this.clazz = clazz;</span>
 <span class="fc" id="L27">    }</span>
 
+    @Override
     public final boolean isSupportedType(final CSSRule rule) {
-<span class="fc bfc" id="L30" title="All 4 branches covered.">        return rule != null &amp;&amp; rule.getClass() == clazz;</span>
+<span class="fc bfc" id="L31" title="All 4 branches covered.">        return rule != null &amp;&amp; rule.getClass() == clazz;</span>
     }
 
+    @Override
     public final T convert(final CSSRule rule) {
-<span class="fc bfc" id="L34" title="All 2 branches covered.">        if (!isSupportedType(rule)) {</span>
-<span class="fc" id="L35">            throw new UnsupportedRuleException(rule);</span>
+<span class="fc bfc" id="L36" title="All 2 branches covered.">        if (!isSupportedType(rule)) {</span>
+<span class="fc" id="L37">            throw new UnsupportedRuleException(rule);</span>
         }
-<span class="fc" id="L37">        return convert2(clazz.cast(rule));</span>
+<span class="fc" id="L39">        return convert2(clazz.cast(rule));</span>
     }
 
     protected abstract T convert2(F rule);
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.0.201801022044</span></div></body></html>

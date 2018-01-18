@@ -2,7 +2,7 @@
  * CSS Splitter Maven Plugin
  * http://css-splitter-maven-plugin.projects.gabrys.biz/
  *
- * Copyright (c) 2015 Adam Gabryś
+ * Copyright (c) 2015 Adam Gabrys
  *
  * This file is licensed under the BSD 3-Clause (the &quot;License&quot;).
  * You may not use this file except in compliance with the License.
@@ -18,28 +18,34 @@ package biz.gabrys.maven.plugins.css.splitter.css.type;
     private S previous;
     private S next;
 
+    @Override
     public P getParent() {
-<span class="fc" id="L22">        return parent;</span>
+<span class="fc" id="L23">        return parent;</span>
     }
 
+    @Override
     public void setParent(final P parent) {
-<span class="fc" id="L26">        this.parent = parent;</span>
-<span class="fc" id="L27">    }</span>
+<span class="fc" id="L28">        this.parent = parent;</span>
+<span class="fc" id="L29">    }</span>
 
+    @Override
     public S getPrevious() {
-<span class="fc" id="L30">        return previous;</span>
+<span class="fc" id="L33">        return previous;</span>
     }
 
+    @Override
     public void setPrevious(final S previous) {
-<span class="fc" id="L34">        this.previous = previous;</span>
-<span class="fc" id="L35">    }</span>
+<span class="fc" id="L38">        this.previous = previous;</span>
+<span class="fc" id="L39">    }</span>
 
+    @Override
     public S getNext() {
-<span class="fc" id="L38">        return next;</span>
+<span class="fc" id="L43">        return next;</span>
     }
 
+    @Override
     public void setNext(final S next) {
-<span class="fc" id="L42">        this.next = next;</span>
-<span class="fc" id="L43">    }</span>
+<span class="fc" id="L48">        this.next = next;</span>
+<span class="fc" id="L49">    }</span>
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.0.201801022044</span></div></body></html>

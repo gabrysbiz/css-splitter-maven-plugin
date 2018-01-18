@@ -2,7 +2,7 @@
  * CSS Splitter Maven Plugin
  * http://css-splitter-maven-plugin.projects.gabrys.biz/
  *
- * Copyright (c) 2015 Adam Gabryś
+ * Copyright (c) 2015 Adam Gabrys
  *
  * This file is licensed under the BSD 3-Clause (the &quot;License&quot;).
  * You may not use this file except in compliance with the License.
@@ -12,6 +12,7 @@
  */
 package biz.gabrys.maven.plugins.css.splitter.steadystate;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.EnumMap;
 import java.util.Map;
 
@@ -23,26 +24,34 @@ import com.steadystate.css.parser.SACParserCSS3;
 
 import biz.gabrys.maven.plugins.css.splitter.css.Standard;
 
-<span class="fc" id="L26">class SACParserFactory {</span>
+<span class="fc" id="L27">class SACParserFactory {</span>
 
     private static final Map&lt;Standard, Class&lt;? extends SACParser&gt;&gt; PARSERS_BY_CSS_STANDARD;
 
     static {
-<span class="fc" id="L31">        PARSERS_BY_CSS_STANDARD = new EnumMap&lt;Standard, Class&lt;? extends SACParser&gt;&gt;(Standard.class);</span>
-<span class="fc" id="L32">        PARSERS_BY_CSS_STANDARD.put(Standard.VERSION_1_0, SACParserCSS1.class);</span>
-<span class="fc" id="L33">        PARSERS_BY_CSS_STANDARD.put(Standard.VERSION_2_0, SACParserCSS2.class);</span>
-<span class="fc" id="L34">        PARSERS_BY_CSS_STANDARD.put(Standard.VERSION_2_1, SACParserCSS21.class);</span>
-<span class="fc" id="L35">        PARSERS_BY_CSS_STANDARD.put(Standard.VERSION_3_0, SACParserCSS3.class);</span>
-<span class="fc" id="L36">    }</span>
+<span class="fc" id="L32">        PARSERS_BY_CSS_STANDARD = new EnumMap&lt;Standard, Class&lt;? extends SACParser&gt;&gt;(Standard.class);</span>
+<span class="fc" id="L33">        PARSERS_BY_CSS_STANDARD.put(Standard.VERSION_1_0, SACParserCSS1.class);</span>
+<span class="fc" id="L34">        PARSERS_BY_CSS_STANDARD.put(Standard.VERSION_2_0, SACParserCSS2.class);</span>
+<span class="fc" id="L35">        PARSERS_BY_CSS_STANDARD.put(Standard.VERSION_2_1, SACParserCSS21.class);</span>
+<span class="fc" id="L36">        PARSERS_BY_CSS_STANDARD.put(Standard.VERSION_3_0, SACParserCSS3.class);</span>
+<span class="fc" id="L37">    }</span>
 
     SACParser create(final Standard standard) {
         try {
-<span class="fc" id="L40">            return PARSERS_BY_CSS_STANDARD.get(standard).newInstance();</span>
-<span class="nc" id="L41">        } catch (final InstantiationException e) {</span>
-<span class="nc" id="L42">            throw new IllegalStateException(e);</span>
-<span class="nc" id="L43">        } catch (final IllegalAccessException e) {</span>
-<span class="nc" id="L44">            throw new IllegalStateException(e);</span>
+<span class="fc" id="L41">            return PARSERS_BY_CSS_STANDARD.get(standard).getDeclaredConstructor().newInstance();</span>
+<span class="nc" id="L42">        } catch (final InstantiationException e) {</span>
+<span class="nc" id="L43">            throw new IllegalStateException(e);</span>
+<span class="nc" id="L44">        } catch (final IllegalAccessException e) {</span>
+<span class="nc" id="L45">            throw new IllegalStateException(e);</span>
+<span class="nc" id="L46">        } catch (final IllegalArgumentException e) {</span>
+<span class="nc" id="L47">            throw new IllegalStateException(e);</span>
+<span class="nc" id="L48">        } catch (final InvocationTargetException e) {</span>
+<span class="nc" id="L49">            throw new IllegalStateException(e);</span>
+<span class="nc" id="L50">        } catch (final NoSuchMethodException e) {</span>
+<span class="nc" id="L51">            throw new IllegalStateException(e);</span>
+<span class="nc" id="L52">        } catch (final SecurityException e) {</span>
+<span class="nc" id="L53">            throw new IllegalStateException(e);</span>
         }
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.0.201801022044</span></div></body></html>

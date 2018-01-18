@@ -2,7 +2,7 @@
  * CSS Splitter Maven Plugin
  * http://css-splitter-maven-plugin.projects.gabrys.biz/
  *
- * Copyright (c) 2015 Adam Gabryś
+ * Copyright (c) 2015 Adam Gabrys
  *
  * This file is licensed under the BSD 3-Clause (the &quot;License&quot;).
  * You may not use this file except in compliance with the License.
@@ -40,20 +40,23 @@ class AnyMessagePrinter implements MessagePrinter {
         }
 <span class="nc" id="L41">    }</span>
 
+    @Override
     public boolean isEnabled() {
-<span class="fc bfc" id="L44" title="All 2 branches covered.">        return !printers.isEmpty();</span>
+<span class="fc bfc" id="L45" title="All 2 branches covered.">        return !printers.isEmpty();</span>
     }
 
+    @Override
     public boolean isSupportedType(final NodeRule rule) {
-<span class="nc" id="L48">        return true;</span>
+<span class="nc" id="L50">        return true;</span>
     }
 
+    @Override
     public void print(final NodeRule rule) {
-<span class="fc bfc" id="L52" title="All 2 branches covered.">        for (final MessagePrinter printer : printers) {</span>
-<span class="fc bfc" id="L53" title="All 2 branches covered.">            if (printer.isSupportedType(rule)) {</span>
-<span class="fc" id="L54">                printer.print(rule);</span>
+<span class="fc bfc" id="L55" title="All 2 branches covered.">        for (final MessagePrinter printer : printers) {</span>
+<span class="fc bfc" id="L56" title="All 2 branches covered.">            if (printer.isSupportedType(rule)) {</span>
+<span class="fc" id="L57">                printer.print(rule);</span>
             }
-<span class="fc" id="L56">        }</span>
-<span class="fc" id="L57">    }</span>
+<span class="fc" id="L59">        }</span>
+<span class="fc" id="L60">    }</span>
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.7.9.201702052155</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.0.201801022044</span></div></body></html>
