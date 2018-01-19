@@ -2,6 +2,7 @@ package biz.gabrys.maven.plugins.css.splitter.css.type;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,9 +29,11 @@ public final class StyleRuleTest {
     @Test
     public void getLines_ruleHasTwoProperties() {
         final List<String> selectors = Arrays.asList("div", "#id", "ul > li");
-        final List<StyleProperty> properties = new ArrayList<StyleProperty>();
-        properties.add(new StyleProperty("name", "value"));
-        properties.add(new StyleProperty("prop", "val"));
+        final StyleProperty styleProperty1 = mock(StyleProperty.class);
+        when(styleProperty1.getCode()).thenReturn("name: value;");
+        final StyleProperty styleProperty2 = mock(StyleProperty.class);
+        when(styleProperty2.getCode()).thenReturn("prop: val;");
+        final List<StyleProperty> properties = Arrays.asList(styleProperty1, styleProperty2);
 
         final StyleRule rule = new StyleRule(selectors, properties);
         final String[] lines = rule.getLines();

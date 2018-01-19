@@ -53,9 +53,9 @@ public final class StyleRuleSplitterTest {
         final List<String> selectors = Arrays.asList("div", "p");
         when(rule.getSelectors()).thenReturn(selectors);
 
-        final StyleProperty property1 = new StyleProperty("prop1", "val1");
-        final StyleProperty property2 = new StyleProperty("prop2", "val2");
-        final StyleProperty property3 = new StyleProperty("prop3", "val3");
+        final StyleProperty property1 = mock(StyleProperty.class);
+        final StyleProperty property2 = mock(StyleProperty.class);
+        final StyleProperty property3 = mock(StyleProperty.class);
         final List<StyleProperty> properties = Arrays.asList(property1, property2, property3);
         when(rule.getProperties()).thenReturn(properties);
 

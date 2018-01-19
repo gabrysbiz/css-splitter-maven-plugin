@@ -50,7 +50,7 @@ public final class SteadyStateParserTest {
 
     // https://github.com/gabrysbiz/css-splitter-maven-plugin/issues/3#issuecomment-194338886
     @Test
-    public void parse_fontFaceRuleFromIssueNo3_returnsStyleSheet() {
+    public void parse_fontFaceRuleFromIssueNo3_parsesCorrectly() {
         final StringBuilder css = new StringBuilder();
         css.append("@font-face {");
         css.append("\tfont-family: FontAwesome;");
@@ -82,16 +82,46 @@ public final class SteadyStateParserTest {
 
         final List<StyleProperty> properties = fontFaceRule.getProperties();
         assertThat(properties).hasSize(5);
-        verityProperty(properties.get(0), "font-family", "FontAwesome");
-        verityProperty(properties.get(1), "src", "url(../base/fonts/fontawesome-webfont.eot)");
-        verityProperty(properties.get(2), "src", value.toString());
-        verityProperty(properties.get(3), "font-weight", "normal");
-        verityProperty(properties.get(4), "font-style", "normal");
+        verifyProperty(properties.get(0), "font-family", "FontAwesome");
+        verifyProperty(properties.get(1), "src", "url(../base/fonts/fontawesome-webfont.eot)");
+        verifyProperty(properties.get(2), "src", value.toString());
+        verifyProperty(properties.get(3), "font-weight", "normal");
+        verifyProperty(properties.get(4), "font-style", "normal");
     }
 
-    private static void verityProperty(final StyleProperty property, final String name, final String value) {
+    private static void verifyProperty(final StyleProperty property, final String name, final String value) {
         assertThat(property).isNotNull();
         assertThat(property.getName()).isEqualTo(name);
         assertThat(property.getValue()).isEqualTo(value);
+    }
+
+    // https://github.com/gabrysbiz/css-splitter-maven-plugin/issues/23
+    @Test
+    public void parse_useImportant_importantIsPreserved() {
+        final StringBuilder css = new StringBuilder();
+        css.append("missing-important {");
+        css.append("\twidth: 100px !important;");
+        css.append("}");
+
+        final SteadyStateParser parser = new SteadyStateParser(mock(Log.class));
+        final ParserOptions options = new ParserOptionsBuilder().withStandard(Standard.VERSION_3_0).withStrict(true).create();
+        final StyleSheet stylesheet = parser.parse(css.toString(), options);
+
+        assertThat(stylesheet).isNotNull();
+        final List<NodeRule> rules = stylesheet.getRules();
+        assertThat(rules).hasSize(1);
+        final NodeRule rule = rules.get(0);
+        assertThat(rule).isExactlyInstanceOf(StyleRule.class);
+        final StyleRule styleRule = (StyleRule) rule;
+        assertThat(styleRule.getSelectors()).containsExactly("missing-important");
+
+        final List<StyleProperty> properties = styleRule.getProperties();
+        assertThat(properties).hasSize(1);
+        final StyleProperty property = properties.get(0);
+        assertThat(property).isNotNull();
+        assertThat(property.getName()).isEqualTo("width");
+        assertThat(property.getValue()).isEqualTo("100px");
+        assertThat(property.isImportant()).isTrue();
+        assertThat(property.getCode()).isEqualTo("width: 100px !important;");
     }
 }

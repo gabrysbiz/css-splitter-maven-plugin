@@ -13,6 +13,13 @@
                 <li>Set compatibility with Java 6+</li>
                 <li>Set compatibility with Maven 3+</li>
             </ul>
+            <p>Bugs:</p>
+            <ul>
+                <li>
+                    Fixed missing <code>!important</code>
+                    (<a href="https://github.com/gabrysbiz/css-splitter-maven-plugin/issues/23">#23</a>)
+                </li>
+            </ul>
             <p>Dependencies:</p>
             <ul>
                 <li>
