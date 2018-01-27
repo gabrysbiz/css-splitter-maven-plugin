@@ -13,6 +13,7 @@
 package biz.gabrys.maven.plugins.css.splitter.steadystate.converter;
 
 import com.steadystate.css.dom.CSSUnknownRuleImpl;
+import com.steadystate.css.format.CSSFormat;
 
 import biz.gabrys.maven.plugins.css.splitter.css.type.UnknownRule;
 
@@ -24,6 +25,6 @@ class UnknownRuleConverter extends AbstractRuleConverter<CSSUnknownRuleImpl, Unk
 
     @Override
     protected UnknownRule convert2(final CSSUnknownRuleImpl rule) {
-        return new UnknownRule(rule.getCssText());
+        return new UnknownRule(rule.getCssText(new CSSFormat().setUseSourceStringValues(true)));
     }
 }

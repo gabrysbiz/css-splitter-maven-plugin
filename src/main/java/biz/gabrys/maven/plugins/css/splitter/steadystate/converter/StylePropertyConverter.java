@@ -13,12 +13,16 @@
 package biz.gabrys.maven.plugins.css.splitter.steadystate.converter;
 
 import com.steadystate.css.dom.Property;
+import com.steadystate.css.format.CSSFormat;
+import com.steadystate.css.format.CSSFormatable;
 
 import biz.gabrys.maven.plugins.css.splitter.css.type.StyleProperty;
 
 class StylePropertyConverter {
 
     StyleProperty convert(final Property property) {
-        return new StyleProperty(property.getName(), property.getValue().getCssText(), property.isImportant());
+        CSSFormatable cssFormatable = (CSSFormatable) property.getValue();
+        CSSFormat cssFormat = new CSSFormat().setUseSourceStringValues(true);
+        return new StyleProperty(property.getName(), cssFormatable.getCssText(cssFormat), property.isImportant());
     }
 }
