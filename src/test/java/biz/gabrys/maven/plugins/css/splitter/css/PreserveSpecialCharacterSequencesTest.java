@@ -18,7 +18,7 @@ public class PreserveSpecialCharacterSequencesTest {
         final String css = "div:after { content: \"css\\200Bparser\" }";
 
         final ParserOptions options = new ParserOptionsBuilder().withStandard(Standard.VERSION_3_0).withStrict(true)
-                .withStarHack(false).create();
+                                                                .withStarHack(false).create();
         final Log logger = mock(Log.class);
         final StyleSheet stylesheet = new SteadyStateParser(logger).parse(css, options);
         Assertions.assertThat(stylesheet.toString()).contains("\\200B");
