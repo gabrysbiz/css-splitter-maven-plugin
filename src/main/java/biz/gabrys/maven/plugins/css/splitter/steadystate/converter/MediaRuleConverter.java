@@ -20,6 +20,7 @@ import org.w3c.dom.css.CSSRuleList;
 
 import com.steadystate.css.dom.CSSMediaRuleImpl;
 import com.steadystate.css.dom.MediaListImpl;
+import com.steadystate.css.format.CSSFormat;
 
 import biz.gabrys.maven.plugins.css.splitter.css.Standard;
 import biz.gabrys.maven.plugins.css.splitter.css.type.ComplexRule;
@@ -62,7 +63,7 @@ class MediaRuleConverter extends AbstractRuleConverter<CSSMediaRuleImpl, Complex
         final List<String> selectors = new LinkedList<String>();
         final MediaListImpl mediaList = (MediaListImpl) rule.getMedia();
         for (int i = 0; i < mediaList.getLength(); ++i) {
-            selectors.add(mediaList.mediaQuery(i).getCssText(null));
+            selectors.add(mediaList.mediaQuery(i).getCssText(new CSSFormat().setUseSourceStringValues(true)));
         }
 
         final List<NodeRule> rules = new LinkedList<NodeRule>();
