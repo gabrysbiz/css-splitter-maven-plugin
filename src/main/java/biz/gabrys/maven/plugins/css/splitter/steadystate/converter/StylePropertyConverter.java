@@ -21,8 +21,8 @@ import biz.gabrys.maven.plugins.css.splitter.css.type.StyleProperty;
 class StylePropertyConverter {
 
     StyleProperty convert(final Property property) {
-        CSSFormatable cssFormatable = (CSSFormatable)property.getValue();
-		CSSFormat cssFormat = new CSSFormat().setUseSourceStringValues(true);
-		return new StyleProperty(property.getName(), cssFormatable.getCssText(cssFormat), property.isImportant());
+        CSSFormatable cssFormatable = (CSSFormatable) property.getValue();
+        CSSFormat cssFormat = new CSSFormat().setUseSourceStringValues(true);
+        return new StyleProperty(property.getName(), cssFormatable.getCssText(cssFormat), property.isImportant());
     }
 }
