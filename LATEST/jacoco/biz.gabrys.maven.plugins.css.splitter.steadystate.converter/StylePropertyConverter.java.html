@@ -16,10 +16,21 @@ import com.steadystate.css.dom.Property;
 
 import biz.gabrys.maven.plugins.css.splitter.css.type.StyleProperty;
 
-<span class="fc" id="L19">class StylePropertyConverter {</span>
+class StylePropertyConverter {
+
+    private final CssFormatter formatter;
+
+    StylePropertyConverter() {
+<span class="fc" id="L24">        this(new CssFormatter());</span>
+<span class="fc" id="L25">    }</span>
+
+    // for tests
+<span class="fc" id="L28">    StylePropertyConverter(final CssFormatter formatter) {</span>
+<span class="fc" id="L29">        this.formatter = formatter;</span>
+<span class="fc" id="L30">    }</span>
 
     StyleProperty convert(final Property property) {
-<span class="fc" id="L22">        return new StyleProperty(property.getName(), property.getValue().getCssText(), property.isImportant());</span>
+<span class="fc" id="L33">        return new StyleProperty(property.getName(), formatter.format(property.getValue()), property.isImportant());</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.0.201801022044</span></div></body></html>
