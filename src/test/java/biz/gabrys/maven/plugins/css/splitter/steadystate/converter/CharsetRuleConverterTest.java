@@ -1,6 +1,7 @@
 package biz.gabrys.maven.plugins.css.splitter.steadystate.converter;
 
-import org.junit.Assert;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.junit.Test;
 
 import com.steadystate.css.dom.CSSCharsetRuleImpl;
@@ -13,8 +14,10 @@ public final class CharsetRuleConverterTest {
     public void isSupportedType_ruleHasValidType_returnsTrue() {
         final CharsetRuleConverter converter = new CharsetRuleConverter();
         final CSSCharsetRuleImpl rule = new CSSCharsetRuleImpl();
+
         final boolean supported = converter.isSupportedType(rule);
-        Assert.assertTrue("Should return true.", supported);
+
+        assertThat(supported).isTrue();
     }
 
     @Test
@@ -25,7 +28,8 @@ public final class CharsetRuleConverterTest {
         rule.setCssText(code);
 
         final SimpleRule converted = converter.convert(rule);
-        Assert.assertNotNull("Converted rule instance.", converted);
-        Assert.assertEquals("Converted rule code.", code, converted.getCode());
+
+        assertThat(converted).isNotNull();
+        assertThat(converted.getCode()).isEqualTo(code);
     }
 }

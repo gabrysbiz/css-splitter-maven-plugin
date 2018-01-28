@@ -2,7 +2,7 @@
  * CSS Splitter Maven Plugin
  * http://css-splitter-maven-plugin.projects.gabrys.biz/
  *
- * Copyright (c) 2015 Adam Gabryś
+ * Copyright (c) 2015 Adam Gabrys
  *
  * This file is licensed under the BSD 3-Clause (the "License").
  * You may not use this file except in compliance with the License.
@@ -25,8 +25,16 @@ import biz.gabrys.maven.plugins.css.splitter.css.type.StyleRule;
 
 class FontFaceRuleConverter extends AbstractRuleConverter<CSSFontFaceRuleImpl, StyleRule> {
 
-    public FontFaceRuleConverter() {
+    private final StylePropertyConverter converter;
+
+    FontFaceRuleConverter() {
+        this(new StylePropertyConverter());
+    }
+
+    // for tests
+    FontFaceRuleConverter(final StylePropertyConverter converter) {
         super(CSSFontFaceRuleImpl.class);
+        this.converter = converter;
     }
 
     @Override
@@ -34,7 +42,7 @@ class FontFaceRuleConverter extends AbstractRuleConverter<CSSFontFaceRuleImpl, S
         final CSSStyleDeclarationImpl style = (CSSStyleDeclarationImpl) rule.getStyle();
         final List<StyleProperty> properties = new LinkedList<StyleProperty>();
         for (final Property property : style.getProperties()) {
-            properties.add(new StyleProperty(property.getName(), property.getValue().getCssText()));
+            properties.add(converter.convert(property));
         }
         return new StyleRule(Arrays.asList("@font-face"), properties, false);
     }

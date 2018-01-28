@@ -2,7 +2,7 @@
  * CSS Splitter Maven Plugin
  * http://css-splitter-maven-plugin.projects.gabrys.biz/
  *
- * Copyright (c) 2015 Adam Gabryś
+ * Copyright (c) 2015 Adam Gabrys
  *
  * This file is licensed under the BSD 3-Clause (the "License").
  * You may not use this file except in compliance with the License.
@@ -46,22 +46,27 @@ public class OrderedTree<T> implements OrderedTreeNode<T> {
         children = new ArrayList<OrderedTree<T>>(numberOfChildren);
     }
 
+    @Override
     public List<OrderedTreeNode<T>> getChildren() {
         return new ArrayList<OrderedTreeNode<T>>(children);
     }
 
+    @Override
     public boolean hasValue() {
         return value != null;
     }
 
+    @Override
     public T getValue() {
         return value;
     }
 
+    @Override
     public int getOrder() {
         return order;
     }
 
+    @Override
     public int size() {
         int size = hasValue() ? 1 : 0;
         for (final OrderedTree<T> child : children) {
@@ -73,6 +78,7 @@ public class OrderedTree<T> implements OrderedTreeNode<T> {
         return size;
     }
 
+    @Override
     public int getDepth() {
         if (isLeaf()) {
             return 0;

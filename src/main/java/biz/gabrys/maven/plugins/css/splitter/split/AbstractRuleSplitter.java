@@ -2,7 +2,7 @@
  * CSS Splitter Maven Plugin
  * http://css-splitter-maven-plugin.projects.gabrys.biz/
  *
- * Copyright (c) 2015 Adam Gabryś
+ * Copyright (c) 2015 Adam Gabrys
  *
  * This file is licensed under the BSD 3-Clause (the "License").
  * You may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ abstract class AbstractRuleSplitter<T extends NodeRule> implements RuleSplitter 
         this.clazz = clazz;
     }
 
+    @Override
     public final boolean isSplittable(final NodeRule rule) {
         if (rule == null || rule.getClass() != clazz) {
             return false;
@@ -31,6 +32,7 @@ abstract class AbstractRuleSplitter<T extends NodeRule> implements RuleSplitter 
 
     protected abstract boolean isSplittable2(T rule);
 
+    @Override
     public final SplitResult split(final NodeRule rule, final int splitAfter) {
         if (!isSplittable(rule)) {
             throw new IllegalArgumentException(String.format("The rule is unsplittable! Code:%n%s", rule));

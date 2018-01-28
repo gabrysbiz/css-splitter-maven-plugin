@@ -2,7 +2,7 @@
  * CSS Splitter Maven Plugin
  * http://css-splitter-maven-plugin.projects.gabrys.biz/
  *
- * Copyright (c) 2015 Adam Gabryś
+ * Copyright (c) 2015 Adam Gabrys
  *
  * This file is licensed under the BSD 3-Clause (the "License").
  * You may not use this file except in compliance with the License.
@@ -27,8 +27,16 @@ import biz.gabrys.maven.plugins.css.splitter.css.type.StyleRule;
 
 class PageRuleConverter extends AbstractRuleConverter<CSSPageRuleImpl, StyleRule> {
 
+    private final StylePropertyConverter converter;
+
     PageRuleConverter() {
+        this(new StylePropertyConverter());
+    }
+
+    // for tests
+    PageRuleConverter(final StylePropertyConverter converter) {
         super(CSSPageRuleImpl.class);
+        this.converter = converter;
     }
 
     @Override
@@ -36,7 +44,7 @@ class PageRuleConverter extends AbstractRuleConverter<CSSPageRuleImpl, StyleRule
         final CSSStyleDeclarationImpl style = (CSSStyleDeclarationImpl) rule.getStyle();
         final List<StyleProperty> properties = new LinkedList<StyleProperty>();
         for (final Property property : style.getProperties()) {
-            properties.add(new StyleProperty(property.getName(), property.getValue().getCssText()));
+            properties.add(converter.convert(property));
         }
         String selector = "@page";
         final String selectorText = rule.getSelectorText();

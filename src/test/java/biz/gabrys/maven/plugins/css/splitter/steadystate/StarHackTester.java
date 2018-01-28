@@ -1,10 +1,11 @@
 package biz.gabrys.maven.plugins.css.splitter.steadystate;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+
 import java.util.List;
 
 import org.apache.maven.plugin.logging.Log;
-import org.junit.Assert;
-import org.mockito.Mockito;
 
 import biz.gabrys.maven.plugins.css.splitter.css.Standard;
 import biz.gabrys.maven.plugins.css.splitter.css.type.NodeRule;
@@ -30,23 +31,27 @@ final class StarHackTester {
         css.append(" height: 0;\n");
         css.append("}\n");
 
-        final SteadyStateParser parser = new SteadyStateParser(Mockito.mock(Log.class));
+        final SteadyStateParser parser = new SteadyStateParser(mock(Log.class));
         final ParserOptions options = new ParserOptionsBuilder().withStandard(standard).withStarHack(starHackAllowed).create();
         return parser.parse(css.toString(), options);
     }
 
     public void verify(final StyleSheet stylesheet) {
-        Assert.assertNotNull(String.format("StyleSheet instance for standard %s.", standard), stylesheet);
         final List<NodeRule> rules = stylesheet.getRules();
-        Assert.assertNotNull(String.format("StyleSheet rules instnace for standard %s.", standard), rules);
-        Assert.assertEquals(String.format("StyleSheet children rules for standard %s.", standard), 1, rules.size());
-        Assert.assertEquals(String.format("First child class for standard %s.", standard), StyleRule.class, rules.get(0).getClass());
+        assertThat(rules).hasSize(1);
+        assertThat(rules.get(0)).isExactlyInstanceOf(StyleRule.class);
 
         final StyleRule styleRule = (StyleRule) rules.get(0);
         final List<StyleProperty> properties = styleRule.getProperties();
-        Assert.assertEquals(String.format("Properties quantity for standard %s.", standard), 3, properties.size());
-        Assert.assertEquals(String.format("First property code for standard %s.", standard), "width: 0;", properties.get(0).getCode());
-        Assert.assertEquals(String.format("Second property code for standard %s.", standard), "*width: 0;", properties.get(1).getCode());
-        Assert.assertEquals(String.format("Third property code for standard %s.", standard), "height: 0;", properties.get(2).getCode());
+        assertThat(properties).hasSize(3);
+        final StyleProperty property1 = properties.get(0);
+        assertThat(property1).isNotNull();
+        assertThat(property1.getCode()).isEqualTo("width: 0;");
+        final StyleProperty property2 = properties.get(1);
+        assertThat(property2).isNotNull();
+        assertThat(property2.getCode()).isEqualTo("*width: 0;");
+        final StyleProperty property3 = properties.get(2);
+        assertThat(property3).isNotNull();
+        assertThat(property3.getCode()).isEqualTo("height: 0;");
     }
 }

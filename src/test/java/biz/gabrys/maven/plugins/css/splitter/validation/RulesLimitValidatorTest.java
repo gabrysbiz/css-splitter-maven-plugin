@@ -1,7 +1,12 @@
 package biz.gabrys.maven.plugins.css.splitter.validation;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.when;
+
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import biz.gabrys.maven.plugins.css.splitter.css.type.StyleSheet;
 
@@ -12,14 +17,14 @@ public final class RulesLimitValidatorTest {
         final int limit = 10;
         final RulesLimitValidator validator = new RulesLimitValidator(limit);
 
-        final StyleSheet stylesheet = Mockito.mock(StyleSheet.class);
-        Mockito.when(stylesheet.getSize()).thenReturn(limit - 1);
+        final StyleSheet stylesheet = mock(StyleSheet.class);
+        when(stylesheet.getSize()).thenReturn(limit - 1);
 
         validator.validate(stylesheet);
 
-        Mockito.verify(stylesheet).getSize();
-        Mockito.verifyNoMoreInteractions(stylesheet);
-        Mockito.verifyZeroInteractions(stylesheet);
+        verify(stylesheet).getSize();
+        verifyNoMoreInteractions(stylesheet);
+        verifyZeroInteractions(stylesheet);
     }
 
     @Test
@@ -27,14 +32,14 @@ public final class RulesLimitValidatorTest {
         final int limit = 10;
         final RulesLimitValidator validator = new RulesLimitValidator(limit);
 
-        final StyleSheet stylesheet = Mockito.mock(StyleSheet.class);
-        Mockito.when(stylesheet.getSize()).thenReturn(limit);
+        final StyleSheet stylesheet = mock(StyleSheet.class);
+        when(stylesheet.getSize()).thenReturn(limit);
 
         validator.validate(stylesheet);
 
-        Mockito.verify(stylesheet).getSize();
-        Mockito.verifyNoMoreInteractions(stylesheet);
-        Mockito.verifyZeroInteractions(stylesheet);
+        verify(stylesheet).getSize();
+        verifyNoMoreInteractions(stylesheet);
+        verifyZeroInteractions(stylesheet);
     }
 
     @Test(expected = ValidationException.class)
@@ -42,8 +47,8 @@ public final class RulesLimitValidatorTest {
         final int limit = 10;
         final RulesLimitValidator validator = new RulesLimitValidator(limit);
 
-        final StyleSheet stylesheet = Mockito.mock(StyleSheet.class);
-        Mockito.when(stylesheet.getSize()).thenReturn(limit + 1);
+        final StyleSheet stylesheet = mock(StyleSheet.class);
+        when(stylesheet.getSize()).thenReturn(limit + 1);
 
         validator.validate(stylesheet);
     }

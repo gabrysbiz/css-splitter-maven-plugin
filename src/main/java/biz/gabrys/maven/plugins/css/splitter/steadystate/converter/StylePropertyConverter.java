@@ -12,27 +12,24 @@
  */
 package biz.gabrys.maven.plugins.css.splitter.steadystate.converter;
 
-import com.steadystate.css.dom.CSSImportRuleImpl;
-import com.steadystate.css.format.CSSFormatable;
+import com.steadystate.css.dom.Property;
 
-import biz.gabrys.maven.plugins.css.splitter.css.type.SimpleRule;
+import biz.gabrys.maven.plugins.css.splitter.css.type.StyleProperty;
 
-class ImportRuleConverter extends AbstractRuleConverter<CSSImportRuleImpl, SimpleRule> {
+class StylePropertyConverter {
 
     private final CssFormatter formatter;
 
-    ImportRuleConverter() {
+    StylePropertyConverter() {
         this(new CssFormatter());
     }
 
     // for tests
-    ImportRuleConverter(final CssFormatter formatter) {
-        super(CSSImportRuleImpl.class);
+    StylePropertyConverter(final CssFormatter formatter) {
         this.formatter = formatter;
     }
 
-    @Override
-    protected SimpleRule convert2(final CSSImportRuleImpl rule) {
-        return new SimpleRule(formatter.format((CSSFormatable) rule));
+    StyleProperty convert(final Property property) {
+        return new StyleProperty(property.getName(), formatter.format(property.getValue()), property.isImportant());
     }
 }

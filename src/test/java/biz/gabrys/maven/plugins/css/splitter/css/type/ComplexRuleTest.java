@@ -1,13 +1,15 @@
 package biz.gabrys.maven.plugins.css.splitter.css.type;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import org.junit.Assert;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 public final class ComplexRuleTest {
 
@@ -19,10 +21,9 @@ public final class ComplexRuleTest {
         final ComplexRule rule = new ComplexRule("@media", selectors, rules);
         final String[] lines = rule.getLines();
 
-        Assert.assertNotNull("Lines object.", lines);
-        Assert.assertEquals("Lines quantity.", 2, lines.length);
-        Assert.assertEquals("Line no. 1.", "@media sel1, sel2 {", lines[0]);
-        Assert.assertEquals("Line no. 2.", "}", lines[1]);
+        assertThat(lines).hasSize(2);
+        assertThat(lines[0]).isEqualTo("@media sel1, sel2 {");
+        assertThat(lines[1]).isEqualTo("}");
     }
 
     @Test
@@ -30,26 +31,25 @@ public final class ComplexRuleTest {
         final List<String> selectors = Arrays.asList("selector");
 
         final List<NodeRule> rules = new ArrayList<NodeRule>();
-        final NodeRule child1 = Mockito.mock(NodeRule.class);
-        Mockito.when(child1.getLines()).thenReturn(new String[] { "rule {", "  prop: val;", "}" });
+        final NodeRule child1 = mock(NodeRule.class);
+        when(child1.getLines()).thenReturn(new String[] { "rule {", "  prop: val;", "}" });
         rules.add(child1);
-        final NodeRule child2 = Mockito.mock(NodeRule.class);
-        Mockito.when(child2.getLines()).thenReturn(new String[] { "rule2 {", "  ", "}" });
+        final NodeRule child2 = mock(NodeRule.class);
+        when(child2.getLines()).thenReturn(new String[] { "rule2 {", "  ", "}" });
         rules.add(child2);
 
         final ComplexRule rule = new ComplexRule("@media", selectors, rules);
         final String[] lines = rule.getLines();
 
-        Assert.assertNotNull("Lines object.", lines);
-        Assert.assertEquals("Lines quantity.", 8, lines.length);
-        Assert.assertEquals("Line no. 1.", "@media selector {", lines[0]);
-        Assert.assertEquals("Line no. 2.", "  rule {", lines[1]);
-        Assert.assertEquals("Line no. 3.", "    prop: val;", lines[2]);
-        Assert.assertEquals("Line no. 4.", "  }", lines[3]);
-        Assert.assertEquals("Line no. 5.", "  rule2 {", lines[4]);
-        Assert.assertEquals("Line no. 6.", "    ", lines[5]);
-        Assert.assertEquals("Line no. 7.", "  }", lines[6]);
-        Assert.assertEquals("Line no. 8.", "}", lines[7]);
+        assertThat(lines).hasSize(8);
+        assertThat(lines[0]).isEqualTo("@media selector {");
+        assertThat(lines[1]).isEqualTo("  rule {");
+        assertThat(lines[2]).isEqualTo("    prop: val;");
+        assertThat(lines[3]).isEqualTo("  }");
+        assertThat(lines[4]).isEqualTo("  rule2 {");
+        assertThat(lines[5]).isEqualTo("    ");
+        assertThat(lines[6]).isEqualTo("  }");
+        assertThat(lines[7]).isEqualTo("}");
     }
 
     @Test
@@ -60,7 +60,7 @@ public final class ComplexRuleTest {
         final ComplexRule rule = new ComplexRule("@media", selectors, rules);
         final int size = rule.getSize2();
 
-        Assert.assertEquals("Rule size.", 1, size);
+        assertThat(size).isEqualTo(1);
     }
 
     @Test
@@ -68,16 +68,16 @@ public final class ComplexRuleTest {
         final List<String> selectors = Collections.emptyList();
 
         final List<NodeRule> rules = new ArrayList<NodeRule>();
-        final NodeRule child1 = Mockito.mock(NodeRule.class);
-        Mockito.when(child1.getSize()).thenReturn(1);
+        final NodeRule child1 = mock(NodeRule.class);
+        when(child1.getSize()).thenReturn(1);
         rules.add(child1);
-        final NodeRule child2 = Mockito.mock(NodeRule.class);
-        Mockito.when(child2.getSize()).thenReturn(4);
+        final NodeRule child2 = mock(NodeRule.class);
+        when(child2.getSize()).thenReturn(4);
         rules.add(child2);
 
         final ComplexRule rule = new ComplexRule("@media", selectors, rules);
         final int size = rule.getSize2();
 
-        Assert.assertEquals("Rule size.", 5, size);
+        assertThat(size).isEqualTo(5);
     }
 }

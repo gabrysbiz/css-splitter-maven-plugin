@@ -2,7 +2,7 @@
  * CSS Splitter Maven Plugin
  * http://css-splitter-maven-plugin.projects.gabrys.biz/
  *
- * Copyright (c) 2015 Adam Gabryś
+ * Copyright (c) 2015 Adam Gabrys
  *
  * This file is licensed under the BSD 3-Clause (the "License").
  * You may not use this file except in compliance with the License.
@@ -16,10 +16,12 @@ public class StyleProperty extends NodeImpl<StyleRule, StyleProperty> {
 
     private final String name;
     private final String value;
+    private final boolean important;
 
-    public StyleProperty(final String name, final String value) {
+    public StyleProperty(final String name, final String value, final boolean important) {
         this.name = name;
         this.value = value;
+        this.important = important;
     }
 
     public String getName() {
@@ -30,8 +32,20 @@ public class StyleProperty extends NodeImpl<StyleRule, StyleProperty> {
         return value;
     }
 
+    public boolean isImportant() {
+        return important;
+    }
+
     public String getCode() {
-        return name + ": " + value + ';';
+        final StringBuilder code = new StringBuilder();
+        code.append(name);
+        code.append(": ");
+        code.append(value);
+        if (important) {
+            code.append(" !important");
+        }
+        code.append(';');
+        return code.toString();
     }
 
     @Override

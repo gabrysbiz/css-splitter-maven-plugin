@@ -12,27 +12,30 @@ properties([[
 node {
     timestamps {
         stage('Pre Build Cleanup') {
-           step($class: 'WsCleanup')
+            cleanWs()
         }
         stage('Checkout') {
             checkout scm
         }
 
-        withMaven(maven: 'MVN-3', jdk: 'JDK-8', mavenLocalRepo: '.repository') {
-            stage('Build') {
-                sh 'mvn -e install site -DskipTests'
+        stage('Build') {
+            withMaven(maven: 'MVN-3', jdk: 'JDK-9', mavenLocalRepo: '.repository', options: [junitPublisher(disabled: true), openTasksPublisher(disabled: true)]) {
+                sh 'mvn -e package -DskipTests'
             }
-            stage('Test') {
-                sh 'mvn -e test'
-                junit 'target/surefire-reports/TEST-*.xml'
+        }
+        stage('Verify') {
+            withMaven(maven: 'MVN-3', jdk: 'JDK-9', mavenLocalRepo: '.repository', options: [artifactsPublisher(disabled: true), dependenciesFingerprintPublisher(disabled: true)]) {
+                sh 'mvn -e verify'
+            }
+        }
+        stage('Build Docs') {
+            withMaven(maven: 'MVN-3', jdk: 'JDK-9', mavenLocalRepo: '.repository', options: [artifactsPublisher(disabled: true), dependenciesFingerprintPublisher(disabled: true), junitPublisher(disabled: true), openTasksPublisher(disabled: true)]) {
+                sh 'mvn -e site'
             }
         }
 
-        stage('Archive') {
-            archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
-        }
         stage('Post Build Cleanup') {
-           step($class: 'WsCleanup')
+            cleanWs()
         }
     }
 }

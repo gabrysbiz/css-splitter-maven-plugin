@@ -1,5 +1,5 @@
 /.classpath
 /.project
 /.settings
-/src/site/resources/files
-/target
+/src/site/resources/files/
+/target/

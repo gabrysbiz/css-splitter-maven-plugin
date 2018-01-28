@@ -2,7 +2,7 @@
  * CSS Splitter Maven Plugin
  * http://css-splitter-maven-plugin.projects.gabrys.biz/
  *
- * Copyright (c) 2015 Adam Gabryś
+ * Copyright (c) 2015 Adam Gabrys
  *
  * This file is licensed under the BSD 3-Clause (the "License").
  * You may not use this file except in compliance with the License.
@@ -28,16 +28,19 @@ import biz.gabrys.maven.plugins.css.splitter.css.type.NodeRule;
 class MediaRuleConverter extends AbstractRuleConverter<CSSMediaRuleImpl, ComplexRule> {
 
     private final RuleConverter<?> converter;
+    private final CssFormatter formatter;
 
     MediaRuleConverter(final Standard standard, final boolean strict) {
         super(CSSMediaRuleImpl.class);
         converter = createConverter(this, standard, strict);
+        formatter = new CssFormatter();
     }
 
     // for tests
-    MediaRuleConverter(final RuleConverter<?> converter) {
+    MediaRuleConverter(final RuleConverter<?> converter, final CssFormatter formatter) {
         super(CSSMediaRuleImpl.class);
         this.converter = converter;
+        this.formatter = formatter;
     }
 
     static RuleConverter<?> createConverter(final MediaRuleConverter thisObject, final Standard standard, final boolean strict) {
@@ -62,7 +65,7 @@ class MediaRuleConverter extends AbstractRuleConverter<CSSMediaRuleImpl, Complex
         final List<String> selectors = new LinkedList<String>();
         final MediaListImpl mediaList = (MediaListImpl) rule.getMedia();
         for (int i = 0; i < mediaList.getLength(); ++i) {
-            selectors.add(mediaList.mediaQuery(i).getCssText(null));
+            selectors.add(formatter.format(mediaList.mediaQuery(i)));
         }
 
         final List<NodeRule> rules = new LinkedList<NodeRule>();

@@ -2,7 +2,7 @@
  * CSS Splitter Maven Plugin
  * http://css-splitter-maven-plugin.projects.gabrys.biz/
  *
- * Copyright (c) 2015 Adam Gabryś
+ * Copyright (c) 2015 Adam Gabrys
  *
  * This file is licensed under the BSD 3-Clause (the "License").
  * You may not use this file except in compliance with the License.
@@ -12,6 +12,7 @@
  */
 package biz.gabrys.maven.plugins.css.splitter.steadystate;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.EnumMap;
 import java.util.Map;
 
@@ -37,10 +38,18 @@ class SACParserFactory {
 
     SACParser create(final Standard standard) {
         try {
-            return PARSERS_BY_CSS_STANDARD.get(standard).newInstance();
+            return PARSERS_BY_CSS_STANDARD.get(standard).getDeclaredConstructor().newInstance();
         } catch (final InstantiationException e) {
             throw new IllegalStateException(e);
         } catch (final IllegalAccessException e) {
+            throw new IllegalStateException(e);
+        } catch (final IllegalArgumentException e) {
+            throw new IllegalStateException(e);
+        } catch (final InvocationTargetException e) {
+            throw new IllegalStateException(e);
+        } catch (final NoSuchMethodException e) {
+            throw new IllegalStateException(e);
+        } catch (final SecurityException e) {
             throw new IllegalStateException(e);
         }
     }

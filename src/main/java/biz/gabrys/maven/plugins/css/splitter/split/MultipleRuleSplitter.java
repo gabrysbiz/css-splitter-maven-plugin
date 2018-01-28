@@ -2,7 +2,7 @@
  * CSS Splitter Maven Plugin
  * http://css-splitter-maven-plugin.projects.gabrys.biz/
  *
- * Copyright (c) 2015 Adam Gabryś
+ * Copyright (c) 2015 Adam Gabrys
  *
  * This file is licensed under the BSD 3-Clause (the "License").
  * You may not use this file except in compliance with the License.
@@ -25,6 +25,7 @@ class MultipleRuleSplitter implements RuleSplitter {
         this.splitters = new ArrayList<RuleSplitter>(splitters);
     }
 
+    @Override
     public boolean isSplittable(final NodeRule rule) {
         for (final RuleSplitter splitter : splitters) {
             if (splitter.isSplittable(rule)) {
@@ -34,6 +35,7 @@ class MultipleRuleSplitter implements RuleSplitter {
         return false;
     }
 
+    @Override
     public SplitResult split(final NodeRule rule, final int splitAfter) {
         for (final RuleSplitter splitter : splitters) {
             if (splitter.isSplittable(rule)) {

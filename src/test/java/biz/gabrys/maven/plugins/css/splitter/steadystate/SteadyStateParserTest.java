@@ -1,12 +1,13 @@
 package biz.gabrys.maven.plugins.css.splitter.steadystate;
 
-import java.util.Iterator;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+
 import java.util.List;
 
 import org.apache.maven.plugin.logging.Log;
-import org.junit.Assert;
 import org.junit.Test;
-import org.mockito.Mockito;
+import org.junit.runner.RunWith;
 
 import biz.gabrys.maven.plugins.css.splitter.css.Standard;
 import biz.gabrys.maven.plugins.css.splitter.css.type.ComplexRule;
@@ -16,7 +17,10 @@ import biz.gabrys.maven.plugins.css.splitter.css.type.StyleProperty;
 import biz.gabrys.maven.plugins.css.splitter.css.type.StyleRule;
 import biz.gabrys.maven.plugins.css.splitter.css.type.StyleSheet;
 import biz.gabrys.maven.plugins.css.splitter.css.type.UnknownRule;
+import junitparams.JUnitParamsRunner;
+import junitparams.Parameters;
 
+@RunWith(JUnitParamsRunner.class)
 public final class SteadyStateParserTest {
 
     @Test
@@ -31,29 +35,26 @@ public final class SteadyStateParserTest {
         css.append("@unknown 'value';\n");
         css.append("@keyframes mymove { 50% {top: 0px;} 100% {top: 100px;}");
 
-        final SteadyStateParser parser = new SteadyStateParser(Mockito.mock(Log.class));
+        final SteadyStateParser parser = new SteadyStateParser(mock(Log.class));
         final ParserOptions options = new ParserOptionsBuilder().withStandard(Standard.VERSION_3_0).withStrict(true).create();
         final StyleSheet stylesheet = parser.parse(css.toString(), options);
 
-        Assert.assertNotNull("StyleSheet instance.", stylesheet);
+        assertThat(stylesheet).isNotNull();
         final List<NodeRule> rules = stylesheet.getRules();
-        Assert.assertNotNull("StyleSheet rules instnace.", rules);
-        Assert.assertEquals("StyleSheet children rules.", 8, rules.size());
-
-        final Iterator<NodeRule> iterator = rules.iterator();
-        Assert.assertEquals("@charset rule instance class.", SimpleRule.class, iterator.next().getClass());
-        Assert.assertEquals("@import rule instance class.", SimpleRule.class, iterator.next().getClass());
-        Assert.assertEquals("Style rule instance class.", StyleRule.class, iterator.next().getClass());
-        Assert.assertEquals("@media rule instance class.", ComplexRule.class, iterator.next().getClass());
-        Assert.assertEquals("@font-face rule instance class.", StyleRule.class, iterator.next().getClass());
-        Assert.assertEquals("@page rule instance class.", StyleRule.class, iterator.next().getClass());
-        Assert.assertEquals("@unknown rule instance class.", UnknownRule.class, iterator.next().getClass());
-        Assert.assertEquals("@keyframes rule instance class.", UnknownRule.class, iterator.next().getClass());
+        assertThat(rules).hasSize(8);
+        assertThat(rules.get(0)).isExactlyInstanceOf(SimpleRule.class);
+        assertThat(rules.get(1)).isExactlyInstanceOf(SimpleRule.class);
+        assertThat(rules.get(2)).isExactlyInstanceOf(StyleRule.class);
+        assertThat(rules.get(3)).isExactlyInstanceOf(ComplexRule.class);
+        assertThat(rules.get(4)).isExactlyInstanceOf(StyleRule.class);
+        assertThat(rules.get(5)).isExactlyInstanceOf(StyleRule.class);
+        assertThat(rules.get(6)).isExactlyInstanceOf(UnknownRule.class);
+        assertThat(rules.get(7)).isExactlyInstanceOf(UnknownRule.class);
     }
 
     // https://github.com/gabrysbiz/css-splitter-maven-plugin/issues/3#issuecomment-194338886
     @Test
-    public void parse_fontFaceRuleFromIssueNo3_returnsStyleSheet() {
+    public void parse_fontFaceRuleFromIssueNo3_parsesCorrectly() {
         final StringBuilder css = new StringBuilder();
         css.append("@font-face {");
         css.append("\tfont-family: FontAwesome;");
@@ -70,36 +71,96 @@ public final class SteadyStateParserTest {
         css.append("\tfont-style: normal;");
         css.append("}");
 
-        final SteadyStateParser parser = new SteadyStateParser(Mockito.mock(Log.class));
+        final SteadyStateParser parser = new SteadyStateParser(mock(Log.class));
         final ParserOptions options = new ParserOptionsBuilder().withStandard(Standard.VERSION_3_0).withStrict(true).create();
         final StyleSheet stylesheet = parser.parse(css.toString(), options);
 
-        Assert.assertNotNull("StyleSheet instance.", stylesheet);
+        assertThat(stylesheet).isNotNull();
         final List<NodeRule> rules = stylesheet.getRules();
-        Assert.assertNotNull("StyleSheet rules instnace.", rules);
-        Assert.assertEquals("StyleSheet children rules.", 1, rules.size());
+        assertThat(rules).hasSize(1);
+
         final NodeRule rule = rules.get(0);
-        Assert.assertEquals("StyleSheet children rule class.", StyleRule.class, rule.getClass());
+        assertThat(rule).isExactlyInstanceOf(StyleRule.class);
         final StyleRule fontFaceRule = (StyleRule) rule;
-        final List<String> selectors = fontFaceRule.getSelectors();
-        Assert.assertEquals("FontFace rule selectors count.", 1, selectors.size());
-        Assert.assertEquals("FontFace rule selector.", "@font-face", selectors.get(0));
+        assertThat(fontFaceRule.getSelectors()).containsExactly("@font-face");
+
         final List<StyleProperty> properties = fontFaceRule.getProperties();
-        Assert.assertEquals("FontFace style properties.", 5, properties.size());
-        StyleProperty property = properties.get(0);
-        Assert.assertEquals("FontFace first style property name.", "font-family", property.getName());
-        Assert.assertEquals("FontFace first style property value.", "FontAwesome", property.getValue());
-        property = properties.get(1);
-        Assert.assertEquals("FontFace first style property name.", "src", property.getName());
-        Assert.assertEquals("FontFace first style property value.", "url(../base/fonts/fontawesome-webfont.eot)", property.getValue());
-        property = properties.get(2);
-        Assert.assertEquals("FontFace first style property name.", "src", property.getName());
-        Assert.assertEquals("FontFace first style property value.", value.toString(), property.getValue());
-        property = properties.get(3);
-        Assert.assertEquals("FontFace first style property name.", "font-weight", property.getName());
-        Assert.assertEquals("FontFace first style property value.", "normal", property.getValue());
-        property = properties.get(4);
-        Assert.assertEquals("FontFace first style property name.", "font-style", property.getName());
-        Assert.assertEquals("FontFace first style property value.", "normal", property.getValue());
+        assertThat(properties).hasSize(5);
+        verifyProperty(properties.get(0), "font-family", "FontAwesome");
+        verifyProperty(properties.get(1), "src", "url(../base/fonts/fontawesome-webfont.eot)");
+        verifyProperty(properties.get(2), "src", value.toString());
+        verifyProperty(properties.get(3), "font-weight", "normal");
+        verifyProperty(properties.get(4), "font-style", "normal");
+    }
+
+    private static void verifyProperty(final StyleProperty property, final String name, final String value) {
+        assertThat(property).isNotNull();
+        assertThat(property.getName()).isEqualTo(name);
+        assertThat(property.getValue()).isEqualTo(value);
+    }
+
+    // https://github.com/gabrysbiz/css-splitter-maven-plugin/issues/23
+    @Test
+    @Parameters(method = "allStandards")
+    public void parse_useImportant_importantIsPreserved(final Standard standard) {
+        final StringBuilder css = new StringBuilder();
+        css.append("missing-important {");
+        css.append("\twidth: 100px !important;");
+        css.append("}");
+
+        final SteadyStateParser parser = new SteadyStateParser(mock(Log.class));
+        final ParserOptions options = new ParserOptionsBuilder().withStandard(standard).withStrict(true).create();
+        final StyleSheet stylesheet = parser.parse(css.toString(), options);
+
+        assertThat(stylesheet).isNotNull();
+        final List<NodeRule> rules = stylesheet.getRules();
+        assertThat(rules).hasSize(1);
+        final NodeRule rule = rules.get(0);
+        assertThat(rule).isExactlyInstanceOf(StyleRule.class);
+        final StyleRule styleRule = (StyleRule) rule;
+        assertThat(styleRule.getSelectors()).containsExactly("missing-important");
+
+        final List<StyleProperty> properties = styleRule.getProperties();
+        assertThat(properties).hasSize(1);
+        final StyleProperty property = properties.get(0);
+        assertThat(property).isNotNull();
+        assertThat(property.getName()).isEqualTo("width");
+        assertThat(property.getValue()).isEqualTo("100px");
+        assertThat(property.isImportant()).isTrue();
+        assertThat(property.getCode()).isEqualTo("width: 100px !important;");
+    }
+
+    // https://github.com/gabrysbiz/css-splitter-maven-plugin/issues/26
+    @Test
+    @Parameters(method = "allStandards")
+    public void parse_specialCharactersAreUsed_specialCharastersIsPreserved(final Standard standard) {
+        final StringBuilder css = new StringBuilder();
+        css.append("special-characters {");
+        css.append("\tcontent: \"\\200B\\n\\t\\r\";");
+        css.append("}");
+
+        final SteadyStateParser parser = new SteadyStateParser(mock(Log.class));
+        final ParserOptions options = new ParserOptionsBuilder().withStandard(standard).withStrict(true).create();
+        final StyleSheet stylesheet = parser.parse(css.toString(), options);
+
+        assertThat(stylesheet).isNotNull();
+        final List<NodeRule> rules = stylesheet.getRules();
+        assertThat(rules).hasSize(1);
+        final NodeRule rule = rules.get(0);
+        assertThat(rule).isExactlyInstanceOf(StyleRule.class);
+        final StyleRule styleRule = (StyleRule) rule;
+        assertThat(styleRule.getSelectors()).containsExactly("special-characters");
+
+        final List<StyleProperty> properties = styleRule.getProperties();
+        assertThat(properties).hasSize(1);
+        final StyleProperty property = properties.get(0);
+        assertThat(property).isNotNull();
+        assertThat(property.getName()).isEqualTo("content");
+        assertThat(property.getValue()).isEqualTo("\"\\200B\\n\\t\\r\"");
+        assertThat(property.getCode()).isEqualTo("content: \"\\200B\\n\\t\\r\";");
+    }
+
+    public static Standard[] allStandards() {
+        return Standard.values();
     }
 }

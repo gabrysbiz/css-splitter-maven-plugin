@@ -1,11 +1,16 @@
 package biz.gabrys.maven.plugins.css.splitter.steadystate.converter;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import java.util.List;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import com.steadystate.css.dom.CSSPageRuleImpl;
+import com.steadystate.css.dom.Property;
 
 import biz.gabrys.maven.plugins.css.splitter.css.type.StyleProperty;
 import biz.gabrys.maven.plugins.css.splitter.css.type.StyleRule;
@@ -16,27 +21,30 @@ public final class PageRuleConverterTest {
     public void isSupportedType_ruleHasValidType_returnsTrue() {
         final PageRuleConverter converter = new PageRuleConverter();
         final CSSPageRuleImpl rule = new CSSPageRuleImpl();
+
         final boolean supported = converter.isSupportedType(rule);
-        Assert.assertTrue("Should return true.", supported);
+
+        assertThat(supported).isTrue();
     }
 
     @Test
     public void convert() {
-        final PageRuleConverter converter = new PageRuleConverter();
+        final StylePropertyConverter stylePropertyConverter = mock(StylePropertyConverter.class);
+        final PageRuleConverter converter = new PageRuleConverter(stylePropertyConverter);
         final CSSPageRuleImpl rule = new CSSPageRuleImpl();
-        rule.setCssText("@page :first { name: value; }");
+        rule.setCssText("@page :first { margin: 5px; size: A4; }");
+
+        final StyleProperty styleProperty1 = mock(StyleProperty.class);
+        final StyleProperty styleProperty2 = mock(StyleProperty.class);
+        when(stylePropertyConverter.convert(any(Property.class))).thenReturn(styleProperty1, styleProperty2);
 
         final StyleRule converted = converter.convert(rule);
-        Assert.assertNotNull("Converted rule instance.", converted);
-        final List<String> selectors = converted.getSelectors();
-        Assert.assertNotNull("Converted rule selectors instance.", selectors);
-        Assert.assertEquals("Converted rule selectors size.", 1, selectors.size());
-        Assert.assertEquals("Converted rule selector.", "@page :first", selectors.get(0));
+
+        assertThat(converted).isNotNull();
+        assertThat(converted.getSelectors()).containsExactly("@page :first");
         final List<StyleProperty> properties = converted.getProperties();
-        Assert.assertNotNull("Converted rule properties instance.", properties);
-        Assert.assertEquals("Converted rule properties size.", 1, properties.size());
-        final StyleProperty styleProperty = properties.get(0);
-        Assert.assertEquals("Converted rule property name.", "name", styleProperty.getName());
-        Assert.assertEquals("Converted rule property value.", "value", styleProperty.getValue());
+        assertThat(properties).hasSize(2);
+        assertThat(properties.get(0)).isSameAs(styleProperty1);
+        assertThat(properties.get(1)).isSameAs(styleProperty2);
     }
 }

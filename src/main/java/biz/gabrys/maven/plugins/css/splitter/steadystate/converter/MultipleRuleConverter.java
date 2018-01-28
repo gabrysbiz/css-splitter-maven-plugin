@@ -2,7 +2,7 @@
  * CSS Splitter Maven Plugin
  * http://css-splitter-maven-plugin.projects.gabrys.biz/
  *
- * Copyright (c) 2015 Adam Gabryś
+ * Copyright (c) 2015 Adam Gabrys
  *
  * This file is licensed under the BSD 3-Clause (the "License").
  * You may not use this file except in compliance with the License.
@@ -28,10 +28,12 @@ class MultipleRuleConverter implements RuleConverter<NodeRule> {
         this.converters = new ArrayList<RuleConverter<?>>(converters);
     }
 
+    @Override
     public boolean isSupportedType(final CSSRule rule) {
         return getConverter(rule) != null;
     }
 
+    @Override
     public NodeRule convert(final CSSRule rule) {
         final RuleConverter<?> converter = getConverter(rule);
         if (converter != null) {

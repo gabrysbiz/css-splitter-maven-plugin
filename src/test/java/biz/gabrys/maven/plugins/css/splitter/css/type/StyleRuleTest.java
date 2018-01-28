@@ -1,13 +1,15 @@
 package biz.gabrys.maven.plugins.css.splitter.css.type;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import org.junit.Assert;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 public final class StyleRuleTest {
 
@@ -19,28 +21,28 @@ public final class StyleRuleTest {
         final StyleRule rule = new StyleRule(selectors, properties);
         final String[] lines = rule.getLines();
 
-        Assert.assertNotNull("Lines object.", lines);
-        Assert.assertEquals("Lines quantity.", 2, lines.length);
-        Assert.assertEquals("Line no. 1.", "sel1, sel2 {", lines[0]);
-        Assert.assertEquals("Line no. 2.", "}", lines[1]);
+        assertThat(lines).hasSize(2);
+        assertThat(lines[0]).isEqualTo("sel1, sel2 {");
+        assertThat(lines[1]).isEqualTo("}");
     }
 
     @Test
     public void getLines_ruleHasTwoProperties() {
         final List<String> selectors = Arrays.asList("div", "#id", "ul > li");
-        final List<StyleProperty> properties = new ArrayList<StyleProperty>();
-        properties.add(new StyleProperty("name", "value"));
-        properties.add(new StyleProperty("prop", "val"));
+        final StyleProperty styleProperty1 = mock(StyleProperty.class);
+        when(styleProperty1.getCode()).thenReturn("name: value;");
+        final StyleProperty styleProperty2 = mock(StyleProperty.class);
+        when(styleProperty2.getCode()).thenReturn("prop: val;");
+        final List<StyleProperty> properties = Arrays.asList(styleProperty1, styleProperty2);
 
         final StyleRule rule = new StyleRule(selectors, properties);
         final String[] lines = rule.getLines();
 
-        Assert.assertNotNull("Lines object.", lines);
-        Assert.assertEquals("Lines quantity.", 4, lines.length);
-        Assert.assertEquals("Line no. 1.", "div, #id, ul > li {", lines[0]);
-        Assert.assertEquals("Line no. 2.", "  name: value;", lines[1]);
-        Assert.assertEquals("Line no. 3.", "  prop: val;", lines[2]);
-        Assert.assertEquals("Line no. 4.", "}", lines[3]);
+        assertThat(lines).hasSize(4);
+        assertThat(lines[0]).isEqualTo("div, #id, ul > li {");
+        assertThat(lines[1]).isEqualTo("  name: value;");
+        assertThat(lines[2]).isEqualTo("  prop: val;");
+        assertThat(lines[3]).isEqualTo("}");
     }
 
     @Test
@@ -51,7 +53,7 @@ public final class StyleRuleTest {
         final StyleRule rule = new StyleRule(selectors, properties);
         final int size = rule.getSize2();
 
-        Assert.assertEquals("Rule size.", 1, size);
+        assertThat(size).isEqualTo(1);
     }
 
     @Test
@@ -59,13 +61,13 @@ public final class StyleRuleTest {
         final List<String> selectors = Collections.emptyList();
 
         final List<StyleProperty> properties = new ArrayList<StyleProperty>();
-        properties.add(Mockito.mock(StyleProperty.class));
-        properties.add(Mockito.mock(StyleProperty.class));
-        properties.add(Mockito.mock(StyleProperty.class));
+        properties.add(mock(StyleProperty.class));
+        properties.add(mock(StyleProperty.class));
+        properties.add(mock(StyleProperty.class));
 
         final StyleRule rule = new StyleRule(selectors, properties);
         final int size = rule.getSize2();
 
-        Assert.assertEquals("Rule size.", 3, size);
+        assertThat(size).isEqualTo(3);
     }
 }

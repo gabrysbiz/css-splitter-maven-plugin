@@ -1,9 +1,13 @@
 package biz.gabrys.maven.plugins.css.splitter.steadystate.converter;
 
-import org.junit.Assert;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import org.junit.Test;
 
 import com.steadystate.css.dom.CSSUnknownRuleImpl;
+import com.steadystate.css.format.CSSFormatable;
 
 import biz.gabrys.maven.plugins.css.splitter.css.type.UnknownRule;
 
@@ -13,19 +17,23 @@ public final class UnknownRuleConverterTest {
     public void isSupportedType_ruleHasValidType_returnsTrue() {
         final UnknownRuleConverter converter = new UnknownRuleConverter();
         final CSSUnknownRuleImpl rule = new CSSUnknownRuleImpl();
+
         final boolean supported = converter.isSupportedType(rule);
-        Assert.assertTrue("Should return true.", supported);
+
+        assertThat(supported).isTrue();
     }
 
     @Test
     public void convert() {
-        final UnknownRuleConverter converter = new UnknownRuleConverter();
+        final CssFormatter formatter = mock(CssFormatter.class);
+        final UnknownRuleConverter converter = new UnknownRuleConverter(formatter);
         final CSSUnknownRuleImpl rule = new CSSUnknownRuleImpl();
         final String code = "@unknown";
-        rule.setCssText(code);
+        when(formatter.format((CSSFormatable) rule)).thenReturn(code);
 
         final UnknownRule converted = converter.convert(rule);
-        Assert.assertNotNull("Converted rule instance.", converted);
-        Assert.assertEquals("Converted rule code.", code, converted.getCode());
+
+        assertThat(converted).isNotNull();
+        assertThat(converted.getCode()).isEqualTo(code);
     }
 }

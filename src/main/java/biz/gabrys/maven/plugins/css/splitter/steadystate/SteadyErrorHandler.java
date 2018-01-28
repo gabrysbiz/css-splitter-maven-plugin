@@ -2,7 +2,7 @@
  * CSS Splitter Maven Plugin
  * http://css-splitter-maven-plugin.projects.gabrys.biz/
  *
- * Copyright (c) 2015 Adam Gabryś
+ * Copyright (c) 2015 Adam Gabrys
  *
  * This file is licensed under the BSD 3-Clause (the "License").
  * You may not use this file except in compliance with the License.
@@ -31,14 +31,17 @@ class SteadyErrorHandler implements ErrorHandler {
         }
     }
 
+    @Override
     public void warning(final CSSParseException exception) {
         logger.warn(convertExceptionToString(exception));
     }
 
+    @Override
     public void error(final CSSParseException exception) {
         fatalError(exception);
     }
 
+    @Override
     public void fatalError(final CSSParseException exception) {
         logger.error(convertExceptionToString(exception));
         if (firstError == null) {

@@ -1,6 +1,7 @@
 package biz.gabrys.maven.plugins.css.splitter.css.type;
 
-import org.junit.Assert;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.junit.Test;
 
 public final class UnknownRuleCounterTest {
@@ -10,7 +11,9 @@ public final class UnknownRuleCounterTest {
         final UnknownRuleCounter counter = new UnknownRuleCounter();
         final UnknownRule rule = new UnknownRule("@zero-semicolon");
 
-        Assert.assertEquals("Counted value.", 1, counter.count(rule));
+        final int result = counter.count(rule);
+
+        assertThat(result).isEqualTo(1);
     }
 
     @Test
@@ -18,7 +21,9 @@ public final class UnknownRuleCounterTest {
         final UnknownRuleCounter counter = new UnknownRuleCounter();
         final UnknownRule rule = new UnknownRule("@rule 'value';");
 
-        Assert.assertEquals("Counted value.", 1, counter.count(rule));
+        final int result = counter.count(rule);
+
+        assertThat(result).isEqualTo(1);
     }
 
     @Test
@@ -26,7 +31,9 @@ public final class UnknownRuleCounterTest {
         final UnknownRuleCounter counter = new UnknownRuleCounter();
         final UnknownRule rule = new UnknownRule("@unknown { }");
 
-        Assert.assertEquals("Counted value.", 1, counter.count(rule));
+        final int result = counter.count(rule);
+
+        assertThat(result).isEqualTo(1);
     }
 
     @Test
@@ -34,7 +41,9 @@ public final class UnknownRuleCounterTest {
         final UnknownRuleCounter counter = new UnknownRuleCounter();
         final UnknownRule rule = new UnknownRule("@unknown {val: value;}");
 
-        Assert.assertEquals("Counted value.", 1, counter.count(rule));
+        final int result = counter.count(rule);
+
+        assertThat(result).isEqualTo(1);
     }
 
     @Test
@@ -42,7 +51,9 @@ public final class UnknownRuleCounterTest {
         final UnknownRuleCounter counter = new UnknownRuleCounter();
         final UnknownRule rule = new UnknownRule("@unknown {val: value; val: value }");
 
-        Assert.assertEquals("Counted value.", 2, counter.count(rule));
+        final int result = counter.count(rule);
+
+        assertThat(result).isEqualTo(2);
     }
 
     @Test
@@ -50,7 +61,9 @@ public final class UnknownRuleCounterTest {
         final UnknownRuleCounter counter = new UnknownRuleCounter();
         final UnknownRule rule = new UnknownRule("@unknown {nested {property: value;\n}\t}");
 
-        Assert.assertEquals("Counted value.", 1, counter.count(rule));
+        final int result = counter.count(rule);
+
+        assertThat(result).isEqualTo(1);
     }
 
     @Test
@@ -58,7 +71,9 @@ public final class UnknownRuleCounterTest {
         final UnknownRuleCounter counter = new UnknownRuleCounter();
         final UnknownRule rule = new UnknownRule("@unknown {nested {property: value; prop2: val2 \n}\t}");
 
-        Assert.assertEquals("Counted value.", 2, counter.count(rule));
+        final int result = counter.count(rule);
+
+        assertThat(result).isEqualTo(2);
     }
 
     @Test
@@ -67,7 +82,9 @@ public final class UnknownRuleCounterTest {
         final UnknownRule rule = new UnknownRule(
                 "@unknown { nested1 {property: value;}\n nested2 {prop1: val1;} nested3 { prop2: val2;\n}\t}");
 
-        Assert.assertEquals("Counted value.", 3, counter.count(rule));
+        final int result = counter.count(rule);
+
+        assertThat(result).isEqualTo(3);
     }
 
     @Test
@@ -76,6 +93,8 @@ public final class UnknownRuleCounterTest {
         final UnknownRule rule = new UnknownRule(
                 "@unknown { nested1 {property: value}\n nested2 {prop1: val1} nested3 { prop2: val2\n}\t}");
 
-        Assert.assertEquals("Counted value.", 3, counter.count(rule));
+        final int result = counter.count(rule);
+
+        assertThat(result).isEqualTo(3);
     }
 }

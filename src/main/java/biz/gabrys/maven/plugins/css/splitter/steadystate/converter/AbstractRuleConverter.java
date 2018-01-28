@@ -2,7 +2,7 @@
  * CSS Splitter Maven Plugin
  * http://css-splitter-maven-plugin.projects.gabrys.biz/
  *
- * Copyright (c) 2015 Adam Gabryś
+ * Copyright (c) 2015 Adam Gabrys
  *
  * This file is licensed under the BSD 3-Clause (the "License").
  * You may not use this file except in compliance with the License.
@@ -26,10 +26,12 @@ abstract class AbstractRuleConverter<F extends AbstractCSSRuleImpl, T extends No
         this.clazz = clazz;
     }
 
+    @Override
     public final boolean isSupportedType(final CSSRule rule) {
         return rule != null && rule.getClass() == clazz;
     }
 
+    @Override
     public final T convert(final CSSRule rule) {
         if (!isSupportedType(rule)) {
             throw new UnsupportedRuleException(rule);

@@ -1,10 +1,12 @@
 package biz.gabrys.maven.plugins.css.splitter.css.type;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verifyZeroInteractions;
+
 import java.util.Arrays;
 
-import org.junit.Assert;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import biz.gabrys.maven.plugins.css.splitter.test.SupportedTestNodeRule;
 
@@ -19,26 +21,26 @@ public final class TreeUtilsTest {
 
         TreeUtils.fillNeighbors(null, Arrays.asList(firstRule, secondRule, thirdRule, fourthRule));
 
-        Assert.assertNull("First rule parent invalid", firstRule.getParent());
-        Assert.assertNull("First rule previous invalid", firstRule.getPrevious());
-        Assert.assertTrue("First rule next invalid", secondRule == firstRule.getNext());
+        assertThat(firstRule.getParent()).isNull();
+        assertThat(firstRule.getPrevious()).isNull();
+        assertThat(firstRule.getNext()).isSameAs(secondRule);
 
-        Assert.assertNull("Second rule parent invalid", secondRule.getParent());
-        Assert.assertTrue("Second rule previous invalid", firstRule == secondRule.getPrevious());
-        Assert.assertTrue("Second rule next invalid", thirdRule == secondRule.getNext());
+        assertThat(secondRule.getParent()).isNull();
+        assertThat(secondRule.getPrevious()).isSameAs(firstRule);
+        assertThat(secondRule.getNext()).isSameAs(thirdRule);
 
-        Assert.assertNull("Third rule parent invalid", thirdRule.getParent());
-        Assert.assertTrue("Third rule previous invalid", secondRule == thirdRule.getPrevious());
-        Assert.assertTrue("Third rule next invalid", fourthRule == thirdRule.getNext());
+        assertThat(thirdRule.getParent()).isNull();
+        assertThat(thirdRule.getPrevious()).isSameAs(secondRule);
+        assertThat(thirdRule.getNext()).isSameAs(fourthRule);
 
-        Assert.assertNull("Fourth rule parent invalid", fourthRule.getParent());
-        Assert.assertTrue("Fourth rule previous invalid", thirdRule == fourthRule.getPrevious());
-        Assert.assertNull("Fourth rule next invalid", fourthRule.getNext());
+        assertThat(fourthRule.getParent()).isNull();
+        assertThat(fourthRule.getPrevious()).isSameAs(thirdRule);
+        assertThat(fourthRule.getNext()).isNull();
     }
 
     @Test
     public void fillNeighbors_parentIsNotNull() {
-        final NodeRule parent = Mockito.mock(NodeRule.class);
+        final NodeRule parent = mock(NodeRule.class);
 
         final NodeRule firstRule = new SupportedTestNodeRule();
         final NodeRule secondRule = new SupportedTestNodeRule();
@@ -47,22 +49,22 @@ public final class TreeUtilsTest {
 
         TreeUtils.fillNeighbors(parent, Arrays.asList(firstRule, secondRule, thirdRule, fourthRule));
 
-        Assert.assertTrue("First rule parent invalid", parent == firstRule.getParent());
-        Assert.assertNull("First rule previous invalid", firstRule.getPrevious());
-        Assert.assertTrue("First rule next invalid", secondRule == firstRule.getNext());
+        assertThat(firstRule.getParent()).isSameAs(parent);
+        assertThat(firstRule.getPrevious()).isNull();
+        assertThat(firstRule.getNext()).isSameAs(secondRule);
 
-        Assert.assertTrue("Second rule parent invalid", parent == secondRule.getParent());
-        Assert.assertTrue("Second rule previous invalid", firstRule == secondRule.getPrevious());
-        Assert.assertTrue("Second rule next invalid", thirdRule == secondRule.getNext());
+        assertThat(secondRule.getParent()).isSameAs(parent);
+        assertThat(secondRule.getPrevious()).isSameAs(firstRule);
+        assertThat(secondRule.getNext()).isSameAs(thirdRule);
 
-        Assert.assertTrue("Third rule parent invalid", parent == thirdRule.getParent());
-        Assert.assertTrue("Third rule previous invalid", secondRule == thirdRule.getPrevious());
-        Assert.assertTrue("Third rule next invalid", fourthRule == thirdRule.getNext());
+        assertThat(thirdRule.getParent()).isSameAs(parent);
+        assertThat(thirdRule.getPrevious()).isSameAs(secondRule);
+        assertThat(thirdRule.getNext()).isSameAs(fourthRule);
 
-        Assert.assertTrue("Fourth rule parent invalid", parent == fourthRule.getParent());
-        Assert.assertTrue("Fourth rule previous invalid", thirdRule == fourthRule.getPrevious());
-        Assert.assertNull("Fourth rule next invalid", fourthRule.getNext());
+        assertThat(fourthRule.getParent()).isSameAs(parent);
+        assertThat(fourthRule.getPrevious()).isSameAs(thirdRule);
+        assertThat(fourthRule.getNext()).isNull();
 
-        Mockito.verifyZeroInteractions(parent);
+        verifyZeroInteractions(parent);
     }
 }

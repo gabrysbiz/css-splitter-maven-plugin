@@ -1,37 +1,36 @@
 package biz.gabrys.maven.plugins.css.splitter.token;
 
-import org.junit.Assert;
+import static org.assertj.core.api.Assertions.assertThat;
+
 import org.junit.Test;
 
 public final class TokenTypeTest {
 
     @Test
     public void create_custom() {
-        Assert.assertEquals("Should return \"custom\"", TokenType.CUSTOM, TokenType.create("custom"));
+        assertThat(TokenType.create("custom")).isSameAs(TokenType.CUSTOM);
     }
 
     @Test
     public void createFactory_custom_returnsFactory() {
         final TokenValueFactory factory = TokenType.CUSTOM.createFactory();
-        Assert.assertNotNull("Factory instance.", factory);
-        Assert.assertEquals("factory class.", CustomValueTokenFactory.class, factory.getClass());
+        assertThat(factory).isExactlyInstanceOf(CustomValueTokenFactory.class);
     }
 
     @Test
     public void create_date() {
-        Assert.assertEquals("Should return \"date\".", TokenType.DATE, TokenType.create("date"));
+        assertThat(TokenType.create("date")).isSameAs(TokenType.DATE);
     }
 
     @Test
     public void createFactory_date_returnsFactory() {
         final TokenValueFactory factory = TokenType.DATE.createFactory();
-        Assert.assertNotNull("Factory instance.", factory);
-        Assert.assertEquals("factory class.", DateTokenValueFactory.class, factory.getClass());
+        assertThat(factory).isExactlyInstanceOf(DateTokenValueFactory.class);
     }
 
     @Test
     public void create_none() {
-        Assert.assertEquals("Should return \"none\".", TokenType.NONE, TokenType.create("none"));
+        assertThat(TokenType.create("none")).isSameAs(TokenType.NONE);
     }
 
     @Test(expected = UnsupportedOperationException.class)
