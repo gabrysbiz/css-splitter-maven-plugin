@@ -32,7 +32,7 @@ public final class PageRuleConverterTest {
         final StylePropertyConverter stylePropertyConverter = mock(StylePropertyConverter.class);
         final PageRuleConverter converter = new PageRuleConverter(stylePropertyConverter);
         final CSSPageRuleImpl rule = new CSSPageRuleImpl();
-        rule.setCssText("@page :first { name1: value1; name2: value2; }");
+        rule.setCssText("@page :first { margin: 5px; size: A4; }");
 
         final StyleProperty styleProperty1 = mock(StyleProperty.class);
         final StyleProperty styleProperty2 = mock(StyleProperty.class);

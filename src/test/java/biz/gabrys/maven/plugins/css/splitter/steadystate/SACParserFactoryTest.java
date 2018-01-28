@@ -1,9 +1,9 @@
 package biz.gabrys.maven.plugins.css.splitter.steadystate;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import com.steadystate.css.parser.SACParser;
 import com.steadystate.css.parser.SACParserCSS1;
@@ -12,20 +12,22 @@ import com.steadystate.css.parser.SACParserCSS21;
 import com.steadystate.css.parser.SACParserCSS3;
 
 import biz.gabrys.maven.plugins.css.splitter.css.Standard;
+import junitparams.JUnitParamsRunner;
+import junitparams.Parameters;
 
+@RunWith(JUnitParamsRunner.class)
 public final class SACParserFactoryTest {
 
     @Test
-    public void create_checkIfSupportAllStandards() {
+    @Parameters(method = "allStandards")
+    public void create_checkIfSupportAllStandards(final Standard standard) {
         final SACParserFactory factory = new SACParserFactory();
-        for (final Standard standard : Standard.values()) {
-            try {
-                final SACParser parser = factory.create(standard);
-                assertThat(parser).overridingErrorMessage("Parser for standard %s should not be equal to null", standard).isNotNull();
-            } catch (final Exception e) {
-                fail(String.format("Factory threw exception for standard %s. %s", standard, e));
-            }
-        }
+        final SACParser parser = factory.create(standard);
+        assertThat(parser).isNotNull();
+    }
+
+    public static Standard[] allStandards() {
+        return Standard.values();
     }
 
     @Test

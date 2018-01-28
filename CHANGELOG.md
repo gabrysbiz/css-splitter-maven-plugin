@@ -1,14 +1,16 @@
 # CSS Splitter Maven Plugin Changelog
 
-+## 2.0.0
+## 2.0.0
 Features:
 * Set compatibility with Java 6+
 * Set compatibility with Maven 3+
 
 Bugs:
-* Fixed missing `!important` ([#23](https://github.com/gabrysbiz/css-splitter-maven-plugin/issues/23))
+* Fixed `!important` is missing in split code  ([#23](https://github.com/gabrysbiz/css-splitter-maven-plugin/issues/23))
+* Fixed special character sequences are interpreted instead of copied as is ([#26](https://github.com/gabrysbiz/css-splitter-maven-plugin/issues/26))
 
 Dependencies:
+* Upgraded [CSS Parser](http://cssparser.sourceforge.net/) from 0.9.24 to 0.9.25
 * Upgraded [Maven Plugin Utils](http://maven-plugin-utils.projects.gabrys.biz/) from [1.4.1](http://maven-plugin-utils.projects.gabrys.biz/1.4.1/) to [2.0.0](http://maven-plugin-utils.projects.gabrys.biz/2.0.0/)
 
 [See documentation](http://css-splitter-maven-plugin.projects.gabrys.biz/2.0.0/)

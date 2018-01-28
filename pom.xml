@@ -92,7 +92,7 @@
         <dependency>
             <groupId>net.sourceforge.cssparser</groupId>
             <artifactId>cssparser</artifactId>
-            <version>0.9.24</version>
+            <version>0.9.25</version>
         </dependency>
         <dependency>
             <groupId>com.yahoo.platform.yui</groupId>
@@ -111,6 +111,12 @@
             <artifactId>assertj-core</artifactId>
             <!-- latest compatible with JDK 6 -->
             <version>1.7.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>pl.pragmatists</groupId>
+            <artifactId>JUnitParams</artifactId>
+            <version>1.1.1</version>
             <scope>test</scope>
         </dependency>
         <dependency>

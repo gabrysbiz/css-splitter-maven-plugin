@@ -13,17 +13,26 @@
 package biz.gabrys.maven.plugins.css.splitter.steadystate.converter;
 
 import com.steadystate.css.dom.CSSUnknownRuleImpl;
+import com.steadystate.css.format.CSSFormatable;
 
 import biz.gabrys.maven.plugins.css.splitter.css.type.UnknownRule;
 
 class UnknownRuleConverter extends AbstractRuleConverter<CSSUnknownRuleImpl, UnknownRule> {
 
+    private final CssFormatter formatter;
+
     UnknownRuleConverter() {
+        this(new CssFormatter());
+    }
+
+    // for tests
+    UnknownRuleConverter(final CssFormatter formatter) {
         super(CSSUnknownRuleImpl.class);
+        this.formatter = formatter;
     }
 
     @Override
     protected UnknownRule convert2(final CSSUnknownRuleImpl rule) {
-        return new UnknownRule(rule.getCssText());
+        return new UnknownRule(formatter.format((CSSFormatable) rule));
     }
 }

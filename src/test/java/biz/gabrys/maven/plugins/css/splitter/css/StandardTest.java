@@ -3,7 +3,12 @@ package biz.gabrys.maven.plugins.css.splitter.css;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
+import junitparams.JUnitParamsRunner;
+import junitparams.Parameters;
+
+@RunWith(JUnitParamsRunner.class)
 public final class StandardTest {
 
     @Test
@@ -32,10 +37,13 @@ public final class StandardTest {
     }
 
     @Test
-    public void isSameAs() {
-        for (final Standard standard : Standard.values()) {
-            final boolean same = standard.isSameAs(standard.toString());
-            assertThat(same).overridingErrorMessage("Verification for standard %s returns false", standard).isTrue();
-        }
+    @Parameters(method = "allStandards")
+    public void isSameAs(final Standard standard) {
+        final boolean same = standard.isSameAs(standard.toString());
+        assertThat(same).isTrue();
+    }
+
+    public static Standard[] allStandards() {
+        return Standard.values();
     }
 }

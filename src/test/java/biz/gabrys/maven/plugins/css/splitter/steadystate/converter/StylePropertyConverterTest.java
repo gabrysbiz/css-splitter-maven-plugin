@@ -1,6 +1,8 @@
 package biz.gabrys.maven.plugins.css.splitter.steadystate.converter;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
 
 import org.junit.Test;
 
@@ -12,12 +14,14 @@ import biz.gabrys.maven.plugins.css.splitter.css.type.StyleProperty;
 public final class StylePropertyConverterTest {
 
     private static final String NAME = "name";
-    private static final String VALUE = "value";
+    private static final String VALUE = "\"value\"";
 
     @Test
     public void convert_importantIsFalse() {
-        final StylePropertyConverter converter = new StylePropertyConverter();
+        final CssFormatter formatter = mock(CssFormatter.class);
+        final StylePropertyConverter converter = new StylePropertyConverter(formatter);
         final Property property = createProperty(false);
+        doReturn(VALUE).when(formatter).format(property.getValue());
 
         final StyleProperty styleProperty = converter.convert(property);
 
@@ -29,8 +33,10 @@ public final class StylePropertyConverterTest {
 
     @Test
     public void convert_importantIsTrue() {
-        final StylePropertyConverter converter = new StylePropertyConverter();
+        final CssFormatter formatter = mock(CssFormatter.class);
+        final StylePropertyConverter converter = new StylePropertyConverter(formatter);
         final Property property = createProperty(true);
+        doReturn(VALUE).when(formatter).format(property.getValue());
 
         final StyleProperty styleProperty = converter.convert(property);
 

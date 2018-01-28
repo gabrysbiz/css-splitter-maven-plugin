@@ -20,6 +20,19 @@ public final class Css20CompatibilityTest {
     private static final Standard STANDARD = Standard.VERSION_2_0;
     private static final ParserOptions options = new ParserOptionsBuilder().withStandard(STANDARD).withStrict(false).create();
 
+    @Test
+    public void parse_fontFace_returnsStyleRule() {
+        final Log logger = mock(Log.class);
+        final SteadyStateParser parser = new SteadyStateParser(logger);
+
+        final StyleSheet stylesheet = parser.parse("@font-face { font-family: serif; }", options);
+
+        assertThat(stylesheet).isNotNull();
+        final List<NodeRule> rules = stylesheet.getRules();
+        assertThat(rules).hasSize(1);
+        assertThat(rules.get(0)).isExactlyInstanceOf(StyleRule.class);
+    }
+
     @Test(expected = ParserException.class)
     public void parse_mediaStoresCharsetRule_throwsException() {
         final Log logger = mock(Log.class);

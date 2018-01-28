@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.apache.maven.plugin.logging.Log;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import biz.gabrys.maven.plugins.css.splitter.css.Standard;
 import biz.gabrys.maven.plugins.css.splitter.css.type.ComplexRule;
@@ -16,7 +17,10 @@ import biz.gabrys.maven.plugins.css.splitter.css.type.StyleProperty;
 import biz.gabrys.maven.plugins.css.splitter.css.type.StyleRule;
 import biz.gabrys.maven.plugins.css.splitter.css.type.StyleSheet;
 import biz.gabrys.maven.plugins.css.splitter.css.type.UnknownRule;
+import junitparams.JUnitParamsRunner;
+import junitparams.Parameters;
 
+@RunWith(JUnitParamsRunner.class)
 public final class SteadyStateParserTest {
 
     @Test
@@ -97,14 +101,15 @@ public final class SteadyStateParserTest {
 
     // https://github.com/gabrysbiz/css-splitter-maven-plugin/issues/23
     @Test
-    public void parse_useImportant_importantIsPreserved() {
+    @Parameters(method = "allStandards")
+    public void parse_useImportant_importantIsPreserved(final Standard standard) {
         final StringBuilder css = new StringBuilder();
         css.append("missing-important {");
         css.append("\twidth: 100px !important;");
         css.append("}");
 
         final SteadyStateParser parser = new SteadyStateParser(mock(Log.class));
-        final ParserOptions options = new ParserOptionsBuilder().withStandard(Standard.VERSION_3_0).withStrict(true).create();
+        final ParserOptions options = new ParserOptionsBuilder().withStandard(standard).withStrict(true).create();
         final StyleSheet stylesheet = parser.parse(css.toString(), options);
 
         assertThat(stylesheet).isNotNull();
@@ -123,5 +128,39 @@ public final class SteadyStateParserTest {
         assertThat(property.getValue()).isEqualTo("100px");
         assertThat(property.isImportant()).isTrue();
         assertThat(property.getCode()).isEqualTo("width: 100px !important;");
+    }
+
+    // https://github.com/gabrysbiz/css-splitter-maven-plugin/issues/26
+    @Test
+    @Parameters(method = "allStandards")
+    public void parse_specialCharactersAreUsed_specialCharastersIsPreserved(final Standard standard) {
+        final StringBuilder css = new StringBuilder();
+        css.append("special-characters {");
+        css.append("\tcontent: \"\\200B\\n\\t\\r\";");
+        css.append("}");
+
+        final SteadyStateParser parser = new SteadyStateParser(mock(Log.class));
+        final ParserOptions options = new ParserOptionsBuilder().withStandard(standard).withStrict(true).create();
+        final StyleSheet stylesheet = parser.parse(css.toString(), options);
+
+        assertThat(stylesheet).isNotNull();
+        final List<NodeRule> rules = stylesheet.getRules();
+        assertThat(rules).hasSize(1);
+        final NodeRule rule = rules.get(0);
+        assertThat(rule).isExactlyInstanceOf(StyleRule.class);
+        final StyleRule styleRule = (StyleRule) rule;
+        assertThat(styleRule.getSelectors()).containsExactly("special-characters");
+
+        final List<StyleProperty> properties = styleRule.getProperties();
+        assertThat(properties).hasSize(1);
+        final StyleProperty property = properties.get(0);
+        assertThat(property).isNotNull();
+        assertThat(property.getName()).isEqualTo("content");
+        assertThat(property.getValue()).isEqualTo("\"\\200B\\n\\t\\r\"");
+        assertThat(property.getCode()).isEqualTo("content: \"\\200B\\n\\t\\r\";");
+    }
+
+    public static Standard[] allStandards() {
+        return Standard.values();
     }
 }
