@@ -32,13 +32,14 @@ public final class StyleRuleConverterTest {
     @Test
     public void convert() {
         final StylePropertyConverter stylePropertyConverter = mock(StylePropertyConverter.class);
-        final StyleRuleConverter converter = new StyleRuleConverter(stylePropertyConverter);
+        final CssFormatter formatter = mock(CssFormatter.class);
+        final StyleRuleConverter converter = new StyleRuleConverter(stylePropertyConverter, formatter);
         final CSSStyleRuleImpl rule = new CSSStyleRuleImpl();
 
         final SelectorListImpl selectors = new SelectorListImpl();
         final String selector = "selector";
         final Selector selectorObj = mock(Selector.class);
-        when(selectorObj.toString()).thenReturn(selector);
+        when(formatter.format(selectorObj)).thenReturn(selector);
         selectors.add(selectorObj);
         rule.setSelectors(selectors);
 

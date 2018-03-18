@@ -26,15 +26,17 @@ import biz.gabrys.maven.plugins.css.splitter.css.type.StyleRule;
 class StyleRuleConverter extends AbstractRuleConverter<CSSStyleRuleImpl, StyleRule> {
 
     private final StylePropertyConverter converter;
+    private final CssFormatter formatter;
 
     StyleRuleConverter() {
-        this(new StylePropertyConverter());
+        this(new StylePropertyConverter(), new CssFormatter());
     }
 
     // for tests
-    StyleRuleConverter(final StylePropertyConverter converter) {
+    StyleRuleConverter(final StylePropertyConverter converter, final CssFormatter formatter) {
         super(CSSStyleRuleImpl.class);
         this.converter = converter;
+        this.formatter = formatter;
     }
 
     @Override
@@ -42,7 +44,7 @@ class StyleRuleConverter extends AbstractRuleConverter<CSSStyleRuleImpl, StyleRu
         final List<String> selectors = new LinkedList<String>();
         final SelectorListImpl selectorsList = (SelectorListImpl) rule.getSelectors();
         for (int i = 0; i < selectorsList.getLength(); ++i) {
-            selectors.add(selectorsList.item(i).toString());
+            selectors.add(formatter.format(selectorsList.item(i)));
         }
         final CSSStyleDeclarationImpl style = (CSSStyleDeclarationImpl) rule.getStyle();
         final List<StyleProperty> properties = new LinkedList<StyleProperty>();
