@@ -24,31 +24,31 @@ class MultipleRuleConverter implements RuleConverter&lt;NodeRule&gt; {
 
     protected final List&lt;RuleConverter&lt;?&gt;&gt; converters;
 
-<span class="fc" id="L27">    MultipleRuleConverter(final Collection&lt;RuleConverter&lt;?&gt;&gt; converters) {</span>
-<span class="fc" id="L28">        this.converters = new ArrayList&lt;RuleConverter&lt;?&gt;&gt;(converters);</span>
-<span class="fc" id="L29">    }</span>
+<span class="nc" id="L27">    MultipleRuleConverter(final Collection&lt;RuleConverter&lt;?&gt;&gt; converters) {</span>
+<span class="nc" id="L28">        this.converters = new ArrayList&lt;RuleConverter&lt;?&gt;&gt;(converters);</span>
+<span class="nc" id="L29">    }</span>
 
     @Override
     public boolean isSupportedType(final CSSRule rule) {
-<span class="fc bfc" id="L33" title="All 2 branches covered.">        return getConverter(rule) != null;</span>
+<span class="nc bnc" id="L33" title="All 2 branches missed.">        return getConverter(rule) != null;</span>
     }
 
     @Override
     public NodeRule convert(final CSSRule rule) {
-<span class="fc" id="L38">        final RuleConverter&lt;?&gt; converter = getConverter(rule);</span>
-<span class="fc bfc" id="L39" title="All 2 branches covered.">        if (converter != null) {</span>
-<span class="fc" id="L40">            return converter.convert(rule);</span>
+<span class="nc" id="L38">        final RuleConverter&lt;?&gt; converter = getConverter(rule);</span>
+<span class="nc bnc" id="L39" title="All 2 branches missed.">        if (converter != null) {</span>
+<span class="nc" id="L40">            return converter.convert(rule);</span>
         }
-<span class="fc" id="L42">        throw new UnsupportedRuleException(rule);</span>
+<span class="nc" id="L42">        throw new UnsupportedRuleException(rule);</span>
     }
 
     private RuleConverter&lt;?&gt; getConverter(final CSSRule rule) {
-<span class="fc bfc" id="L46" title="All 2 branches covered.">        for (final RuleConverter&lt;?&gt; converter : converters) {</span>
-<span class="fc bfc" id="L47" title="All 2 branches covered.">            if (converter.isSupportedType(rule)) {</span>
-<span class="fc" id="L48">                return converter;</span>
+<span class="nc bnc" id="L46" title="All 2 branches missed.">        for (final RuleConverter&lt;?&gt; converter : converters) {</span>
+<span class="nc bnc" id="L47" title="All 2 branches missed.">            if (converter.isSupportedType(rule)) {</span>
+<span class="nc" id="L48">                return converter;</span>
             }
-<span class="fc" id="L50">        }</span>
-<span class="fc" id="L51">        return null;</span>
+        }
+<span class="nc" id="L51">        return null;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.0.201801022044</span></div></body></html>

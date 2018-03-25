@@ -14,36 +14,36 @@ package biz.gabrys.maven.plugins.css.splitter.steadystate;
 
 import biz.gabrys.maven.plugins.css.splitter.css.Standard;
 
-<span class="fc" id="L17">public class ParserOptionsBuilder {</span>
+<span class="nc" id="L17">public class ParserOptionsBuilder {</span>
 
     private ParserOptionsImpl options;
 
     public ParserOptionsBuilder withStandard(final Standard standard) {
-<span class="fc" id="L22">        getOptions().standard = standard;</span>
-<span class="fc" id="L23">        return this;</span>
+<span class="nc" id="L22">        getOptions().standard = standard;</span>
+<span class="nc" id="L23">        return this;</span>
     }
 
     public ParserOptionsBuilder withStrict(final boolean strict) {
-<span class="fc" id="L27">        getOptions().strict = strict;</span>
-<span class="fc" id="L28">        return this;</span>
+<span class="nc" id="L27">        getOptions().strict = strict;</span>
+<span class="nc" id="L28">        return this;</span>
     }
 
     public ParserOptionsBuilder withStarHack(final boolean allowed) {
-<span class="fc" id="L32">        getOptions().starHackAllowed = allowed;</span>
-<span class="fc" id="L33">        return this;</span>
+<span class="nc" id="L32">        getOptions().starHackAllowed = allowed;</span>
+<span class="nc" id="L33">        return this;</span>
     }
 
     public ParserOptions create() {
-<span class="fc" id="L37">        final ParserOptions opts = getOptions();</span>
-<span class="fc" id="L38">        options = null;</span>
-<span class="fc" id="L39">        return opts;</span>
+<span class="nc" id="L37">        final ParserOptions opts = getOptions();</span>
+<span class="nc" id="L38">        options = null;</span>
+<span class="nc" id="L39">        return opts;</span>
     }
 
     private ParserOptionsImpl getOptions() {
-<span class="fc bfc" id="L43" title="All 2 branches covered.">        if (options == null) {</span>
-<span class="fc" id="L44">            options = new ParserOptionsImpl();</span>
+<span class="nc bnc" id="L43" title="All 2 branches missed.">        if (options == null) {</span>
+<span class="nc" id="L44">            options = new ParserOptionsImpl();</span>
         }
-<span class="fc" id="L46">        return options;</span>
+<span class="nc" id="L46">        return options;</span>
     }
 
     private static final class ParserOptionsImpl implements ParserOptions {
@@ -54,17 +54,17 @@ import biz.gabrys.maven.plugins.css.splitter.css.Standard;
 
         @Override
         public Standard getStandard() {
-<span class="fc" id="L57">            return standard;</span>
+<span class="nc" id="L57">            return standard;</span>
         }
 
         @Override
         public boolean isStrict() {
-<span class="fc" id="L62">            return strict;</span>
+<span class="nc" id="L62">            return strict;</span>
         }
 
         @Override
         public boolean isStarHackAllowed() {
-<span class="fc" id="L67">            return starHackAllowed;</span>
+<span class="nc" id="L67">            return starHackAllowed;</span>
         }
     }
 }

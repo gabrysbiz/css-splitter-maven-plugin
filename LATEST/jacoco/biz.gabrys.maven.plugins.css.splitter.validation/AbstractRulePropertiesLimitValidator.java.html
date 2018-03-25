@@ -18,30 +18,30 @@ abstract class AbstractRulePropertiesLimitValidator&lt;T extends NodeRule&gt; im
 
     private final Class&lt;T&gt; clazz;
 
-<span class="fc" id="L21">    protected AbstractRulePropertiesLimitValidator(final Class&lt;T&gt; clazz) {</span>
-<span class="fc" id="L22">        this.clazz = clazz;</span>
-<span class="fc" id="L23">    }</span>
+<span class="nc" id="L21">    protected AbstractRulePropertiesLimitValidator(final Class&lt;T&gt; clazz) {</span>
+<span class="nc" id="L22">        this.clazz = clazz;</span>
+<span class="nc" id="L23">    }</span>
 
     @Override
     public final boolean isSupportedType(final NodeRule rule) {
-<span class="fc bfc" id="L27" title="All 4 branches covered.">        return rule != null &amp;&amp; rule.getClass() == clazz;</span>
+<span class="nc bnc" id="L27" title="All 4 branches missed.">        return rule != null &amp;&amp; rule.getClass() == clazz;</span>
     }
 
     @Override
     public final void validate(final NodeRule rule, final int limit) {
-<span class="fc bfc" id="L32" title="All 2 branches covered.">        if (!isSupportedType(rule)) {</span>
-<span class="pc bpc" id="L33" title="1 of 2 branches missed.">            throw new IllegalArgumentException(String.format(&quot;Cannot cast an instance of the %s to the %s class!&quot;,</span>
-<span class="fc" id="L34">                    rule == null ? &quot;null&quot; : rule.getClass().getName(), clazz.getName()));</span>
+<span class="nc bnc" id="L32" title="All 2 branches missed.">        if (!isSupportedType(rule)) {</span>
+<span class="nc" id="L33">            throw new IllegalArgumentException(String.format(&quot;Cannot cast an instance of the %s to the %s class!&quot;,</span>
+<span class="nc bnc" id="L34" title="All 2 branches missed.">                    rule == null ? &quot;null&quot; : rule.getClass().getName(), clazz.getName()));</span>
         }
-<span class="fc" id="L36">        validate2(clazz.cast(rule), limit);</span>
-<span class="fc" id="L37">    }</span>
+<span class="nc" id="L36">        validate2(clazz.cast(rule), limit);</span>
+<span class="nc" id="L37">    }</span>
 
     protected abstract void validate2(T rule, int limit);
 
     protected void throwException(final int current, final int limit, final String code) {
-<span class="fc" id="L42">        throw new ValidationException(</span>
-<span class="fc" id="L43">                String.format(&quot;The number of style properties (%d) in non-splittable rule exceeded the allowable limit (%d)!&quot;</span>
-<span class="fc" id="L44">                        + &quot; CSS code that causes validation error:%n%s&quot;, current, limit, code));</span>
+<span class="nc" id="L42">        throw new ValidationException(</span>
+<span class="nc" id="L43">                String.format(&quot;The number of style properties (%d) in non-splittable rule exceeded the allowable limit (%d)!&quot;</span>
+<span class="nc" id="L44">                        + &quot; CSS code that causes validation error:%n%s&quot;, current, limit, code));</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.0.201801022044</span></div></body></html>

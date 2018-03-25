@@ -22,24 +22,24 @@ public final class CodeCompressor {
 
     private final int lineBreak;
 
-<span class="fc" id="L25">    public CodeCompressor(final int lineBreak) {</span>
-<span class="fc" id="L26">        this.lineBreak = lineBreak;</span>
-<span class="fc" id="L27">    }</span>
+<span class="nc" id="L25">    public CodeCompressor(final int lineBreak) {</span>
+<span class="nc" id="L26">        this.lineBreak = lineBreak;</span>
+<span class="nc" id="L27">    }</span>
 
     public String compress(final String css) {
         CssCompressor compressor;
         try {
-<span class="fc" id="L32">            compressor = new CssCompressor(new StringReader(css));</span>
+<span class="nc" id="L32">            compressor = new CssCompressor(new StringReader(css));</span>
 <span class="nc" id="L33">        } catch (final IOException e) {</span>
 <span class="nc" id="L34">            throw new InitializationException(e);</span>
-<span class="fc" id="L35">        }</span>
-<span class="fc" id="L36">        final StringWriter compressed = new StringWriter();</span>
+        }
+<span class="nc" id="L36">        final StringWriter compressed = new StringWriter();</span>
         try {
-<span class="fc" id="L38">            compressor.compress(compressed, lineBreak);</span>
+<span class="nc" id="L38">            compressor.compress(compressed, lineBreak);</span>
 <span class="nc" id="L39">        } catch (final IOException e) {</span>
 <span class="nc" id="L40">            throw new CompressionException(e);</span>
-<span class="fc" id="L41">        }</span>
-<span class="fc" id="L42">        return compressed.toString();</span>
+        }
+<span class="nc" id="L42">        return compressed.toString();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.0.201801022044</span></div></body></html>

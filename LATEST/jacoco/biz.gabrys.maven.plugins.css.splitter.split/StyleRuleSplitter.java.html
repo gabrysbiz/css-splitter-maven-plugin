@@ -27,22 +27,22 @@ class StyleRuleSplitter extends AbstractRuleSplitter&lt;StyleRule&gt; {
 
     // fot tests
     StyleRuleSplitter(final NeighborsManager neighborsManager) {
-<span class="fc" id="L30">        super(StyleRule.class);</span>
-<span class="fc" id="L31">        this.neighborsManager = neighborsManager;</span>
-<span class="fc" id="L32">    }</span>
+<span class="nc" id="L30">        super(StyleRule.class);</span>
+<span class="nc" id="L31">        this.neighborsManager = neighborsManager;</span>
+<span class="nc" id="L32">    }</span>
 
     @Override
     protected boolean isSplittable2(final StyleRule rule) {
-<span class="fc" id="L36">        return rule.isSplittable();</span>
+<span class="nc" id="L36">        return rule.isSplittable();</span>
     }
 
     @Override
     protected SplitResult split2(final StyleRule rule, final int splitAfter) {
-<span class="fc" id="L41">        final List&lt;StyleProperty&gt; properties = rule.getProperties();</span>
-<span class="fc" id="L42">        final StyleRule first = new StyleRule(rule.getSelectors(), properties.subList(0, splitAfter));</span>
-<span class="fc" id="L43">        final StyleRule second = new StyleRule(rule.getSelectors(), properties.subList(splitAfter, properties.size()));</span>
-<span class="fc" id="L44">        neighborsManager.fill(rule, first, second);</span>
-<span class="fc" id="L45">        return new SplitResult(first, second);</span>
+<span class="nc" id="L41">        final List&lt;StyleProperty&gt; properties = rule.getProperties();</span>
+<span class="nc" id="L42">        final StyleRule first = new StyleRule(rule.getSelectors(), properties.subList(0, splitAfter));</span>
+<span class="nc" id="L43">        final StyleRule second = new StyleRule(rule.getSelectors(), properties.subList(splitAfter, properties.size()));</span>
+<span class="nc" id="L44">        neighborsManager.fill(rule, first, second);</span>
+<span class="nc" id="L45">        return new SplitResult(first, second);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.0.201801022044</span></div></body></html>

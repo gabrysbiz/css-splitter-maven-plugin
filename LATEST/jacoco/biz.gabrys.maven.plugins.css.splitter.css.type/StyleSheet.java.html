@@ -20,32 +20,32 @@ public class StyleSheet {
     private final List&lt;NodeRule&gt; rules;
     private Integer size;
 
-<span class="fc" id="L23">    public StyleSheet(final List&lt;NodeRule&gt; rules) {</span>
-<span class="fc" id="L24">        TreeUtils.fillNeighbors(null, rules);</span>
-<span class="fc" id="L25">        this.rules = new ArrayList&lt;NodeRule&gt;(rules);</span>
-<span class="fc" id="L26">    }</span>
+<span class="nc" id="L23">    public StyleSheet(final List&lt;NodeRule&gt; rules) {</span>
+<span class="nc" id="L24">        TreeUtils.fillNeighbors(null, rules);</span>
+<span class="nc" id="L25">        this.rules = new ArrayList&lt;NodeRule&gt;(rules);</span>
+<span class="nc" id="L26">    }</span>
 
     public List&lt;NodeRule&gt; getRules() {
-<span class="fc" id="L29">        return new ArrayList&lt;NodeRule&gt;(rules);</span>
+<span class="nc" id="L29">        return new ArrayList&lt;NodeRule&gt;(rules);</span>
     }
 
     @Override
     public String toString() {
-<span class="fc" id="L34">        final StringBuilder css = new StringBuilder();</span>
-<span class="fc bfc" id="L35" title="All 2 branches covered.">        for (final NodeRule rule : rules) {</span>
-<span class="fc" id="L36">            css.append(rule);</span>
-<span class="fc" id="L37">        }</span>
-<span class="fc" id="L38">        return css.toString();</span>
+<span class="nc" id="L34">        final StringBuilder css = new StringBuilder();</span>
+<span class="nc bnc" id="L35" title="All 2 branches missed.">        for (final NodeRule rule : rules) {</span>
+<span class="nc" id="L36">            css.append(rule);</span>
+        }
+<span class="nc" id="L38">        return css.toString();</span>
     }
 
     public int getSize() {
-<span class="pc bpc" id="L42" title="1 of 2 branches missed.">        if (size == null) {</span>
-<span class="fc" id="L43">            size = 0;</span>
-<span class="fc bfc" id="L44" title="All 2 branches covered.">            for (final NodeRule child : rules) {</span>
-<span class="fc" id="L45">                size += child.getSize();</span>
-<span class="fc" id="L46">            }</span>
+<span class="nc bnc" id="L42" title="All 2 branches missed.">        if (size == null) {</span>
+<span class="nc" id="L43">            size = 0;</span>
+<span class="nc bnc" id="L44" title="All 2 branches missed.">            for (final NodeRule child : rules) {</span>
+<span class="nc" id="L45">                size += child.getSize();</span>
+            }
         }
-<span class="fc" id="L48">        return size;</span>
+<span class="nc" id="L48">        return size;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.0.201801022044</span></div></body></html>

@@ -29,38 +29,38 @@ public class StyleSheetConverter {
     private final RuleConverter&lt;?&gt; converter;
 
     public StyleSheetConverter(final Standard standard, final boolean strict) {
-<span class="fc" id="L32">        this(createConverter(standard, strict));</span>
-<span class="fc" id="L33">    }</span>
+<span class="nc" id="L32">        this(createConverter(standard, strict));</span>
+<span class="nc" id="L33">    }</span>
 
     // for tests
-<span class="fc" id="L36">    StyleSheetConverter(final RuleConverter&lt;?&gt; converter) {</span>
-<span class="fc" id="L37">        this.converter = converter;</span>
-<span class="fc" id="L38">    }</span>
+<span class="nc" id="L36">    StyleSheetConverter(final RuleConverter&lt;?&gt; converter) {</span>
+<span class="nc" id="L37">        this.converter = converter;</span>
+<span class="nc" id="L38">    }</span>
 
     static MultipleRuleConverter createConverter(final Standard standard, final boolean strict) {
-<span class="fc" id="L41">        final List&lt;RuleConverter&lt;?&gt;&gt; converters = new ArrayList&lt;RuleConverter&lt;?&gt;&gt;();</span>
-<span class="fc" id="L42">        converters.add(new StyleRuleConverter());</span>
-<span class="fc" id="L43">        converters.add(new MediaRuleConverter(standard, strict));</span>
-<span class="fc" id="L44">        converters.add(new FontFaceRuleConverter());</span>
-<span class="fc" id="L45">        converters.add(new PageRuleConverter());</span>
-<span class="fc" id="L46">        converters.add(new ImportRuleConverter());</span>
-<span class="fc" id="L47">        converters.add(new CharsetRuleConverter());</span>
-<span class="fc" id="L48">        converters.add(new UnknownRuleConverter());</span>
-<span class="fc" id="L49">        return new MultipleRuleConverter(converters);</span>
+<span class="nc" id="L41">        final List&lt;RuleConverter&lt;?&gt;&gt; converters = new ArrayList&lt;RuleConverter&lt;?&gt;&gt;();</span>
+<span class="nc" id="L42">        converters.add(new StyleRuleConverter());</span>
+<span class="nc" id="L43">        converters.add(new MediaRuleConverter(standard, strict));</span>
+<span class="nc" id="L44">        converters.add(new FontFaceRuleConverter());</span>
+<span class="nc" id="L45">        converters.add(new PageRuleConverter());</span>
+<span class="nc" id="L46">        converters.add(new ImportRuleConverter());</span>
+<span class="nc" id="L47">        converters.add(new CharsetRuleConverter());</span>
+<span class="nc" id="L48">        converters.add(new UnknownRuleConverter());</span>
+<span class="nc" id="L49">        return new MultipleRuleConverter(converters);</span>
     }
 
     public StyleSheet convert(final CSSStyleSheet stylesheet) {
-<span class="fc" id="L53">        final List&lt;NodeRule&gt; rules = new LinkedList&lt;NodeRule&gt;();</span>
-<span class="fc" id="L54">        final CSSRuleList ruleList = stylesheet.getCssRules();</span>
-<span class="fc bfc" id="L55" title="All 2 branches covered.">        for (int i = 0; i &lt; ruleList.getLength(); ++i) {</span>
-<span class="fc" id="L56">            final CSSRule rule = ruleList.item(i);</span>
-<span class="fc bfc" id="L57" title="All 2 branches covered.">            if (converter.isSupportedType(rule)) {</span>
-<span class="fc" id="L58">                rules.add(converter.convert(rule));</span>
-            } else {
-<span class="fc" id="L60">                throw new UnsupportedRuleException(rule);</span>
+<span class="nc" id="L53">        final List&lt;NodeRule&gt; rules = new LinkedList&lt;NodeRule&gt;();</span>
+<span class="nc" id="L54">        final CSSRuleList ruleList = stylesheet.getCssRules();</span>
+<span class="nc bnc" id="L55" title="All 2 branches missed.">        for (int i = 0; i &lt; ruleList.getLength(); ++i) {</span>
+<span class="nc" id="L56">            final CSSRule rule = ruleList.item(i);</span>
+<span class="nc bnc" id="L57" title="All 2 branches missed.">            if (converter.isSupportedType(rule)) {</span>
+<span class="nc" id="L58">                rules.add(converter.convert(rule));</span>
+<span class="nc" id="L59">            } else {</span>
+<span class="nc" id="L60">                throw new UnsupportedRuleException(rule);</span>
             }
         }
-<span class="fc" id="L63">        return new StyleSheet(rules);</span>
+<span class="nc" id="L63">        return new StyleSheet(rules);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.0.201801022044</span></div></body></html>

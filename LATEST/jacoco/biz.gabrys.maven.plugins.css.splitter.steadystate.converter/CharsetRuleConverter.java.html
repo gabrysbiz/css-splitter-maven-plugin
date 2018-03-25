@@ -22,18 +22,18 @@ class CharsetRuleConverter extends AbstractRuleConverter&lt;CSSCharsetRuleImpl, 
     private final CssFormatter formatter;
 
     CharsetRuleConverter() {
-<span class="fc" id="L25">        this(new CssFormatter());</span>
-<span class="fc" id="L26">    }</span>
+<span class="nc" id="L25">        this(new CssFormatter());</span>
+<span class="nc" id="L26">    }</span>
 
     // for tests
     CharsetRuleConverter(final CssFormatter formatter) {
-<span class="fc" id="L30">        super(CSSCharsetRuleImpl.class);</span>
-<span class="fc" id="L31">        this.formatter = formatter;</span>
-<span class="fc" id="L32">    }</span>
+<span class="nc" id="L30">        super(CSSCharsetRuleImpl.class);</span>
+<span class="nc" id="L31">        this.formatter = formatter;</span>
+<span class="nc" id="L32">    }</span>
 
     @Override
     protected SimpleRule convert2(final CSSCharsetRuleImpl rule) {
-<span class="fc" id="L36">        return new SimpleRule(formatter.format((CSSFormatable) rule));</span>
+<span class="nc" id="L36">        return new SimpleRule(formatter.format((CSSFormatable) rule));</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.0.201801022044</span></div></body></html>

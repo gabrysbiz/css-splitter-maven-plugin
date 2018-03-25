@@ -26,28 +26,28 @@ public final class StylePropertiesLimitValidator {
 
     public StylePropertiesLimitValidator(final int limit) {
 <span class="nc" id="L28">        this(Arrays.&lt;RulePropertiesLimitValidator&gt;asList(new StyleRulePropertiesLimitValidator(), new ComplexRulePropertiesLimitValidator(),</span>
-                new UnknownRulePropertiesLimitValidator()), limit);
+<span class="nc" id="L29">                new UnknownRulePropertiesLimitValidator()), limit);</span>
 <span class="nc" id="L30">    }</span>
 
     // for tests
-<span class="fc" id="L33">    StylePropertiesLimitValidator(final List&lt;RulePropertiesLimitValidator&gt; validators, final int limit) {</span>
-<span class="fc" id="L34">        this.validators = new ArrayList&lt;RulePropertiesLimitValidator&gt;(validators);</span>
-<span class="fc" id="L35">        this.limit = limit;</span>
-<span class="fc" id="L36">    }</span>
+<span class="nc" id="L33">    StylePropertiesLimitValidator(final List&lt;RulePropertiesLimitValidator&gt; validators, final int limit) {</span>
+<span class="nc" id="L34">        this.validators = new ArrayList&lt;RulePropertiesLimitValidator&gt;(validators);</span>
+<span class="nc" id="L35">        this.limit = limit;</span>
+<span class="nc" id="L36">    }</span>
 
     public void validate(final StyleSheet stylesheet) {
-<span class="fc bfc" id="L39" title="All 2 branches covered.">        for (final NodeRule rule : stylesheet.getRules()) {</span>
-<span class="fc" id="L40">            validate(rule);</span>
-<span class="fc" id="L41">        }</span>
-<span class="fc" id="L42">    }</span>
+<span class="nc bnc" id="L39" title="All 2 branches missed.">        for (final NodeRule rule : stylesheet.getRules()) {</span>
+<span class="nc" id="L40">            validate(rule);</span>
+        }
+<span class="nc" id="L42">    }</span>
 
     private void validate(final NodeRule rule) {
-<span class="fc bfc" id="L45" title="All 2 branches covered.">        for (final RulePropertiesLimitValidator validator : validators) {</span>
-<span class="fc bfc" id="L46" title="All 2 branches covered.">            if (validator.isSupportedType(rule)) {</span>
-<span class="fc" id="L47">                validator.validate(rule, limit);</span>
-<span class="fc" id="L48">                return;</span>
+<span class="nc bnc" id="L45" title="All 2 branches missed.">        for (final RulePropertiesLimitValidator validator : validators) {</span>
+<span class="nc bnc" id="L46" title="All 2 branches missed.">            if (validator.isSupportedType(rule)) {</span>
+<span class="nc" id="L47">                validator.validate(rule, limit);</span>
+<span class="nc" id="L48">                return;</span>
             }
-<span class="fc" id="L50">        }</span>
-<span class="fc" id="L51">    }</span>
+        }
+<span class="nc" id="L51">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.0.201801022044</span></div></body></html>

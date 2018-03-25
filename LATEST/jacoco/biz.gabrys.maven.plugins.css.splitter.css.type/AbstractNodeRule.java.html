@@ -15,7 +15,7 @@ package biz.gabrys.maven.plugins.css.splitter.css.type;
 import java.util.LinkedList;
 import java.util.List;
 
-<span class="fc" id="L18">public abstract class AbstractNodeRule extends NodeImpl&lt;NodeRule, NodeRule&gt; implements NodeRule {</span>
+<span class="nc" id="L18">public abstract class AbstractNodeRule extends NodeImpl&lt;NodeRule, NodeRule&gt; implements NodeRule {</span>
 
     protected static final String INDENTATION = &quot;  &quot;;
 
@@ -23,38 +23,38 @@ import java.util.List;
 
     @Override
     public String getCode() {
-<span class="fc" id="L26">        final String[] lines = getLines();</span>
-<span class="fc" id="L27">        final StringBuilder code = new StringBuilder();</span>
-<span class="fc" id="L28">        code.append(lines[0]);</span>
-<span class="fc bfc" id="L29" title="All 2 branches covered.">        for (int i = 1; i &lt; lines.length; ++i) {</span>
-<span class="fc" id="L30">            code.append('\n');</span>
-<span class="fc" id="L31">            code.append(lines[i]);</span>
+<span class="nc" id="L26">        final String[] lines = getLines();</span>
+<span class="nc" id="L27">        final StringBuilder code = new StringBuilder();</span>
+<span class="nc" id="L28">        code.append(lines[0]);</span>
+<span class="nc bnc" id="L29" title="All 2 branches missed.">        for (int i = 1; i &lt; lines.length; ++i) {</span>
+<span class="nc" id="L30">            code.append('\n');</span>
+<span class="nc" id="L31">            code.append(lines[i]);</span>
         }
-<span class="fc" id="L33">        return code.toString();</span>
+<span class="nc" id="L33">        return code.toString();</span>
     }
 
     @Override
     public String[] getLines() {
-<span class="fc" id="L38">        final List&lt;String&gt; lines = new LinkedList&lt;String&gt;();</span>
-<span class="fc" id="L39">        fillLines(lines);</span>
-<span class="fc" id="L40">        return lines.toArray(new String[0]);</span>
+<span class="nc" id="L38">        final List&lt;String&gt; lines = new LinkedList&lt;String&gt;();</span>
+<span class="nc" id="L39">        fillLines(lines);</span>
+<span class="nc" id="L40">        return lines.toArray(new String[0]);</span>
     }
 
     protected abstract void fillLines(List&lt;String&gt; lines);
 
     @Override
     public int getSize() {
-<span class="fc bfc" id="L47" title="All 2 branches covered.">        if (size == null) {</span>
-<span class="fc" id="L48">            size = getSize2();</span>
+<span class="nc bnc" id="L47" title="All 2 branches missed.">        if (size == null) {</span>
+<span class="nc" id="L48">            size = getSize2();</span>
         }
-<span class="fc" id="L50">        return size;</span>
+<span class="nc" id="L50">        return size;</span>
     }
 
     protected abstract int getSize2();
 
     @Override
     public String toString() {
-<span class="fc" id="L57">        return getCode() + '\n';</span>
+<span class="nc" id="L57">        return getCode() + '\n';</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.0.201801022044</span></div></body></html>

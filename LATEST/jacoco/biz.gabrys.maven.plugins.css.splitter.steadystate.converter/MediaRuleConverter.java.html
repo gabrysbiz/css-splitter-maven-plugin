@@ -31,50 +31,50 @@ class MediaRuleConverter extends AbstractRuleConverter&lt;CSSMediaRuleImpl, Comp
     private final CssFormatter formatter;
 
     MediaRuleConverter(final Standard standard, final boolean strict) {
-<span class="fc" id="L34">        super(CSSMediaRuleImpl.class);</span>
-<span class="fc" id="L35">        converter = createConverter(this, standard, strict);</span>
-<span class="fc" id="L36">        formatter = new CssFormatter();</span>
-<span class="fc" id="L37">    }</span>
+<span class="nc" id="L34">        super(CSSMediaRuleImpl.class);</span>
+<span class="nc" id="L35">        converter = createConverter(this, standard, strict);</span>
+<span class="nc" id="L36">        formatter = new CssFormatter();</span>
+<span class="nc" id="L37">    }</span>
 
     // for tests
     MediaRuleConverter(final RuleConverter&lt;?&gt; converter, final CssFormatter formatter) {
-<span class="fc" id="L41">        super(CSSMediaRuleImpl.class);</span>
-<span class="fc" id="L42">        this.converter = converter;</span>
-<span class="fc" id="L43">        this.formatter = formatter;</span>
-<span class="fc" id="L44">    }</span>
+<span class="nc" id="L41">        super(CSSMediaRuleImpl.class);</span>
+<span class="nc" id="L42">        this.converter = converter;</span>
+<span class="nc" id="L43">        this.formatter = formatter;</span>
+<span class="nc" id="L44">    }</span>
 
     static RuleConverter&lt;?&gt; createConverter(final MediaRuleConverter thisObject, final Standard standard, final boolean strict) {
-<span class="fc bfc" id="L47" title="All 4 branches covered.">        if (strict &amp;&amp; Standard.VERSION_3_0 != standard) {</span>
-<span class="fc" id="L48">            return new StyleRuleConverter();</span>
+<span class="nc bnc" id="L47" title="All 4 branches missed.">        if (strict &amp;&amp; Standard.VERSION_3_0 != standard) {</span>
+<span class="nc" id="L48">            return new StyleRuleConverter();</span>
         }
 
-<span class="fc" id="L51">        final List&lt;RuleConverter&lt;?&gt;&gt; converters = new ArrayList&lt;RuleConverter&lt;?&gt;&gt;();</span>
-<span class="fc" id="L52">        converters.add(new StyleRuleConverter());</span>
-<span class="fc bfc" id="L53" title="All 2 branches covered.">        if (Standard.VERSION_3_0 == standard) {</span>
-<span class="fc" id="L54">            converters.add(thisObject);</span>
+<span class="nc" id="L51">        final List&lt;RuleConverter&lt;?&gt;&gt; converters = new ArrayList&lt;RuleConverter&lt;?&gt;&gt;();</span>
+<span class="nc" id="L52">        converters.add(new StyleRuleConverter());</span>
+<span class="nc bnc" id="L53" title="All 2 branches missed.">        if (Standard.VERSION_3_0 == standard) {</span>
+<span class="nc" id="L54">            converters.add(thisObject);</span>
         }
-<span class="fc bfc" id="L56" title="All 2 branches covered.">        if (!strict) {</span>
-<span class="fc" id="L57">            converters.add(new PageRuleConverter());</span>
-<span class="fc" id="L58">            converters.add(new UnknownRuleConverter());</span>
+<span class="nc bnc" id="L56" title="All 2 branches missed.">        if (!strict) {</span>
+<span class="nc" id="L57">            converters.add(new PageRuleConverter());</span>
+<span class="nc" id="L58">            converters.add(new UnknownRuleConverter());</span>
         }
-<span class="fc" id="L60">        return new MultipleRuleConverter(converters);</span>
+<span class="nc" id="L60">        return new MultipleRuleConverter(converters);</span>
     }
 
     @Override
     protected ComplexRule convert2(final CSSMediaRuleImpl rule) {
-<span class="fc" id="L65">        final List&lt;String&gt; selectors = new LinkedList&lt;String&gt;();</span>
-<span class="fc" id="L66">        final MediaListImpl mediaList = (MediaListImpl) rule.getMedia();</span>
-<span class="fc bfc" id="L67" title="All 2 branches covered.">        for (int i = 0; i &lt; mediaList.getLength(); ++i) {</span>
-<span class="fc" id="L68">            selectors.add(formatter.format(mediaList.mediaQuery(i)));</span>
+<span class="nc" id="L65">        final List&lt;String&gt; selectors = new LinkedList&lt;String&gt;();</span>
+<span class="nc" id="L66">        final MediaListImpl mediaList = (MediaListImpl) rule.getMedia();</span>
+<span class="nc bnc" id="L67" title="All 2 branches missed.">        for (int i = 0; i &lt; mediaList.getLength(); ++i) {</span>
+<span class="nc" id="L68">            selectors.add(formatter.format(mediaList.mediaQuery(i)));</span>
         }
 
-<span class="fc" id="L71">        final List&lt;NodeRule&gt; rules = new LinkedList&lt;NodeRule&gt;();</span>
-<span class="fc" id="L72">        final CSSRuleList ruleList = rule.getCssRules();</span>
-<span class="fc bfc" id="L73" title="All 2 branches covered.">        for (int i = 0; i &lt; ruleList.getLength(); ++i) {</span>
-<span class="fc" id="L74">            rules.add(converter.convert(ruleList.item(i)));</span>
+<span class="nc" id="L71">        final List&lt;NodeRule&gt; rules = new LinkedList&lt;NodeRule&gt;();</span>
+<span class="nc" id="L72">        final CSSRuleList ruleList = rule.getCssRules();</span>
+<span class="nc bnc" id="L73" title="All 2 branches missed.">        for (int i = 0; i &lt; ruleList.getLength(); ++i) {</span>
+<span class="nc" id="L74">            rules.add(converter.convert(ruleList.item(i)));</span>
         }
 
-<span class="fc" id="L77">        return new ComplexRule(&quot;@media&quot;, selectors, rules);</span>
+<span class="nc" id="L77">        return new ComplexRule(&quot;@media&quot;, selectors, rules);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.0.201801022044</span></div></body></html>

@@ -19,13 +19,13 @@ class TreeMessagePrinter implements MessagePrinter {
 
     private final MessagePrinter printer;
 
-<span class="fc" id="L22">    public TreeMessagePrinter(final MessagePrinter printer) {</span>
-<span class="fc" id="L23">        this.printer = printer;</span>
-<span class="fc" id="L24">    }</span>
+<span class="nc" id="L22">    public TreeMessagePrinter(final MessagePrinter printer) {</span>
+<span class="nc" id="L23">        this.printer = printer;</span>
+<span class="nc" id="L24">    }</span>
 
     @Override
     public boolean isEnabled() {
-<span class="fc" id="L28">        return printer.isEnabled();</span>
+<span class="nc" id="L28">        return printer.isEnabled();</span>
     }
 
     @Override
@@ -35,14 +35,14 @@ class TreeMessagePrinter implements MessagePrinter {
 
     @Override
     public void print(final NodeRule rule) {
-<span class="fc bfc" id="L38" title="All 2 branches covered.">        if (printer.isSupportedType(rule)) {</span>
-<span class="fc" id="L39">            printer.print(rule);</span>
+<span class="nc bnc" id="L38" title="All 2 branches missed.">        if (printer.isSupportedType(rule)) {</span>
+<span class="nc" id="L39">            printer.print(rule);</span>
         }
-<span class="fc bfc" id="L41" title="All 2 branches covered.">        if (rule instanceof ComplexRule) {</span>
-<span class="fc bfc" id="L42" title="All 2 branches covered.">            for (final NodeRule child : ((ComplexRule) rule).getRules()) {</span>
-<span class="fc" id="L43">                print(child);</span>
-<span class="fc" id="L44">            }</span>
+<span class="nc bnc" id="L41" title="All 2 branches missed.">        if (rule instanceof ComplexRule) {</span>
+<span class="nc bnc" id="L42" title="All 2 branches missed.">            for (final NodeRule child : ((ComplexRule) rule).getRules()) {</span>
+<span class="nc" id="L43">                print(child);</span>
+            }
         }
-<span class="fc" id="L46">    }</span>
+<span class="nc" id="L46">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.0.201801022044</span></div></body></html>

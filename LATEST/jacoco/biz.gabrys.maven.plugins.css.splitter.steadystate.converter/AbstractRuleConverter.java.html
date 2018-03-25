@@ -22,21 +22,21 @@ abstract class AbstractRuleConverter&lt;F extends AbstractCSSRuleImpl, T extends
 
     private final Class&lt;F&gt; clazz;
 
-<span class="fc" id="L25">    protected AbstractRuleConverter(final Class&lt;F&gt; clazz) {</span>
-<span class="fc" id="L26">        this.clazz = clazz;</span>
-<span class="fc" id="L27">    }</span>
+<span class="nc" id="L25">    protected AbstractRuleConverter(final Class&lt;F&gt; clazz) {</span>
+<span class="nc" id="L26">        this.clazz = clazz;</span>
+<span class="nc" id="L27">    }</span>
 
     @Override
     public final boolean isSupportedType(final CSSRule rule) {
-<span class="fc bfc" id="L31" title="All 4 branches covered.">        return rule != null &amp;&amp; rule.getClass() == clazz;</span>
+<span class="nc bnc" id="L31" title="All 4 branches missed.">        return rule != null &amp;&amp; rule.getClass() == clazz;</span>
     }
 
     @Override
     public final T convert(final CSSRule rule) {
-<span class="fc bfc" id="L36" title="All 2 branches covered.">        if (!isSupportedType(rule)) {</span>
-<span class="fc" id="L37">            throw new UnsupportedRuleException(rule);</span>
+<span class="nc bnc" id="L36" title="All 2 branches missed.">        if (!isSupportedType(rule)) {</span>
+<span class="nc" id="L37">            throw new UnsupportedRuleException(rule);</span>
         }
-<span class="fc" id="L39">        return convert2(clazz.cast(rule));</span>
+<span class="nc" id="L39">        return convert2(clazz.cast(rule));</span>
     }
 
     protected abstract T convert2(F rule);

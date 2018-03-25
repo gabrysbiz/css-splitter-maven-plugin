@@ -23,7 +23,7 @@ public final class UrlEscaper {
 
     public static String escape(final String value) {
         try {
-<span class="fc" id="L26">            return URLEncoder.encode(value, &quot;UTF-8&quot;).replaceAll(&quot;\\+&quot;, &quot;%20&quot;);</span>
+<span class="nc" id="L26">            return URLEncoder.encode(value, &quot;UTF-8&quot;).replaceAll(&quot;\\+&quot;, &quot;%20&quot;);</span>
 <span class="nc" id="L27">        } catch (final UnsupportedEncodingException e) {</span>
 <span class="nc" id="L28">            throw new IllegalStateException(e);</span>
         }

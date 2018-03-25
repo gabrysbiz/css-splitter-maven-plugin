@@ -18,16 +18,16 @@ public class UnknownRule extends AbstractNodeRule {
 
     private final String code;
 
-<span class="fc" id="L21">    public UnknownRule(final String code) {</span>
-<span class="fc" id="L22">        this.code = code;</span>
-<span class="fc" id="L23">    }</span>
+<span class="nc" id="L21">    public UnknownRule(final String code) {</span>
+<span class="nc" id="L22">        this.code = code;</span>
+<span class="nc" id="L23">    }</span>
 
     @Override
     protected void fillLines(final List&lt;String&gt; lines) {
-<span class="fc bfc" id="L27" title="All 2 branches covered.">        for (final String line : code.split(&quot;\\n&quot;)) {</span>
-<span class="fc" id="L28">            lines.add(line);</span>
+<span class="nc bnc" id="L27" title="All 2 branches missed.">        for (final String line : code.split(&quot;\\n&quot;)) {</span>
+<span class="nc" id="L28">            lines.add(line);</span>
         }
-<span class="fc" id="L30">    }</span>
+<span class="nc" id="L30">    }</span>
 
     @Override
     protected int getSize2() {

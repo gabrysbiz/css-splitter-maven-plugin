@@ -24,25 +24,25 @@ class ComplexRuleInvalidContentMessagePrinter extends AbstractMessagePrinter&lt;
     private final boolean strict;
 
     public ComplexRuleInvalidContentMessagePrinter(final Log logger, final boolean strict) {
-<span class="fc" id="L27">        super(ComplexRule.class);</span>
-<span class="fc" id="L28">        this.logger = logger;</span>
-<span class="fc" id="L29">        this.strict = strict;</span>
-<span class="fc" id="L30">    }</span>
+<span class="nc" id="L27">        super(ComplexRule.class);</span>
+<span class="nc" id="L28">        this.logger = logger;</span>
+<span class="nc" id="L29">        this.strict = strict;</span>
+<span class="nc" id="L30">    }</span>
 
     @Override
     public boolean isEnabled() {
-<span class="fc bfc" id="L34" title="All 2 branches covered.">        return !strict;</span>
+<span class="nc bnc" id="L34" title="All 2 branches missed.">        return !strict;</span>
     }
 
     @Override
     protected void print2(final ComplexRule rule) {
-<span class="fc bfc" id="L39" title="All 2 branches covered.">        for (final NodeRule child : rule.getRules()) {</span>
-<span class="fc bfc" id="L40" title="All 2 branches covered.">            if (!(child instanceof StyleRule)) {</span>
-<span class="fc" id="L41">                logger.warn(String.format(&quot;NON-STRICT: found non-standard content in %s rule!&quot;, rule.getType()));</span>
-<span class="fc" id="L42">                logger.warn(String.format(&quot;NON-STRICT: non-standard content:%n%s&quot;, child.getCode()));</span>
-<span class="fc" id="L43">                logger.warn(String.format(&quot;NON-STRICT: %s rule code:%n%s&quot;, rule.getType(), rule.getCode()));</span>
+<span class="nc bnc" id="L39" title="All 2 branches missed.">        for (final NodeRule child : rule.getRules()) {</span>
+<span class="nc bnc" id="L40" title="All 2 branches missed.">            if (!(child instanceof StyleRule)) {</span>
+<span class="nc" id="L41">                logger.warn(String.format(&quot;NON-STRICT: found non-standard content in %s rule!&quot;, rule.getType()));</span>
+<span class="nc" id="L42">                logger.warn(String.format(&quot;NON-STRICT: non-standard content:%n%s&quot;, child.getCode()));</span>
+<span class="nc" id="L43">                logger.warn(String.format(&quot;NON-STRICT: %s rule code:%n%s&quot;, rule.getType(), rule.getCode()));</span>
             }
-<span class="fc" id="L45">        }</span>
-<span class="fc" id="L46">    }</span>
+        }
+<span class="nc" id="L46">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.0.201801022044</span></div></body></html>

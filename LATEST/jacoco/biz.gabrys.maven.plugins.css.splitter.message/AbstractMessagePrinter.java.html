@@ -18,21 +18,21 @@ abstract class AbstractMessagePrinter&lt;T extends NodeRule&gt; implements Messa
 
     private final Class&lt;T&gt; clazz;
 
-<span class="fc" id="L21">    protected AbstractMessagePrinter(final Class&lt;T&gt; clazz) {</span>
-<span class="fc" id="L22">        this.clazz = clazz;</span>
-<span class="fc" id="L23">    }</span>
+<span class="nc" id="L21">    protected AbstractMessagePrinter(final Class&lt;T&gt; clazz) {</span>
+<span class="nc" id="L22">        this.clazz = clazz;</span>
+<span class="nc" id="L23">    }</span>
 
     @Override
     public final boolean isSupportedType(final NodeRule rule) {
-<span class="fc bfc" id="L27" title="All 4 branches covered.">        return rule != null &amp;&amp; rule.getClass() == clazz;</span>
+<span class="nc bnc" id="L27" title="All 4 branches missed.">        return rule != null &amp;&amp; rule.getClass() == clazz;</span>
     }
 
     @Override
     public final void print(final NodeRule rule) {
-<span class="fc bfc" id="L32" title="All 2 branches covered.">        if (isSupportedType(rule)) {</span>
-<span class="fc" id="L33">            print2(clazz.cast(rule));</span>
+<span class="nc bnc" id="L32" title="All 2 branches missed.">        if (isSupportedType(rule)) {</span>
+<span class="nc" id="L33">            print2(clazz.cast(rule));</span>
         }
-<span class="fc" id="L35">    }</span>
+<span class="nc" id="L35">    }</span>
 
     protected abstract void print2(T rule);
 }
