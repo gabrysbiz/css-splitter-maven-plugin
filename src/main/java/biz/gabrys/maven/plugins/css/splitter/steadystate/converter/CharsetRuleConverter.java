@@ -13,17 +13,26 @@
 package biz.gabrys.maven.plugins.css.splitter.steadystate.converter;
 
 import com.steadystate.css.dom.CSSCharsetRuleImpl;
+import com.steadystate.css.format.CSSFormatable;
 
 import biz.gabrys.maven.plugins.css.splitter.css.type.SimpleRule;
 
 class CharsetRuleConverter extends AbstractRuleConverter<CSSCharsetRuleImpl, SimpleRule> {
 
+    private final CssFormatter formatter;
+
     CharsetRuleConverter() {
+        this(new CssFormatter());
+    }
+
+    // for tests
+    CharsetRuleConverter(final CssFormatter formatter) {
         super(CSSCharsetRuleImpl.class);
+        this.formatter = formatter;
     }
 
     @Override
     protected SimpleRule convert2(final CSSCharsetRuleImpl rule) {
-        return new SimpleRule(rule.getCssText());
+        return new SimpleRule(formatter.format((CSSFormatable) rule));
     }
 }

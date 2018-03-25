@@ -12,6 +12,7 @@
  */
 package biz.gabrys.maven.plugins.css.splitter.steadystate.converter;
 
+import org.w3c.css.sac.Selector;
 import org.w3c.dom.css.CSSRule;
 import org.w3c.dom.css.CSSValue;
 
@@ -27,6 +28,13 @@ class CssFormatter {
         return rule.getCssText();
     }
 
+    String format(final Selector selector) {
+        if (selector instanceof CSSFormatable) {
+            return format((CSSFormatable) selector);
+        }
+        return selector.toString();
+    }
+
     String format(final CSSValue value) {
         if (value instanceof CSSFormatable) {
             return format((CSSFormatable) value);
@@ -35,6 +43,6 @@ class CssFormatter {
     }
 
     String format(final CSSFormatable formatable) {
-        return formatable.getCssText(new CSSFormat().setUseSourceStringValues(true));
+        return formatable.getCssText(new CSSFormat().setUseSourceStringValues(true).setRgbAsHex(true));
     }
 }

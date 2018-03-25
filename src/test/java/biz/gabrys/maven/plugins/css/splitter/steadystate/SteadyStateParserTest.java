@@ -78,7 +78,6 @@ public final class SteadyStateParserTest {
         assertThat(stylesheet).isNotNull();
         final List<NodeRule> rules = stylesheet.getRules();
         assertThat(rules).hasSize(1);
-
         final NodeRule rule = rules.get(0);
         assertThat(rule).isExactlyInstanceOf(StyleRule.class);
         final StyleRule fontFaceRule = (StyleRule) rule;
@@ -158,6 +157,42 @@ public final class SteadyStateParserTest {
         assertThat(property.getName()).isEqualTo("content");
         assertThat(property.getValue()).isEqualTo("\"\\200B\\n\\t\\r\"");
         assertThat(property.getCode()).isEqualTo("content: \"\\200B\\n\\t\\r\";");
+    }
+
+    // https://github.com/gabrysbiz/css-splitter-maven-plugin/issues/28
+    @Test
+    @Parameters(method = "allStandards")
+    public void parse_colors_hexIsUsed(final Standard standard) {
+        final StringBuilder css = new StringBuilder();
+        css.append("colors {");
+        css.append("\thex-short: #fff;");
+        css.append("\thex-long: #ffffff;");
+        css.append("\trgb: rgb(255, 255, 255);");
+        if (standard != Standard.VERSION_1_0) {
+            css.append("\trgba: rgba(172, 172, 172, 0.5);");
+        }
+        css.append("}");
+
+        final SteadyStateParser parser = new SteadyStateParser(mock(Log.class));
+        final ParserOptions options = new ParserOptionsBuilder().withStandard(standard).withStrict(true).create();
+        final StyleSheet stylesheet = parser.parse(css.toString(), options);
+
+        assertThat(stylesheet).isNotNull();
+        final List<NodeRule> rules = stylesheet.getRules();
+        assertThat(rules).hasSize(1);
+        final NodeRule rule = rules.get(0);
+        assertThat(rule).isExactlyInstanceOf(StyleRule.class);
+        final StyleRule styleRule = (StyleRule) rule;
+        assertThat(styleRule.getSelectors()).containsExactly("colors");
+
+        final List<StyleProperty> properties = styleRule.getProperties();
+        assertThat(properties).hasSize(standard != Standard.VERSION_1_0 ? 4 : 3);
+        verifyProperty(properties.get(0), "hex-short", "#ffffff");
+        verifyProperty(properties.get(1), "hex-long", "#ffffff");
+        verifyProperty(properties.get(2), "rgb", "#ffffff");
+        if (standard != Standard.VERSION_1_0) {
+            verifyProperty(properties.get(3), "rgba", "rgba(172, 172, 172, 0.5)");
+        }
     }
 
     public static Standard[] allStandards() {

@@ -15,6 +15,7 @@ import org.junit.runner.RunWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.w3c.css.sac.Selector;
 import org.w3c.dom.css.CSSRule;
 import org.w3c.dom.css.CSSValue;
 
@@ -57,6 +58,32 @@ public class CssFormatterTest {
     }
 
     @Test
+    public void format_selectorWhichIsNotAnInstaceOfCSSFormatable_returnsCodeWithoutFormatting() {
+        final Selector selector = mock(Selector.class);
+        when(selector.toString()).thenReturn(CODE);
+
+        final String result = formatter.format(selector);
+
+        assertThat(result).isEqualTo(CODE);
+        verify(formatter).format(selector);
+        verifyNoMoreInteractions(formatter, selector);
+    }
+
+    @Test
+    public void format_selectorWhichIsAnInstaceOfCSSFormatable_returnsCodeWithFormatting() {
+        final Selector selector = mock(Selector.class, withSettings().extraInterfaces(CSSFormatable.class));
+        doReturn(CODE).when(formatter).format(any(CSSFormatable.class));
+
+        final String result = formatter.format(selector);
+
+        assertThat(result).isEqualTo(CODE);
+        verify(formatter).format(selector);
+        verify(formatter).format((CSSFormatable) selector);
+        verifyNoMoreInteractions(formatter);
+        verifyZeroInteractions(selector);
+    }
+
+    @Test
     public void format_cssValueWhichIsNotAnInstaceOfCSSFormatable_returnsCodeWithoutFormatting() {
         final CSSValue value = mock(CSSValue.class);
         when(value.getCssText()).thenReturn(CODE);
@@ -96,7 +123,7 @@ public class CssFormatterTest {
         verify(formatable).getCssText(captor.capture());
         final CSSFormat format = captor.getValue();
         assertThat(format).isNotNull();
-        assertThat(format.isRgbAsHex()).isFalse();
+        assertThat(format.isRgbAsHex()).isTrue();
         assertThat(format.useSourceStringValues()).isTrue();
         assertThat(format.getPropertiesInSeparateLines()).isFalse();
         assertThat(format.getPropertiesIndent()).isEmpty();
