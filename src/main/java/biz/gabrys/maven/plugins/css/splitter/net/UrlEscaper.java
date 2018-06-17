@@ -14,8 +14,11 @@ package biz.gabrys.maven.plugins.css.splitter.net;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.regex.Pattern;
 
 public final class UrlEscaper {
+
+    private static final Pattern PLUS_CHARACTER_REGEX = Pattern.compile("\\+");
 
     private UrlEscaper() {
         // blocks the possibility of create a new instance
@@ -23,7 +26,7 @@ public final class UrlEscaper {
 
     public static String escape(final String value) {
         try {
-            return URLEncoder.encode(value, "UTF-8").replaceAll("\\+", "%20");
+            return PLUS_CHARACTER_REGEX.matcher(URLEncoder.encode(value, "UTF-8")).replaceAll("%20");
         } catch (final UnsupportedEncodingException e) {
             throw new IllegalStateException(e);
         }

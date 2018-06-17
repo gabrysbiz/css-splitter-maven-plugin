@@ -1,5 +1,11 @@
 # CSS Splitter Maven Plugin Changelog
 
+## 2.0.2
+Bugs:
+* Fixed regex patterns should not be created needlessly ([#30](https://github.com/gabrysbiz/css-splitter-maven-plugin/issues/30))
+
+[See documentation](http://css-splitter-maven-plugin.projects.gabrys.biz/2.0.2/)
+
 ## 2.0.1
 Bugs:
 * Fixed colors should be written as hex codes instead of rgb functions ([#28](https://github.com/gabrysbiz/css-splitter-maven-plugin/issues/28))
