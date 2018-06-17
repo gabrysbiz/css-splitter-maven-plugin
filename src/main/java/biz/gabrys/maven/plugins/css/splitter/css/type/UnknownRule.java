@@ -13,8 +13,11 @@
 package biz.gabrys.maven.plugins.css.splitter.css.type;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class UnknownRule extends AbstractNodeRule {
+
+    private static final Pattern NEW_LINE_REGEX = Pattern.compile("\\n");
 
     private final String code;
 
@@ -24,7 +27,7 @@ public class UnknownRule extends AbstractNodeRule {
 
     @Override
     protected void fillLines(final List<String> lines) {
-        for (final String line : code.split("\\n")) {
+        for (final String line : NEW_LINE_REGEX.split(code, 0)) {
             lines.add(line);
         }
     }
