@@ -29,29 +29,29 @@ class StyleRuleConverter extends AbstractRuleConverter&lt;CSSStyleRuleImpl, Styl
     private final CssFormatter formatter;
 
     StyleRuleConverter() {
-<span class="nc" id="L32">        this(new StylePropertyConverter(), new CssFormatter());</span>
-<span class="nc" id="L33">    }</span>
+<span class="fc" id="L32">        this(new StylePropertyConverter(), new CssFormatter());</span>
+<span class="fc" id="L33">    }</span>
 
     // for tests
     StyleRuleConverter(final StylePropertyConverter converter, final CssFormatter formatter) {
-<span class="nc" id="L37">        super(CSSStyleRuleImpl.class);</span>
-<span class="nc" id="L38">        this.converter = converter;</span>
-<span class="nc" id="L39">        this.formatter = formatter;</span>
-<span class="nc" id="L40">    }</span>
+<span class="fc" id="L37">        super(CSSStyleRuleImpl.class);</span>
+<span class="fc" id="L38">        this.converter = converter;</span>
+<span class="fc" id="L39">        this.formatter = formatter;</span>
+<span class="fc" id="L40">    }</span>
 
     @Override
     protected StyleRule convert2(final CSSStyleRuleImpl rule) {
-<span class="nc" id="L44">        final List&lt;String&gt; selectors = new LinkedList&lt;String&gt;();</span>
-<span class="nc" id="L45">        final SelectorListImpl selectorsList = (SelectorListImpl) rule.getSelectors();</span>
-<span class="nc bnc" id="L46" title="All 2 branches missed.">        for (int i = 0; i &lt; selectorsList.getLength(); ++i) {</span>
-<span class="nc" id="L47">            selectors.add(formatter.format(selectorsList.item(i)));</span>
+<span class="fc" id="L44">        final List&lt;String&gt; selectors = new LinkedList&lt;String&gt;();</span>
+<span class="fc" id="L45">        final SelectorListImpl selectorsList = (SelectorListImpl) rule.getSelectors();</span>
+<span class="fc bfc" id="L46" title="All 2 branches covered.">        for (int i = 0; i &lt; selectorsList.getLength(); ++i) {</span>
+<span class="fc" id="L47">            selectors.add(formatter.format(selectorsList.item(i)));</span>
         }
-<span class="nc" id="L49">        final CSSStyleDeclarationImpl style = (CSSStyleDeclarationImpl) rule.getStyle();</span>
-<span class="nc" id="L50">        final List&lt;StyleProperty&gt; properties = new LinkedList&lt;StyleProperty&gt;();</span>
-<span class="nc bnc" id="L51" title="All 2 branches missed.">        for (final Property property : style.getProperties()) {</span>
-<span class="nc" id="L52">            properties.add(converter.convert(property));</span>
-        }
-<span class="nc" id="L54">        return new StyleRule(selectors, properties);</span>
+<span class="fc" id="L49">        final CSSStyleDeclarationImpl style = (CSSStyleDeclarationImpl) rule.getStyle();</span>
+<span class="fc" id="L50">        final List&lt;StyleProperty&gt; properties = new LinkedList&lt;StyleProperty&gt;();</span>
+<span class="fc bfc" id="L51" title="All 2 branches covered.">        for (final Property property : style.getProperties()) {</span>
+<span class="fc" id="L52">            properties.add(converter.convert(property));</span>
+<span class="fc" id="L53">        }</span>
+<span class="fc" id="L54">        return new StyleRule(selectors, properties);</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.0.201801022044</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.1.201803210924</span></div></body></html>

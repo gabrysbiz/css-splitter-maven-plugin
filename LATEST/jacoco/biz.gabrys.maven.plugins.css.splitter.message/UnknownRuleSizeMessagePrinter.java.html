@@ -21,20 +21,20 @@ class UnknownRuleSizeMessagePrinter extends AbstractMessagePrinter&lt;UnknownRul
     private final Log logger;
 
     UnknownRuleSizeMessagePrinter(final Log logger) {
-<span class="nc" id="L24">        super(UnknownRule.class);</span>
-<span class="nc" id="L25">        this.logger = logger;</span>
-<span class="nc" id="L26">    }</span>
+<span class="fc" id="L24">        super(UnknownRule.class);</span>
+<span class="fc" id="L25">        this.logger = logger;</span>
+<span class="fc" id="L26">    }</span>
 
     @Override
     public boolean isEnabled() {
-<span class="nc" id="L30">        return logger.isDebugEnabled();</span>
+<span class="fc" id="L30">        return logger.isDebugEnabled();</span>
     }
 
     @Override
     protected void print2(final UnknownRule rule) {
-<span class="nc" id="L35">        logger.debug(&quot;Found non-standard (unknown) rule:\n&quot; + rule.getCode());</span>
-<span class="nc" id="L36">        final int size = rule.getSize();</span>
-<span class="nc bnc" id="L37" title="All 2 branches missed.">        logger.debug(String.format(&quot;I treat that it contains %d propert%s.&quot;, size, size != 1 ? &quot;ies&quot; : &quot;y&quot;));</span>
-<span class="nc" id="L38">    }</span>
+<span class="fc" id="L35">        logger.debug(&quot;Found non-standard (unknown) rule:\n&quot; + rule.getCode());</span>
+<span class="fc" id="L36">        final int size = rule.getSize();</span>
+<span class="fc bfc" id="L37" title="All 2 branches covered.">        logger.debug(String.format(&quot;I treat that it contains %d propert%s.&quot;, size, size != 1 ? &quot;ies&quot; : &quot;y&quot;));</span>
+<span class="fc" id="L38">    }</span>
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.0.201801022044</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.1.201803210924</span></div></body></html>

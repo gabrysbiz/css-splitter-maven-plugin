@@ -21,16 +21,16 @@ class StylePropertyConverter {
     private final CssFormatter formatter;
 
     StylePropertyConverter() {
-<span class="nc" id="L24">        this(new CssFormatter());</span>
-<span class="nc" id="L25">    }</span>
+<span class="fc" id="L24">        this(new CssFormatter());</span>
+<span class="fc" id="L25">    }</span>
 
     // for tests
-<span class="nc" id="L28">    StylePropertyConverter(final CssFormatter formatter) {</span>
-<span class="nc" id="L29">        this.formatter = formatter;</span>
-<span class="nc" id="L30">    }</span>
+<span class="fc" id="L28">    StylePropertyConverter(final CssFormatter formatter) {</span>
+<span class="fc" id="L29">        this.formatter = formatter;</span>
+<span class="fc" id="L30">    }</span>
 
     StyleProperty convert(final Property property) {
-<span class="nc" id="L33">        return new StyleProperty(property.getName(), formatter.format(property.getValue()), property.isImportant());</span>
+<span class="fc" id="L33">        return new StyleProperty(property.getName(), formatter.format(property.getValue()), property.isImportant());</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.0.201801022044</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.1.201803210924</span></div></body></html>

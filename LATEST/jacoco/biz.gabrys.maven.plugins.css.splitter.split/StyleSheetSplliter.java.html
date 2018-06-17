@@ -35,36 +35,36 @@ public class StyleSheetSplliter {
 <span class="nc" id="L35">    }</span>
 
     // for tests
-<span class="nc" id="L38">    StyleSheetSplliter(final int limit, final RulesSplitter splitter) {</span>
-<span class="nc" id="L39">        this.limit = limit;</span>
-<span class="nc" id="L40">        this.splitter = splitter;</span>
-<span class="nc" id="L41">    }</span>
+<span class="fc" id="L38">    StyleSheetSplliter(final int limit, final RulesSplitter splitter) {</span>
+<span class="fc" id="L39">        this.limit = limit;</span>
+<span class="fc" id="L40">        this.splitter = splitter;</span>
+<span class="fc" id="L41">    }</span>
 
     public List&lt;StyleSheet&gt; split(final StyleSheet stylesheet) {
-<span class="nc bnc" id="L44" title="All 2 branches missed.">        if (stylesheet.getRules().isEmpty()) {</span>
-<span class="nc" id="L45">            return Arrays.asList(stylesheet);</span>
+<span class="fc bfc" id="L44" title="All 2 branches covered.">        if (stylesheet.getRules().isEmpty()) {</span>
+<span class="fc" id="L45">            return Arrays.asList(stylesheet);</span>
         }
-<span class="nc" id="L47">        final List&lt;List&lt;NodeRule&gt;&gt; rulesMatrix = splitToMatrix(stylesheet);</span>
-<span class="nc" id="L48">        return convertToSheets(rulesMatrix);</span>
+<span class="fc" id="L47">        final List&lt;List&lt;NodeRule&gt;&gt; rulesMatrix = splitToMatrix(stylesheet);</span>
+<span class="fc" id="L48">        return convertToSheets(rulesMatrix);</span>
     }
 
     private List&lt;List&lt;NodeRule&gt;&gt; splitToMatrix(final StyleSheet stylesheet) {
-<span class="nc" id="L52">        final List&lt;List&lt;NodeRule&gt;&gt; rulesMatrix = new LinkedList&lt;List&lt;NodeRule&gt;&gt;();</span>
-<span class="nc" id="L53">        List&lt;NodeRule&gt; currentRules = stylesheet.getRules();</span>
-<span class="nc bnc" id="L54" title="All 2 branches missed.">        while (!currentRules.isEmpty()) {</span>
-<span class="nc" id="L55">            final RulesContainer container = splitter.split(currentRules, limit);</span>
-<span class="nc" id="L56">            rulesMatrix.add(container.before);</span>
-<span class="nc" id="L57">            currentRules = container.after;</span>
-        }
-<span class="nc" id="L59">        return rulesMatrix;</span>
+<span class="fc" id="L52">        final List&lt;List&lt;NodeRule&gt;&gt; rulesMatrix = new LinkedList&lt;List&lt;NodeRule&gt;&gt;();</span>
+<span class="fc" id="L53">        List&lt;NodeRule&gt; currentRules = stylesheet.getRules();</span>
+<span class="fc bfc" id="L54" title="All 2 branches covered.">        while (!currentRules.isEmpty()) {</span>
+<span class="fc" id="L55">            final RulesContainer container = splitter.split(currentRules, limit);</span>
+<span class="fc" id="L56">            rulesMatrix.add(container.before);</span>
+<span class="fc" id="L57">            currentRules = container.after;</span>
+<span class="fc" id="L58">        }</span>
+<span class="fc" id="L59">        return rulesMatrix;</span>
     }
 
     private static List&lt;StyleSheet&gt; convertToSheets(final List&lt;List&lt;NodeRule&gt;&gt; rulesMatrix) {
-<span class="nc" id="L63">        final List&lt;StyleSheet&gt; sheets = new ArrayList&lt;StyleSheet&gt;(rulesMatrix.size());</span>
-<span class="nc bnc" id="L64" title="All 2 branches missed.">        for (final List&lt;NodeRule&gt; sheetRules : rulesMatrix) {</span>
-<span class="nc" id="L65">            sheets.add(new StyleSheet(sheetRules));</span>
-        }
-<span class="nc" id="L67">        return sheets;</span>
+<span class="fc" id="L63">        final List&lt;StyleSheet&gt; sheets = new ArrayList&lt;StyleSheet&gt;(rulesMatrix.size());</span>
+<span class="fc bfc" id="L64" title="All 2 branches covered.">        for (final List&lt;NodeRule&gt; sheetRules : rulesMatrix) {</span>
+<span class="fc" id="L65">            sheets.add(new StyleSheet(sheetRules));</span>
+<span class="fc" id="L66">        }</span>
+<span class="fc" id="L67">        return sheets;</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.0.201801022044</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.1.201803210924</span></div></body></html>

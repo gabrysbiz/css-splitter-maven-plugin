@@ -18,34 +18,34 @@ public class StyleProperty extends NodeImpl&lt;StyleRule, StyleProperty&gt; {
     private final String value;
     private final boolean important;
 
-<span class="nc" id="L21">    public StyleProperty(final String name, final String value, final boolean important) {</span>
-<span class="nc" id="L22">        this.name = name;</span>
-<span class="nc" id="L23">        this.value = value;</span>
-<span class="nc" id="L24">        this.important = important;</span>
-<span class="nc" id="L25">    }</span>
+<span class="fc" id="L21">    public StyleProperty(final String name, final String value, final boolean important) {</span>
+<span class="fc" id="L22">        this.name = name;</span>
+<span class="fc" id="L23">        this.value = value;</span>
+<span class="fc" id="L24">        this.important = important;</span>
+<span class="fc" id="L25">    }</span>
 
     public String getName() {
-<span class="nc" id="L28">        return name;</span>
+<span class="fc" id="L28">        return name;</span>
     }
 
     public String getValue() {
-<span class="nc" id="L32">        return value;</span>
+<span class="fc" id="L32">        return value;</span>
     }
 
     public boolean isImportant() {
-<span class="nc" id="L36">        return important;</span>
+<span class="fc" id="L36">        return important;</span>
     }
 
     public String getCode() {
-<span class="nc" id="L40">        final StringBuilder code = new StringBuilder();</span>
-<span class="nc" id="L41">        code.append(name);</span>
-<span class="nc" id="L42">        code.append(&quot;: &quot;);</span>
-<span class="nc" id="L43">        code.append(value);</span>
-<span class="nc bnc" id="L44" title="All 2 branches missed.">        if (important) {</span>
-<span class="nc" id="L45">            code.append(&quot; !important&quot;);</span>
+<span class="fc" id="L40">        final StringBuilder code = new StringBuilder();</span>
+<span class="fc" id="L41">        code.append(name);</span>
+<span class="fc" id="L42">        code.append(&quot;: &quot;);</span>
+<span class="fc" id="L43">        code.append(value);</span>
+<span class="fc bfc" id="L44" title="All 2 branches covered.">        if (important) {</span>
+<span class="fc" id="L45">            code.append(&quot; !important&quot;);</span>
         }
-<span class="nc" id="L47">        code.append(';');</span>
-<span class="nc" id="L48">        return code.toString();</span>
+<span class="fc" id="L47">        code.append(';');</span>
+<span class="fc" id="L48">        return code.toString();</span>
     }
 
     @Override
@@ -53,4 +53,4 @@ public class StyleProperty extends NodeImpl&lt;StyleRule, StyleProperty&gt; {
 <span class="nc" id="L53">        return getCode() + '\n';</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.0.201801022044</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.1.201803210924</span></div></body></html>

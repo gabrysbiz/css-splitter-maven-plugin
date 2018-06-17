@@ -23,47 +23,47 @@ public class ComplexRule extends AbstractNodeRule {
     private final List&lt;String&gt; selectors;
     private final List&lt;NodeRule&gt; rules;
 
-<span class="nc" id="L26">    public ComplexRule(final String type, final List&lt;String&gt; selectors, final List&lt;? extends NodeRule&gt; rules) {</span>
-<span class="nc" id="L27">        TreeUtils.fillNeighbors(this, rules);</span>
-<span class="nc" id="L28">        this.type = type;</span>
-<span class="nc" id="L29">        this.selectors = new ArrayList&lt;String&gt;(selectors);</span>
-<span class="nc" id="L30">        this.rules = new ArrayList&lt;NodeRule&gt;(rules);</span>
-<span class="nc" id="L31">    }</span>
+<span class="fc" id="L26">    public ComplexRule(final String type, final List&lt;String&gt; selectors, final List&lt;? extends NodeRule&gt; rules) {</span>
+<span class="fc" id="L27">        TreeUtils.fillNeighbors(this, rules);</span>
+<span class="fc" id="L28">        this.type = type;</span>
+<span class="fc" id="L29">        this.selectors = new ArrayList&lt;String&gt;(selectors);</span>
+<span class="fc" id="L30">        this.rules = new ArrayList&lt;NodeRule&gt;(rules);</span>
+<span class="fc" id="L31">    }</span>
 
     public String getType() {
 <span class="nc" id="L34">        return type;</span>
     }
 
     public List&lt;String&gt; getSelectors() {
-<span class="nc" id="L38">        return new ArrayList&lt;String&gt;(selectors);</span>
+<span class="fc" id="L38">        return new ArrayList&lt;String&gt;(selectors);</span>
     }
 
     public List&lt;NodeRule&gt; getRules() {
-<span class="nc" id="L42">        return new ArrayList&lt;NodeRule&gt;(rules);</span>
+<span class="fc" id="L42">        return new ArrayList&lt;NodeRule&gt;(rules);</span>
     }
 
     @Override
     protected void fillLines(final List&lt;String&gt; lines) {
-<span class="nc" id="L47">        lines.add(type + ' ' + StringUtils.join(selectors.iterator(), &quot;, &quot;) + &quot; {&quot;);</span>
-<span class="nc bnc" id="L48" title="All 2 branches missed.">        for (final NodeRule rule : rules) {</span>
-<span class="nc" id="L49">            final String[] childLines = rule.getLines();</span>
-<span class="nc bnc" id="L50" title="All 2 branches missed.">            for (final String childLine : childLines) {</span>
-<span class="nc" id="L51">                lines.add(INDENTATION + childLine);</span>
+<span class="fc" id="L47">        lines.add(type + ' ' + StringUtils.join(selectors.iterator(), &quot;, &quot;) + &quot; {&quot;);</span>
+<span class="fc bfc" id="L48" title="All 2 branches covered.">        for (final NodeRule rule : rules) {</span>
+<span class="fc" id="L49">            final String[] childLines = rule.getLines();</span>
+<span class="fc bfc" id="L50" title="All 2 branches covered.">            for (final String childLine : childLines) {</span>
+<span class="fc" id="L51">                lines.add(INDENTATION + childLine);</span>
             }
-        }
-<span class="nc" id="L54">        lines.add(&quot;}&quot;);</span>
-<span class="nc" id="L55">    }</span>
+<span class="fc" id="L53">        }</span>
+<span class="fc" id="L54">        lines.add(&quot;}&quot;);</span>
+<span class="fc" id="L55">    }</span>
 
     @Override
     protected int getSize2() {
-<span class="nc" id="L59">        int size = 0;</span>
-<span class="nc bnc" id="L60" title="All 2 branches missed.">        for (final NodeRule rule : rules) {</span>
-<span class="nc" id="L61">            size += rule.getSize();</span>
+<span class="fc" id="L59">        int size = 0;</span>
+<span class="fc bfc" id="L60" title="All 2 branches covered.">        for (final NodeRule rule : rules) {</span>
+<span class="fc" id="L61">            size += rule.getSize();</span>
+<span class="fc" id="L62">        }</span>
+<span class="fc bfc" id="L63" title="All 2 branches covered.">        if (size == 0) {</span>
+<span class="fc" id="L64">            return 1;</span>
         }
-<span class="nc bnc" id="L63" title="All 2 branches missed.">        if (size == 0) {</span>
-<span class="nc" id="L64">            return 1;</span>
-        }
-<span class="nc" id="L66">        return size;</span>
+<span class="fc" id="L66">        return size;</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.0.201801022044</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.1.201803210924</span></div></body></html>

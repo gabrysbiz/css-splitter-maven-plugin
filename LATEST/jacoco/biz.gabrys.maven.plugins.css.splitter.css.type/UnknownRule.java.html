@@ -13,25 +13,28 @@
 package biz.gabrys.maven.plugins.css.splitter.css.type;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 public class UnknownRule extends AbstractNodeRule {
 
+<span class="fc" id="L20">    private static final Pattern NEW_LINE_REGEX = Pattern.compile(&quot;\\n&quot;);</span>
+
     private final String code;
 
-<span class="nc" id="L21">    public UnknownRule(final String code) {</span>
-<span class="nc" id="L22">        this.code = code;</span>
-<span class="nc" id="L23">    }</span>
+<span class="fc" id="L24">    public UnknownRule(final String code) {</span>
+<span class="fc" id="L25">        this.code = code;</span>
+<span class="fc" id="L26">    }</span>
 
     @Override
     protected void fillLines(final List&lt;String&gt; lines) {
-<span class="nc bnc" id="L27" title="All 2 branches missed.">        for (final String line : code.split(&quot;\\n&quot;)) {</span>
-<span class="nc" id="L28">            lines.add(line);</span>
+<span class="fc bfc" id="L30" title="All 2 branches covered.">        for (final String line : NEW_LINE_REGEX.split(code, 0)) {</span>
+<span class="fc" id="L31">            lines.add(line);</span>
         }
-<span class="nc" id="L30">    }</span>
+<span class="fc" id="L33">    }</span>
 
     @Override
     protected int getSize2() {
-<span class="nc" id="L34">        return new UnknownRuleCounter().count(this);</span>
+<span class="nc" id="L37">        return new UnknownRuleCounter().count(this);</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.0.201801022044</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.1.201803210924</span></div></body></html>

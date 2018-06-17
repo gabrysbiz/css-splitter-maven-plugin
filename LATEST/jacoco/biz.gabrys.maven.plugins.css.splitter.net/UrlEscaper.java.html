@@ -14,8 +14,11 @@ package biz.gabrys.maven.plugins.css.splitter.net;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.regex.Pattern;
 
 public final class UrlEscaper {
+
+<span class="fc" id="L21">    private static final Pattern PLUS_CHARACTER_REGEX = Pattern.compile(&quot;\\+&quot;);</span>
 
     private UrlEscaper() {
         // blocks the possibility of create a new instance
@@ -23,10 +26,10 @@ public final class UrlEscaper {
 
     public static String escape(final String value) {
         try {
-<span class="nc" id="L26">            return URLEncoder.encode(value, &quot;UTF-8&quot;).replaceAll(&quot;\\+&quot;, &quot;%20&quot;);</span>
-<span class="nc" id="L27">        } catch (final UnsupportedEncodingException e) {</span>
-<span class="nc" id="L28">            throw new IllegalStateException(e);</span>
+<span class="fc" id="L29">            return PLUS_CHARACTER_REGEX.matcher(URLEncoder.encode(value, &quot;UTF-8&quot;)).replaceAll(&quot;%20&quot;);</span>
+<span class="nc" id="L30">        } catch (final UnsupportedEncodingException e) {</span>
+<span class="nc" id="L31">            throw new IllegalStateException(e);</span>
         }
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.0.201801022044</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.1.201803210924</span></div></body></html>

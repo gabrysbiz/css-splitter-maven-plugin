@@ -18,15 +18,15 @@ public final class RulesLimitValidator {
 
     private final int limit;
 
-<span class="nc" id="L21">    public RulesLimitValidator(final int limit) {</span>
-<span class="nc" id="L22">        this.limit = limit;</span>
-<span class="nc" id="L23">    }</span>
+<span class="fc" id="L21">    public RulesLimitValidator(final int limit) {</span>
+<span class="fc" id="L22">        this.limit = limit;</span>
+<span class="fc" id="L23">    }</span>
 
     public void validate(final StyleSheet stylesheet) {
-<span class="nc" id="L26">        final int size = stylesheet.getSize();</span>
-<span class="nc bnc" id="L27" title="All 2 branches missed.">        if (size &gt; limit) {</span>
-<span class="nc" id="L28">            throw new ValidationException(String.format(&quot;The number of style rules (%d) exceeded the allowable limit (%d)!&quot;, size, limit));</span>
+<span class="fc" id="L26">        final int size = stylesheet.getSize();</span>
+<span class="fc bfc" id="L27" title="All 2 branches covered.">        if (size &gt; limit) {</span>
+<span class="fc" id="L28">            throw new ValidationException(String.format(&quot;The number of style rules (%d) exceeded the allowable limit (%d)!&quot;, size, limit));</span>
         }
-<span class="nc" id="L30">    }</span>
+<span class="fc" id="L30">    }</span>
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.0.201801022044</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.1.201803210924</span></div></body></html>

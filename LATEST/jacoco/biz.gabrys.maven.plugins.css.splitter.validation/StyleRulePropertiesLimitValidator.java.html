@@ -17,18 +17,18 @@ import biz.gabrys.maven.plugins.css.splitter.css.type.StyleRule;
 final class StyleRulePropertiesLimitValidator extends AbstractRulePropertiesLimitValidator&lt;StyleRule&gt; {
 
     StyleRulePropertiesLimitValidator() {
-<span class="nc" id="L20">        super(StyleRule.class);</span>
-<span class="nc" id="L21">    }</span>
+<span class="fc" id="L20">        super(StyleRule.class);</span>
+<span class="fc" id="L21">    }</span>
 
     @Override
     protected void validate2(final StyleRule rule, final int limit) {
-<span class="nc bnc" id="L25" title="All 2 branches missed.">        if (rule.isSplittable()) {</span>
-<span class="nc" id="L26">            return;</span>
+<span class="fc bfc" id="L25" title="All 2 branches covered.">        if (rule.isSplittable()) {</span>
+<span class="fc" id="L26">            return;</span>
         }
-<span class="nc" id="L28">        final int size = rule.getSize();</span>
-<span class="nc bnc" id="L29" title="All 2 branches missed.">        if (size &gt; limit) {</span>
+<span class="fc" id="L28">        final int size = rule.getSize();</span>
+<span class="fc bfc" id="L29" title="All 2 branches covered.">        if (size &gt; limit) {</span>
 <span class="nc" id="L30">            throwException(size, limit, rule.getCode());</span>
         }
-<span class="nc" id="L32">    }</span>
+<span class="fc" id="L32">    }</span>
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.0.201801022044</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.1.201803210924</span></div></body></html>

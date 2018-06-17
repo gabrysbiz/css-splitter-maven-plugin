@@ -19,13 +19,13 @@ public class UnsupportedRuleException extends RuntimeException {
     private static final long serialVersionUID = -1784456425651473954L;
 
     UnsupportedRuleException(final CSSRule rule) {
-<span class="nc" id="L22">        super(createMessage(rule, new CssFormatter()));</span>
-<span class="nc" id="L23">    }</span>
+<span class="fc" id="L22">        super(createMessage(rule, new CssFormatter()));</span>
+<span class="fc" id="L23">    }</span>
 
     static String createMessage(final CSSRule rule, final CssFormatter formatter) {
-<span class="nc" id="L26">        return String.format(</span>
-<span class="nc" id="L27">                &quot;Rule represented by \&quot;%s\&quot; class (type: %d) is unsupported in current contex! CSS code that causes error:%n%s&quot;,</span>
-<span class="nc" id="L28">                rule.getClass().getName(), rule.getType(), formatter.format(rule));</span>
+<span class="fc" id="L26">        return String.format(</span>
+                &quot;Rule represented by \&quot;%s\&quot; class (type: %d) is unsupported in current contex! CSS code that causes error:%n%s&quot;,
+<span class="fc" id="L28">                rule.getClass().getName(), rule.getType(), formatter.format(rule));</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.0.201801022044</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.1.201803210924</span></div></body></html>

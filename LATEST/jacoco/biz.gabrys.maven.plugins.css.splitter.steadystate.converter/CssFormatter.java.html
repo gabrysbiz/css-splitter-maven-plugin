@@ -19,31 +19,31 @@ import org.w3c.dom.css.CSSValue;
 import com.steadystate.css.format.CSSFormat;
 import com.steadystate.css.format.CSSFormatable;
 
-<span class="nc" id="L22">class CssFormatter {</span>
+<span class="fc" id="L22">class CssFormatter {</span>
 
     String format(final CSSRule rule) {
-<span class="nc bnc" id="L25" title="All 2 branches missed.">        if (rule instanceof CSSFormatable) {</span>
-<span class="nc" id="L26">            return format((CSSFormatable) rule);</span>
+<span class="fc bfc" id="L25" title="All 2 branches covered.">        if (rule instanceof CSSFormatable) {</span>
+<span class="fc" id="L26">            return format((CSSFormatable) rule);</span>
         }
-<span class="nc" id="L28">        return rule.getCssText();</span>
+<span class="fc" id="L28">        return rule.getCssText();</span>
     }
 
     String format(final Selector selector) {
-<span class="nc bnc" id="L32" title="All 2 branches missed.">        if (selector instanceof CSSFormatable) {</span>
-<span class="nc" id="L33">            return format((CSSFormatable) selector);</span>
+<span class="fc bfc" id="L32" title="All 2 branches covered.">        if (selector instanceof CSSFormatable) {</span>
+<span class="fc" id="L33">            return format((CSSFormatable) selector);</span>
         }
-<span class="nc" id="L35">        return selector.toString();</span>
+<span class="fc" id="L35">        return selector.toString();</span>
     }
 
     String format(final CSSValue value) {
-<span class="nc bnc" id="L39" title="All 2 branches missed.">        if (value instanceof CSSFormatable) {</span>
-<span class="nc" id="L40">            return format((CSSFormatable) value);</span>
+<span class="fc bfc" id="L39" title="All 2 branches covered.">        if (value instanceof CSSFormatable) {</span>
+<span class="fc" id="L40">            return format((CSSFormatable) value);</span>
         }
-<span class="nc" id="L42">        return value.getCssText();</span>
+<span class="fc" id="L42">        return value.getCssText();</span>
     }
 
     String format(final CSSFormatable formatable) {
-<span class="nc" id="L46">        return formatable.getCssText(new CSSFormat().setUseSourceStringValues(true).setRgbAsHex(true));</span>
+<span class="fc" id="L46">        return formatable.getCssText(new CSSFormat().setUseSourceStringValues(true).setRgbAsHex(true));</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.0.201801022044</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.1.201803210924</span></div></body></html>

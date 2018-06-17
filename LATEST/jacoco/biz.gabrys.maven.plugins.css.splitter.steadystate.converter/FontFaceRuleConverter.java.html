@@ -28,23 +28,23 @@ class FontFaceRuleConverter extends AbstractRuleConverter&lt;CSSFontFaceRuleImpl
     private final StylePropertyConverter converter;
 
     FontFaceRuleConverter() {
-<span class="nc" id="L31">        this(new StylePropertyConverter());</span>
-<span class="nc" id="L32">    }</span>
+<span class="fc" id="L31">        this(new StylePropertyConverter());</span>
+<span class="fc" id="L32">    }</span>
 
     // for tests
     FontFaceRuleConverter(final StylePropertyConverter converter) {
-<span class="nc" id="L36">        super(CSSFontFaceRuleImpl.class);</span>
-<span class="nc" id="L37">        this.converter = converter;</span>
-<span class="nc" id="L38">    }</span>
+<span class="fc" id="L36">        super(CSSFontFaceRuleImpl.class);</span>
+<span class="fc" id="L37">        this.converter = converter;</span>
+<span class="fc" id="L38">    }</span>
 
     @Override
     protected StyleRule convert2(final CSSFontFaceRuleImpl rule) {
-<span class="nc" id="L42">        final CSSStyleDeclarationImpl style = (CSSStyleDeclarationImpl) rule.getStyle();</span>
-<span class="nc" id="L43">        final List&lt;StyleProperty&gt; properties = new LinkedList&lt;StyleProperty&gt;();</span>
-<span class="nc bnc" id="L44" title="All 2 branches missed.">        for (final Property property : style.getProperties()) {</span>
-<span class="nc" id="L45">            properties.add(converter.convert(property));</span>
-        }
-<span class="nc" id="L47">        return new StyleRule(Arrays.asList(&quot;@font-face&quot;), properties, false);</span>
+<span class="fc" id="L42">        final CSSStyleDeclarationImpl style = (CSSStyleDeclarationImpl) rule.getStyle();</span>
+<span class="fc" id="L43">        final List&lt;StyleProperty&gt; properties = new LinkedList&lt;StyleProperty&gt;();</span>
+<span class="fc bfc" id="L44" title="All 2 branches covered.">        for (final Property property : style.getProperties()) {</span>
+<span class="fc" id="L45">            properties.add(converter.convert(property));</span>
+<span class="fc" id="L46">        }</span>
+<span class="fc" id="L47">        return new StyleRule(Arrays.asList(&quot;@font-face&quot;), properties, false);</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.0.201801022044</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.1.201803210924</span></div></body></html>
