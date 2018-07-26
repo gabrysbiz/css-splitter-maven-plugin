@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AbstractRuleSplitter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">CSS Splitter Maven Plugin</a> &gt; <a href="index.source.html" class="el_package">biz.gabrys.maven.plugins.css.splitter.split</a> &gt; <span class="el_source">AbstractRuleSplitter.java</span></div><h1>AbstractRuleSplitter.java</h1><pre class="source lang-java linenums">/*
+ * CSS Splitter Maven Plugin
+ * http://css-splitter-maven-plugin.projects.gabrys.biz/
+ *
+ * Copyright (c) 2015 Adam Gabrys
+ *
+ * This file is licensed under the BSD 3-Clause (the &quot;License&quot;).
+ * You may not use this file except in compliance with the License.
+ * You may obtain:
+ * - a copy of the License at project page
+ * - a template of the License at https://opensource.org/licenses/BSD-3-Clause
+ */
+package biz.gabrys.maven.plugins.css.splitter.split;
+
+import biz.gabrys.maven.plugins.css.splitter.css.type.NodeRule;
+
+abstract class AbstractRuleSplitter&lt;T extends NodeRule&gt; implements RuleSplitter {
+
+    private final Class&lt;T&gt; clazz;
+
+<span class="fc" id="L21">    protected AbstractRuleSplitter(final Class&lt;T&gt; clazz) {</span>
+<span class="fc" id="L22">        this.clazz = clazz;</span>
+<span class="fc" id="L23">    }</span>
+
+    @Override
+    public final boolean isSplittable(final NodeRule rule) {
+<span class="pc bpc" id="L27" title="1 of 4 branches missed.">        if (rule == null || rule.getClass() != clazz) {</span>
+<span class="fc" id="L28">            return false;</span>
+        }
+<span class="fc" id="L30">        return isSplittable2(clazz.cast(rule));</span>
+    }
+
+    protected abstract boolean isSplittable2(T rule);
+
+    @Override
+    public final SplitResult split(final NodeRule rule, final int splitAfter) {
+<span class="fc bfc" id="L37" title="All 2 branches covered.">        if (!isSplittable(rule)) {</span>
+<span class="fc" id="L38">            throw new IllegalArgumentException(String.format(&quot;The rule is unsplittable! Code:%n%s&quot;, rule));</span>
+        }
+<span class="fc" id="L40">        return split2(clazz.cast(rule), splitAfter);</span>
+    }
+
+    protected abstract SplitResult split2(T rule, int splitAfter);
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.1.201803210924</span></div></body></html>
