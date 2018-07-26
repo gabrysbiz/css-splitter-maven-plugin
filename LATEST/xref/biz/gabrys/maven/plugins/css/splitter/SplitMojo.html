@@ -71,7 +71,7 @@
 <a class="jxr_linenumber" name="L63" href="#L63">63</a>  <em class="jxr_javadoccomment"> * &lt;li&gt;parses it using the &lt;a href="<a href="http://cssparser.sourceforge.net/" target="alexandria_uri">http://cssparser.sourceforge.net/</a>"&gt;CSS Parser&lt;/a&gt; (parser removes all comments)&lt;/li&gt;</em>
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>  <em class="jxr_javadoccomment"> * &lt;li&gt;splits parsed document to "parts"&lt;/li&gt;</em>
 <a class="jxr_linenumber" name="L65" href="#L65">65</a>  <em class="jxr_javadoccomment"> * &lt;li&gt;builds imports' tree&lt;/li&gt;</em>
-<a class="jxr_linenumber" name="L66" href="#L66">66</a>  <em class="jxr_javadoccomment"> * &lt;li&gt;writes to files&lt;/li&gt;</em>
+<a class="jxr_linenumber" name="L66" href="#L66">66</a>  <em class="jxr_javadoccomment"> * &lt;li&gt;writes "parts" to files&lt;/li&gt;</em>
 <a class="jxr_linenumber" name="L67" href="#L67">67</a>  <em class="jxr_javadoccomment"> * &lt;/ol&gt;</em>
 <a class="jxr_linenumber" name="L68" href="#L68">68</a>  <em class="jxr_javadoccomment"> * &lt;p&gt;</em>
 <a class="jxr_linenumber" name="L69" href="#L69">69</a>  <em class="jxr_javadoccomment"> * During split process the plugin can divide "standard style" and &lt;code&gt;&amp;#64;media&lt;/code&gt; rules, which size is bigger</em>
@@ -213,7 +213,7 @@
 <a class="jxr_linenumber" name="L205" href="#L205">205</a>     <strong class="jxr_keyword">protected</strong> String[] excludes = <strong class="jxr_keyword">new</strong> String[0];
 <a class="jxr_linenumber" name="L206" href="#L206">206</a> 
 <a class="jxr_linenumber" name="L207" href="#L207">207</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L208" href="#L208">208</a> <em class="jxr_javadoccomment">     * The maximum number of &lt;a href="<a href="http://www.w3.org/Style/CSS/" target="alexandria_uri">http://www.w3.org/Style/CSS/</a>"&gt;CSS&lt;/a&gt; rules in single "part".&lt;br&gt;</em>
+<a class="jxr_linenumber" name="L208" href="#L208">208</a> <em class="jxr_javadoccomment">     * The maximum number of &lt;a href="<a href="http://www.w3.org/Style/CSS/" target="alexandria_uri">http://www.w3.org/Style/CSS/</a>"&gt;CSS&lt;/a&gt; rules in a single "part".&lt;br&gt;</em>
 <a class="jxr_linenumber" name="L209" href="#L209">209</a> <em class="jxr_javadoccomment">     * &lt;b&gt;Notice&lt;/b&gt;: all values smaller than &lt;tt&gt;1&lt;/tt&gt; are treated as &lt;tt&gt;4095&lt;/tt&gt;.</em>
 <a class="jxr_linenumber" name="L210" href="#L210">210</a> <em class="jxr_javadoccomment">     * @since 1.0.0</em>
 <a class="jxr_linenumber" name="L211" href="#L211">211</a> <em class="jxr_javadoccomment">     */</em>
@@ -221,8 +221,8 @@
 <a class="jxr_linenumber" name="L213" href="#L213">213</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">int</strong> maxRules;
 <a class="jxr_linenumber" name="L214" href="#L214">214</a> 
 <a class="jxr_linenumber" name="L215" href="#L215">215</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L216" href="#L216">216</a> <em class="jxr_javadoccomment">     * The plugin fails the build when a number of &lt;a href="<a href="http://www.w3.org/Style/CSS/" target="alexandria_uri">http://www.w3.org/Style/CSS/</a>"&gt;CSS&lt;/a&gt; rules in source file</em>
-<a class="jxr_linenumber" name="L217" href="#L217">217</a> <em class="jxr_javadoccomment">     * exceeds this value.&lt;br&gt;</em>
+<a class="jxr_linenumber" name="L216" href="#L216">216</a> <em class="jxr_javadoccomment">     * The plugin fails the build when a number of the &lt;a href="<a href="http://www.w3.org/Style/CSS/" target="alexandria_uri">http://www.w3.org/Style/CSS/</a>"&gt;CSS&lt;/a&gt; rules in a source</em>
+<a class="jxr_linenumber" name="L217" href="#L217">217</a> <em class="jxr_javadoccomment">     * file exceed this value.&lt;br&gt;</em>
 <a class="jxr_linenumber" name="L218" href="#L218">218</a> <em class="jxr_javadoccomment">     * &lt;b&gt;Notice&lt;/b&gt;: all values smaller than &lt;tt&gt;1&lt;/tt&gt; are treated as &lt;tt&gt;2147483647&lt;/tt&gt;.</em>
 <a class="jxr_linenumber" name="L219" href="#L219">219</a> <em class="jxr_javadoccomment">     * @since 1.0.0</em>
 <a class="jxr_linenumber" name="L220" href="#L220">220</a> <em class="jxr_javadoccomment">     */</em>
@@ -239,7 +239,7 @@
 <a class="jxr_linenumber" name="L231" href="#L231">231</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">int</strong> maxImports;
 <a class="jxr_linenumber" name="L232" href="#L232">232</a> 
 <a class="jxr_linenumber" name="L233" href="#L233">233</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L234" href="#L234">234</a> <em class="jxr_javadoccomment">     * The plugin fails the build when a number of &lt;code&gt;&amp;#64;import&lt;/code&gt; depth level exceed this value. The plugin</em>
+<a class="jxr_linenumber" name="L234" href="#L234">234</a> <em class="jxr_javadoccomment">     * The plugin fails a build when a number of &lt;code&gt;&amp;#64;import&lt;/code&gt; depth levels exceed this value. The plugin</em>
 <a class="jxr_linenumber" name="L235" href="#L235">235</a> <em class="jxr_javadoccomment">     * ignores &lt;code&gt;&amp;#64;import&lt;/code&gt; operations that come from the source code.&lt;br&gt;</em>
 <a class="jxr_linenumber" name="L236" href="#L236">236</a> <em class="jxr_javadoccomment">     * &lt;b&gt;Notice&lt;/b&gt;: all values smaller than &lt;tt&gt;1&lt;/tt&gt; are treated as &lt;tt&gt;4&lt;/tt&gt;.</em>
 <a class="jxr_linenumber" name="L237" href="#L237">237</a> <em class="jxr_javadoccomment">     * @since 1.0.0</em>
@@ -273,7 +273,7 @@
 <a class="jxr_linenumber" name="L265" href="#L265">265</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">boolean</strong> nonstrict;
 <a class="jxr_linenumber" name="L266" href="#L266">266</a> 
 <a class="jxr_linenumber" name="L267" href="#L267">267</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L268" href="#L268">268</a> <em class="jxr_javadoccomment">     * Defines whether the plugin allows to use "star hack" in stylesheets. "Star hack" works only in Internet Explorer</em>
+<a class="jxr_linenumber" name="L268" href="#L268">268</a> <em class="jxr_javadoccomment">     * Defines whether the plugin allows using "star hack" in stylesheets. "Star hack" works only in Internet Explorer</em>
 <a class="jxr_linenumber" name="L269" href="#L269">269</a> <em class="jxr_javadoccomment">     * browsers - versions 7 and older. Example:</em>
 <a class="jxr_linenumber" name="L270" href="#L270">270</a> <em class="jxr_javadoccomment">     * </em>
 <a class="jxr_linenumber" name="L271" href="#L271">271</a> <em class="jxr_javadoccomment">     * &lt;pre&gt;</em>
@@ -298,7 +298,7 @@
 <a class="jxr_linenumber" name="L290" href="#L290">290</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">boolean</strong> compress;
 <a class="jxr_linenumber" name="L291" href="#L291">291</a> 
 <a class="jxr_linenumber" name="L292" href="#L292">292</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L293" href="#L293">293</a> <em class="jxr_javadoccomment">     * Defines column number after which the plugin will insert a line break. From</em>
+<a class="jxr_linenumber" name="L293" href="#L293">293</a> <em class="jxr_javadoccomment">     * Defines a column number after which the plugin will insert a line break. From</em>
 <a class="jxr_linenumber" name="L294" href="#L294">294</a> <em class="jxr_javadoccomment">     * &lt;a href="<a href="http://yui.github.io/yuicompressor/" target="alexandria_uri">http://yui.github.io/yuicompressor/</a>"&gt;YUI Compressor&lt;/a&gt; documentation:&lt;blockquote&gt;Some source control</em>
 <a class="jxr_linenumber" name="L295" href="#L295">295</a> <em class="jxr_javadoccomment">     * tools do not like files containing lines longer than, say 8000 characters. The line break option is used in that</em>
 <a class="jxr_linenumber" name="L296" href="#L296">296</a> <em class="jxr_javadoccomment">     * case to split long lines after a specific column. Specify 0 to get a line break after each rule in</em>
@@ -310,7 +310,7 @@
 <a class="jxr_linenumber" name="L302" href="#L302">302</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">int</strong> compressLineBreak;
 <a class="jxr_linenumber" name="L303" href="#L303">303</a> 
 <a class="jxr_linenumber" name="L304" href="#L304">304</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L305" href="#L305">305</a> <em class="jxr_javadoccomment">     * Defines cache token type which will be added to &lt;code&gt;&amp;#64;import&lt;/code&gt; links in destination</em>
+<a class="jxr_linenumber" name="L305" href="#L305">305</a> <em class="jxr_javadoccomment">     * Defines a cache token type which will be added to &lt;code&gt;&amp;#64;import&lt;/code&gt; links in destination</em>
 <a class="jxr_linenumber" name="L306" href="#L306">306</a> <em class="jxr_javadoccomment">     * &lt;a href="<a href="http://www.w3.org/Style/CSS/" target="alexandria_uri">http://www.w3.org/Style/CSS/</a>"&gt;CSS&lt;/a&gt; stylesheets. Available options:</em>
 <a class="jxr_linenumber" name="L307" href="#L307">307</a> <em class="jxr_javadoccomment">     * &lt;ul&gt;</em>
 <a class="jxr_linenumber" name="L308" href="#L308">308</a> <em class="jxr_javadoccomment">     * &lt;li&gt;&lt;b&gt;custom&lt;/b&gt; - text specified by the user&lt;/li&gt;</em>
@@ -323,7 +323,7 @@
 <a class="jxr_linenumber" name="L315" href="#L315">315</a>     <strong class="jxr_keyword">protected</strong> String cacheTokenType;
 <a class="jxr_linenumber" name="L316" href="#L316">316</a> 
 <a class="jxr_linenumber" name="L317" href="#L317">317</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L318" href="#L318">318</a> <em class="jxr_javadoccomment">     * Defines cache token parameter name which will be added to &lt;code&gt;&amp;#64;import&lt;/code&gt; links in destination</em>
+<a class="jxr_linenumber" name="L318" href="#L318">318</a> <em class="jxr_javadoccomment">     * Defines a cache token parameter name which will be added to &lt;code&gt;&amp;#64;import&lt;/code&gt; links in destination</em>
 <a class="jxr_linenumber" name="L319" href="#L319">319</a> <em class="jxr_javadoccomment">     * &lt;a href="<a href="http://www.w3.org/Style/CSS/" target="alexandria_uri">http://www.w3.org/Style/CSS/</a>"&gt;CSS&lt;/a&gt; stylesheets.&lt;br&gt;</em>
 <a class="jxr_linenumber" name="L320" href="#L320">320</a> <em class="jxr_javadoccomment">     * &lt;b&gt;Notice&lt;/b&gt;: ignored when &lt;a href="#cacheTokenType"&gt;cache token type&lt;/a&gt; is equal to &lt;tt&gt;none&lt;/tt&gt;.</em>
 <a class="jxr_linenumber" name="L321" href="#L321">321</a> <em class="jxr_javadoccomment">     * @since 1.0.0</em>

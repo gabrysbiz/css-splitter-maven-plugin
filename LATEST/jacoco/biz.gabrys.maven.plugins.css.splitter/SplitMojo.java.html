@@ -63,7 +63,7 @@ import biz.gabrys.maven.plugins.css.splitter.validation.StylePropertiesLimitVali
  * &lt;li&gt;parses it using the &lt;a href=&quot;http://cssparser.sourceforge.net/&quot;&gt;CSS Parser&lt;/a&gt; (parser removes all comments)&lt;/li&gt;
  * &lt;li&gt;splits parsed document to &quot;parts&quot;&lt;/li&gt;
  * &lt;li&gt;builds imports' tree&lt;/li&gt;
- * &lt;li&gt;writes to files&lt;/li&gt;
+ * &lt;li&gt;writes &quot;parts&quot; to files&lt;/li&gt;
  * &lt;/ol&gt;
  * &lt;p&gt;
  * During split process the plugin can divide &quot;standard style&quot; and &lt;code&gt;&amp;#64;media&lt;/code&gt; rules, which size is bigger
@@ -205,7 +205,7 @@ import biz.gabrys.maven.plugins.css.splitter.validation.StylePropertiesLimitVali
     protected String[] excludes = new String[0];
 
     /**
-     * The maximum number of &lt;a href=&quot;http://www.w3.org/Style/CSS/&quot;&gt;CSS&lt;/a&gt; rules in single &quot;part&quot;.&lt;br&gt;
+     * The maximum number of &lt;a href=&quot;http://www.w3.org/Style/CSS/&quot;&gt;CSS&lt;/a&gt; rules in a single &quot;part&quot;.&lt;br&gt;
      * &lt;b&gt;Notice&lt;/b&gt;: all values smaller than &lt;tt&gt;1&lt;/tt&gt; are treated as &lt;tt&gt;4095&lt;/tt&gt;.
      * @since 1.0.0
      */
@@ -213,8 +213,8 @@ import biz.gabrys.maven.plugins.css.splitter.validation.StylePropertiesLimitVali
     protected int maxRules;
 
     /**
-     * The plugin fails the build when a number of &lt;a href=&quot;http://www.w3.org/Style/CSS/&quot;&gt;CSS&lt;/a&gt; rules in source file
-     * exceeds this value.&lt;br&gt;
+     * The plugin fails the build when a number of the &lt;a href=&quot;http://www.w3.org/Style/CSS/&quot;&gt;CSS&lt;/a&gt; rules in a source
+     * file exceed this value.&lt;br&gt;
      * &lt;b&gt;Notice&lt;/b&gt;: all values smaller than &lt;tt&gt;1&lt;/tt&gt; are treated as &lt;tt&gt;2147483647&lt;/tt&gt;.
      * @since 1.0.0
      */
@@ -231,7 +231,7 @@ import biz.gabrys.maven.plugins.css.splitter.validation.StylePropertiesLimitVali
     protected int maxImports;
 
     /**
-     * The plugin fails the build when a number of &lt;code&gt;&amp;#64;import&lt;/code&gt; depth level exceed this value. The plugin
+     * The plugin fails a build when a number of &lt;code&gt;&amp;#64;import&lt;/code&gt; depth levels exceed this value. The plugin
      * ignores &lt;code&gt;&amp;#64;import&lt;/code&gt; operations that come from the source code.&lt;br&gt;
      * &lt;b&gt;Notice&lt;/b&gt;: all values smaller than &lt;tt&gt;1&lt;/tt&gt; are treated as &lt;tt&gt;4&lt;/tt&gt;.
      * @since 1.0.0
@@ -265,7 +265,7 @@ import biz.gabrys.maven.plugins.css.splitter.validation.StylePropertiesLimitVali
     protected boolean nonstrict;
 
     /**
-     * Defines whether the plugin allows to use &quot;star hack&quot; in stylesheets. &quot;Star hack&quot; works only in Internet Explorer
+     * Defines whether the plugin allows using &quot;star hack&quot; in stylesheets. &quot;Star hack&quot; works only in Internet Explorer
      * browsers - versions 7 and older. Example:
      * 
      * &lt;pre&gt;
@@ -290,7 +290,7 @@ import biz.gabrys.maven.plugins.css.splitter.validation.StylePropertiesLimitVali
     protected boolean compress;
 
     /**
-     * Defines column number after which the plugin will insert a line break. From
+     * Defines a column number after which the plugin will insert a line break. From
      * &lt;a href=&quot;http://yui.github.io/yuicompressor/&quot;&gt;YUI Compressor&lt;/a&gt; documentation:&lt;blockquote&gt;Some source control
      * tools do not like files containing lines longer than, say 8000 characters. The line break option is used in that
      * case to split long lines after a specific column. Specify 0 to get a line break after each rule in
@@ -302,7 +302,7 @@ import biz.gabrys.maven.plugins.css.splitter.validation.StylePropertiesLimitVali
     protected int compressLineBreak;
 
     /**
-     * Defines cache token type which will be added to &lt;code&gt;&amp;#64;import&lt;/code&gt; links in destination
+     * Defines a cache token type which will be added to &lt;code&gt;&amp;#64;import&lt;/code&gt; links in destination
      * &lt;a href=&quot;http://www.w3.org/Style/CSS/&quot;&gt;CSS&lt;/a&gt; stylesheets. Available options:
      * &lt;ul&gt;
      * &lt;li&gt;&lt;b&gt;custom&lt;/b&gt; - text specified by the user&lt;/li&gt;
@@ -315,7 +315,7 @@ import biz.gabrys.maven.plugins.css.splitter.validation.StylePropertiesLimitVali
     protected String cacheTokenType;
 
     /**
-     * Defines cache token parameter name which will be added to &lt;code&gt;&amp;#64;import&lt;/code&gt; links in destination
+     * Defines a cache token parameter name which will be added to &lt;code&gt;&amp;#64;import&lt;/code&gt; links in destination
      * &lt;a href=&quot;http://www.w3.org/Style/CSS/&quot;&gt;CSS&lt;/a&gt; stylesheets.&lt;br&gt;
      * &lt;b&gt;Notice&lt;/b&gt;: ignored when &lt;a href=&quot;#cacheTokenType&quot;&gt;cache token type&lt;/a&gt; is equal to &lt;tt&gt;none&lt;/tt&gt;.
      * @since 1.0.0

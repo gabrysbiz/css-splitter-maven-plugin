@@ -30,8 +30,8 @@ abstract class AbstractRulePropertiesLimitValidator&lt;T extends NodeRule&gt; im
     @Override
     public final void validate(final NodeRule rule, final int limit) {
 <span class="fc bfc" id="L32" title="All 2 branches covered.">        if (!isSupportedType(rule)) {</span>
-<span class="pc bpc" id="L33" title="1 of 2 branches missed.">            throw new IllegalArgumentException(String.format(&quot;Cannot cast an instance of the %s to the %s class!&quot;,</span>
-<span class="fc" id="L34">                    rule == null ? &quot;null&quot; : rule.getClass().getName(), clazz.getName()));</span>
+<span class="fc" id="L33">            throw new IllegalArgumentException(String.format(&quot;Cannot cast an instance of the %s to the %s class!&quot;,</span>
+<span class="pc bpc" id="L34" title="1 of 2 branches missed.">                    rule == null ? &quot;null&quot; : rule.getClass().getName(), clazz.getName()));</span>
         }
 <span class="fc" id="L36">        validate2(clazz.cast(rule), limit);</span>
 <span class="fc" id="L37">    }</span>
