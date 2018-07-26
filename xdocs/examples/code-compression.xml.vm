@@ -37,7 +37,7 @@
    &lt;/build&gt;
 &lt;project&gt;</pre>
             <p>
-                Additionaly you can set the column number after which the plugin will insert a line break
+                Additionaly you can set a column number after which the plugin will insert a line break
                 by settng the <a href="../split-mojo.html#compressLineBreak">compressLineBreak</a> parameter.
                 From <a href="http://yui.github.io/yuicompressor/">YUI Compressor</a> documentation:
             </p>

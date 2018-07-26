@@ -26,11 +26,11 @@
                 </tr>
                 <tr class="b">
                     <td><a href="examples/output-file-structure.html">Output file structure (imports' tree)</a></td>
-                    <td>This example shows how output file structure will change depending on the configuration.</td>
+                    <td>This example shows how the output file structure will change depending on the configuration.</td>
                 </tr>
                 <tr class="a">
                     <td><a href="examples/cache-token.html">Using cache token</a></td>
-                    <td>This example describes how to enable addition of cache token to <code>@import</code> links.</td>
+                    <td>This example describes how to enable addition of the cache token to <code>@import</code> links.</td>
                 </tr>
                 <tr class="a">
                     <td><a href="examples/code-compression.html">Code compression</a></td>

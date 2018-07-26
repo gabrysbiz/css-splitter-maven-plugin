@@ -1,5 +1,11 @@
 # CSS Splitter Maven Plugin Changelog
 
+## 2.0.3
+Dependencies:
+* Upgraded [CSS Parser](http://cssparser.sourceforge.net/) from 0.9.25 to 0.9.26 ([#31](https://github.com/gabrysbiz/css-splitter-maven-plugin/issues/31))
+
+[See documentation](http://css-splitter-maven-plugin.projects.gabrys.biz/2.0.3/)
+
 ## 2.0.2
 Bugs:
 * Fixed regex patterns should not be created needlessly ([#30](https://github.com/gabrysbiz/css-splitter-maven-plugin/issues/30))

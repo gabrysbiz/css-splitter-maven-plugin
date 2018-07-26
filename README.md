@@ -13,7 +13,7 @@ This plugin splits [CSS](http://www.w3.org/Style/CSS/) stylesheets to smaller fi
 For more information read the [split](http://css-splitter-maven-plugin.projects.gabrys.biz/2.0.2/split-mojo.html) goal documentation or take a look into [examples](#examples).
 
 # Goals Overview
-* [css-splitter:split](http://css-splitter-maven-plugin.projects.gabrys.biz/2.0.2/split-mojo.html) - splits [CSS](http://www.w3.org/Style/CSS/) stylesheets to smaller files ("parts") which contain maximum [X](http://css-splitter-maven-plugin.projects.gabrys.biz/2.0.2/split-mojo.html#maxRules) rules
+* [css-splitter:split](http://css-splitter-maven-plugin.projects.gabrys.biz/2.0.3/split-mojo.html) - splits [CSS](http://www.w3.org/Style/CSS/) stylesheets to smaller files ("parts") which contain maximum [X](http://css-splitter-maven-plugin.projects.gabrys.biz/2.0.3/split-mojo.html#maxRules) rules
 
 # Requirements
 The plugin to run requires:
@@ -21,17 +21,17 @@ The plugin to run requires:
 * Maven 3 or higher
 
 # Usage
-General instructions on how to use the CSS Splitter Maven Plugin can be found on the [usage](http://css-splitter-maven-plugin.projects.gabrys.biz/2.0.2/usage.html) page. Some more specific use cases are described in the examples given below. Last but not least, users occasionally contribute additional examples, tips or errata to the plugin's [wiki](https://github.com/gabrysbiz/css-splitter-maven-plugin/wiki) page.
+General instructions on how to use the CSS Splitter Maven Plugin can be found on the [usage](http://css-splitter-maven-plugin.projects.gabrys.biz/2.0.3/usage.html) page. Some more specific use cases are described in the examples given below. Last but not least, users occasionally contribute additional examples, tips or errata to the plugin's [wiki](https://github.com/gabrysbiz/css-splitter-maven-plugin/wiki) page.
 
-In case you still have questions regarding the plugin's usage, please have a look at the [FAQ](http://css-splitter-maven-plugin.projects.gabrys.biz/2.0.2/faq.html).
+In case you still have questions regarding the plugin's usage, please have a look at the [FAQ](http://css-splitter-maven-plugin.projects.gabrys.biz/2.0.3/faq.html).
 
-If you feel like the plugin is missing a feature or has a defect, you can fill a feature request or bug report in the [issue tracker](http://css-splitter-maven-plugin.projects.gabrys.biz/2.0.2/issue-tracking.html). When creating a new issue, please provide a comprehensive description of your concern. Especially for fixing bugs it is crucial that the developers can reproduce your problem. For this reason, entire debug logs, POMs or most preferably little demo projects attached to the issue are very much appreciated. Of course, patches are welcome, too. Contributors can check out the project from the [source repository](http://css-splitter-maven-plugin.projects.gabrys.biz/2.0.2/source-repository.html) and will find supplementary information in the [guide to helping with Maven](http://maven.apache.org/guides/development/guide-helping.html).
+If you feel like the plugin is missing a feature or has a defect, you can fill a feature request or bug report in the [issue tracker](http://css-splitter-maven-plugin.projects.gabrys.biz/2.0.3/issue-tracking.html). When creating a new issue, please provide a comprehensive description of your concern. Especially for fixing bugs it is crucial that the developers can reproduce your problem. For this reason, entire debug logs, POMs or most preferably little demo projects attached to the issue are very much appreciated. Of course, patches are welcome, too. Contributors can check out the project from the [source repository](http://css-splitter-maven-plugin.projects.gabrys.biz/2.0.3/source-repository.html) and will find supplementary information in the [guide to helping with Maven](http://maven.apache.org/guides/development/guide-helping.html).
 
 # Examples
 To provide you with better understanding of some usages of the CSS Splitter Maven Plugin, you can take a look into the following examples:
-* [Using include/exclude patterns](http://css-splitter-maven-plugin.projects.gabrys.biz/2.0.2/examples/patterns.html)
-* [Multiple source/output directories](http://css-splitter-maven-plugin.projects.gabrys.biz/2.0.2/examples/multiple-directories.html)
-* [Output file structure (imports' tree)](http://css-splitter-maven-plugin.projects.gabrys.biz/2.0.2/examples/output-file-structure.html)
-* [Using cache token](http://css-splitter-maven-plugin.projects.gabrys.biz/2.0.2/examples/cache-token.html)
-* [Code compression](http://css-splitter-maven-plugin.projects.gabrys.biz/2.0.2/examples/code-compression.html)
+* [Using include/exclude patterns](http://css-splitter-maven-plugin.projects.gabrys.biz/2.0.3/examples/patterns.html)
+* [Multiple source/output directories](http://css-splitter-maven-plugin.projects.gabrys.biz/2.0.3/examples/multiple-directories.html)
+* [Output file structure (imports' tree)](http://css-splitter-maven-plugin.projects.gabrys.biz/2.0.3/examples/output-file-structure.html)
+* [Using cache token](http://css-splitter-maven-plugin.projects.gabrys.biz/2.0.3/examples/cache-token.html)
+* [Code compression](http://css-splitter-maven-plugin.projects.gabrys.biz/2.0.3/examples/code-compression.html)
 

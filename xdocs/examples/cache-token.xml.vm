@@ -9,7 +9,7 @@
     <body>
         <section name="Using cache token">
             <p>
-                You can control the addition of the cache token to <code>@import</code> links using three parameters:
+                You can control the addition of the cache token to <code>@import</code> links using the following three parameters:
             </p>
             <ol>
                 <li>
@@ -26,10 +26,10 @@
             <p>List of examples:</p>
             <ul>
                 <li>
-                    <a href="#custom-type">Cache token with custom text</a>
+                    <a href="#custom-type">Cache token with a custom text</a>
                 </li>
                 <li>
-                    <a href="#date-type">Cache token with build time</a>
+                    <a href="#date-type">Cache token with a build time</a>
                 </li>
                 <li>
                     <a href="#none-type">Disable addition of the cache token</a>
@@ -38,11 +38,11 @@
         </section>
         <section id="custom-type" name="Cache token with custom text">
             <p>
-                If you want to use custom text as cache token, you need to:
+                If you want to use a custom text as cache token, you need to:
             </p>
             <ul>
-                <li>set <a href="../split-mojo.html#cacheTokenType">cacheTokenType</a> to <code>custom</code></li>
-                <li>fill <a href="../split-mojo.html#cacheTokenValue">cacheTokenValue</a> with custom text</li>
+                <li>set the <a href="../split-mojo.html#cacheTokenType">cacheTokenType</a> to <code>custom</code></li>
+                <li>fill the <a href="../split-mojo.html#cacheTokenValue">cacheTokenValue</a> with custom text</li>
             </ul>
             <pre>&lt;project&gt;
    ...
@@ -118,7 +118,7 @@
         </section>
         <section id="date-type" name="Cache token with build time">
             <p>
-                If you want to add cache token with the build time, you need to set
+                If you want to add the cache token with the build time, you need to set the
                 <a href="../split-mojo.html#cacheTokenType">cacheTokenType</a> to <code>date</code>.
             </p>
             <pre>&lt;project&gt;
@@ -153,8 +153,8 @@
             </p>
             <ul>
                 <li>
-                    fill <a href="../split-mojo.html#cacheTokenValue">cacheTokenValue</a> with
-                    pattern for <code>SimpleDateFormat</code> object
+                    fill the <a href="../split-mojo.html#cacheTokenValue">cacheTokenValue</a> with
+                    a pattern for <code>SimpleDateFormat</code> object
                 </li>
                 <li>
                     change name of the cache token parameter
@@ -193,10 +193,10 @@
         </section>
         <section id="none-type" name="Disable addition of the cache token">
             <p>
-                If you want to disable addition of cache token (default action), you need to set
-                <a href="../split-mojo.html#cacheTokenType">cacheTokenType</a> to <code>none</code>.
-                <a href="../split-mojo.html#cacheTokenParameter">cacheTokenParameter</a> and
-                <a href="../split-mojo.html#cacheTokenValue">cacheTokenValue</a> will be ignored.
+                If you want to disable addition of the cache token (default action), you need to set
+                the <a href="../split-mojo.html#cacheTokenType">cacheTokenType</a> to <code>none</code>.
+                The <a href="../split-mojo.html#cacheTokenParameter">cacheTokenParameter</a> and
+                the <a href="../split-mojo.html#cacheTokenValue">cacheTokenValue</a> will be ignored.
             </p>
             <pre>&lt;project&gt;
    ...

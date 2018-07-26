@@ -63,7 +63,7 @@ import biz.gabrys.maven.plugins.css.splitter.validation.StylePropertiesLimitVali
  * <li>parses it using the <a href="http://cssparser.sourceforge.net/">CSS Parser</a> (parser removes all comments)</li>
  * <li>splits parsed document to "parts"</li>
  * <li>builds imports' tree</li>
- * <li>writes to files</li>
+ * <li>writes "parts" to files</li>
  * </ol>
  * <p>
  * During split process the plugin can divide "standard style" and <code>&#64;media</code> rules, which size is bigger
@@ -205,7 +205,7 @@ public class SplitMojo extends AbstractMojo {
     protected String[] excludes = new String[0];
 
     /**
-     * The maximum number of <a href="http://www.w3.org/Style/CSS/">CSS</a> rules in single "part".<br>
+     * The maximum number of <a href="http://www.w3.org/Style/CSS/">CSS</a> rules in a single "part".<br>
      * <b>Notice</b>: all values smaller than <tt>1</tt> are treated as <tt>4095</tt>.
      * @since 1.0.0
      */
@@ -213,8 +213,8 @@ public class SplitMojo extends AbstractMojo {
     protected int maxRules;
 
     /**
-     * The plugin fails the build when a number of <a href="http://www.w3.org/Style/CSS/">CSS</a> rules in source file
-     * exceeds this value.<br>
+     * The plugin fails the build when a number of the <a href="http://www.w3.org/Style/CSS/">CSS</a> rules in a source
+     * file exceed this value.<br>
      * <b>Notice</b>: all values smaller than <tt>1</tt> are treated as <tt>2147483647</tt>.
      * @since 1.0.0
      */
@@ -231,7 +231,7 @@ public class SplitMojo extends AbstractMojo {
     protected int maxImports;
 
     /**
-     * The plugin fails the build when a number of <code>&#64;import</code> depth level exceed this value. The plugin
+     * The plugin fails a build when a number of <code>&#64;import</code> depth levels exceed this value. The plugin
      * ignores <code>&#64;import</code> operations that come from the source code.<br>
      * <b>Notice</b>: all values smaller than <tt>1</tt> are treated as <tt>4</tt>.
      * @since 1.0.0
@@ -265,7 +265,7 @@ public class SplitMojo extends AbstractMojo {
     protected boolean nonstrict;
 
     /**
-     * Defines whether the plugin allows to use "star hack" in stylesheets. "Star hack" works only in Internet Explorer
+     * Defines whether the plugin allows using "star hack" in stylesheets. "Star hack" works only in Internet Explorer
      * browsers - versions 7 and older. Example:
      * 
      * <pre>
@@ -290,7 +290,7 @@ public class SplitMojo extends AbstractMojo {
     protected boolean compress;
 
     /**
-     * Defines column number after which the plugin will insert a line break. From
+     * Defines a column number after which the plugin will insert a line break. From
      * <a href="http://yui.github.io/yuicompressor/">YUI Compressor</a> documentation:<blockquote>Some source control
      * tools do not like files containing lines longer than, say 8000 characters. The line break option is used in that
      * case to split long lines after a specific column. Specify 0 to get a line break after each rule in
@@ -302,7 +302,7 @@ public class SplitMojo extends AbstractMojo {
     protected int compressLineBreak;
 
     /**
-     * Defines cache token type which will be added to <code>&#64;import</code> links in destination
+     * Defines a cache token type which will be added to <code>&#64;import</code> links in destination
      * <a href="http://www.w3.org/Style/CSS/">CSS</a> stylesheets. Available options:
      * <ul>
      * <li><b>custom</b> - text specified by the user</li>
@@ -315,7 +315,7 @@ public class SplitMojo extends AbstractMojo {
     protected String cacheTokenType;
 
     /**
-     * Defines cache token parameter name which will be added to <code>&#64;import</code> links in destination
+     * Defines a cache token parameter name which will be added to <code>&#64;import</code> links in destination
      * <a href="http://www.w3.org/Style/CSS/">CSS</a> stylesheets.<br>
      * <b>Notice</b>: ignored when <a href="#cacheTokenType">cache token type</a> is equal to <tt>none</tt>.
      * @since 1.0.0

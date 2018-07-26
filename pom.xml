@@ -5,11 +5,11 @@
 
     <groupId>biz.gabrys.maven.plugins</groupId>
     <artifactId>css-splitter-maven-plugin</artifactId>
-    <version>2.0.2</version>
+    <version>2.0.3</version>
     <packaging>maven-plugin</packaging>
     <name>CSS Splitter Maven Plugin</name>
     <description>Splits CSS stylesheets to smaller files ("parts") which contain maximum X rules.</description>
-    <url>http://css-splitter-maven-plugin.projects.gabrys.biz/2.0.2/</url>
+    <url>http://css-splitter-maven-plugin.projects.gabrys.biz/2.0.3/</url>
 
     <inceptionYear>2015</inceptionYear>
     <organization>
@@ -92,7 +92,7 @@
         <dependency>
             <groupId>net.sourceforge.cssparser</groupId>
             <artifactId>cssparser</artifactId>
-            <version>0.9.25</version>
+            <version>0.9.26</version>
         </dependency>
         <dependency>
             <groupId>com.yahoo.platform.yui</groupId>
@@ -122,7 +122,7 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>2.19.0</version>
+            <version>2.20.0</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -185,7 +185,7 @@
                 </plugin>
                 <plugin>
                     <artifactId>maven-project-info-reports-plugin</artifactId>
-                    <version>2.9</version>
+                    <version>3.0.0</version>
                 </plugin>
                 <plugin>
                     <artifactId>maven-resources-plugin</artifactId>
@@ -357,13 +357,13 @@
                 <reportSets>
                     <reportSet>
                         <reports>
-                            <report>cim</report>
+                            <report>ci-management</report>
                             <report>dependencies</report>
-                            <report>issue-tracking</report>
-                            <report>license</report>
+                            <report>issue-management</report>
+                            <report>licenses</report>
                             <report>summary</report>
                             <report>scm</report>
-                            <report>project-team</report>
+                            <report>team</report>
                         </reports>
                     </reportSet>
                 </reportSets>

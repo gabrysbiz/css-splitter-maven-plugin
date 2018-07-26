@@ -7,6 +7,15 @@
     </properties>
 
     <body>
+        <section id="release-2.0.3" name="Release 2.0.3">
+            <p>Dependencies:</p>
+            <ul>
+                <li>
+                    Upgraded <a href="http://cssparser.sourceforge.net/">CSS Parser</a> from 0.9.25 to 0.9.26
+                    (<a href="https://github.com/gabrysbiz/css-splitter-maven-plugin/issues/31">#31</a>)
+                </li>
+            </ul>
+        </section>
         <section id="release-2.0.2" name="Release 2.0.2">
             <p>Bugs:</p>
             <ul>
@@ -15,6 +24,7 @@
                     (<a href="https://github.com/gabrysbiz/css-splitter-maven-plugin/issues/30">#30</a>)
                 </li>
             </ul>
+            <p><a href="http://css-splitter-maven-plugin.projects.gabrys.biz/2.0.2/">See documentation</a></p>
         </section>
         <section id="release-2.0.1" name="Release 2.0.1">
             <p>Bugs:</p>
