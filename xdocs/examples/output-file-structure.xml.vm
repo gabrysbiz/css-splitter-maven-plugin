@@ -13,12 +13,12 @@
             </p>
             <ol>
                 <li>
-                    <a href="../split-mojo.html#maxRules">maxRules</a> - maximum number of
+                    <a href="../split-mojo.html#maxRules">maxRules</a> - a maximum number of the
                     <a href="https://www.w3.org/Style/CSS/">CSS</a> rules in a single &quot;part&quot;
                 </li>
                 <li>
-                    <a href="../split-mojo.html#maxImports">maxImports</a> - maximum number of generated <code>@import</code>
-                    in a single file
+                    <a href="../split-mojo.html#maxImports">maxImports</a> - a maximum number of the generated
+                    <code>@import</code> operations in a single file
                 </li>
             </ol>
             <p>List of examples:</p>
@@ -30,12 +30,12 @@
                 <li>
                     <a href="#flat-imports-tree">code contains fewer rules than the value of the <code>maxRules</code> parameter
                     and the <code>maxImports</code> parameter value is big enough too store all <code>@import</code>
-                    operations in single file</a>
+                    operations in a single file</a>
                 </li>
                 <li>
                     <a href="#deep-imports-tree">code contains fewer rules than the value of the <code>maxRules</code> parameter
                     and the <code>maxImports</code> parameter value is not big enough too store all <code>@import</code>
-                    operations in single file</a>
+                    operations in a single file</a>
                 </li>
             </ul>
             <p>
@@ -89,7 +89,7 @@
         </section>
         <section id="flat-imports-tree" name="Flat imports' tree">
             <p>
-                If your code code contains fewer rules than the value of the <a href="../split-mojo.html#maxRules">maxRules</a>
+                If your code contains fewer rules than the value of the <a href="../split-mojo.html#maxRules">maxRules</a>
                 parameter and the <a href="../split-mojo.html#maxImports">maxImports</a> parameter value is big enough too store
                 all <code>@import</code> operations in a single file, the plugin creates a single file which imports all
                 &quot;parts&quot;.
@@ -125,7 +125,7 @@
         </section>
         <section id="deep-imports-tree" name="Deep imports' tree">
             <p> 
-                If your code code contains fewer rules than the value of the <a href="../split-mojo.html#maxRules">maxRules</a>
+                If your code contains fewer rules than the value of the <a href="../split-mojo.html#maxRules">maxRules</a>
                 parameter and the <a href="../split-mojo.html#maxImports">maxImports</a> parameter value is not big enough too store
                 all <code>@import</code> operations in a single file, the plugin creates a single file which imports files,
                 which imports files... and finally which imports &quot;parts&quot;.
