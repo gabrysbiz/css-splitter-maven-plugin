@@ -7,6 +7,8 @@
     </properties>
 
     <body>
+        <section id="release-2.0.4" name="Release 2.0.4">
+        </section>
         <section id="release-2.0.3" name="Release 2.0.3">
             <p>Dependencies:</p>
             <ul>
@@ -15,6 +17,7 @@
                     (<a href="https://github.com/gabrysbiz/css-splitter-maven-plugin/issues/31">#31</a>)
                 </li>
             </ul>
+            <p><a href="http://css-splitter-maven-plugin.projects.gabrys.biz/2.0.3/">See documentation</a></p>
         </section>
         <section id="release-2.0.2" name="Release 2.0.2">
             <p>Bugs:</p>
