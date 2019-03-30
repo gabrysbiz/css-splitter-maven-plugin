@@ -1,6 +1,8 @@
 # CSS Splitter Maven Plugin Changelog
 
 ## 2.0.4
+Dependencies:
+* Upgraded [CSS Parser](http://cssparser.sourceforge.net/) from 0.9.26 to 0.9.27 ([#32](https://github.com/gabrysbiz/css-splitter-maven-plugin/issues/32))
 
 [See documentation](http://css-splitter-maven-plugin.projects.gabrys.biz/2.0.4/)
 
