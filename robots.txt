@@ -1,2 +1,2 @@
 User-agent: *
-Sitemap: http://css-splitter-maven-plugin.projects.gabrys.biz/sitemap.xml
+Disallow: /LATEST/

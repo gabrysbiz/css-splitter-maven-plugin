@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>StyleSheetConverter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">CSS Splitter Maven Plugin</a> &gt; <a href="index.source.html" class="el_package">biz.gabrys.maven.plugins.css.splitter.steadystate.converter</a> &gt; <span class="el_source">StyleSheetConverter.java</span></div><h1>StyleSheetConverter.java</h1><pre class="source lang-java linenums">/*
+ * CSS Splitter Maven Plugin
+ * http://css-splitter-maven-plugin.projects.gabrys.biz/
+ *
+ * Copyright (c) 2015 Adam Gabrys
+ *
+ * This file is licensed under the BSD 3-Clause (the &quot;License&quot;).
+ * You may not use this file except in compliance with the License.
+ * You may obtain:
+ * - a copy of the License at project page
+ * - a template of the License at https://opensource.org/licenses/BSD-3-Clause
+ */
+package biz.gabrys.maven.plugins.css.splitter.steadystate.converter;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
+import org.w3c.dom.css.CSSRule;
+import org.w3c.dom.css.CSSRuleList;
+import org.w3c.dom.css.CSSStyleSheet;
+
+import biz.gabrys.maven.plugins.css.splitter.css.Standard;
+import biz.gabrys.maven.plugins.css.splitter.css.type.NodeRule;
+import biz.gabrys.maven.plugins.css.splitter.css.type.StyleSheet;
+
+public class StyleSheetConverter {
+
+    private final RuleConverter&lt;?&gt; converter;
+
+    public StyleSheetConverter(final Standard standard, final boolean strict) {
+<span class="fc" id="L32">        this(createConverter(standard, strict));</span>
+<span class="fc" id="L33">    }</span>
+
+    // for tests
+<span class="fc" id="L36">    StyleSheetConverter(final RuleConverter&lt;?&gt; converter) {</span>
+<span class="fc" id="L37">        this.converter = converter;</span>
+<span class="fc" id="L38">    }</span>
+
+    static MultipleRuleConverter createConverter(final Standard standard, final boolean strict) {
+<span class="fc" id="L41">        final List&lt;RuleConverter&lt;?&gt;&gt; converters = new ArrayList&lt;RuleConverter&lt;?&gt;&gt;();</span>
+<span class="fc" id="L42">        converters.add(new StyleRuleConverter());</span>
+<span class="fc" id="L43">        converters.add(new MediaRuleConverter(standard, strict));</span>
+<span class="fc" id="L44">        converters.add(new FontFaceRuleConverter());</span>
+<span class="fc" id="L45">        converters.add(new PageRuleConverter());</span>
+<span class="fc" id="L46">        converters.add(new ImportRuleConverter());</span>
+<span class="fc" id="L47">        converters.add(new CharsetRuleConverter());</span>
+<span class="fc" id="L48">        converters.add(new UnknownRuleConverter());</span>
+<span class="fc" id="L49">        return new MultipleRuleConverter(converters);</span>
+    }
+
+    public StyleSheet convert(final CSSStyleSheet stylesheet) {
+<span class="fc" id="L53">        final List&lt;NodeRule&gt; rules = new LinkedList&lt;NodeRule&gt;();</span>
+<span class="fc" id="L54">        final CSSRuleList ruleList = stylesheet.getCssRules();</span>
+<span class="fc bfc" id="L55" title="All 2 branches covered.">        for (int i = 0; i &lt; ruleList.getLength(); ++i) {</span>
+<span class="fc" id="L56">            final CSSRule rule = ruleList.item(i);</span>
+<span class="fc bfc" id="L57" title="All 2 branches covered.">            if (converter.isSupportedType(rule)) {</span>
+<span class="fc" id="L58">                rules.add(converter.convert(rule));</span>
+            } else {
+<span class="fc" id="L60">                throw new UnsupportedRuleException(rule);</span>
+            }
+        }
+<span class="fc" id="L63">        return new StyleSheet(rules);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>
