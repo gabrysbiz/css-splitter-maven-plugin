@@ -1,12 +1,19 @@
 ---
 language: java
-jdk:
-  - openjdk8
-  - openjdk11
-env: MVN_VERSION='3.3.9'
+jdk: openjdk8
+env: MVN_VERSION='3.6.0'
+addons:
+  sonarcloud:
+    organization: $SONAR_ORGANIZATION
+    token:
+      secure: $SONAR_TOKEN
 before_install:
   - wget https://repo.maven.apache.org/maven2/org/apache/maven/apache-maven/$MVN_VERSION/apache-maven-$MVN_VERSION-bin.zip
   - unzip -qq apache-maven-$MVN_VERSION-bin.zip
   - export M2_HOME=$PWD/apache-maven-$MVN_VERSION
   - export PATH=$M2_HOME/bin:$PATH
-script: mvn -B -e verify site
+script:
+  - mvn -B -e verify site
+  - if [ ! -z "$SONAR_TOKEN" ]; then
+      mvn -B -e sonar:sonar -Dsonar.sources=pom.xml,src/main;
+    fi
