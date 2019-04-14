@@ -18,6 +18,6 @@ script:
       mvn -B -e sonar:sonar -Dsonar.sources=pom.xml,src/main;
     fi
 after_success:
-  - if [ "$GITHUB_PAGES_DEPLOY" = "true" ] && [ "$TRAVIS_BRANCH" = "master" ]; then
+  - if [ "$GITHUB_PAGES_DEPLOY" = "true" ] && [ "$TRAVIS_BRANCH" = "master" ] && [ "$TRAVIS_PULL_REQUEST" == 'false' ]; then
       ./gh-pages/build.sh && ./gh-pages/deploy.sh;
     fi

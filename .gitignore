@@ -3,3 +3,7 @@
 /target/
 /.classpath
 /.project
+/pom.xml.next
+/pom.xml.releaseBackup
+/pom.xml.tag
+/release.properties
