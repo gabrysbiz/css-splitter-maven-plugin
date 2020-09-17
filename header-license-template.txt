@@ -1,7 +1,7 @@
 ${project.name}
-http://${project.artifactId}.projects.gabrys.biz/
+https://gabrysbiz.github.io/css-splitter-maven-plugin/
 
-Copyright (c) ${project.inceptionYear} ${owner}
+Copyright (c) ${project.inceptionYear}-2020 ${owner}
 
 This file is licensed under the BSD 3-Clause (the "License").
 You may not use this file except in compliance with the License.

@@ -1,8 +1,8 @@
 /*
  * CSS Splitter Maven Plugin
- * http://css-splitter-maven-plugin.projects.gabrys.biz/
+ * https://gabrysbiz.github.io/css-splitter-maven-plugin/
  *
- * Copyright (c) 2015 Adam Gabrys
+ * Copyright (c) 2015-2020 Adam Gabrys
  *
  * This file is licensed under the BSD 3-Clause (the "License").
  * You may not use this file except in compliance with the License.
