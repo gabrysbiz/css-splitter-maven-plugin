@@ -9,18 +9,18 @@
     <packaging>maven-plugin</packaging>
     <name>CSS Splitter Maven Plugin</name>
     <description>Splits CSS stylesheets to smaller files ("parts") which contain maximum X rules.</description>
-    <url>http://css-splitter-maven-plugin.projects.gabrys.biz/LATEST/</url>
+    <url>https://gabrysbiz.github.io/css-splitter-maven-plugin/LATEST/</url>
 
     <inceptionYear>2015</inceptionYear>
     <organization>
         <name>gabrys.biz</name>
-        <url>http://www.gabrys.biz/</url>
+        <url>https://github.com/gabrysbiz/</url>
     </organization>
 
     <licenses>
         <license>
             <name>The BSD 3-Clause License</name>
-            <url>http://css-splitter-maven-plugin.projects.gabrys.biz/license.txt</url>
+            <url>https://gabrysbiz.github.io/css-splitter-maven-plugin/license.txt</url>
             <distribution>repo</distribution>
         </license>
     </licenses>
@@ -29,9 +29,9 @@
         <developer>
             <id>agabrys</id>
             <name>Adam Gabryś</name>
-            <url>http://www.adam.gabrys.biz/</url>
+            <url>https://agabrys.github.io/</url>
             <organization>gabrys.biz</organization>
-            <organizationUrl>http://www.gabrys.biz/</organizationUrl>
+            <organizationUrl>https://github.com/gabrysbiz/</organizationUrl>
             <timezone>Europe/Berlin</timezone>
         </developer>
     </developers>
